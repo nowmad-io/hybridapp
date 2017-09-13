@@ -18,7 +18,8 @@
     "ios:prod": "react-native run-ios -scheme universal_production",
     "ios:build": "npm run ios:prod",
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all",
-    "reset": "rm -rf $TMPDIR/react-* && watchman watch-del-all && rm -rf ios/build/ModuleCache/* && rm -rf node_modules/ && npm i"
+    "reset": "rm -rf $TMPDIR/react-* && watchman watch-del-all && rm -rf ios/build/ModuleCache/* && rm -rf node_modules/ && npm i",
+    "changename": "react-native-rename"
   },
   "dependencies": {
     "color": "^0.11.3",
@@ -52,6 +53,7 @@
     "jest": "17.0.0",
     "jest-react-native": "17.0.0",
     "mocha": "^2.5.3",
+    "react-native-rename": "^2.1.5",
     "react-test-renderer": "15.3.2",
     "remote-redux-devtools-on-debugger": "^0.7.0",
     "remotedev-server": "^0.1.2"

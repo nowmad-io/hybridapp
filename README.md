@@ -8,6 +8,12 @@
 
 ---
 
+## Utils
+
+* Change name of the app running `npm run changename -- <NewName>`
+
+---
+
 ## Android
 
 ### Start Developing
