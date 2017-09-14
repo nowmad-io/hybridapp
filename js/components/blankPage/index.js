@@ -28,7 +28,7 @@ class BlankPage extends Component {
 
   render() {
     const { props: { name, index, list } } = this;
-    console.log(this.props.navigation, "000000000");
+    
     return (
       <Container style={styles.container}>
         <Header>
