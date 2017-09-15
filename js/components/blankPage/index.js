@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
   Container,
   Header,
@@ -17,8 +16,12 @@ class BlankPage extends Component {
   static navigationOptions = {
     header: null,
   };
+
+  static propTypes = {
+    navigation: React.PropTypes.object,
+  };
+
   render() {
-    const { props: { name, index, list } } = this;
     return (
       <Container>
         <Header>

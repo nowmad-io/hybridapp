@@ -9,7 +9,10 @@
     ],
     "rules": {
         "no-underscore-dangle": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "jsx-a11y/href-no-hash": "off",
+        "react/forbid-prop-types": "off",
+        "react/require-default-props": "off"
     },
     "settings": {
         "import/resolver": {

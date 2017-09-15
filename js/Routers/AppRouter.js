@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { DrawerNavigator } from 'react-navigation';
 
 import Home from '../components/home/';
@@ -15,7 +15,7 @@ const DrawNav = DrawerNavigator(
   },
 );
 
-DrawNav.navigationOptions = ({ navigation }) => ({
+DrawNav.navigationOptions = () => ({
   header: null,
 });
 

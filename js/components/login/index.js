@@ -18,7 +18,13 @@ import styles from './styles';
 const background = require('../../../images/shadow.png');
 
 class Login extends Component {
-  static propTypes = {};
+  static navigationOptions = {
+    header: null,
+  };
+
+  static propTypes = {
+    navigation: React.PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
@@ -90,14 +96,10 @@ class Login extends Component {
   }
 }
 
-Login.navigationOptions = {
-  header: null,
-};
-
-function bindActions(dispatch) {
+function bindActions() {
   return {};
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = null;
 
 export default connect(mapStateToProps, bindActions)(Login);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { DrawerNavigator, NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import {
   Container,
   Header,
@@ -15,24 +14,16 @@ import {
   Right,
 } from 'native-base';
 
-import BlankPage from '../blankPage';
-import DrawBar from '../DrawBar';
-
-import { openDrawer } from '../../actions/drawer';
-
 import styles from './styles';
 
 class Home extends Component {
   static navigationOptions = {
     header: null,
   };
-  static propTypes = {
-    openDrawer: React.PropTypes.func,
-  };
 
-  newPage(index) {
-    Actions.blankPage();
-  }
+  static propTypes = {
+    navigation: React.PropTypes.object,
+  };
 
   render() {
     return (
@@ -76,11 +67,9 @@ class Home extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer()),
-  };
+function bindAction() {
+  return {};
 }
-const mapStateToProps = state => ({});
+const mapStateToProps = null;
 
 export default connect(mapStateToProps, bindAction)(Home);

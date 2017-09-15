@@ -55,7 +55,7 @@ class App extends Component {
         }
       },
       ({ receivedBytes, totalBytes }) => {
-        this.setState({ downloadProgress: receivedBytes / totalBytes * 100 });
+        this.setState({ downloadProgress: (receivedBytes / totalBytes) * 100 });
       },
     );
   }

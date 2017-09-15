@@ -1,16 +1,11 @@
 import React from 'react';
-import { AppRegistry, Image, TouchableOpacity } from 'react-native';
 import {
-  Button,
   Text,
   Container,
   List,
   ListItem,
   Content,
-  Icon,
 } from 'native-base';
-
-const logo = require('../../../images/logo.png');
 
 const routes = ['Home', 'BlankPage'];
 
@@ -18,6 +13,11 @@ export default class DrawBar extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  static propTypes = {
+    navigation: React.PropTypes.object,
+  };
+
   render() {
     return (
       <Container>
