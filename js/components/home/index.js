@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
-import { connect } from "react-redux";
-import { DrawerNavigator, NavigationActions } from "react-navigation";
+import React, { Component } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { DrawerNavigator, NavigationActions } from 'react-navigation';
 import {
   Container,
   Header,
@@ -12,22 +12,22 @@ import {
   Icon,
   Left,
   Body,
-  Right
-} from "native-base";
+  Right,
+} from 'native-base';
 
-import BlankPage from "../blankPage";
-import DrawBar from "../DrawBar";
+import BlankPage from '../blankPage';
+import DrawBar from '../DrawBar';
 
-import { openDrawer } from "../../actions/drawer";
+import { openDrawer } from '../../actions/drawer';
 
-import styles from "./styles";
+import styles from './styles';
 
 class Home extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   static propTypes = {
-    openDrawer: React.PropTypes.func
+    openDrawer: React.PropTypes.func,
   };
 
   newPage(index) {
@@ -41,7 +41,7 @@ class Home extends Component {
           <Left>
             <Button
               transparent
-              onPress={() => this.props.navigation.navigate("DrawerOpen")}
+              onPress={() => this.props.navigation.navigate('DrawerOpen')}
             >
               <Icon active name="menu" />
             </Button>
@@ -57,7 +57,7 @@ class Home extends Component {
               onPress={() => {
                 const actionToDispatch = NavigationActions.reset({
                   index: 0,
-                  actions: [NavigationActions.navigate({ routeName: "Login" })]
+                  actions: [NavigationActions.navigate({ routeName: 'Login' })],
                 });
                 this.props.navigation.dispatch(actionToDispatch);
               }}
@@ -78,7 +78,7 @@ class Home extends Component {
 
 function bindAction(dispatch) {
   return {
-    openDrawer: () => dispatch(openDrawer())
+    openDrawer: () => dispatch(openDrawer()),
   };
 }
 const mapStateToProps = state => ({});

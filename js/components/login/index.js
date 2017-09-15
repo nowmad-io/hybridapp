@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Image } from "react-native";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Image } from 'react-native';
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -9,13 +9,13 @@ import {
   Button,
   Icon,
   View,
-  Text
-} from "native-base";
-import { NavigationActions } from 'react-navigation'
+  Text,
+} from 'native-base';
+import { NavigationActions } from 'react-navigation';
 
-import styles from "./styles";
+import styles from './styles';
 
-const background = require("../../../images/shadow.png");
+const background = require('../../../images/shadow.png');
 
 class Login extends Component {
   static propTypes = {};
@@ -23,16 +23,16 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      error: ""
+      email: '',
+      password: '',
+      error: '',
     };
   }
 
   navigateToHome() {
     const actionToDispatch = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: "App" })]
+      actions: [NavigationActions.navigate({ routeName: 'App' })],
     });
     this.props.navigation.dispatch(actionToDispatch);
   }
@@ -53,10 +53,10 @@ class Login extends Component {
                     onChangeText={email => this.setState({ email })}
                   />
                   {this.state.error
-                    ? <Item style={{ borderColor: "transparent" }}>
-                        <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
-                        <Text style={{ fontSize: 15, color: "red" }}>{ this.state.error }</Text>
-                      </Item>
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
                     : <Text />}
                 </Item>
                 <Item>
@@ -69,10 +69,10 @@ class Login extends Component {
                     onChangeText={password => this.setState({ password })}
                   />
                   {this.state.error
-                    ? <Item style={{ borderColor: "transparent" }}>
-                        <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
-                        <Text style={{ fontSize: 15, color: "red" }}>{ this.state.error }</Text>
-                      </Item>
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
                     : <Text />}
                 </Item>
                 <Button
@@ -91,7 +91,7 @@ class Login extends Component {
 }
 
 Login.navigationOptions = {
-  header: null
+  header: null,
 };
 
 function bindActions(dispatch) {

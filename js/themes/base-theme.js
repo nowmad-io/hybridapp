@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 
 export default {
 
-    // Badge
+  // Badge
   badgeBg: '#ED1727',
   badgeColor: '#fff',
 
@@ -46,7 +46,7 @@ export default {
   },
   get btnTextSize() {
     return (Platform.OS === 'ios') ? this.fontSizeBase * 1.1 :
-    this.fontSizeBase - 1;
+      this.fontSizeBase - 1;
   },
   get btnTextSizeLarge() {
     return this.fontSizeBase * 1.5;

@@ -1,5 +1,5 @@
-import React from "react";
-import { AppRegistry, Image, TouchableOpacity } from "react-native";
+import React from 'react';
+import { AppRegistry, Image, TouchableOpacity } from 'react-native';
 import {
   Button,
   Text,
@@ -7,16 +7,16 @@ import {
   List,
   ListItem,
   Content,
-  Icon
-} from "native-base";
+  Icon,
+} from 'native-base';
 
-const logo = require("../../../images/logo.png");
+const logo = require('../../../images/logo.png');
 
-const routes = ["Home", "BlankPage"];
+const routes = ['Home', 'BlankPage'];
 
 export default class DrawBar extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
   render() {
     return (
@@ -24,19 +24,17 @@ export default class DrawBar extends React.Component {
         <Content>
           <List
             style={{
-              paddingTop: 18
+              paddingTop: 18,
             }}
             dataArray={routes}
-            renderRow={data => {
-              return (
-                <ListItem
-                  button
-                  onPress={() => this.props.navigation.navigate(data)}
-                >
-                  <Text>{data}</Text>
-                </ListItem>
-              );
-            }}
+            renderRow={data => (
+              <ListItem
+                button
+                onPress={() => this.props.navigation.navigate(data)}
+              >
+                <Text>{data}</Text>
+              </ListItem>
+            )}
           />
         </Content>
       </Container>
