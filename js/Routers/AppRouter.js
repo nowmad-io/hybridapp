@@ -2,14 +2,23 @@ import React, { Component } from "react";
 import { DrawerNavigator } from "react-navigation";
 
 import Home from "../components/home/";
-import BlankPage2 from "../components/blankPage2";
+import BlankPage from "../components/blankPage";
 import DrawBar from "../components/DrawBar";
 
-export default (DrawNav = DrawerNavigator(
+const DrawNav = DrawerNavigator(
   {
     Home: { screen: Home },
-    BlankPage2: { screen: BlankPage2 }
-  }, {
+    BlankPage: { screen: BlankPage }
+  },
+  {
     contentComponent: props => <DrawBar {...props} />
   }
-));
+);
+
+DrawNav.navigationOptions = ({ navigation }) => {
+  return {
+    header: null
+  };
+};
+
+export default DrawNav;
