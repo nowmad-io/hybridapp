@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -77,6 +78,7 @@ apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
  * the correct one based on the CPU architecture of their device.
  */
 def enableSeparateBuildPerCPUArchitecture = false
+def pass = getPassword("nowmad","android_keystore")
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -106,6 +108,16 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('UNIVERSAL_RELEASE_STORE_FILE')) {
+                storeFile file(UNIVERSAL_RELEASE_STORE_FILE)
+                storePassword pass
+                keyAlias UNIVERSAL_RELEASE_KEY_ALIAS
+                keyPassword pass
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -128,6 +140,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-config')
     compile project(':react-native-maps')
     compile project(':react-native-code-push')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -140,4 +153,17 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+def getPassword(String currentUser, String keyChain) {
+   def stdout = new ByteArrayOutputStream()
+   def stderr = new ByteArrayOutputStream()
+   exec {
+       commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+       standardOutput = stdout
+       errorOutput = stderr
+       ignoreExitValue true
+   }
+   //noinspection GroovyAssignabilityCheck
+      stdout.toString().trim()
 }
