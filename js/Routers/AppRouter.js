@@ -3,7 +3,7 @@ import { DrawerNavigator } from 'react-navigation';
 
 import Home from '../components/home/';
 import BlankPage from '../components/blankPage';
-import DrawBar from '../components/DrawBar';
+import DrawBar from '../components/drawBar';
 
 const DrawNav = DrawerNavigator(
   {
