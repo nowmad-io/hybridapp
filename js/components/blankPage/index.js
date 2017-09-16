@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
 import {
   Container,
   Header,
@@ -10,27 +9,21 @@ import {
   Icon,
   Left,
   Right,
-  Body
-} from "native-base";
-
-import styles from "./styles";
+  Body,
+} from 'native-base';
 
 class BlankPage extends Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
+
   static propTypes = {
-    name: React.PropTypes.string,
-    index: React.PropTypes.number,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
-    openDrawer: React.PropTypes.func
+    navigation: React.PropTypes.object,
   };
 
   render() {
-    const { props: { name, index, list } } = this;
-    console.log(this.props.navigation, "000000000");
     return (
-      <Container style={styles.container}>
+      <Container>
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
@@ -39,17 +32,22 @@ class BlankPage extends Component {
           </Left>
 
           <Body>
-            <Title>{name ? this.props.name : "Blank Page"}</Title>
+            <Title>Blank page</Title>
           </Body>
 
-          <Right />
+          <Right>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.navigate('DrawerOpen')}
+            >
+              <Icon name="ios-menu" />
+            </Button>
+          </Right>
         </Header>
 
         <Content padder>
           <Text>
-            {this.props.navigation.state.params.name.item !== undefined
-              ? this.props.navigation.state.params.name.item
-              : "Create Something Awesome . . ."}
+            Create Something Awesome . . .
           </Text>
         </Content>
       </Container>
@@ -57,16 +55,4 @@ class BlankPage extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    openDrawer: () => dispatch(openDrawer())
-  };
-}
-
-const mapStateToProps = state => ({
-  name: state.user.name,
-  index: state.list.selectedIndex,
-  list: state.list.list
-});
-
-export default connect(mapStateToProps, bindAction)(BlankPage);
+export default BlankPage;

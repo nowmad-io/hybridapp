@@ -1,7 +1,6 @@
-
 const React = require('react-native');
 
-const { StyleSheet, Dimensions } = React;
+const { Dimensions } = React;
 
 const deviceHeight = Dimensions.get('window').height;
 

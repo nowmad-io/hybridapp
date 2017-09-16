@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Image } from "react-native";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Image } from 'react-native';
+import { connect } from 'react-redux';
 import {
   Container,
   Content,
@@ -9,83 +9,40 @@ import {
   Button,
   Icon,
   View,
-  Text
-} from "native-base";
-import { Field, reduxForm } from "redux-form";
-import { setUser } from "../../actions/user";
-import styles from "./styles";
+  Text,
+} from 'native-base';
+import { NavigationActions } from 'react-navigation';
 
-const background = require("../../../images/shadow.png");
+import styles from './styles';
 
-const validate = values => {
-  const error = {};
-  error.email = "";
-  error.password = "";
-  var ema = values.email;
-  var pw = values.password;
-  if (values.email === undefined) {
-    ema = "";
-  }
-  if (values.password === undefined) {
-    pw = "";
-  }
-  if (ema.length < 8 && ema !== "") {
-    error.email = "too short";
-  }
-  if (!ema.includes("@") && ema !== "") {
-    error.email = "@ not included";
-  }
-  if (pw.length > 12) {
-    error.password = "max 11 characters";
-  }
-  if (pw.length < 5 && pw.length > 0) {
-    error.password = "Weak";
-  }
-  return error;
-};
+const background = require('../../../images/shadow.png');
 
 class Login extends Component {
-  static propTypes = {
-    setUser: React.PropTypes.func
+  static navigationOptions = {
+    header: null,
   };
+
+  static propTypes = {
+    navigation: React.PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      email: '',
+      password: '',
+      error: '',
     };
-    this.renderInput = this.renderInput.bind(this);
   }
 
-  setUser(name) {
-    this.props.setUser(name);
+  navigateToHome() {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'App' })],
+    });
+    this.props.navigation.dispatch(actionToDispatch);
   }
-  renderInput({
-    input,
-    label,
-    type,
-    meta: { touched, error, warning },
-    inputProps
-  }) {
-    var hasError = false;
-    if (error !== undefined) {
-      hasError = true;
-    }
-    return (
-      <Item error={hasError}>
-        <Icon active name={input.name === "email" ? "person" : "unlock"} />
-        <Input
-          placeholder={input.name === "email" ? "EMAIL" : "PASSWORD"}
-          {...input}
-        />
-        {hasError
-          ? <Item style={{ borderColor: "transparent" }}>
-              <Icon active style={{ color: "red", marginTop: 5 }} name="bug" />
-              <Text style={{ fontSize: 15, color: "red" }}>{error}</Text>
-            </Item>
-          : <Text />}
-      </Item>
-    );
-  }
+
   render() {
     return (
       <Container>
@@ -93,11 +50,40 @@ class Login extends Component {
           <Content>
             <Image source={background} style={styles.shadow}>
               <View style={styles.bg}>
-                <Field name="email" component={this.renderInput} />
-                <Field name="password" component={this.renderInput} />
+                <Item>
+                  <Icon active name="person" />
+                  <Input
+                    name="email"
+                    value={this.state.email}
+                    placeholder="EMAIL"
+                    onChangeText={email => this.setState({ email })}
+                  />
+                  {this.state.error
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
+                    : <Text />}
+                </Item>
+                <Item>
+                  <Icon active name="unlock" />
+                  <Input
+                    name="password"
+                    value={this.state.password}
+                    placeholder="PASSWORD"
+                    secureTextEntry
+                    onChangeText={password => this.setState({ password })}
+                  />
+                  {this.state.error
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
+                    : <Text />}
+                </Item>
                 <Button
                   style={styles.btn}
-                  onPress={() => this.props.navigation.navigate("Home")}
+                  onPress={() => this.navigateToHome()}
                 >
                   <Text>Login</Text>
                 </Button>
@@ -109,18 +95,11 @@ class Login extends Component {
     );
   }
 }
-const LoginSwag = reduxForm(
-  {
-    form: "test",
-    validate
-  },
-  function bindActions(dispatch) {
-    return {
-      setUser: name => dispatch(setUser(name))
-    };
-  }
-)(Login);
-LoginSwag.navigationOptions = {
-  header: null
-};
-export default LoginSwag;
+
+function bindActions() {
+  return {};
+}
+
+const mapStateToProps = null;
+
+export default connect(mapStateToProps, bindActions)(Login);

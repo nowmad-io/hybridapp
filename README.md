@@ -8,6 +8,13 @@
 
 ---
 
+## Utils
+
+* Change name of the app running `npm run changename -- <newName>` or using `react-native-rename -- <newName> -b <bundleIdentifier>` to change also the Android bundleIdentifier.
+> E.g. `react-native-rename "TravelNetwork" -b com.travelnetwork.travelnetworkapp`
+
+---
+
 ## Android
 
 ### Start Developing
