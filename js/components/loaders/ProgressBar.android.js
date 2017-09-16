@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ProgressBarAndroid } from 'react-native';
 
 const SpinnerNB = props => (
@@ -12,8 +13,8 @@ const SpinnerNB = props => (
 );
 
 SpinnerNB.propTypes = {
-  progress: React.PropTypes.number,
-  color: React.PropTypes.string,
+  progress: PropTypes.number,
+  color: PropTypes.string,
 };
 
 export default SpinnerNB;

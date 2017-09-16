@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ProgressViewIOS } from 'react-native';
 
 const ProgressBarNB = props => (
@@ -11,8 +12,8 @@ const ProgressBarNB = props => (
 );
 
 ProgressBarNB.propTypes = {
-  progress: React.PropTypes.number,
-  color: React.PropTypes.string,
+  progress: PropTypes.number,
+  color: PropTypes.string,
 };
 
 export default ProgressBarNB;

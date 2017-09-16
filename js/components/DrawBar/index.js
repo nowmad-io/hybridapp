@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Text,
   Container,
@@ -15,7 +16,7 @@ export default class DrawBar extends React.Component {
   };
 
   static propTypes = {
-    navigation: React.PropTypes.object,
+    navigation: PropTypes.object,
   };
 
   render() {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -23,7 +24,7 @@ class Login extends Component {
   };
 
   static propTypes = {
-    navigation: React.PropTypes.object,
+    navigation: PropTypes.object,
   };
 
   constructor(props) {
