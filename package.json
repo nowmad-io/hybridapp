@@ -7,7 +7,7 @@
     "url": "https://github.com/travelNetwork/hybridapp.git"
   },
   "scripts": {
-    "postinstall": "remotedev-debugger",
+    "postinstall": "node node_modules/native-base/ejectTheme.js && remotedev-debugger",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint js",
     "test": "jest --no-cache",
