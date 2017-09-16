@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { View } from 'react-native';
+import { select } from 'redux-crud-store';
+import Config from 'react-native-config'
 
+import { fetchReviews } from '../../api/reviews';
 import Map from '../map';
 
 import styles from './styles';
@@ -17,7 +20,30 @@ class Home extends Component {
     navigation: PropTypes.object,
   };
 
+  constructor(props) {
+    super(props);
+    this.mapRef = null;
+  }
+
+  componentWillMount() {
+    const { reviews } = this.props;
+    if (reviews.needsFetch) {
+      this.props.dispatch(reviews.fetch);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { reviews } = nextProps;
+
+    if (reviews.needsFetch) {
+      this.props.dispatch(reviews.fetch)
+    }
+  }
+
   render() {
+    const { props: { reviews } } = this;
+    console.log('reviews', reviews);
+    console.log('api', Config.API_URL);
     return (
       <View style={styles.container}>
         <Map />
@@ -26,9 +52,14 @@ class Home extends Component {
   }
 }
 
-function bindAction() {
-  return {};
+function bindAction(dispatch) {
+  return {
+    dispatch
+  };
 }
-const mapStateToProps = null;
+
+const mapStateToProps = state => ({
+  reviews: select(fetchReviews(state, { page: 1 }), state.models),
+});
 
 export default connect(mapStateToProps, bindAction)(Home);
