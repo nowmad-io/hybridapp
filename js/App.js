@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, BackHandler } from 'react-native';
 import CodePush from 'react-native-code-push';
-import { addNavigationHelpers } from 'react-navigation';
+import { addNavigationHelpers, NavigationActions } from "react-navigation";
 import { connect } from 'react-redux';
 
 import { Container, Content, Text, View } from 'native-base';
@@ -11,20 +11,7 @@ import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: null,
-    height: null,
-  },
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal1: {
-    height: 300,
-  },
-});
+import styles from './styles';
 
 class App extends Component {
   constructor(props) {
@@ -41,6 +28,8 @@ class App extends Component {
   };
 
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+
     CodePush.sync(
       { updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE },
       (status) => {
@@ -65,6 +54,19 @@ class App extends Component {
       },
     );
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+  }
+
+  onBackPress = () => {
+    const { dispatch, nav } = this.props;
+    if (nav.index === 0) {
+      return false;
+    }
+    dispatch(NavigationActions.back());
+    return true;
+  };
 
   render() {
     if (this.state.showDownloadingModal) {

@@ -31,7 +31,7 @@ const navReducer = (state = initialState, action) => {
 };
 // END
 console.log('navReducer', navReducer);
-export default function configureStore(onCompletion:()=>void):any {
+export default function configureStore():any {
   const middlewares = [
     promise,
     sagaMiddleware,
@@ -58,7 +58,7 @@ export default function configureStore(onCompletion:()=>void):any {
   }
   sagaMiddleware.run(crudSaga(apiConfig()));
 
-  persistStore(store, { storage: AsyncStorage }, onCompletion());
+  persistStore(store, { storage: AsyncStorage });
 
   return {
     store,

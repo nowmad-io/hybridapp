@@ -13,8 +13,7 @@ function setup():React.Component {
       super();
 
       this.state = {
-        isLoading: false,
-        ...{ store, appNavigator} = configureStore(() => this.setState({ isLoading: false }))
+        ...{ store, appNavigator} = configureStore()
       };
     }
 
