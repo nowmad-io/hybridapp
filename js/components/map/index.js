@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 
+import Marker from '../marker';
+
 import styles from './styles';
 
 const Map = props => (
@@ -14,9 +16,16 @@ const Map = props => (
       latitudeDelta: 0.015,
       longitudeDelta: 0.0121
     }}>
+    { props.markers && props.markers.map(marker => (
+      <Marker
+        marker={marker}
+      />
+    )) }
   </MapView>
 );
 
-Map.propTypes = {};
+Map.propTypes = {
+  markers: PropTypes.array,
+};
 
 export default Map;

@@ -47,7 +47,7 @@ class Home extends Component {
     console.log('api', Config.API_URL);
     return (
       <View style={styles.container}>
-        <Map />
+        <Map markers={reviews.data}/>
       </View>
     );
   }
