@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import devTools from 'remote-redux-devtools';
+import { composeWithDevTools } from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
@@ -39,10 +39,9 @@ export default function configureStore():any {
 
   const enhancers = [
     applyMiddleware(...middlewares),
-    devTools({
-      name: 'traveltnetwork', realtime: true,
-    }),
   ];
+
+  const composeEnhancers = composeWithDevTools({ name: 'traveltnetwork', realtime: true });
 
   const store = createStore(
     combineReducers({
@@ -50,7 +49,7 @@ export default function configureStore():any {
       ...reducers
     }),
     // initialState,
-    compose(...enhancers)
+    composeEnhancers(...enhancers)
   );
 
   for (const saga of sagas) {
