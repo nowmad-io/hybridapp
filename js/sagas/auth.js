@@ -1,4 +1,5 @@
 import { take, put, race, call, takeLatest } from 'redux-saga/effects';
+import { NavigationActions } from 'react-navigation';
 
 import {
   apiLogin,
@@ -67,6 +68,10 @@ function* loginFlow(action) {
   // If `auth` was the winner...
   if (winner.loginSuccess) {
     yield put({ type: LOGIN, token: winner.loginSuccess.payload.auth_token }); // User is logged in (authorized)
+    yield put(NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'App' })],
+    }));
   } else if (winner.loginFail) {
     yield call(parseError, { error: winner.loginFail.payload });
   } else if (winner.logout) {

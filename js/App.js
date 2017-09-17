@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import CodePush from 'react-native-code-push';
+import { addNavigationHelpers } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import { Container, Content, Text, View } from 'native-base';
 import Modal from 'react-native-modalbox';
-import MainRouter from './Routers/MainRouter';
 import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
@@ -33,6 +35,10 @@ class App extends Component {
       downloadProgress: 0,
     };
   }
+
+  static propTypes = {
+    mainRouter: PropTypes.func,
+  };
 
   componentDidMount() {
     CodePush.sync(
@@ -127,8 +133,21 @@ class App extends Component {
       );
     }
 
-    return <MainRouter />;
+    return <this.props.mainRouter navigation={addNavigationHelpers({
+        dispatch: this.props.dispatch,
+        state: this.props.nav,
+      })} />;
   }
 }
 
-export default App;
+function bindActions(dispatch) {
+  return {
+    dispatch
+  };
+}
+
+const mapStateToProps = (state) => ({
+  nav: state.nav
+});
+
+export default connect(mapStateToProps)(App);

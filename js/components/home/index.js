@@ -18,6 +18,7 @@ class Home extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
+    reviews: PropTypes.object,
   };
 
   constructor(props) {

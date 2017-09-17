@@ -11,17 +11,22 @@ function setup():React.Component {
   class Root extends Component {
     constructor() {
       super();
+
       this.state = {
         isLoading: false,
-        store: configureStore(() => this.setState({ isLoading: false })),
+        ...{ store, appNavigator} = configureStore(() => this.setState({ isLoading: false }))
       };
+    }
+
+    load(appNavigator) {
+
     }
 
     render() {
       return (
         <StyleProvider style={getTheme(platform)}>
           <Provider store={this.state.store}>
-            <App />
+            <App mainRouter={this.state.appNavigator}/>
           </Provider>
         </StyleProvider>
       );
