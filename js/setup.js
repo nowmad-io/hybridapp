@@ -17,10 +17,6 @@ function setup():React.Component {
       };
     }
 
-    load(appNavigator) {
-
-    }
-
     render() {
       return (
         <StyleProvider style={getTheme(platform)}>

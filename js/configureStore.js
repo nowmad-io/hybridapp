@@ -20,8 +20,6 @@ const sagaMiddleware = createSagaMiddleware();
 // BEGIN - Connecting react-navigation with redux
 const AppNavigator = MainRouter;
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
-console.log('AppNavigator', AppNavigator);
-console.log('MainRouter', MainRouter);
 
 const navReducer = (state = initialState, action) => {
   const nextState = AppNavigator.router.getStateForAction(action, state);
@@ -30,7 +28,7 @@ const navReducer = (state = initialState, action) => {
   return nextState || state;
 };
 // END
-console.log('navReducer', navReducer);
+
 export default function configureStore():any {
   const middlewares = [
     promise,

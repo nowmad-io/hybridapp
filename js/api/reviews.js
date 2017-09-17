@@ -16,7 +16,6 @@ const fetchConfig = (state) => {
 };
 
 export function fetchReviews(state, params = {}) {
-  console.log('request', state)
   return fetchCollection(MODEL, SEARCH_PATH, params, { fetchConfig: fetchConfig(state) });
 }
 

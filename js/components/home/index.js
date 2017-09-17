@@ -43,8 +43,7 @@ class Home extends Component {
 
   render() {
     const { props: { reviews } } = this;
-    console.log('reviews', reviews);
-    console.log('api', Config.API_URL);
+    
     return (
       <View style={styles.container}>
         <Map markers={reviews.data}/>
