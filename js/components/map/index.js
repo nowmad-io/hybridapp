@@ -18,6 +18,7 @@ const Map = props => (
     }}>
     { props.markers && props.markers.map(marker => (
       <Marker
+        key={marker.id}
         marker={marker}
       />
     )) }
