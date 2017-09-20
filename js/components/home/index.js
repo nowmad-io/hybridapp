@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { View } from 'react-native';
 import { select } from 'redux-crud-store';
 import Config from 'react-native-config'
+import { View, Icon, Fab } from 'native-base';
+
 
 import { fetchReviews } from '../../api/reviews';
 import Map from '../map';
@@ -43,10 +44,18 @@ class Home extends Component {
 
   render() {
     const { props: { reviews } } = this;
-    
+
     return (
       <View style={styles.container}>
         <Map markers={reviews.data}/>
+        <Fab
+            direction="up"
+            containerStyle={{ }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="topRight"
+            onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+            <Icon name="ios-menu" />
+          </Fab>
       </View>
     );
   }
