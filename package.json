@@ -11,6 +11,7 @@
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint js",
     "test": "jest --no-cache",
+    "avd": "~/Library/Android/sdk/tools/emulator -avd nowmad_avd &",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
     "android:prod": "ENVFILE=.env.release react-native run-android",
     "android:build": "cd android && ./gradlew assembleRelease",
