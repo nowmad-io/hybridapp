@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { composeWithDevTools } from 'remote-redux-devtools';
+import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
@@ -9,7 +9,6 @@ import Config from 'react-native-config'
 import sagas from './sagas';
 import reducers from './reducers';
 import promise from './promise';
-import MainRouter from './Routers/MainRouter';
 
 function apiConfig() {
   return new ApiClient({ basePath: Config.API_URL });
@@ -17,19 +16,7 @@ function apiConfig() {
 
 const sagaMiddleware = createSagaMiddleware();
 
-// BEGIN - Connecting react-navigation with redux
-const AppNavigator = MainRouter;
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
-
-const navReducer = (state = initialState, action) => {
-  const nextState = AppNavigator.router.getStateForAction(action, state);
-
-  // Simply return the original `state` if `nextState` is null or undefined.
-  return nextState || state;
-};
-// END
-
-export default function configureStore():any {
+export default function configureStore(onCompletion:()=>void):any {
   const middlewares = [
     promise,
     sagaMiddleware,
@@ -37,17 +24,17 @@ export default function configureStore():any {
 
   const enhancers = [
     applyMiddleware(...middlewares),
+    devTools({
+      name: 'traveltnetwork', realtime: true,
+    }),
   ];
-
-  const composeEnhancers = composeWithDevTools({ name: 'traveltnetwork', realtime: true });
 
   const store = createStore(
     combineReducers({
-      nav: navReducer,
       ...reducers
     }),
     // initialState,
-    composeEnhancers(...enhancers)
+    compose(...enhancers)
   );
 
   for (const saga of sagas) {
@@ -55,10 +42,7 @@ export default function configureStore():any {
   }
   sagaMiddleware.run(crudSaga(apiConfig()));
 
-  persistStore(store, { storage: AsyncStorage });
+  persistStore(store, { storage: AsyncStorage }, onCompletion);
 
-  return {
-    store,
-    appNavigator: AppNavigator
-  };
+  return store;
 }

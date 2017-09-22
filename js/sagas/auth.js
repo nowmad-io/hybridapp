@@ -68,6 +68,7 @@ function* loginFlow(action) {
   // If `auth` was the winner...
   if (winner.loginSuccess) {
     yield put({ type: LOGIN, token: winner.loginSuccess.payload.auth_token }); // User is logged in (authorized)
+    console.log('NavigationActions', NavigationActions);
     yield put(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'App' })],

@@ -30,10 +30,6 @@ class Login extends Component {
     login: PropTypes.func,
   };
 
-  login() {
-    this.props.login(this.state.email, this.state.password);
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -41,6 +37,10 @@ class Login extends Component {
       password: 'j',
       error: '',
     };
+  }
+
+  login() {
+    this.props.login(this.state.email, this.state.password);
   }
 
   navigateToHome() {
