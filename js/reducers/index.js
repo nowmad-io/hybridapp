@@ -2,10 +2,10 @@ import { crudReducer } from 'redux-crud-store';
 
 import auth from './auth';
 import reviews from './reviews';
-import drawer from './drawer';
+import nav from './nav';
 
 export default {
-  drawer,
+  nav,
   auth,
   reviews,
   models: crudReducer

@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, BackHandler } from 'react-native';
+import { StyleSheet } from 'react-native';
 import CodePush from 'react-native-code-push';
-import { addNavigationHelpers, NavigationActions } from "react-navigation";
-import { connect } from 'react-redux';
 
 import { Container, Content, Text, View } from 'native-base';
 import Modal from 'react-native-modalbox';
+import MainRouter from './Routers/MainRouter';
 import ProgressBar from './components/loaders/ProgressBar';
 
 import theme from './themes/base-theme';
 
-import styles from './styles';
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal1: {
+    height: 300,
+  },
+});
 
 class App extends Component {
   constructor(props) {
@@ -23,13 +34,7 @@ class App extends Component {
     };
   }
 
-  static propTypes = {
-    mainRouter: PropTypes.func,
-  };
-
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-
     CodePush.sync(
       { updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE },
       (status) => {
@@ -54,19 +59,6 @@ class App extends Component {
       },
     );
   }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-  }
-
-  onBackPress = () => {
-    const { dispatch, nav } = this.props;
-    if (nav.index === 0) {
-      return false;
-    }
-    dispatch(NavigationActions.back());
-    return true;
-  };
 
   render() {
     if (this.state.showDownloadingModal) {
@@ -135,21 +127,8 @@ class App extends Component {
       );
     }
 
-    return <this.props.mainRouter navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.nav,
-      })} />;
+    return <MainRouter />;
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    dispatch
-  };
-}
-
-const mapStateToProps = (state) => ({
-  nav: state.nav
-});
-
-export default connect(mapStateToProps)(App);
+export default App;

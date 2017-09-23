@@ -11,9 +11,9 @@ function setup():React.Component {
   class Root extends Component {
     constructor() {
       super();
-
       this.state = {
-        ...{ store, appNavigator} = configureStore()
+        isLoading: false,
+        store: configureStore(() => this.setState({ isLoading: false })),
       };
     }
 
@@ -21,7 +21,7 @@ function setup():React.Component {
       return (
         <StyleProvider style={getTheme(platform)}>
           <Provider store={this.state.store}>
-            <App mainRouter={this.state.appNavigator}/>
+            <App />
           </Provider>
         </StyleProvider>
       );
