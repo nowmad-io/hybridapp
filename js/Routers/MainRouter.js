@@ -5,14 +5,15 @@ import { BackHandler } from "react-native";
 import { addNavigationHelpers, StackNavigator, NavigationActions } from 'react-navigation';
 import _ from "lodash";
 
-import Login from '../components/login/';
+import Login from '../components/auth/login';
+import Register from '../components/auth/register';
 import AppRouter from './AppRouter';
 
 export const MainNavigator = StackNavigator({
   Login: { screen: Login },
+  Register: { screen: Register },
   App: { screen: AppRouter },
 });
-
 
 class MainRouter extends Component {
   static propTypes = {
