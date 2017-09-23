@@ -8,7 +8,6 @@ import Config from 'react-native-config'
 
 import sagas from './sagas';
 import reducers from './reducers';
-import promise from './promise';
 
 function apiConfig() {
   return new ApiClient({ basePath: Config.API_URL });
@@ -18,7 +17,6 @@ const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStore(onCompletion:()=>void):any {
   const middlewares = [
-    promise,
     sagaMiddleware,
   ];
 
