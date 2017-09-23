@@ -1,6 +1,12 @@
-import { combineReducers } from 'redux';
-import drawer from './drawer';
+import { crudReducer } from 'redux-crud-store';
 
-export default combineReducers({
-  drawer,
-});
+import auth from './auth';
+import reviews from './reviews';
+import nav from './nav';
+
+export default {
+  nav,
+  auth,
+  reviews,
+  models: crudReducer
+};

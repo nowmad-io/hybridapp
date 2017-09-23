@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -13,6 +14,8 @@ import {
 } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
+import { loginRequest } from '../../actions/auth';
+
 import styles from './styles';
 
 const background = require('../../../images/shadow.png');
@@ -23,16 +26,21 @@ class Login extends Component {
   };
 
   static propTypes = {
-    navigation: React.PropTypes.object,
+    navigation: PropTypes.object,
+    login: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: 'j@j.com',
+      password: 'j',
       error: '',
     };
+  }
+
+  login() {
+    this.props.login(this.state.email, this.state.password);
   }
 
   navigateToHome() {
@@ -83,7 +91,7 @@ class Login extends Component {
                 </Item>
                 <Button
                   style={styles.btn}
-                  onPress={() => this.navigateToHome()}
+                  onPress={() => this.login()}
                 >
                   <Text>Login</Text>
                 </Button>
@@ -96,10 +104,14 @@ class Login extends Component {
   }
 }
 
-function bindActions() {
-  return {};
+function bindActions(dispatch) {
+  return {
+    login: (email, password) => dispatch(loginRequest({ email, password })),
+  };
 }
 
-const mapStateToProps = null;
+const mapStateToProps = state => ({
+  error: state.auth.error
+});
 
 export default connect(mapStateToProps, bindActions)(Login);

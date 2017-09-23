@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Container,
   Header,
@@ -18,7 +19,7 @@ class BlankPage extends Component {
   };
 
   static propTypes = {
-    navigation: React.PropTypes.object,
+    navigation: PropTypes.object,
   };
 
   render() {

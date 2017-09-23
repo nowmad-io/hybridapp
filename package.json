@@ -7,12 +7,13 @@
     "url": "https://github.com/travelNetwork/hybridapp.git"
   },
   "scripts": {
-    "postinstall": "node node_modules/native-base/ejectTheme.js && remotedev-debugger",
+    "postinstall": "node node_modules/native-base/ejectTheme.js && react-native link",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint js",
     "test": "jest --no-cache",
+    "avd": "~/Library/Android/sdk/tools/emulator -avd nowmad_avd &",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
-    "android:prod": "react-native run-android --variant=release",
+    "android:prod": "ENVFILE=.env.release react-native run-android",
     "android:build": "cd android && ./gradlew assembleRelease",
     "ios": "react-native run-ios -- --reset-cache",
     "ios:prod": "react-native run-ios -scheme universal_production",
@@ -26,15 +27,20 @@
     "lodash": "4.17.4",
     "moment": "2.18.1",
     "native-base": "2.3.2",
+    "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.3",
     "react-native-code-push": "5.1.0-beta",
+    "react-native-config": "^0.6.1",
     "react-native-easy-grid": "0.1.15",
+    "react-native-maps": "^0.16.4",
     "react-native-modalbox": "1.4.2",
     "react-navigation": "1.0.0-beta.11",
     "react-redux": "5.0.6",
     "redux": "3.7.2",
+    "redux-crud-store": "^5.4.0",
     "redux-persist": "4.9.1",
+    "redux-saga": "^0.15.6",
     "remote-redux-devtools": "0.5.12"
   },
   "devDependencies": {
@@ -49,7 +55,6 @@
     "eslint-plugin-react-native": "3.1.0",
     "mocha": "3.5.3",
     "react-native-rename": "2.1.5",
-    "remotedev-rn-debugger": "0.8.2",
     "remotedev-server": "0.2.4"
   }
 }
