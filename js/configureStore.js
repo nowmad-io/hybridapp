@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import { persistStore } from 'redux-persist';
+import { persistStore, autoRehydrate } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
 import { crudSaga, ApiClient } from 'redux-crud-store';
 import Config from 'react-native-config'
@@ -22,6 +22,7 @@ export default function configureStore(onCompletion:()=>void):any {
 
   const enhancers = [
     applyMiddleware(...middlewares),
+    autoRehydrate(),
     devTools({
       name: 'traveltnetwork', realtime: true,
     }),
@@ -31,7 +32,6 @@ export default function configureStore(onCompletion:()=>void):any {
     combineReducers({
       ...reducers
     }),
-    // initialState,
     compose(...enhancers)
   );
 

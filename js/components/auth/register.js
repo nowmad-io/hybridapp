@@ -32,18 +32,19 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
+    
     this.state = {
-      email: 'foo@bar.com',
-      password: 'foo',
+      email: '',
+      password: '',
       error: '',
     };
   }
 
-  login() {
+  _login() {
     this.props.login(this.state.email, this.state.password);
   }
 
-  backToLogin() {
+  _backToLogin() {
     this.props.dispatch(NavigationActions.back());
   }
 
@@ -87,11 +88,11 @@ class Login extends Component {
                 </Item>
                 <Button
                   style={styles.btn}
-                  onPress={() => this.login()}
+                  onPress={() => this._login()}
                 >
                   <Text>Register</Text>
                 </Button>
-                <Text onPress={() => this.backToLogin()}>Login</Text>
+                <Text onPress={() => this._backToLogin()}>Login</Text>
               </View>
             </Image>
           </Content>

@@ -32,18 +32,29 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      email: 'j@j.com',
-      password: 'j',
+      email: '',
+      password: '',
       error: '',
     };
+
+    // Check if logged in
+    const { loggedIn } = props;
+    if (loggedIn) {
+      const actionToDispatch = NavigationActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'App' })],
+      });
+      this.props.navigation.dispatch(actionToDispatch);
+    }
   }
 
-  login() {
+  _login() {
     this.props.login(this.state.email, this.state.password);
   }
 
-  register() {
+  _register() {
     this.props.navigation.navigate('Register');
   }
 
@@ -87,11 +98,11 @@ class Login extends Component {
                 </Item>
                 <Button
                   style={styles.btn}
-                  onPress={() => this.login()}
+                  onPress={() => this._login()}
                 >
                   <Text>Login</Text>
                 </Button>
-                <Text onPress={() => this.register()}>Register</Text>
+                <Text onPress={() => this._register()}>Register</Text>
               </View>
             </Image>
           </Content>
@@ -108,6 +119,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
+  loggedIn: !!state.auth.token,
   error: state.auth.error
 });
 
