@@ -109,6 +109,11 @@ export function * registerFlow(action) {
 export function * logoutFlow() {
   // TODO: clear user models reviews
   yield put({ type: LOGOUT });
+  
+  yield put(NavigationActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+  }));
 }
 
 // Bootstrap sagas

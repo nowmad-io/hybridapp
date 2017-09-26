@@ -39,8 +39,9 @@ class Login extends Component {
       error: '',
     };
 
-    // Check if logged in
+    // Check if logged in and redirect to App if so
     const { loggedIn } = props;
+
     if (loggedIn) {
       const actionToDispatch = NavigationActions.reset({
         index: 0,
