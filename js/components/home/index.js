@@ -18,7 +18,7 @@ class Home extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
-    reviews: PropTypes.object,
+    reviews: PropTypes.array,
   };
 
   constructor(props) {
@@ -27,14 +27,15 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    const { reviews } = this.props;
-    if (reviews.needsFetch) {
-      this.props.dispatch(reviews.fetch);
-    }
+    this._getReviews(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { reviews } = nextProps;
+    this._getReviews(nextProps);
+  }
+
+  _getReviews(props) {
+    const { reviews } = props;
 
     if (reviews.needsFetch) {
       this.props.dispatch(reviews.fetch)
@@ -61,7 +62,7 @@ class Home extends Component {
 }
 
 const bindActions = dispatch => ({
-  dispatch
+  dispatch,
 });
 
 const mapStateToProps = state => ({

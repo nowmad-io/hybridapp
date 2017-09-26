@@ -11,16 +11,43 @@ import {
   Left,
   Right,
   Body,
+  List,
+  ListItem
 } from 'native-base';
+import { select } from 'redux-crud-store';
+import { connect } from 'react-redux';
+
+import { fetchFriends } from '../../api/friends';
 
 class Friends extends Component {
   static navigationOptions = {
     header: null,
   };
 
+  constructor(props) {
+    super(props);
+  }
+
   static propTypes = {
     navigation: PropTypes.object,
+    friends: PropTypes.object,
   };
+
+  componentWillMount() {
+    this._getFriends(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this._getFriends(nextProps);
+  }
+
+  _getFriends(props) {
+    const { friends } = props;
+
+    if (friends.needsFetch) {
+      this.props.dispatch(friends.fetch);
+    }
+  }
 
   render() {
     return (
@@ -48,12 +75,13 @@ class Friends extends Component {
 
         <Content padder>
           <List
-            style={{
-              paddingTop: 18,
-            }}
-            dataArray={this.props.friends}
+            dataArray={this.props.friends.data}
             renderRow={data => (
-              <ListItem>
+              <ListItem
+                style={{
+                  marginLeft: 0,
+                }}
+              >
                 <Body>
                   <Text>{data.first_name} {data.last_name}</Text>
                   <Text note>{data.email}</Text>
@@ -67,4 +95,12 @@ class Friends extends Component {
   }
 }
 
-export default Friends;
+const bindActions = dispatch => ({
+  dispatch,
+})
+
+const mapStateToProps = state => ({
+  friends: select(fetchFriends(state, { page: 1 }), state.models),
+})
+
+export default connect(mapStateToProps, bindActions)(Friends);
