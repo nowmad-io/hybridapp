@@ -60,7 +60,7 @@ class Home extends Component {
   }
 }
 
-const bindActions = (dispatch) => ({
+const bindActions = dispatch => ({
   dispatch
 });
 
