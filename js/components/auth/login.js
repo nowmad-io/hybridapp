@@ -113,11 +113,9 @@ class Login extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    login: (email, password) => dispatch(loginRequest({ email, password })),
-  };
-}
+const bindActions = (dispatch) => ({
+  login: (email, password) => dispatch(loginRequest({ email, password })),
+});
 
 const mapStateToProps = state => ({
   loggedIn: !!state.auth.token,

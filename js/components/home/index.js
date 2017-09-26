@@ -61,14 +61,12 @@ class Home extends Component {
   }
 }
 
-function bindAction(dispatch) {
-  return {
-    dispatch
-  };
-}
+const bindActions = (dispatch) => ({
+  dispatch
+});
 
 const mapStateToProps = state => ({
   reviews: select(fetchReviews(state, { page: 1 }), state.models),
 });
 
-export default connect(mapStateToProps, bindAction)(Home);
+export default connect(mapStateToProps, bindActions)(Home);

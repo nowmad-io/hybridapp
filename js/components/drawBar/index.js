@@ -45,9 +45,9 @@ class DrawBar extends React.Component {
             </ListItem>
             <ListItem
               button
-              onPress={() => this._navigate('BlankPage')}
+              onPress={() => this._navigate('Friends')}
             >
-              <Text>BlankPage</Text>
+              <Text>Friends</Text>
             </ListItem>
             <ListItem
               button
@@ -62,11 +62,9 @@ class DrawBar extends React.Component {
   }
 }
 
-const bindActions = (dispatch) => {
-  return {
-    dispatch
-  };
-}
+const bindActions = (dispatch) => ({
+  dispatch
+});
 
 const mapStateToProps = null
 

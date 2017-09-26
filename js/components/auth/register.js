@@ -32,7 +32,7 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       email: '',
       password: '',
@@ -102,12 +102,9 @@ class Login extends Component {
   }
 }
 
-function bindActions(dispatch) {
-  return {
-    dispatch,
-    login: (email, password) => dispatch(registerRequest({ email, password })),
-  };
-}
+const bindActions = (dispatch) => ({
+  login: (email, password) => dispatch(registerRequest({ email, password })),
+});
 
 const mapStateToProps = state => ({
   error: state.auth.error
