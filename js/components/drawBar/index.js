@@ -63,7 +63,7 @@ class DrawBar extends React.Component {
 }
 
 const bindActions = dispatch => ({
-  dispatch
+  dispatch,
 });
 
 const mapStateToProps = null

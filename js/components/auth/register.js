@@ -107,7 +107,7 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  error: state.auth.error
+  error: state.auth.error,
 });
 
 export default connect(mapStateToProps, bindActions)(Login);
