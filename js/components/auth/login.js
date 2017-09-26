@@ -113,7 +113,7 @@ class Login extends Component {
   }
 }
 
-const bindActions = (dispatch) => ({
+const bindActions = dispatch => ({
   login: (email, password) => dispatch(loginRequest({ email, password })),
 });
 

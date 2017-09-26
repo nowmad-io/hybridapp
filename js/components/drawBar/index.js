@@ -62,7 +62,7 @@ class DrawBar extends React.Component {
   }
 }
 
-const bindActions = (dispatch) => ({
+const bindActions = dispatch => ({
   dispatch
 });
 

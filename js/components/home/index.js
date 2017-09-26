@@ -6,7 +6,6 @@ import { select } from 'redux-crud-store';
 import Config from 'react-native-config'
 import { View, Icon, Fab } from 'native-base';
 
-
 import { fetchReviews } from '../../api/reviews';
 import Map from '../map';
 
