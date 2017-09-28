@@ -12,12 +12,15 @@ import {
   Right,
   Body,
   List,
-  ListItem
+  ListItem,
+  View,
+  Item,
+  Input
 } from 'native-base';
-import { select } from 'redux-crud-store';
 import { connect } from 'react-redux';
+import { selectCollection } from 'redux-crud-store';
 
-import { fetchFriends } from '../../api/friends';
+import { fetchFriends, searchFriends } from '../../api/friends';
 
 class Friends extends Component {
   static navigationOptions = {
@@ -26,27 +29,41 @@ class Friends extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      searchResult: []
+    };
   }
 
   static propTypes = {
     navigation: PropTypes.object,
     friends: PropTypes.object,
   };
+  //
+  // componentWillMount() {
+  //   this._getFriends(this.props);
+  // }
+  //
+  // componentWillReceiveProps(nextProps) {
+  //   this._getFriends(nextProps);
+  // }
+  //
+  // _getFriends(props) {
+  //   const { friends } = props;
+  //
+  //   if (friends.needsFetch) {
+  //     this.props.dispatch(friends.fetch);
+  //   }
+  // }
 
-  componentWillMount() {
-    this._getFriends(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this._getFriends(nextProps);
-  }
-
-  _getFriends(props) {
-    const { friends } = props;
-
-    if (friends.needsFetch) {
-      this.props.dispatch(friends.fetch);
-    }
+  _onSearchInput(text) {
+    this.props.search(text)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log('response', responseJson);
+        this.setState({ searchResult: responseJson });
+      })
+      .catch((error) => { console.error(error); });
   }
 
   render() {
@@ -89,6 +106,34 @@ class Friends extends Component {
               </ListItem>
             )}
           />
+          <Item>
+            <Icon name="ios-search" />
+            <Input
+              placeholder="Search"
+              onChangeText={(text) => this._onSearchInput(text)}
+            />
+            <Icon name="ios-people" />
+          </Item>
+          <List
+            dataArray={this.state.searchResult}
+            renderRow={data => (
+              <ListItem
+                style={{
+                  marginLeft: 0,
+                }}
+              >
+                <Body>
+                  <Text>{data.first_name} {data.last_name}</Text>
+                  <Text note>{data.email}</Text>
+                </Body>
+                <Right>
+                <Button>
+                  <Text>Add</Text>
+                </Button>
+              </Right>
+              </ListItem>
+            )}
+          />
         </Content>
       </Container>
     );
@@ -100,7 +145,8 @@ const bindActions = dispatch => ({
 })
 
 const mapStateToProps = state => ({
-  friends: select(fetchFriends(state, { page: 1 }), state.models),
+  friends: selectCollection('friends', state.models),
+  search: (email) => searchFriends(state, email),
 })
 
 export default connect(mapStateToProps, bindActions)(Friends);

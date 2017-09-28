@@ -21,16 +21,6 @@ import {
   FORM_ERROR
 } from '../constants/auth';
 
-const localStorage = global.window.localStorage;
-
-function tokenHelper({ payload }) {
-  if (payload && payload.auth_token) {
-    // localStorage.setItem('token', payload.auth_token);
-  } else {
-    // localStorage.removeItem('token');
-  }
-}
-
 export function * parseError({ error }) {
   let parsedError = {};
   if (error.non_field_errors || error.email || error.password) {
@@ -109,7 +99,7 @@ export function * registerFlow(action) {
 export function * logoutFlow() {
   // TODO: clear user models reviews
   yield put({ type: LOGOUT });
-  
+
   yield put(NavigationActions.reset({
     index: 0,
     actions: [NavigationActions.navigate({ routeName: 'Login' })],
@@ -121,5 +111,4 @@ export default function* root() {
   yield takeLatest(LOGIN_REQUEST, loginFlow);
   yield takeLatest(REGISTER_REQUEST, registerFlow);
   yield takeLatest(LOGOUT_REQUEST, logoutFlow);
-  yield takeLatest([LOGIN, LOGOUT], tokenHelper);
 }

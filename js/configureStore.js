@@ -3,8 +3,8 @@ import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
-import { crudSaga, ApiClient } from 'redux-crud-store';
 import Config from 'react-native-config'
+import { crudSaga, ApiClient } from 'redux-crud-store';
 
 import sagas from './sagas';
 import reducers from './reducers';
@@ -35,12 +35,13 @@ export default function configureStore(onCompletion:()=>void):any {
     compose(...enhancers)
   );
 
-  for (const saga of sagas) {
-    sagaMiddleware.run(saga);
-  }
-  sagaMiddleware.run(crudSaga(apiConfig()));
-
-  persistStore(store, { storage: AsyncStorage }, onCompletion);
+  persistStore(store, { storage: AsyncStorage }, () => {
+    sagaMiddleware.run(crudSaga(apiConfig()));
+    for (const saga of sagas) {
+      sagaMiddleware.run(saga);
+    }
+    return onCompletion()
+  });
 
   return store;
 }
