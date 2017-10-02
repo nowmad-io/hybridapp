@@ -1,6 +1,6 @@
 class Api {
   constructor(passedConfig) {
-    const baseConfig = {
+    this.baseConfig = {
       bodyEncoder: JSON.stringify,
       credentials: 'same-origin',
       format: 'json',
@@ -16,15 +16,15 @@ class Api {
       throw new Error('You must pass a base path to the ApiClient')
     }
 
-    const methods = passedConfig.methods || baseConfig.methods
+    const methods = passedConfig.methods || this.baseConfig.methods
     methods.forEach(method => {
       this[method] = (path, { params, data, options } = {}) => {
         const config = {
-          ...baseConfig,
+          ...this.baseConfig,
           ...passedConfig,
           ...options,
           headers: {
-            ...baseConfig.headers,
+            ...this.baseConfig.headers,
             ...(options ? options.headers : {})
           }
         }
@@ -46,6 +46,11 @@ class Api {
           .then(response => response[format]())
       }
     })
+  }
+
+  setAuthorization(token) {
+    console.log('token', token)
+    this.baseConfig.headers['Authorization'] = token ? `Token ${token}` : null;
   }
 
   // thanks http://stackoverflow.com/a/12040639/5332286

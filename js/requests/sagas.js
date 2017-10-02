@@ -3,7 +3,7 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 
-import { API_CALL } from './constants';
+import { API_CALL, TOKEN } from './constants';
 
 export const apiGeneric = (api) =>
 function* _apiGeneric(action) {
@@ -18,14 +18,26 @@ function* _apiGeneric(action) {
   }
 }
 
-const watchApiCall = (apiClient) => function* _watchApiCall() {
-  yield takeEvery(API_CALL, apiGeneric(apiClient))
+export const setAuthorization = (api) =>
+function* _setAuthorization(actions) {
+  const { token } = actions;
+
+  api.setAuthorization(token);
+}
+
+const watchApiCall = (api) => function* _watchApiCall() {
+  yield takeEvery(API_CALL, apiGeneric(api))
+}
+
+const watchToken = (api) => function* _watchToken(action) {
+  yield takeEvery(TOKEN, setAuthorization(api))
 }
 
 export default function requestsSaga(api) {
   return function* _requestsSaga() {
     yield all([
-      fork(watchApiCall(api))
+      fork(watchApiCall(api)),
+      fork(watchToken(api))
     ]);
   }
 }

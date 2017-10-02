@@ -1,8 +1,9 @@
 import {
   FORM_ERROR,
-  LOGIN,
   LOGOUT
 } from '../constants/auth';
+
+import { TOKEN } from '../requests';
 
 const initialState = {
   loading: false,
@@ -11,7 +12,7 @@ const initialState = {
 
 function authReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN:
+    case TOKEN:
       return { ...state, token: action.token };
     case LOGOUT:
       return { ...state, token: null };

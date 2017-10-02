@@ -3,7 +3,8 @@ import { NavigationActions } from 'react-navigation';
 
 import {
   apiLogin,
-  apiRegister
+  apiRegister,
+  apiLogout
 } from '../api/auth';
 
 import { loginRequest } from '../actions/auth';
@@ -20,6 +21,8 @@ import {
   REQUEST_ERROR,
   FORM_ERROR
 } from '../constants/auth';
+
+import { TOKEN } from '../requests';
 
 export function * parseError({ error }) {
   let parsedError = {};
@@ -57,7 +60,7 @@ function* loginFlow(action) {
 
   // If `auth` was the winner...
   if (winner.loginSuccess) {
-    yield put({ type: LOGIN, token: winner.loginSuccess.payload.auth_token }); // User is logged in (authorized)
+    yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
 
     yield put(NavigationActions.reset({
       index: 0,
@@ -98,7 +101,9 @@ export function * registerFlow(action) {
 
 export function * logoutFlow() {
   // TODO: clear user models reviews
+  yield put(apiLogout());
   yield put({ type: LOGOUT });
+  yield put({ type: TOKEN, token: null });
 
   yield put(NavigationActions.reset({
     index: 0,
