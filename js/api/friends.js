@@ -1,4 +1,4 @@
-import { fetchCollection } from 'redux-crud-store';
+import { fetchCollection } from '../../redux-crud-store';
 
 import {
   SEARCH_FRIENDS_SUCCESS,

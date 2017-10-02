@@ -4,13 +4,15 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
 import Config from 'react-native-config'
-import { crudSaga, ApiClient } from 'redux-crud-store';
+
+import { requestsSaga, Api } from './requests';
 
 import sagas from './sagas';
+
 import reducers from './reducers';
 
 function apiConfig() {
-  return new ApiClient({ basePath: Config.API_URL });
+  return new Api({ basePath: Config.API_URL });
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -36,7 +38,7 @@ export default function configureStore(onCompletion:()=>void):any {
   );
 
   persistStore(store, { storage: AsyncStorage }, () => {
-    sagaMiddleware.run(crudSaga(apiConfig()));
+    sagaMiddleware.run(requestsSaga(apiConfig()));
     for (const saga of sagas) {
       sagaMiddleware.run(saga);
     }

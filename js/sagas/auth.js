@@ -1,4 +1,4 @@
-import { take, put, race, call, takeLatest } from 'redux-saga/effects';
+import { all, take, put, race, call, takeLatest } from 'redux-saga/effects';
 import { NavigationActions } from 'react-navigation';
 
 import {
@@ -44,14 +44,14 @@ function* loginFlow(action) {
 
   yield put({ type: SENDING_REQUEST, sending: true });
 
-  const [, winner] = yield [
+  const [, winner] = yield all([
     put(apiLogin({ email, password })),
     race({
       loginSuccess: take(LOGIN_SUCCESS),
       loginFail: take(REQUEST_ERROR),
       logout: take(LOGOUT_REQUEST),
     }),
-  ];
+  ]);
 
   yield put({ type: SENDING_REQUEST, sending: false });
 
@@ -79,13 +79,13 @@ export function * registerFlow(action) {
 
   yield put({ type: SENDING_REQUEST, sending: true });
 
-  const [, winner] = yield [
+  const [, winner] = yield all([
     put(apiRegister({ email, password })),
     race({
       registerSuccess: take(REGISTER_SUCCESS),
       registerFail: take(REQUEST_ERROR),
     }),
-  ];
+  ]);
 
   yield put({ type: SENDING_REQUEST, sending: false });
 

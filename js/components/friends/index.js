@@ -18,7 +18,7 @@ import {
   Input
 } from 'native-base';
 import { connect } from 'react-redux';
-import { selectCollection } from 'redux-crud-store';
+import { selectCollection } from '../../../redux-crud-store';
 
 import { fetchFriends, searchFriends } from '../../api/friends';
 
@@ -67,6 +67,8 @@ class Friends extends Component {
   }
 
   render() {
+    console.log('this.props.friends', this.props.friends);
+    console.log('this.props.friends.data', this.props.friends.data);
     return (
       <Container>
         <Header>

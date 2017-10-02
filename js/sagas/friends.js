@@ -1,4 +1,4 @@
-import { take, put, race, call, fork, select } from 'redux-saga/effects';
+import { all, take, put, race, call, fork, select } from 'redux-saga/effects';
 
 import { LOGOUT } from '../constants/auth';
 import { SEARCH_FRIENDS_SUCCESS } from '../constants/friends';
@@ -44,5 +44,7 @@ function * watchPollFriends() {
 
 export default function * root() {
   console.log('here !');
-  yield [fork(watchPollFriends)]
+  yield all([
+    fork(watchPollFriends)
+  ]);
 }

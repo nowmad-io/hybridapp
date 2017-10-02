@@ -1,4 +1,4 @@
-import { crudReducer } from 'redux-crud-store';
+import { crudReducer } from '../../redux-crud-store';
 
 import auth from './auth';
 import friends from './friends';

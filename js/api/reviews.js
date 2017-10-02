@@ -1,6 +1,6 @@
 import {
   fetchCollection, fetchRecord, createRecord, updateRecord, deleteRecord, clearModelData,
-} from 'redux-crud-store';
+} from '../../redux-crud-store';
 
 const MODEL = 'reviews';
 const PATH = 'reviews/';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { select } from 'redux-crud-store';
+import { select } from '../../../redux-crud-store';
 import Config from 'react-native-config'
 import { View, Icon, Fab } from 'native-base';
 
