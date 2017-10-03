@@ -9,8 +9,7 @@ const initialState = {
 function reviewsReducer(state = initialState, action) {
   switch (action.type) {
     case SEARCH_SUCCESS:
-      console.log('action', action);
-      return state;
+      return {...state, all: action.payload};
     default:
       return state;
   }

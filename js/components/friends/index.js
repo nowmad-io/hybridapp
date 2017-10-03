@@ -60,15 +60,12 @@ class Friends extends Component {
     this.props.search(text)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log('response', responseJson);
         this.setState({ searchResult: responseJson });
       })
       .catch((error) => { console.error(error); });
   }
 
   render() {
-    console.log('this.props.friends', this.props.friends);
-    console.log('this.props.friends.data', this.props.friends.data);
     return (
       <Container>
         <Header>

@@ -8,7 +8,7 @@ import { delay } from './utils';
 // Fetch data every 5 seconds
 function * pollReviews() {
   let state = yield select((state) => state);
-  console.log('here too ????');
+
   try {
     yield call(delay, 5000);
     yield put(fetchReviews());
@@ -22,7 +22,7 @@ function * pollReviews() {
 // Cancel polling if user logs out
 function * watchPollReviews() {
   let state = yield select((state) => state);
-console.log('here ????');
+
   yield put(fetchReviews());
 
   while (true) {

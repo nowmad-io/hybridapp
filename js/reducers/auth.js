@@ -1,6 +1,6 @@
 import {
   FORM_ERROR,
-  LOGOUT_SUCCESS
+  LOGOUT
 } from '../constants/auth';
 
 import { TOKEN } from '../requests';
@@ -14,7 +14,7 @@ function authReducer(state = initialState, action) {
   switch (action.type) {
     case TOKEN:
       return { ...state, token: action.token };
-    case LOGOUT_SUCCESS:
+    case LOGOUT:
       return { ...state, token: null };
     case FORM_ERROR:
       return { ...state, error: action.error };

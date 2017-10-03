@@ -26,20 +26,16 @@ class Home extends Component {
     this.mapRef = null;
   }
 
-  componentWillMount() {
-    // this.props.dispatch(fetchReviews());
-  }
-
   componentWillReceiveProps(nextProps) {
-    // this.props.dispatch(fetchReviews());
+    // Start reviews sagas
   }
 
   render() {
-    // const { props: { reviews } } = this;
+    const { props: { reviews } } = this;
 
     return (
       <View style={styles.container}>
-        <Map markers={[]}/>
+        <Map markers={reviews}/>
         <Fab
             direction="up"
             containerStyle={{ }}

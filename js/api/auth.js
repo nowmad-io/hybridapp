@@ -11,13 +11,13 @@ import { REQUEST_ERROR } from '../constants/utils';
 const PATH = 'auth';
 
 export function apiLogin(params = {}) {
-  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'POST', `${PATH}/login/`, params);
+  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/login/`, params);
 }
 
 export function apiRegister(params = {}) {
-  return apiCall(REGISTER_SUCCESS, REQUEST_ERROR, 'POST', `${PATH}/register/`, params);
+  return apiCall(REGISTER_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/register/`, params);
 }
 
 export function apiLogout() {
-  return apiCall(LOGOUT_SUCCESS, REQUEST_ERROR, 'POST', `${PATH}/logout/`);
+  return apiCall(LOGOUT_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/logout/`);
 }

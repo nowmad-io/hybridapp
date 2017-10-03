@@ -11,15 +11,14 @@ function* _apiGeneric(action) {
   let { options } = action.payload;
   const { success, failure } = action.meta;
 
-  // const token = yield select((state) => state.auth.token);
-  // console.log('token', token);
-  // if (token) {
-  //   options.headers = {
-  //     ...options.headers,
-  //     Authorization: `Token ${token}`
-  //   }
-  // }
-  // console.log('options', options);
+  const token = yield select((state) => state.auth.token);
+
+  if (token) {
+    options.headers = {
+      ...options.headers,
+      Authorization: `Token ${token}`
+    }
+  }
   try {
     const response = yield call(api[method], path, { params, data, options});
     yield put({ type: success, payload: response });

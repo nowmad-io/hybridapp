@@ -8,7 +8,7 @@ class Api {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      methods: ['GET', 'POST', 'PUT', 'DELETE']
+      methods: ['get', 'post', 'put', 'delete']
     }
 
     if (!passedConfig.basePath) {
@@ -17,7 +17,7 @@ class Api {
     }
 
     const methods = passedConfig.methods || baseConfig.methods;
-    console.log('methods', methods);
+
     methods.forEach(method => {
       this[method] = (path, { params, data, options } = {}) => {
         const config = {
@@ -30,26 +30,25 @@ class Api {
           }
         }
 
-        console.log('config', config);
-        console.log('method', method);
-
         const {
           methods: _methods, basePath, headers, format, bodyEncoder,
           ...otherConfig
         } = config
         const requestPath = basePath + path + this.queryString(data)
         const body = params ? bodyEncoder(params) : undefined
-        console.log('requestPath', requestPath);
 
-        return fetch(requestPath, {
+        let fetchOptions = {
           ...otherConfig,
           method,
-          headers,
-          body
-        }).then(response => {
-          console.log('response', response);
-          return { response, format }
-        })
+          headers
+        }
+
+        if (method !== 'get') {
+          fetchOptions.body = body
+        }
+
+        return fetch(requestPath, fetchOptions)
+          .then(response => ({ response, format }))
           .then(this.handleErrors)
           .then(response => response[format]())
       }
@@ -65,7 +64,6 @@ class Api {
   }
 
   handleErrors({ response, format }) {
-    console.log('response error', response);
     if (!response.ok) {
       return response[format]()
         // if response parsing failed send back the entire response object

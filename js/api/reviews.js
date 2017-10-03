@@ -8,5 +8,5 @@ import {
 const SEARCH_PATH = 'search/';
 
 export function fetchReviews() {
-  return apiCall(SEARCH_SUCCESS, SEARCH_ERROR, 'GET', SEARCH_PATH);
+  return apiCall(SEARCH_SUCCESS, SEARCH_ERROR, 'get', SEARCH_PATH);
 }
