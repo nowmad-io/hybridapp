@@ -1,38 +1,31 @@
-import { fetchCollection } from '../../redux-crud-store';
+import { apiCall } from '../requests';
 
 import {
   SEARCH_FRIENDS_SUCCESS,
-  SEARCH_FRIENDS_ERROR
-} from '../constants/auth';
+  SEARCH_FRIENDS_ERROR,
+  FETCH_FRIENDS_SUCCESS,
+  FETCH_FRIENDS_ERROR,
+  FETCH_FRIENDSINCOMING_SUCCESS,
+  FETCH_FRIENDSINCOMING_ERROR,
+  FETCH_FRIENDSOUTGOING_SUCCESS,
+  FETCH_FRIENDSOUTGOING_ERROR
+} from '../constants/friends';
 
-const MODEL_FRIENDS = 'friends';
 const PATH = 'friends/';
-
-const MODEL_FRIENSHIPS_INCOMING = 'friendships_incoming';
-const MODEL_FRIENSHIPS_OUTGOING = 'friendships_outgoing';
 const FRIENSHIPS_PATH = 'friendships/';
 
-const fetchConfig = (state) => {
-  const token = state.auth.token;
-  return {
-    headers: {
-      Authorization: token ? `Token ${token}` : null,
-    },
-  };
-};
-
-export function fetchFriends(state, params = {}) {
-  return fetchCollection(MODEL_FRIENDS, PATH, params, { fetchConfig: fetchConfig(state) });
+export function fetchFriends() {
+  return apiCall(FETCH_FRIENDS_SUCCESS, FETCH_FRIENDS_ERROR, 'get', PATH);
 }
 
 export function fetchIncomingRequests(state, params = {}) {
-  return fetchCollection(MODEL_FRIENSHIPS_INCOMING, `${FRIENSHIPS_PATH}incoming/`, params, { fetchConfig: fetchConfig(state) });
+  return apiCall(FETCH_FRIENDSINCOMING_SUCCESS, FETCH_FRIENDSINCOMING_ERROR, 'get', `${FRIENSHIPS_PATH}incoming/`);
 }
 
 export function fetchOutgoingRequests(state, params = {}) {
-  return fetchCollection(MODEL_FRIENSHIPS_OUTGOING, `${FRIENSHIPS_PATH}outgoing/`, params, { fetchConfig: fetchConfig(state) });
+  return apiCall(FETCH_FRIENDSOUTGOING_SUCCESS, FETCH_FRIENDSOUTGOING_ERROR, 'get', `${FRIENSHIPS_PATH}outgoing/`);
 }
 
-export function searchFriends(state, email) {
-  return apiCall(SEARCH_FRIENDS_SUCCESS, SEARCH_FRIENDS_ERROR, 'get', `${PATH}search/`, { fetchConfig: fetchConfig(state) }, { email: email });
+export function searchFriends(email) {
+  return apiCall(SEARCH_FRIENDS_SUCCESS, SEARCH_FRIENDS_ERROR, 'get', `${PATH}search/`, {}, { email: 't@t.com' });
 }

@@ -4,5 +4,6 @@ import reviews from './reviews';
 
 export default [
   auth,
-  reviews
+  reviews,
+  friends
 ];

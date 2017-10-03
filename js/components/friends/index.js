@@ -27,42 +27,13 @@ class Friends extends Component {
     header: null,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      searchResult: []
-    };
-  }
-
   static propTypes = {
     navigation: PropTypes.object,
-    friends: PropTypes.object,
+    friends: PropTypes.array,
   };
-  //
-  // componentWillMount() {
-  //   this._getFriends(this.props);
-  // }
-  //
-  // componentWillReceiveProps(nextProps) {
-  //   this._getFriends(nextProps);
-  // }
-  //
-  // _getFriends(props) {
-  //   const { friends } = props;
-  //
-  //   if (friends.needsFetch) {
-  //     this.props.dispatch(friends.fetch);
-  //   }
-  // }
 
   _onSearchInput(text) {
-    this.props.search(text)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({ searchResult: responseJson });
-      })
-      .catch((error) => { console.error(error); });
+    this.props.dispatch(searchFriends(text));
   }
 
   render() {
@@ -91,7 +62,7 @@ class Friends extends Component {
 
         <Content padder>
           <List
-            dataArray={this.props.friends.data}
+            dataArray={this.props.friends}
             renderRow={data => (
               <ListItem
                 style={{
@@ -114,7 +85,7 @@ class Friends extends Component {
             <Icon name="ios-people" />
           </Item>
           <List
-            dataArray={this.state.searchResult}
+            dataArray={this.props.search}
             renderRow={data => (
               <ListItem
                 style={{
@@ -144,8 +115,8 @@ const bindActions = dispatch => ({
 })
 
 const mapStateToProps = state => ({
-  friends: selectCollection('friends', state.models),
-  search: (email) => searchFriends(state, email),
+  friends: state.friends.all,
+  search: state.friends.search,
 })
 
 export default connect(mapStateToProps, bindActions)(Friends);
