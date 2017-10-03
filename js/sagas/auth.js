@@ -4,7 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import {
   apiLogin,
   apiRegister,
-  apiLogout
+  apiLogout,
+  apiMe
 } from '../api/auth';
 
 import { loginRequest } from '../actions/auth';
@@ -64,6 +65,7 @@ function* loginFlow(action) {
   // If `auth` was the winner...
   if (winner.loginSuccess) {
     yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
+    yield put(apiMe());
 
     yield put(NavigationActions.reset({
       index: 0,

@@ -16,3 +16,5 @@ export const REGISTER_REQUEST = 'auth/REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'auth/REGISTER_SUCCESS';
 
 export const FORM_ERROR = 'auth/FORM_ERROR';
+
+export const ME_SUCCESS = 'auth/ME_SUCCESS';

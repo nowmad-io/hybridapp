@@ -4,12 +4,13 @@ import {
   FETCH_FRIENDSINCOMING_SUCCESS,
   FETCH_FRIENDSOUTGOING_SUCCESS
 } from '../constants/friends';
+import { LOGOUT } from '../constants/auth';
 
 const initialState = {
   search: [],
   all: [],
-  incoming: [],
-  outgoing: [],
+  incomings: [],
+  outgoings: [],
   error: ''
 };
 
@@ -20,9 +21,11 @@ function friendsReducer(state = initialState, action) {
     case FETCH_FRIENDS_SUCCESS:
       return { ...state, all: action.payload }
     case FETCH_FRIENDSINCOMING_SUCCESS:
-      return { ...state, incoming: action.payload }
+      return { ...state, incomings: action.payload }
     case FETCH_FRIENDSOUTGOING_SUCCESS:
-      return { ...state, outgoing: action.payload }
+      return { ...state, outgoings: action.payload }
+    case LOGOUT:
+      return initialState;
     default:
       return state;
   }
