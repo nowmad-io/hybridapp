@@ -15,12 +15,14 @@ import {
   LOGIN_SUCCESS,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-  LOGOUT,
   LOGOUT_REQUEST,
-  SENDING_REQUEST,
-  REQUEST_ERROR,
   FORM_ERROR
 } from '../constants/auth';
+
+import {
+  SENDING_REQUEST,
+  REQUEST_ERROR
+} from '../constants/utils';
 
 import { TOKEN } from '../requests';
 
@@ -102,8 +104,6 @@ export function * registerFlow(action) {
 export function * logoutFlow() {
   // TODO: clear user models reviews
   yield put(apiLogout());
-  yield put({ type: LOGOUT });
-  yield put({ type: TOKEN, token: null });
 
   yield put(NavigationActions.reset({
     index: 0,

@@ -1,6 +1,6 @@
 class Api {
   constructor(passedConfig) {
-    this.baseConfig = {
+    const baseConfig = {
       bodyEncoder: JSON.stringify,
       credentials: 'same-origin',
       format: 'json',
@@ -8,7 +8,7 @@ class Api {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      methods: ['get', 'post', 'put', 'patch', 'delete']
+      methods: ['GET', 'POST', 'PUT', 'DELETE']
     }
 
     if (!passedConfig.basePath) {
@@ -16,18 +16,22 @@ class Api {
       throw new Error('You must pass a base path to the ApiClient')
     }
 
-    const methods = passedConfig.methods || this.baseConfig.methods
+    const methods = passedConfig.methods || baseConfig.methods;
+    console.log('methods', methods);
     methods.forEach(method => {
       this[method] = (path, { params, data, options } = {}) => {
         const config = {
-          ...this.baseConfig,
+          ...baseConfig,
           ...passedConfig,
           ...options,
           headers: {
-            ...this.baseConfig.headers,
+            ...baseConfig.headers,
             ...(options ? options.headers : {})
           }
         }
+
+        console.log('config', config);
+        console.log('method', method);
 
         const {
           methods: _methods, basePath, headers, format, bodyEncoder,
@@ -35,22 +39,21 @@ class Api {
         } = config
         const requestPath = basePath + path + this.queryString(data)
         const body = params ? bodyEncoder(params) : undefined
+        console.log('requestPath', requestPath);
 
         return fetch(requestPath, {
           ...otherConfig,
           method,
           headers,
           body
-        }).then(response => ({ response, format }))
+        }).then(response => {
+          console.log('response', response);
+          return { response, format }
+        })
           .then(this.handleErrors)
           .then(response => response[format]())
       }
-    })
-  }
-
-  setAuthorization(token) {
-    console.log('token', token)
-    this.baseConfig.headers['Authorization'] = token ? `Token ${token}` : null;
+    });
   }
 
   // thanks http://stackoverflow.com/a/12040639/5332286
@@ -62,6 +65,7 @@ class Api {
   }
 
   handleErrors({ response, format }) {
+    console.log('response error', response);
     if (!response.ok) {
       return response[format]()
         // if response parsing failed send back the entire response object

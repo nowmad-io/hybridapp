@@ -18,7 +18,7 @@ class Home extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
-    reviews: PropTypes.object,
+    reviews: PropTypes.array,
   };
 
   constructor(props) {
@@ -27,27 +27,19 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    this._getReviews(this.props);
+    // this.props.dispatch(fetchReviews());
   }
 
   componentWillReceiveProps(nextProps) {
-    this._getReviews(nextProps);
-  }
-
-  _getReviews(props) {
-    const { reviews } = props;
-
-    if (reviews.needsFetch) {
-      this.props.dispatch(reviews.fetch)
-    }
+    // this.props.dispatch(fetchReviews());
   }
 
   render() {
-    const { props: { reviews } } = this;
+    // const { props: { reviews } } = this;
 
     return (
       <View style={styles.container}>
-        <Map markers={reviews.data}/>
+        <Map markers={[]}/>
         <Fab
             direction="up"
             containerStyle={{ }}
@@ -66,7 +58,7 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  reviews: select(fetchReviews(state, { page: 1 }), state.models),
+  reviews: state.reviews.all
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

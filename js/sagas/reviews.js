@@ -1,35 +1,34 @@
 import { all, take, put, race, call, fork, select } from 'redux-saga/effects';
 
 import { LOGOUT } from '../constants/auth';
-import { SEARCH_FRIENDS_SUCCESS } from '../constants/friends';
-import { fetchFriends } from '../api/friends';
+import { SEARCH_SUCCESS } from '../constants/reviews';
+import { fetchReviews } from '../api/reviews';
 import { delay } from './utils';
 
 // Fetch data every 5 seconds
-function * pollFriends() {
+function * pollReviews() {
   let state = yield select((state) => state);
-
-  console.log('here ??', state);
+  console.log('here too ????');
   try {
     yield call(delay, 5000);
-    yield put(fetchFriends(state));
+    yield put(fetchReviews());
   } catch (error) {
-    console.log('herer ?');
+    // cancellation error -- can handle this if you wish
     return;
   }
 }
 
 // Wait for successful response, then fire another request
 // Cancel polling if user logs out
-function * watchPollFriends() {
+function * watchPollReviews() {
   let state = yield select((state) => state);
-  console.log('here ?', state);
-  yield put(fetchFriends(state));
+console.log('here ????');
+  yield put(fetchReviews());
 
   while (true) {
-    yield take((action) => (action.meta && action.meta.model === 'friends' && action.type === "redux-crud-store/crud/FETCH_SUCCESS"));
+    yield take(SEARCH_SUCCESS);
     yield race([
-      call(pollFriends),
+      call(pollReviews),
       take(LOGOUT)
     ]);
   }
@@ -37,6 +36,6 @@ function * watchPollFriends() {
 
 export default function * root() {
   yield all([
-    fork(watchPollFriends)
+    fork(watchPollReviews)
   ]);
 }
