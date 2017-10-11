@@ -1,5 +1,3 @@
-import { crudReducer } from '../../redux-crud-store';
-
 import auth from './auth';
 import friends from './friends';
 import reviews from './reviews';
@@ -10,5 +8,4 @@ export default {
   auth,
   reviews,
   friends,
-  models: crudReducer
 };
