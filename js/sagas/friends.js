@@ -1,4 +1,4 @@
-import { all, fork, take } from 'redux-saga/effects';
+import { all, fork, takeLatest } from 'redux-saga/effects';
 
 import {
   FETCH_FRIENDS_SUCCESS,
@@ -12,11 +12,11 @@ import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../a
 import { pollSaga } from './utils';
 
 export default function * root() {
-  yield take(RUN_SAGAS);
-
-  yield all([
-    fork(pollSaga(fetchFriends, FETCH_FRIENDS_SUCCESS, STOP_SAGAS)),
-    fork(pollSaga(fetchIncomingRequests, FETCH_FRIENDSINCOMING_SUCCESS, STOP_SAGAS)),
-    fork(pollSaga(fetchOutgoingRequests, FETCH_FRIENDSOUTGOING_SUCCESS, STOP_SAGAS))
-  ]);
+  yield takeLatest(RUN_SAGAS, function* () {
+    yield all([
+      fork(pollSaga(fetchFriends, FETCH_FRIENDS_SUCCESS, STOP_SAGAS)),
+      fork(pollSaga(fetchIncomingRequests, FETCH_FRIENDSINCOMING_SUCCESS, STOP_SAGAS)),
+      fork(pollSaga(fetchOutgoingRequests, FETCH_FRIENDSOUTGOING_SUCCESS, STOP_SAGAS))
+    ])
+  });
 }
