@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import io from 'socket.io-client';
 import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
@@ -14,6 +15,11 @@ import reducers from './reducers';
 function apiConfig() {
   return new Api({ basePath: Config.API_URL });
 }
+
+const socket = io(Config.SOCKET_URL, {
+  transports: ['websocket'],
+  autoConnect: false
+});
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -39,7 +45,8 @@ export default function configureStore(onCompletion:()=>void):any {
 
   persistStore(store, { storage: AsyncStorage }, () => {
     sagaMiddleware.run(requestsSaga(apiConfig()));
-    for (const saga of sagas) {
+
+    for (const saga of sagas(socket)) {
       sagaMiddleware.run(saga);
     }
     return onCompletion()

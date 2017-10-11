@@ -7,10 +7,12 @@ import { fetchReviews } from '../api/reviews';
 
 import { pollSaga } from './utils';
 
-export default function * root() {
-  yield takeLatest(RUN_SAGAS, function* () {
-    yield all([
-      fork(pollSaga(fetchReviews, SEARCH_SUCCESS, STOP_SAGAS))
-    ]);
-  });
+export default function _root(socket) {
+  return function * root() {
+    yield takeLatest(RUN_SAGAS, function* () {
+      yield all([
+        fork(pollSaga(fetchReviews, SEARCH_SUCCESS, STOP_SAGAS))
+      ]);
+    });
+  }
 }
