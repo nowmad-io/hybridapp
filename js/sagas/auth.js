@@ -17,11 +17,14 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR
 } from '../constants/auth';
 
 import {
+  STOP_SAGAS,
   SENDING_REQUEST,
   REQUEST_ERROR
 } from '../constants/utils';
@@ -105,8 +108,12 @@ export function * registerFlow(action) {
 }
 
 export function * logoutFlow() {
-  // TODO: clear user models reviews
+  yield put({ type: STOP_SAGAS });
+
   yield put(apiLogout());
+
+  yield take([LOGOUT_SUCCESS, LOGOUT_ERROR]);
+
   yield put({ type: LOGOUT });
 
   yield put(NavigationActions.reset({

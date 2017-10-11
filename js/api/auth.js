@@ -4,6 +4,7 @@ import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   ME_SUCCESS,
   ME_ERROR
 } from '../constants/auth';
@@ -21,7 +22,7 @@ export function apiRegister(params = {}) {
 }
 
 export function apiLogout() {
-  return apiCall(LOGOUT_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/logout/`);
+  return apiCall(LOGOUT_SUCCESS, LOGOUT_ERROR, 'post', `${PATH}/logout/`);
 }
 
 export function apiMe() {

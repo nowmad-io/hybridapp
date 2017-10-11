@@ -7,6 +7,8 @@ import Home from '../components/home/';
 import Friends from '../components/friends';
 import DrawBar from '../components/drawBar';
 
+import { runSagas, stopSagas } from '../actions/utils';
+
 const AppNavigator = DrawerNavigator({
   Home: { screen: Home },
   Friends: { screen: Friends },
@@ -25,11 +27,11 @@ class AppRouter extends Component {
   };
 
   componentWillMount() {
-    console.log('WillMount');
+    this.props.dispatch(runSagas());
   }
 
   componentWillUnmount() {
-    console.log('WillUnmount');
+    this.props.dispatch(stopSagas());
   }
 
   render() {
