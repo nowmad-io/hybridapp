@@ -1,6 +1,3 @@
-/* @flow */
-/* global Generator */
-
 import { all, call, fork, put, takeEvery, select } from 'redux-saga/effects'
 
 import { API_CALL, TOKEN } from './constants';
