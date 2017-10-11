@@ -1,27 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Text,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
-  List,
-  ListItem,
-  View,
-  Item,
-  Input,
-  Separator
-} from 'native-base';
+import { Container, Header, Title, Content, Text, Button, Icon, Left, Right,
+  Body, List, ListItem, View, Item, Input, Separator } from 'native-base';
 import { connect } from 'react-redux';
+
 import { selectCollection } from '../../../redux-crud-store';
 
-import { fetchFriends, searchFriends, sendFriendship } from '../../api/friends';
+import { fetchFriends, searchFriends, sendFriendship, acceptFriendship,
+  rejectFriendship, cancelFriendship } from '../../api/friends';
 
 class Friends extends Component {
   static navigationOptions = {
@@ -42,6 +28,18 @@ class Friends extends Component {
       from_user_id: this.props.me.id,
       to_user_id: friend.id
     }));
+  }
+
+  _onAccept(id) {
+    this.props.dispatch(acceptFriendship(id));
+  }
+
+  _onReject(id) {
+    this.props.dispatch(rejectFriendship(id));
+  }
+
+  _onCancel(id) {
+    this.props.dispatch(cancelFriendship(id));
   }
 
   render() {
@@ -110,6 +108,14 @@ class Friends extends Component {
                   <Text>{request.from_user.first_name} {request.from_user.last_name}</Text>
                   <Text note>{request.from_user.email}</Text>
                 </Body>
+                <Right>
+                  <Button onPress={() => this._onAccept(request.id)}>
+                    <Text>Accept</Text>
+                  </Button>
+                  <Button onPress={() => this._onReject(request.id)}>
+                    <Text>Reject</Text>
+                  </Button>
+                </Right>
               </ListItem>
             )) : (
               <ListItem
@@ -136,6 +142,11 @@ class Friends extends Component {
                   <Text>{request.to_user.first_name} {request.to_user.last_name}</Text>
                   <Text note>{request.to_user.email}</Text>
                 </Body>
+                <Right>
+                  <Button onPress={() => this._onCancel(request.id)}>
+                    <Text>x</Text>
+                  </Button>
+                </Right>
               </ListItem>
             )) : (
               <ListItem
@@ -170,11 +181,10 @@ class Friends extends Component {
                   <Text note>{data.email}</Text>
                 </Body>
                 <Right>
-                <Button
-                  onPress={() => this._onAdd(data)}>
-                  <Text>Add</Text>
-                </Button>
-              </Right>
+                  <Button onPress={() => this._onAdd(data)}>
+                    <Text>Add</Text>
+                  </Button>
+                </Right>
               </ListItem>
             )}
           />
