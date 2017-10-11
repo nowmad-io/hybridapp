@@ -59,8 +59,12 @@ class MainRouter extends Component {
   }
 }
 
+const bindActions = dispatch => ({
+  dispatch,
+});
+
 const mapStateToProps = state => ({
   nav: state.nav,
 });
 
-export default connect(mapStateToProps)(MainRouter);
+export default connect(mapStateToProps, bindActions)(MainRouter);
