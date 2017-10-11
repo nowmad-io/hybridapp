@@ -4,8 +4,6 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right,
   Body, List, ListItem, View, Item, Input, Separator } from 'native-base';
 import { connect } from 'react-redux';
 
-import { selectCollection } from '../../../redux-crud-store';
-
 import { fetchFriends, searchFriends, sendFriendship, acceptFriendship,
   rejectFriendship, cancelFriendship } from '../../api/friends';
 
