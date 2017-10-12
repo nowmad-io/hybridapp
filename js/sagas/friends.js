@@ -13,9 +13,8 @@ import { socketFriend } from '../actions/friends';
 
 function subscribe(socket) {
   return eventChannel(emit => {
-    socket.on('friend', function (friend) {
-      console.log('received friend', friend);
-      emit(socketFriend(friend));
+    socket.on('friend', function ({ data }) {
+      emit(socketFriend(data));
     });
     return () => {};
   });

@@ -26,8 +26,8 @@ function friendsReducer(state = initialState, action) {
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload }
     case SOCKET_FRIEND:
-      console.log('boom friends from server', action.friend)
-      return state;
+      const all = state.all.concat([action.friend]);
+      return { ...state, all }
     case LOGOUT:
       return initialState;
     default:
