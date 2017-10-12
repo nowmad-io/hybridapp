@@ -2,7 +2,8 @@ import {
   SEARCH_FRIENDS_SUCCESS,
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDSINCOMING_SUCCESS,
-  FETCH_FRIENDSOUTGOING_SUCCESS
+  FETCH_FRIENDSOUTGOING_SUCCESS,
+  SOCKET_FRIEND
 } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
 
@@ -24,6 +25,9 @@ function friendsReducer(state = initialState, action) {
       return { ...state, incomings: action.payload }
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload }
+    case SOCKET_FRIEND:
+      console.log('boom friends from server', action.friend)
+      return state;
     case LOGOUT:
       return initialState;
     default:

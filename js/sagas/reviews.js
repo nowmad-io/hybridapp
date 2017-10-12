@@ -4,7 +4,6 @@ import { SEARCH_SUCCESS } from '../constants/reviews';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
 import { fetchReviews } from '../api/reviews';
-
 import { pollSaga } from './utils';
 
 export default function _root(socket) {
