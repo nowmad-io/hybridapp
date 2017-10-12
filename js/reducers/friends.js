@@ -32,7 +32,7 @@ function socket_friend(state, action) {
       return [];
     }
     return outgoing;
-  })
+  }));
 
   return { ...state, all, incomings, outgoings };
 }
@@ -47,8 +47,6 @@ function friendsReducer(state = initialState, action) {
       return { ...state, incomings: action.payload }
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload }
-    case SOCKET_FRIEND:
-      return socket_friend(state, action);
     case SOCKET_FRIEND_ACCEPT:
       return socket_friend(state, action);
     case LOGOUT:
