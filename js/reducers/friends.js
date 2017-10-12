@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import {
   SEARCH_FRIENDS_SUCCESS,
   FETCH_FRIENDS_SUCCESS,
@@ -15,6 +17,26 @@ const initialState = {
   error: ''
 };
 
+function socket_friend(state, action) {
+  const all = state.all.concat([action.friend]);
+
+  const incomings = _.flatten(state.incomings.map(incoming => {
+    if (incoming.from_user.id === action.friend.id) {
+      return [];
+    }
+    return incoming;
+  }));
+
+  const outgoings = _.flatten(state.outgoings.map(outgoing => {
+    if (outgoing.to_user.id === action.friend.id) {
+      return [];
+    }
+    return outgoing;
+  })
+
+  return { ...state, all, incomings, outgoings };
+}
+
 function friendsReducer(state = initialState, action) {
   switch (action.type) {
     case SEARCH_FRIENDS_SUCCESS:
@@ -26,8 +48,7 @@ function friendsReducer(state = initialState, action) {
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload }
     case SOCKET_FRIEND:
-      const all = state.all.concat([action.friend]);
-      return { ...state, all }
+      return socket_friend(state, action);
     case LOGOUT:
       return initialState;
     default:
