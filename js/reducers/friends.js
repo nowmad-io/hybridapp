@@ -5,7 +5,7 @@ import {
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDSINCOMING_SUCCESS,
   FETCH_FRIENDSOUTGOING_SUCCESS,
-  SOCKET_FRIEND
+  SOCKET_FRIEND_ACCEPT
 } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
 
@@ -48,6 +48,8 @@ function friendsReducer(state = initialState, action) {
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload }
     case SOCKET_FRIEND:
+      return socket_friend(state, action);
+    case SOCKET_FRIEND_ACCEPT:
       return socket_friend(state, action);
     case LOGOUT:
       return initialState;
