@@ -17,11 +17,11 @@ function authReducer(state = initialState, action) {
     case TOKEN:
       return { ...state, token: action.token };
     case ME_SUCCESS:
-    return { ...state, me: action.payload };
+      return { ...state, me: action.payload };
     case FORM_ERROR:
       return { ...state, error: action.error };
     case LOGOUT:
-    return initialState;
+      return initialState;
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, put, call, take } from 'redux-saga/effects';
+import { all, fork, takeLatest, put, call, take, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import {
@@ -9,12 +9,27 @@ import {
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
-import { socketFriend } from '../actions/friends';
+import { AddNewFriend, NewOutgoingRequest, NewIncomingRequest,
+  DeleteOutgoingRequest, DeleteIncomingRequest } from '../actions/friends';
 
-function subscribe(socket) {
+function subscribe({socket, me}) {
   return eventChannel(emit => {
-    socket.on('friend.accept', function ({ data }) {
-      emit(socketFriend(data));
+    socket.on('friend.new', function ({ friend }) {
+      emit(AddNewFriend(friend));
+    });
+    socket.on('friend.create', function ({ request }) {
+      if (request.from_user.id === me.id) {
+        emit(NewOutgoingRequest(request));
+      } else {
+        emit(NewIncomingRequest(request));
+      }
+    });
+    socket.on('friend.reject', function ({ request }) {
+      if (request.from_user.id === me.id) {
+        emit(DeleteOutgoingRequest(request));
+      } else {
+        emit(DeleteIncomingRequest(request));
+      }
     });
     return () => {};
   });
@@ -26,7 +41,8 @@ function * friendsFlow() {
   yield put(fetchIncomingRequests());
   yield put(fetchOutgoingRequests());
 
-  const channel = yield call(subscribe, socket);
+  const me = yield select((state) => state.auth.me);
+  const channel = yield call(subscribe, {socket, me});
   while (true) {
     let action = yield take(channel);
     yield put(action);

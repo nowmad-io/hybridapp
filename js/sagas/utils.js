@@ -32,5 +32,4 @@ function * _watchFetch() {
       take(stop)
     ]);
   }
-  console.log('here ?', success);
 }

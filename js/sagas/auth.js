@@ -20,7 +20,8 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   LOGOUT_REQUEST,
-  FORM_ERROR
+  FORM_ERROR,
+  ME_SUCCESS
 } from '../constants/auth';
 
 import {
@@ -69,6 +70,8 @@ function* loginFlow(action) {
   if (winner.loginSuccess) {
     yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
     yield put(apiMe());
+
+    yield take(ME_SUCCESS);
 
     yield put(NavigationActions.reset({
       index: 0,

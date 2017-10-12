@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import shortid from 'shortid';
 import PropTypes from 'prop-types';
 import { Container, Header, Title, Content, Text, Button, Icon, Left, Right,
   Body, List, ListItem, View, Item, Input, Separator } from 'native-base';
@@ -71,7 +72,7 @@ class Friends extends Component {
             </Separator>
             { this.props.friends.length ? this.props.friends.map(friend => (
               <ListItem
-                key={friend.id}
+                key={shortid.generate()}
                 style={{
                   marginLeft: 0,
                 }}
@@ -97,7 +98,7 @@ class Friends extends Component {
             </Separator>
             { this.props.incomings.length ? this.props.incomings.map(request => (
               <ListItem
-                key={request.id}
+                key={shortid.generate()}
                 style={{
                   marginLeft: 0,
                 }}
@@ -131,7 +132,7 @@ class Friends extends Component {
             </Separator>
             { this.props.outgoings.length ? this.props.outgoings.map(request => (
               <ListItem
-                key={request.id}
+                key={shortid.generate()}
                 style={{
                   marginLeft: 0,
                 }}
