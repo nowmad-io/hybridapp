@@ -33,11 +33,11 @@ class Map extends Component {
         ref={(ref) => { this.mapRef = ref }}
         style={styles.map}
         showsUserLocation={true}
-        initialRegion={ {
+        initialRegion={position ? {
           ...position,
           latitudeDelta: 1,
           longitudeDelta: 1
-        } || initialRegion }>
+        } : initialRegion }>
         { markers && markers.map(marker => (
           <Marker
             key={marker.id}
