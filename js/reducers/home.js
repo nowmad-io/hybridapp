@@ -11,7 +11,7 @@ const initialState = {
   position: null
 };
 
-function reviewsReducer(state = initialState, action) {
+function HomeReducer(state = initialState, action) {
   switch (action.type) {
     case SEARCH_SUCCESS:
       return {...state, reviews: action.payload};
@@ -24,4 +24,4 @@ function reviewsReducer(state = initialState, action) {
   }
 }
 
-export default reviewsReducer;
+export default HomeReducer;

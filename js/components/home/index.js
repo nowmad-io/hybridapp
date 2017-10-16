@@ -35,7 +35,6 @@ class Home extends Component {
         />
         <Fab
             direction="up"
-            containerStyle={{ }}
             style={{ backgroundColor: '#5067FF' }}
             position="topRight"
             onPress={() => this.props.navigation.navigate('DrawerOpen')}>

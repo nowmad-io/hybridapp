@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import Marker from '../marker';
 
@@ -29,8 +29,10 @@ class Map extends Component {
     const { markers, initialRegion, position } = this.props;
     return (
       <MapView
+        provider={PROVIDER_GOOGLE}
         ref={(ref) => { this.mapRef = ref }}
         style={styles.map}
+        showsUserLocation={true}
         initialRegion={ {
           ...position,
           latitudeDelta: 1,

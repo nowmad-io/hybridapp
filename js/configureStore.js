@@ -43,7 +43,10 @@ export default function configureStore(onCompletion:()=>void):any {
     compose(...enhancers)
   );
 
-  persistStore(store, { storage: AsyncStorage }, () => {
+  persistStore(store, {
+    storage: AsyncStorage,
+    blacklist: []
+  }, () => {
     sagaMiddleware.run(requestsSaga(apiConfig()));
 
     for (const saga of sagas(socket)) {
