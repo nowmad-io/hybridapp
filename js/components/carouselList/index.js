@@ -8,7 +8,7 @@ import { sliderWidth, itemWidth } from './styles';
 
 class CarouselList extends Component {
   static propTypes = {
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array,
     customStyle: PropTypes.object,
   }
 
