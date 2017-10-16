@@ -21,7 +21,7 @@ function getCurrentPosition() {
   });
 }
 export function * homeFlow() {
-  yield fork(pollSaga(fetchReviews, SEARCH_SUCCESS, STOP_SAGAS));
+  yield put(fetchReviews());
 
   const channel = yield call(getCurrentPosition);
 

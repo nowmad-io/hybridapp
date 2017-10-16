@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
-import { View, Icon, Fab } from 'native-base';
+import { View, Icon, Fab, Text } from 'native-base';
+import Carousel from 'react-native-snap-carousel';
 
 import { fetchReviews } from '../../api/reviews';
 import Map from '../map';
+import SliderEntry from '../sliderEntry';
 
 import styles from './styles';
+import { sliderWidth, itemWidth } from '../sliderEntry/styles';
 
 class Home extends Component {
   static navigationOptions = {
@@ -25,8 +28,20 @@ class Home extends Component {
     super(props);
   }
 
+  _renderItem ({item, index}) {
+    console.log('here ?', item);
+    return (
+      <SliderEntry
+        data={item}
+        even={(index + 1) % 2 === 0}
+      />
+    );
+  }
+
   render() {
     const { props: { reviews, position } } = this;
+    console.log('sliderWidth', sliderWidth);
+    console.log('itemWidth', itemWidth);
     return (
       <View style={styles.container}>
         <Map
@@ -34,12 +49,20 @@ class Home extends Component {
           position={position}
         />
         <Fab
-            direction="up"
-            style={{ backgroundColor: '#5067FF' }}
-            position="topRight"
-            onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-            <Icon name="ios-menu" />
-          </Fab>
+          direction="up"
+          style={{ backgroundColor: '#5067FF' }}
+          position="topRight"
+          onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+          <Icon name="ios-menu" />
+        </Fab>
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          data={reviews}
+          renderItem={this._renderItem}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          containerCustomStyle={styles.carousel}
+        />
       </View>
     );
   }
