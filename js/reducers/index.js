@@ -1,11 +1,11 @@
 import auth from './auth';
 import friends from './friends';
-import reviews from './reviews';
+import home from './home';
 import nav from './nav';
 
 export default {
   nav,
   auth,
-  reviews,
-  friends,
+  home,
+  friends
 };
