@@ -2,4 +2,4 @@
 import { AppRegistry } from 'react-native';
 import setup from './js/setup';
 
-AppRegistry.registerComponent('TravelNetwork', setup);
+AppRegistry.registerComponent('Nowmad', setup);

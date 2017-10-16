@@ -1,4 +1,4 @@
-package com.travelnetwork;
+package com.nowmad;
 
 import android.app.Application;
 
