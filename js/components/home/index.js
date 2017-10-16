@@ -6,7 +6,6 @@ import Config from 'react-native-config'
 import { View, Icon, Fab } from 'native-base';
 
 import { fetchReviews } from '../../api/reviews';
-import { setGeolocation } from '../../actions/home';
 import Map from '../map';
 
 import styles from './styles';
@@ -19,32 +18,21 @@ class Home extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     reviews: PropTypes.array,
+    position: PropTypes.object
   };
 
   constructor(props) {
     super(props);
-    this.mapRef = null;
-  }
-
-  componentDidMount() {
-    this.props.dispatch({type: 'TEST'});
-    console.log('here ?');
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        console.log('position', position)
-        this.props.dispatch(setGeolocation(position.coords))
-      },
-      (error) => {console.log('error', error)},
-      { timeout: 5000, maximumAge: (60 * 24 * 1000) },
-    );
   }
 
   render() {
-    const { props: { reviews } } = this;
-
+    const { props: { reviews, position } } = this;
     return (
       <View style={styles.container}>
-        <Map markers={reviews}/>
+        <Map
+          markers={reviews}
+          position={position}
+        />
         <Fab
             direction="up"
             containerStyle={{ }}
@@ -63,7 +51,8 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  reviews: state.home.reviews
+  reviews: state.home.reviews,
+  position: state.home.position
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

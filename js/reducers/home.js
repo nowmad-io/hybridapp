@@ -7,7 +7,8 @@ import {
 import { LOGOUT } from '../constants/auth';
 
 const initialState = {
-  reviews: []
+  reviews: [],
+  position: null
 };
 
 function reviewsReducer(state = initialState, action) {
@@ -15,7 +16,6 @@ function reviewsReducer(state = initialState, action) {
     case SEARCH_SUCCESS:
       return {...state, reviews: action.payload};
     case GEOLOCATION:
-      console.log('geolocation', action.position)
       return { ...state, position: action.position}
     case LOGOUT:
       return initialState;

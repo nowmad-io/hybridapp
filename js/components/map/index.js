@@ -6,27 +6,45 @@ import Marker from '../marker';
 
 import styles from './styles';
 
-const Map = props => (
-  <MapView
-    ref={(ref) => { this.mapRef = ref }}
-    style={styles.map}
-    initialRegion={{
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.015,
-      longitudeDelta: 0.0121
-    }}>
-    { props.markers && props.markers.map(marker => (
-      <Marker
-        key={marker.id}
-        marker={marker}
-      />
-    )) }
-  </MapView>
-);
+class Map extends Component {
+  static propTypes = {
+    markers: PropTypes.array,
+    position: PropTypes.object
+  }
 
-Map.propTypes = {
-  markers: PropTypes.array,
-};
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      initialRegion: {
+        latitude: 40.7205699,
+        longitude: -1.840341,
+        latitudeDelta: 50,
+        longitudeDelta: 50
+      }
+    }
+  }
+
+  render() {
+    const { markers, initialRegion, position } = this.props;
+    return (
+      <MapView
+        ref={(ref) => { this.mapRef = ref }}
+        style={styles.map}
+        initialRegion={ {
+          ...position,
+          latitudeDelta: 1,
+          longitudeDelta: 1
+        } || initialRegion }>
+        { markers && markers.map(marker => (
+          <Marker
+            key={marker.id}
+            marker={marker}
+          />
+        )) }
+      </MapView>
+    )
+  }
+}
 
 export default Map;
