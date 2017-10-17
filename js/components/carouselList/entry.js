@@ -50,18 +50,27 @@ class Entry extends Component {
         style={entryStyles.slideInnerContainer}
         onPress={() => { alert(`You've clicked '${title}'`); }}
       >
-        <View style={[entryStyles.imageContainer, even ? entryStyles.imageContainerEven : {}]}>
-          { this.image }
-          <View style={[entryStyles.radiusMask, even ? entryStyles.radiusMaskEven : {}]} />
+        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
+          { uppercaseTitle }
         </View>
         <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
           { uppercaseTitle }
-          <Text
-            style={[entryStyles.subtitle, even ? entryStyles.subtitleEven : {}]}
-            numberOfLines={2}
-          >
-            { subtitle }
-          </Text>
+        </View>
+        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
+          { uppercaseTitle }
+        </View>
+        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
+          { uppercaseTitle }
+        </View>
+        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
+          { uppercaseTitle }
+        </View>
+        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
+          { uppercaseTitle }
+        </View>
+        <View style={[entryStyles.imageContainer, even ? entryStyles.imageContainerEven : {}]}>
+          { this.image }
+          <View style={[entryStyles.radiusMask, even ? entryStyles.radiusMaskEven : {}]} />
         </View>
       </TouchableOpacity>
     );

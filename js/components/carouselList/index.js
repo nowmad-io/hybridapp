@@ -12,6 +12,10 @@ class CarouselList extends Component {
     customStyle: PropTypes.object,
   }
 
+  constructor(props) {
+    super(props);
+  }
+
   _renderItem ({item, index}) {
     return (
       <Entry
