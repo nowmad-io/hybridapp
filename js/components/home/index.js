@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
 import { View, Icon, Fab, Text } from 'native-base';
 
-import { fetchReviews } from '../../api/reviews';
 import Map from '../map';
 import CarouselList from '../carouselList';
+
+import { fetchReviews } from '../../api/reviews';
 
 import styles from './styles';
 
@@ -28,7 +30,6 @@ class Home extends Component {
 
   render() {
     const { props: { reviews, position } } = this;
-
     return (
       <View style={styles.container}>
         <Map
