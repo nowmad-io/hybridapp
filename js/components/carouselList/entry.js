@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { Image } from 'react-native';
+import { View, Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body } from 'native-base';
 import { ParallaxImage } from 'react-native-snap-carousel';
 
 import { entryStyles } from './styles';
@@ -9,70 +10,43 @@ class Entry extends Component {
 
   static propTypes = {
     data: PropTypes.object.isRequired,
-    even: PropTypes.bool,
-    parallax: PropTypes.bool,
-    parallaxProps: PropTypes.object
+    index: PropTypes.number
   };
 
-  get image () {
-    const { data: { illustration }, parallax, parallaxProps, even } = this.props;
-
-    return parallax ? (
-      <ParallaxImage
-        source={{ uri: illustration }}
-        containerStyle={[entryStyles.imageContainer, even ? entryStyles.imageContainerEven : {}]}
-        style={[entryStyles.image, { position: 'relative' }]}
-        parallaxFactor={0.35}
-        showSpinner={true}
-        spinnerColor={even ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.25)'}
-        {...parallaxProps} />
-    ) : (
-      <Image
-        source={{ uri: illustration }}
-        style={entryStyles.image} />
-    );
-  }
-
   render () {
-    const { data: { title, subtitle }, even } = this.props;
-
-    const uppercaseTitle = title ? (
-      <Text
-        style={[entryStyles.title, even ? entryStyles.titleEven : {}]}
-        numberOfLines={2}
-      >
-        { title.toUpperCase() }
-      </Text>
-    ) : false;
+    const { data: { title }, index } = this.props;
+    console.log('here ?', entryStyles.slideInnerContainer(index));
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        style={entryStyles.slideInnerContainer}
-        onPress={() => { alert(`You've clicked '${title}'`); }}
-      >
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.textContainer, even ? entryStyles.textContainerEven : {}]}>
-          { uppercaseTitle }
-        </View>
-        <View style={[entryStyles.imageContainer, even ? entryStyles.imageContainerEven : {}]}>
-          { this.image }
-          <View style={[entryStyles.radiusMask, even ? entryStyles.radiusMaskEven : {}]} />
-        </View>
-      </TouchableOpacity>
+      <View
+        style={entryStyles.slideInnerContainer(index)}>
+        <Card style={{height: '100%', width: '100%', flex: 0}}>
+          <CardItem>
+            <Left>
+              <Thumbnail source={{uri: 'http://www.ordnung-statt-chaos.de/wp-content/themes/thesis/rotator/sample-4.jpg'}} />
+              <Body>
+                <Text>{ title }</Text>
+                <Text note>note</Text>
+              </Body>
+            </Left>
+          </CardItem>
+          <CardItem>
+            <Body>
+              <Image source={{uri: 'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-163188684_medium.jpg?sharp=10&vib=20&w=600'}} style={{height: 200, width: 200, flex: 1}}/>
+              <Text>
+                Description
+              </Text>
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Left>
+              <Button transparent textStyle={{color: '#87838B'}}>
+                <Icon name="logo-github" />
+                <Text>1,926 stars</Text>
+              </Button>
+            </Left>
+          </CardItem>
+        </Card>
+      </View>
     );
   }
 }

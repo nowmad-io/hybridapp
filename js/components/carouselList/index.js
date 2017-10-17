@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import GestureRecognizer from '../swipeGestures';
 import Entry from './entry';
 
-import styles, { sliderWidth, itemWidth } from './styles';
+import styles, { dimension, sliderWidth, itemWidth } from './styles';
 
 class CarouselList extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ class CarouselList extends Component {
     super(props);
 
     this.state = {
-      carouselHeight: ['20%', '40%', '100%'],
+      carouselTop: [dimension.height - 64 - 48, dimension.height - 256 - 48, 0 ], // 64, 256, 494
       level: 0
     }
   }
@@ -26,8 +26,6 @@ class CarouselList extends Component {
     if (this.state.level >= 2) {
       return;
     }
-
-    console.log('here ?!', this.state.level);
     this.setState({level: this.state.level + 1})
   }
 
@@ -35,25 +33,24 @@ class CarouselList extends Component {
     if (this.state.level <= 0) {
       return;
     }
-
     this.setState({level: this.state.level - 1})
   }
 
   _renderItem ({item, index}) {
     return (
-      <Entry data={item} />
+      <Entry data={item} index={index}/>
     );
   }
 
   render() {
-    const { carouselHeight, level } = this.state;
-
+    const { carouselTop, level } = this.state;
+    console.log('carouselTop', carouselTop);
     return (
       <GestureRecognizer
         onSwipeUp={() => this.onSwipeUp()}
         onSwipeDown={() => this.onSwipeDown()}
         velocityThreshold={1}
-        style={{...styles.carouselWrapper, height: carouselHeight[level]}}
+        style={{...styles.carouselWrapper, top: carouselTop[level]}}
       >
         <Carousel
           ref={(c) => {this._carousel = c;}}
@@ -61,6 +58,8 @@ class CarouselList extends Component {
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
+          inactiveSlideOpacity={1}
+          inactiveSlideScale={1}
           containerCustomStyle={styles.carousel}
         />
       </GestureRecognizer>
