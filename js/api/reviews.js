@@ -1,12 +1,12 @@
 import { apiCall } from '../requests';
 
 import {
-  SEARCH_SUCCESS,
-  SEARCH_ERROR
+  PLACES_SUCCESS,
+  PLACES_ERROR
 } from '../constants/reviews';
 
-const SEARCH_PATH = 'search/';
+const PLACES_PATH = 'places/';
 
 export function fetchReviews() {
-  return apiCall(SEARCH_SUCCESS, SEARCH_ERROR, 'get', SEARCH_PATH);
+  return apiCall(PLACES_SUCCESS, PLACES_ERROR, 'get', PLACES_PATH);
 }

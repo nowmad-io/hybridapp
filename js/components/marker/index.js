@@ -6,14 +6,13 @@ import styles from './styles';
 
 const Marker = props => (
   <MapView.Marker
-    coordinate={{latitude: props.marker.location.latitude, longitude: props.marker.location.longitude}}
-    title={props.marker.title}
-    description={props.marker.description}
+    coordinate={{latitude: props.place.latitude, longitude: props.place.longitude}}
+    title={props.place.name}
   />
 );
 
 Marker.propTypes = {
-  marker: PropTypes.object,
+  place: PropTypes.object,
 };
 
 export default Marker;

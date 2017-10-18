@@ -8,7 +8,7 @@ import styles from './styles';
 
 class Map extends Component {
   static propTypes = {
-    markers: PropTypes.array,
+    places: PropTypes.array,
     position: PropTypes.object
   }
 
@@ -26,7 +26,8 @@ class Map extends Component {
   }
 
   render() {
-    const { markers, initialRegion, position } = this.props;
+    const { places, initialRegion, position } = this.props;
+    console.log('places', places)
     return (
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -38,10 +39,10 @@ class Map extends Component {
           latitudeDelta: 1,
           longitudeDelta: 1
         } : initialRegion }>
-        { markers && markers.map(marker => (
+        { places && places.map(place => (
           <Marker
-            key={marker.id}
-            marker={marker}
+            key={place.id}
+            place={place}
           />
         )) }
       </MapView>

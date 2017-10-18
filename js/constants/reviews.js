@@ -1,2 +1,2 @@
-export const SEARCH_SUCCESS = 'reviews/SEARCH_SUCCESS';
-export const SEARCH_ERROR = 'reviews/SEARCH_ERROR';
+export const PLACES_SUCCESS = 'reviews/PLACES_SUCCESS';
+export const PLACES_ERROR = 'reviews/PLACES_ERROR';

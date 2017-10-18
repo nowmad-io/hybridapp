@@ -29,11 +29,11 @@ class Home extends Component {
   }
 
   render() {
-    const { props: { reviews, position } } = this;
+    const { props: { places, position } } = this;
     return (
       <View style={styles.container}>
         <Map
-          markers={reviews}
+          places={places}
           position={position}
         />
         <Fab
@@ -44,7 +44,7 @@ class Home extends Component {
           <Icon name="ios-menu" />
         </Fab>
         <CarouselList
-          data={reviews}
+          data={places}
           customStyle={styles.carousel}
         />
       </View>
@@ -57,7 +57,7 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  reviews: state.home.reviews,
+  places: state.home.places,
   position: state.home.position
 });
 

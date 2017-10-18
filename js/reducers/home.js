@@ -2,19 +2,19 @@ import {
   GEOLOCATION
 } from '../constants/home';
 import {
-  SEARCH_SUCCESS
+  PLACES_SUCCESS
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const initialState = {
-  reviews: [],
+  places: [],
   position: null
 };
 
 function HomeReducer(state = initialState, action) {
   switch (action.type) {
-    case SEARCH_SUCCESS:
-      return {...state, reviews: action.payload};
+    case PLACES_SUCCESS:
+      return {...state, places: action.payload};
     case GEOLOCATION:
       return { ...state, position: action.position}
     case LOGOUT:
