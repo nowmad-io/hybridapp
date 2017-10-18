@@ -14,17 +14,16 @@ class Entry extends Component {
   };
 
   render () {
-    const { data: { title }, index } = this.props;
-    console.log('here ?', entryStyles.slideInnerContainer(index));
+    const { data: { reviews }, index } = this.props;
     return (
       <View
         style={entryStyles.slideInnerContainer(index)}>
         <Card style={{height: '100%', width: '100%', flex: 0}}>
           <CardItem>
             <Left>
-              <Thumbnail source={{uri: 'http://www.ordnung-statt-chaos.de/wp-content/themes/thesis/rotator/sample-4.jpg'}} />
+              <Thumbnail source={{uri: reviews[0].created_by.picture}} />
               <Body>
-                <Text>{ title }</Text>
+                <Text>{ reviews[0].short_description }</Text>
                 <Text note>note</Text>
               </Body>
             </Left>
