@@ -8,6 +8,11 @@ import configureStore from './configureStore';
 import getTheme from '../native-base-theme/components';
 import platform from '../native-base-theme/variables/platform';
 
+console.ignoredYellowBox = [
+  'Setting a timer',
+  'Remote debugger'
+];
+
 function setup():React.Component {
   class Root extends Component {
     constructor() {
