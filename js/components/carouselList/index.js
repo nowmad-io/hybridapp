@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import shortid from 'shortid';
 
+import { selectedPlace } from '../../actions/home'
 import GestureRecognizer from '../swipeGestures';
 import Entry from './entry';
 
@@ -12,6 +14,8 @@ class CarouselList extends Component {
   static propTypes = {
     data: PropTypes.array,
     customStyle: PropTypes.object,
+    selectedPlace: PropTypes.number,
+    level: PropTypes.number
   }
 
   constructor(props) {
@@ -35,6 +39,10 @@ class CarouselList extends Component {
       return;
     }
     this.setState({level: this.state.level - 1})
+  }
+
+  onSnapToItem(selectedItem) {
+    this.props.dispatch(selectedPlace(this.props.data[selectedItem].id));
   }
 
   _renderItem ({item, index}) {
@@ -65,10 +73,20 @@ class CarouselList extends Component {
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
           containerCustomStyle={styles.carousel}
+          onSnapToItem={(selectedItem) => this.onSnapToItem(selectedItem)}
         />
       </GestureRecognizer>
     );
   }
 }
 
-export default CarouselList;
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = state => ({
+  selectedPlace: state.home.selectedPlace,
+  level: state.home.level
+});
+
+export default connect(mapStateToProps, bindActions)(CarouselList);
