@@ -49,7 +49,6 @@ class CarouselList extends Component {
 
   render() {
     const { carouselTop, level } = this.state;
-    console.log('carouselTop', carouselTop);
     return (
       <GestureRecognizer
         onSwipeUp={() => this.onSwipeUp()}

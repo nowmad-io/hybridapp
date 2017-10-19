@@ -28,7 +28,6 @@ class Map extends Component {
 
   render() {
     const { places, initialRegion, position } = this.props;
-    console.log('places', places)
     return (
       <MapView
         provider={PROVIDER_GOOGLE}
