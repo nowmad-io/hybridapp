@@ -19,7 +19,7 @@ class Map extends Component {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       initialRegion: {
@@ -28,7 +28,7 @@ class Map extends Component {
         latitudeDelta: 50,
         longitudeDelta: 50
       }
-    }
+    };
   }
 
   onPress(place) {
@@ -36,7 +36,7 @@ class Map extends Component {
   }
 
   render() {
-    const { places, initialRegion, position, selectedPlace } = this.props;
+    const { places, initialRegion, position, selectedPlace, me } = this.props;
     return (
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -53,6 +53,7 @@ class Map extends Component {
             key={shortid.generate()}
             coordinate={{latitude: place.latitude, longitude: place.longitude}}
             onPress={() => this.onPress(place)}
+            zIndex={selectedPlace === place.id ? 10 : 5 }
           >
             <Marker
               selected={selectedPlace === place.id}
