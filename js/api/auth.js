@@ -14,7 +14,7 @@ import { REQUEST_ERROR } from '../constants/utils';
 const PATH = 'auth';
 
 export function apiLogin(params = {}) {
-  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/login/`, params);
+  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/token/create/`, params);
 }
 
 export function apiRegister(params = {}) {
@@ -22,7 +22,7 @@ export function apiRegister(params = {}) {
 }
 
 export function apiLogout() {
-  return apiCall(LOGOUT_SUCCESS, LOGOUT_ERROR, 'post', `${PATH}/logout/`);
+  return apiCall(LOGOUT_SUCCESS, LOGOUT_ERROR, 'post', `${PATH}/token/destroy/`);
 }
 
 export function apiMe() {
