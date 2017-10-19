@@ -89,12 +89,12 @@ function* loginFlow(action) {
  * Very similar to log in saga!
  */
 export function * registerFlow(action) {
-  const { email, password } = action.data;
+  const credentials = action.data;
 
   yield put({ type: SENDING_REQUEST, sending: true });
 
   const [, winner] = yield all([
-    put(apiRegister({ email, password })),
+    put(apiRegister(credentials)),
     race({
       registerSuccess: take(REGISTER_SUCCESS),
       registerFail: take(REQUEST_ERROR),
@@ -104,7 +104,7 @@ export function * registerFlow(action) {
   yield put({ type: SENDING_REQUEST, sending: false });
 
   if (winner.registerSuccess) {
-    yield put(loginRequest({ email, password }));
+    yield put(loginRequest(credentials));
   } else if (winner.registerFail) {
     yield call(parseError, { error: winner.registerFail.payload });
   }

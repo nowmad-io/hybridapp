@@ -36,12 +36,19 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      first_name: '',
+      last_name: '',
       error: '',
     };
   }
 
-  _login() {
-    this.props.login(this.state.email, this.state.password);
+  _register() {
+    this.props.register({
+      email: this.state.email,
+      password: this.state.password,
+      first_name: this.state.first_name,
+      last_name: this.state.last_name
+    });
   }
 
   _backToLogin() {
@@ -56,7 +63,7 @@ class Login extends Component {
             <Image source={background} style={styles.shadow}>
               <View style={styles.bg}>
                 <Item>
-                  <Icon active name="person" />
+                  <Icon active name="md-mail" />
                   <Input
                     name="email"
                     value={this.state.email}
@@ -71,7 +78,37 @@ class Login extends Component {
                     : <Text />}
                 </Item>
                 <Item>
-                  <Icon active name="unlock" />
+                  <Icon active name="md-person" />
+                  <Input
+                    name="first_name"
+                    value={this.state.first_name}
+                    placeholder="First Name"
+                    onChangeText={first_name => this.setState({ first_name })}
+                  />
+                  {this.state.error
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
+                    : <Text />}
+                </Item>
+                <Item>
+                  <Icon active name="md-person" />
+                  <Input
+                    name="last_name"
+                    value={this.state.last_name}
+                    placeholder="Last Name"
+                    onChangeText={last_name => this.setState({ last_name })}
+                  />
+                  {this.state.error
+                    ? <Item style={{ borderColor: 'transparent' }}>
+                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                    </Item>
+                    : <Text />}
+                </Item>
+                <Item>
+                  <Icon active name="md-unlock" />
                   <Input
                     name="password"
                     value={this.state.password}
@@ -88,7 +125,7 @@ class Login extends Component {
                 </Item>
                 <Button
                   style={styles.btn}
-                  onPress={() => this._login()}
+                  onPress={() => this._register()}
                 >
                   <Text>Register</Text>
                 </Button>
@@ -104,7 +141,7 @@ class Login extends Component {
 
 const bindActions = dispatch => ({
   dispatch,
-  login: (email, password) => dispatch(registerRequest({ email, password })),
+  register: (credentials) => dispatch(registerRequest(credentials)),
 });
 
 const mapStateToProps = state => ({
