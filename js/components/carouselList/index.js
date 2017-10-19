@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
+import shortid from 'shortid';
 
 import GestureRecognizer from '../swipeGestures';
 import Entry from './entry';
@@ -38,7 +39,11 @@ class CarouselList extends Component {
 
   _renderItem ({item, index}) {
     return (
-      <Entry data={item} index={index}/>
+      <Entry
+        key={shortid.generate()}
+        data={item}
+        index={index}
+      />
     );
   }
 

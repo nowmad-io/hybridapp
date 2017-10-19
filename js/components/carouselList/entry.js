@@ -23,8 +23,8 @@ class Entry extends Component {
             <Left>
               <Thumbnail source={{uri: reviews[0].created_by.picture}} />
               <Body>
-                <Text>{ reviews[0].short_description }</Text>
-                <Text note>note</Text>
+                <Text>{ reviews[0].created_by.first_name }{ reviews.length > 1 ? ` and ${reviews.length - 1} friends` : ''} </Text>
+                <Text note>- { reviews[0].short_description } -</Text>
               </Body>
             </Left>
           </CardItem>

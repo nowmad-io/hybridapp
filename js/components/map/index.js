@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import shortid from 'shortid';
 
 import Marker from '../marker';
 
@@ -41,7 +42,7 @@ class Map extends Component {
         } : initialRegion }>
         { places && places.map(place => (
           <Marker
-            key={place.id}
+            key={shortid.generate()}
             place={place}
           />
         )) }
