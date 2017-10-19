@@ -38,7 +38,7 @@ See here for more info [https://developers.google.com/maps/documentation/android
 
 * `cd android`
 * `./gradlew assembleRelease`
-* Find the apk in `app/buil/output/apk`
+* Find the apk in `app/build/output/apk`
 
 Try the release version first
 * `react-native run-android --variant=release`
