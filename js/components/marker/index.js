@@ -4,20 +4,32 @@ import { connect } from 'react-redux';
 import { Text } from 'native-base';
 import MapView from 'react-native-maps';
 
+import { selectedPlace } from '../../actions/home'
+
 import styles from './styles';
 
-const Marker = props => (
-  <MapView.Marker
-    coordinate={{latitude: props.place.latitude, longitude: props.place.longitude}}
-  >
-    <Text>{props.selectedPlace === props.place.id ? 'YO' : 'yo'}</Text>
-  </MapView.Marker>
-);
+class Marker extends Component {
+  static propTypes = {
+    place: PropTypes.object,
+    selectedPlace: PropTypes.number,
+    level: PropTypes.number
+  }
 
-Marker.propTypes = {
-  place: PropTypes.object,
-  selectedPlace: PropTypes.number,
-  level: PropTypes.number
+  onPress() {
+    this.props.dispatch(selectedPlace(this.props.place.id));
+  }
+
+  render() {
+    const { place, selectedPlace } = this.props;
+    return (
+      <MapView.Marker
+        coordinate={{latitude: place.latitude, longitude: place.longitude}}
+        onPress={() => this.onPress()}
+      >
+        <Text>{selectedPlace === place.id ? 'YO' : 'yo'}</Text>
+      </MapView.Marker>
+    )
+  }
 };
 
 const bindActions = dispatch => ({
