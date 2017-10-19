@@ -27,6 +27,20 @@ class CarouselList extends Component {
     }
   }
 
+  componentWillReceiveProps({ selectedPlace }) {
+    if ( selectedPlace && this.carousel) {
+      let placeIndex = 0;
+      this.props.data.find(function(place, index) {
+        if (place.id === selectedPlace) {
+          placeIndex = index;
+          return true;
+        }
+        return false;
+      });
+      this.carousel.snapToItem(placeIndex);
+    }
+  }
+
   onSwipeUp() {
     if (this.state.level >= 2) {
       return;
@@ -65,7 +79,7 @@ class CarouselList extends Component {
         style={{...styles.carouselWrapper, top: carouselTop[level]}}
       >
         <Carousel
-          ref={(c) => {this._carousel = c;}}
+          ref={(c) => {this.carousel = c;}}
           data={this.props.data}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
