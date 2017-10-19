@@ -5,6 +5,7 @@ export const colors = {
   greenShadow: 'rgba(0, 198, 159, 0.2)',
   greenShadowDark: 'rgba(0, 198, 159, 0.4)',
   white: '#FFFFFF',
+  black: '#000000',
   blackShadow: {
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },

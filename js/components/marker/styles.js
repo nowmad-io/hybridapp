@@ -31,6 +31,9 @@ export default (selected = false, type = null) => {
     alignItems: 'center',
     ...colors.blackShadow
   };
+  const count = {
+    color: selected ? colors.white : colors.black
+  };
   const triangle = {
     position: 'absolute',
     bottom: selected ? 3 : 0,
@@ -45,5 +48,5 @@ export default (selected = false, type = null) => {
     'zIndex': 2
   };
 
-  return { wrapper, shadow, thumbnailWrapper, triangle}
+  return { wrapper, shadow, thumbnailWrapper, count, triangle}
 };

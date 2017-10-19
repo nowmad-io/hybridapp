@@ -19,28 +19,38 @@ class Marker extends Component {
     super(props);
 
     this.state = {
-      type: this.getPlaceType(props.place)
+      type: this.getPlaceType(props.place),
+      friendsCount: this.getFriendsCount(props.place)
     };
-    console.log('this.state', this.state);
   }
 
   getPlaceType(place) {
     const types = _.uniq(place.reviews.map((review, index) => {
         return review.user_type;
     }));
-    console.log('types', types)
+
     return (types.length === 1) ? types[0] : null;
+  }
+
+  getFriendsCount(place) {
+    const friends = _.uniqWith(place.reviews, _.isEqual);
+    return friends.length;
   }
 
   render() {
     const { selected, place } = this.props;
-    const _styles = styles(selected, this.state.type);
+    const { type, friendsCount } = this.state;
+    const _styles = styles(selected, type);
 
     return (
       <View style={_styles.wrapper}>
         <View style={_styles.shadow}>
           <View style={_styles.thumbnailWrapper}>
-            <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
+            {friendsCount > 1 ? (
+              <Text style={_styles.count}>{friendsCount}</Text>
+            ) : (
+              <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
+            )}
           </View>
         </View>
         <View style={_styles.triangle}/>
