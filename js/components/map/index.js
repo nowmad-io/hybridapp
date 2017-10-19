@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import shortid from 'shortid';
 
@@ -10,7 +11,9 @@ import styles from './styles';
 class Map extends Component {
   static propTypes = {
     places: PropTypes.array,
-    position: PropTypes.object
+    position: PropTypes.object,
+    selectedPlace: PropTypes.number,
+    level: PropTypes.number
   }
 
   constructor(props) {
@@ -26,8 +29,12 @@ class Map extends Component {
     }
   }
 
+  onPress() {
+    this.props.dispatch(selectedPlace(this.props.place.id));
+  }
+
   render() {
-    const { places, initialRegion, position } = this.props;
+    const { places, initialRegion, position, selectedPlace } = this.props;
     return (
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -40,14 +47,28 @@ class Map extends Component {
           longitudeDelta: 1
         } : initialRegion }>
         { places && places.map(place => (
-          <Marker
+          <MapView.Marker
             key={shortid.generate()}
-            place={place}
-          />
+            coordinate={{latitude: place.latitude, longitude: place.longitude}}
+            onPress={() => this.onPress()}
+          >
+            <Marker
+              selected={selectedPlace === place.id}
+            />
+          </MapView.Marker>
         )) }
       </MapView>
     )
   }
 }
 
-export default Map;
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = state => ({
+  selectedPlace: state.home.selectedPlace,
+  level: state.home.level
+});
+
+export default connect(mapStateToProps, bindActions)(Map);
