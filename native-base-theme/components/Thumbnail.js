@@ -5,8 +5,8 @@ export default (variables = variable) => {
 		'.square': {
 			borderRadius: 0,
 			'.small': {
-				width: 36,
-				height: 36,
+				width: 24,
+				height: 24,
 				borderRadius: 0,
 			},
 			'.large': {
@@ -16,8 +16,8 @@ export default (variables = variable) => {
 			},
 		},
 		'.small': {
-			width: 36,
-			height: 36,
+			width: 24,
+			height: 24,
 			borderRadius: 18,
 			'.square': {
 				borderRadius: 0,

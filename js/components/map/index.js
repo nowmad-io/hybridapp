@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import shortid from 'shortid';
 
+import { selectedPlace } from '../../actions/home'
+
 import Marker from '../marker';
 
 import styles from './styles';
@@ -29,8 +31,8 @@ class Map extends Component {
     }
   }
 
-  onPress() {
-    this.props.dispatch(selectedPlace(this.props.place.id));
+  onPress(place) {
+    this.props.dispatch(selectedPlace(place.id));
   }
 
   render() {
@@ -50,10 +52,11 @@ class Map extends Component {
           <MapView.Marker
             key={shortid.generate()}
             coordinate={{latitude: place.latitude, longitude: place.longitude}}
-            onPress={() => this.onPress()}
+            onPress={() => this.onPress(place)}
           >
             <Marker
               selected={selectedPlace === place.id}
+              place={place}
             />
           </MapView.Marker>
         )) }
