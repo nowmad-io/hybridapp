@@ -163,7 +163,7 @@ class Friends extends Component {
             <Icon name="ios-search" />
             <Input
               placeholder="Search"
-              onChangeText={(text) => this._onSearchInput(text)}
+              onChangeText={(query) => this._onSearchInput(query)}
             />
             <Icon name="ios-people" />
           </Item>

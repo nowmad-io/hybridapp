@@ -18,8 +18,8 @@ import { REQUEST_SUCCESS, REQUEST_ERROR } from '../constants/utils';
 const PATH = 'friends/';
 const FRIENSHIPS_PATH = 'friendships/';
 
-export function searchFriends(email) {
-  return apiCall(SEARCH_FRIENDS_SUCCESS, SEARCH_FRIENDS_ERROR, 'get', `${PATH}search/`, {}, { email });
+export function searchFriends(query) {
+  return apiCall(SEARCH_FRIENDS_SUCCESS, SEARCH_FRIENDS_ERROR, 'get', `${PATH}search/`, {}, { query });
 }
 
 export function fetchFriends() {
