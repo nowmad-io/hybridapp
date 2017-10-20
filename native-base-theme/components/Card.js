@@ -9,8 +9,6 @@ export default (variables = variable) => {
       shadowRadius: null,
       elevation: null
     },
-    marginVertical: 5,
-    marginHorizontal: 2,
     flex: 1,
     borderRadius: 0,
     flexWrap: "wrap",

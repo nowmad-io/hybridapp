@@ -22,7 +22,8 @@ class CarouselList extends Component {
     super(props);
 
     this.state = {
-      carouselTop: [dimension.height - 64 - 48, dimension.height - 256 - 48, 0 ], // 64, 256, 494
+
+      carouselTop: [80, 232, dimension.height - 40 - 12 ],
       level: 0
     }
   }
@@ -59,13 +60,15 @@ class CarouselList extends Component {
     this.props.dispatch(selectedPlace(this.props.data[selectedItem].id));
   }
 
-  _renderItem ({item, index}) {
+  _renderItem ({item, index}, carouselTop, level) {
     return (
       <Entry
         key={shortid.generate()}
         data={item}
         index={index}
         selected={item.id===this.props.selectedPlace}
+        height={carouselTop[level]}
+        level={level}
       />
     );
   }
@@ -77,12 +80,12 @@ class CarouselList extends Component {
         onSwipeUp={() => this.onSwipeUp()}
         onSwipeDown={() => this.onSwipeDown()}
         velocityThreshold={1}
-        style={{...styles.carouselWrapper, top: carouselTop[level]}}
+        style={{...styles.carouselWrapper, top: dimension.height - 28 - carouselTop[level]}}
       >
         <Carousel
           ref={(c) => {this.carousel = c;}}
           data={this.props.data}
-          renderItem={(data) => this._renderItem(data)}
+          renderItem={(data) => this._renderItem(data, carouselTop, level)}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
           inactiveSlideOpacity={1}

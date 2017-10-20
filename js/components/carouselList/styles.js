@@ -23,11 +23,14 @@ const entryBorderRadius = 8;
 export const entryStyles = {
   slideInnerContainer: (index) => ({
     width: itemWidth,
+    height: '100%',
     paddingRight: itemHorizontalMargin + 2,
     paddingLeft: itemHorizontalMargin,
     margin: 0,
   }),
   card: (selected = true) => ({
+    position: 'relative',
+    minHeight: viewportHeight ,
     height: '100%',
     width: '100%',
     flex: 0,
@@ -58,6 +61,7 @@ export const entryStyles = {
     paddingLeft: 0,
     paddingRight: 0,
     paddingTop: 0,
+    paddingBottom: 0,
   },
   wrapperLeft: {
     flex: 1,
@@ -77,7 +81,7 @@ export const entryStyles = {
   }),
   pictures: (length = 1, first = true) => ({
     width: '100%',
-    width: '100%',
+    height: '100%',
     flex: 1,
     marginLeft: length > 1 ? 1 : 0,
     marginBottom: length > 2 && first ? 1 : 0,
@@ -91,7 +95,23 @@ export const entryStyles = {
     borderWidth: 1,
     borderColor: colors.white,
     zIndex: 100 - index
-  })
+  }),
+  buttonWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    left: 3,
+    right: 5,
+    paddingTop: 8,
+    paddingRight: 12,
+    paddingLeft: 12,
+    paddingBottom: 8,
+    borderRadius: 0
+  },
+  button: {
+    height: 34,
+    width: '100%',
+    backgroundColor: colors.green,
+  }
 };
 
 export default {
@@ -100,7 +120,6 @@ export default {
     bottom: 0,
     left: 0,
     right: 0,
-    height: '100%',
   },
   carousel: {
     ...StyleSheet.absoluteFillObject,
