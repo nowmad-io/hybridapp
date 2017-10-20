@@ -7,9 +7,10 @@ import { ParallaxImage } from 'react-native-snap-carousel';
 import _ from 'lodash';
 import shortid from 'shortid';
 
-import { entryStyles } from './styles';
+import Tag from '../tag'
 
 const pictureHolder = require('../../../images/picture_holder.jpg');
+import { entryStyles } from './styles';
 
 class Entry extends Component {
 
@@ -34,6 +35,10 @@ class Entry extends Component {
     const pictures = _.flatten(orderedReviews.map((review) => {
       return review.pictures
     }));
+
+    const categories = _.uniqWith(_.flatten(orderedReviews.map((review) => {
+      return review.categories
+    })));
 
     return (
       <View style={entryStyles.slideInnerContainer(index)}>
@@ -79,6 +84,19 @@ class Entry extends Component {
                   )}
                 </View>
               )}
+              <View style={entryStyles.tagsWrapper}>
+                {_.slice(categories, 0, 3).map((categorie) => (
+                  <View
+                    key={shortid.generate()}
+                    style={entryStyles.tag}
+                  >
+                    <Tag
+                      key={shortid.generate()}
+                      text={categorie.name}
+                    />
+                  </View>
+                ))}
+              </View>
             </CardItem>
           </Card>
         </ScrollView>

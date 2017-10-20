@@ -63,9 +63,16 @@ export const entryStyles = {
     paddingTop: 0,
     paddingBottom: 0,
   },
-  wrapperLeft: {
-    flex: 1,
+  tagsWrapper: {
+    position: 'absolute',
+    bottom: 8,
+    left: 16,
+    right: 16,
     alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  tag: {
+    marginRight: 8,
   },
   wrapperRight: {
     flex: 1,
