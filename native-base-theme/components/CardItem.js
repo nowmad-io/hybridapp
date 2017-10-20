@@ -1,4 +1,5 @@
 import variable from './../variables/platform';
+import { colors } from '../../js/parameters';
 
 export default (variables = variable) => {
 	const platform = variables.platform;
@@ -7,10 +8,12 @@ export default (variables = variable) => {
 		'NativeBase.Left': {
 			'NativeBase.Body': {
 				'NativeBase.Text': {
-          fontSize: variables.noteFontSize,
+          fontSize: 16,
 					'.note': {
+            fontSize: 16,
 						fontWeight: '400',
 						marginRight: 20,
+            color: colors.greyDark
 					},
 				},
 				flex: 1,

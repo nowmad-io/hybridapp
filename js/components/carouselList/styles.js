@@ -27,29 +27,62 @@ export const entryStyles = {
     paddingLeft: itemHorizontalMargin,
     margin: 0,
   }),
-  card: {
+  card: (selected = true) => ({
     height: '100%',
     width: '100%',
     flex: 0,
+    borderRadius: 0,
+    borderTopWidth: selected ? 4 : 0,
+    paddingTop: selected ? 0 : 4,
+    borderColor: colors.green
+  }),
+  infoWrapper: {
+    paddingTop: 8,
+    paddingRight: 8,
+    paddingLeft: 12,
+    paddingBottom: 8,
   },
   thumbnail: {
     alignSelf: 'flex-start'
   },
   addressIcon: {
-    fontSize: 12,
-    marginRight: 10,
+    fontSize: 10,
     color: colors.grey
   },
   address: {
     paddingTop: 4,
-    fontSize: 10,
+    fontSize: 12,
     color: colors.grey,
   },
-  imageWrapper: {
+  picturesWrapper: {
     paddingLeft: 0,
     paddingRight: 0,
     paddingTop: 0,
   },
+  wrapperLeft: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  wrapperRight: {
+    flex: 1,
+    alignSelf: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+  },
+  mainPicture: (showcase = false) => ({
+    height: 102,
+    width: '100%',
+    flex: 1,
+    marginRight: showcase ? 1 : 0
+  }),
+  pictures: (length = 1, first = true) => ({
+    width: '100%',
+    width: '100%',
+    flex: 1,
+    marginLeft: length > 1 ? 1 : 0,
+    marginBottom: length > 2 && first ? 1 : 0,
+    marginTop: length > 2 && !first ? 1 : 0,
+  }),
   thumbnailFriends: (index) => ({
     position: 'absolute',
     top: 0,

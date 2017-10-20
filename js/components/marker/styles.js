@@ -13,9 +13,8 @@ export default (selected = false, type = null) => {
     height: wrapperSize,
     alignItems: 'center',
   };
-  const shadowBackgroundColor = selected ? colors.greenShadowDark : colors.greenShadow
   const shadow = {
-    backgroundColor: (type === 'me') ? 'none' : shadowBackgroundColor,
+    backgroundColor: (type === 'me') ? 'none' : colors.greenShadow,
     borderRadius: 100,
     width: wrapperSize - 1,
     height: wrapperSize - 1,

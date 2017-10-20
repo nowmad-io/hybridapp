@@ -65,6 +65,7 @@ class CarouselList extends Component {
         key={shortid.generate()}
         data={item}
         index={index}
+        selected={item.id===this.props.selectedPlace}
       />
     );
   }
@@ -81,7 +82,7 @@ class CarouselList extends Component {
         <Carousel
           ref={(c) => {this.carousel = c;}}
           data={this.props.data}
-          renderItem={this._renderItem}
+          renderItem={(data) => this._renderItem(data)}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
           inactiveSlideOpacity={1}
