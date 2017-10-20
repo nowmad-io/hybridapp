@@ -31,8 +31,8 @@ export default (variables = variable) => {
 				borderRadius: 0,
 			},
 		},
-		width: 56,
-		height: 56,
+		width: 40,
+		height: 40,
 		borderRadius: 28,
 	};
 

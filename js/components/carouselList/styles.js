@@ -24,7 +24,7 @@ export const entryStyles = {
     paddingRight: itemHorizontalMargin + 2,
     paddingLeft: itemHorizontalMargin,
     margin: 0
-  }),
+  })
 };
 
 export default {

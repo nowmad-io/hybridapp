@@ -7,8 +7,8 @@ export default (variables = variable) => {
 		'NativeBase.Left': {
 			'NativeBase.Body': {
 				'NativeBase.Text': {
+          fontSize: variables.noteFontSize,
 					'.note': {
-						color: variables.listNoteColor,
 						fontWeight: '400',
 						marginRight: 20,
 					},

@@ -20,7 +20,7 @@ class Marker extends Component {
 
     this.state = {
       type: this.getPlaceType(props.place),
-      friendsCount: this.getFriendsCount(props.place)
+      friendsCount: props.place.reviews.length
     };
   }
 
@@ -30,11 +30,6 @@ class Marker extends Component {
     }));
 
     return (types.length === 1) ? types[0] : null;
-  }
-
-  getFriendsCount(place) {
-    const friends = _.uniqWith(place.reviews, _.isEqual);
-    return friends.length;
   }
 
   render() {

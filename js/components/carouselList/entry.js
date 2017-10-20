@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { View, Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body } from 'native-base';
 import { ParallaxImage } from 'react-native-snap-carousel';
+import _ from 'lodash';
 
 import { entryStyles } from './styles';
 
@@ -14,17 +15,28 @@ class Entry extends Component {
   };
 
   render () {
-    const { data: { reviews }, index } = this.props;
+    let { data: { reviews }, index } = this.props;
+
+    const myReview = _.find(reviews, (review) => {
+      return review.user_type === 'me';
+    })
+    const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
+
+    const orderedReviews = _.concat(_.compact([myReview]), otherReviews);
+
     return (
       <View
         style={entryStyles.slideInnerContainer(index)}>
         <Card style={{height: '100%', width: '100%', flex: 0}}>
           <CardItem>
             <Left>
-              <Thumbnail source={{uri: reviews[0].created_by.picture}} />
+              <Thumbnail source={{uri: orderedReviews[0].created_by.picture}} />
               <Body>
-                <Text>{ reviews[0].created_by.first_name }{ reviews.length > 1 ? ` and ${reviews.length - 1} friends` : ''} </Text>
-                <Text note>- { reviews[0].short_description } -</Text>
+                <Text>
+                  {orderedReviews[0].user_type === 'me' ? 'You' : orderedReviews[0].created_by.first_name }
+                  {orderedReviews.length > 1 ? ` and ${orderedReviews.length - 1} more friend${orderedReviews.length > 2 ? 's' : ''}` : ''}
+                </Text>
+                <Text note>- { orderedReviews[0].short_description } -</Text>
               </Body>
             </Left>
           </CardItem>
