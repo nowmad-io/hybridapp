@@ -4,6 +4,11 @@ export default (variables = variable) => {
 	const thumbnailTheme = {
 		'.square': {
 			borderRadius: 0,
+			'.xsmall': {
+				width: 18,
+				height: 18,
+				borderRadius: 0,
+			},
 			'.small': {
 				width: 24,
 				height: 24,
@@ -12,6 +17,14 @@ export default (variables = variable) => {
 			'.large': {
 				width: 80,
 				height: 80,
+				borderRadius: 0,
+			},
+		},
+		'.xsmall': {
+			width: 18,
+			height: 18,
+			borderRadius: 18,
+			'.square': {
 				borderRadius: 0,
 			},
 		},

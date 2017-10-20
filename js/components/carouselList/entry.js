@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native';
-import { View, Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body } from 'native-base';
+import { View, Container, Header, Content, Card, CardItem, Thumbnail, Text,
+  Button, Icon, Left, Body } from 'native-base';
 import { ParallaxImage } from 'react-native-snap-carousel';
 import _ from 'lodash';
+import shortid from 'shortid';
 
 import { entryStyles } from './styles';
 
@@ -25,19 +27,29 @@ class Entry extends Component {
     const orderedReviews = _.concat(_.compact([myReview]), otherReviews);
 
     return (
-      <View
-        style={entryStyles.slideInnerContainer(index)}>
-        <Card style={{height: '100%', width: '100%', flex: 0}}>
+      <View style={entryStyles.slideInnerContainer(index)}>
+        <Card style={entryStyles.card}>
           <CardItem>
             <Left>
-              <Thumbnail source={{uri: orderedReviews[0].created_by.picture}} />
+              <Thumbnail style={entryStyles.thumbnail} source={{uri: orderedReviews[0].created_by.picture}} />
               <Body>
                 <Text>
-                  {orderedReviews[0].user_type === 'me' ? 'You' : orderedReviews[0].created_by.first_name }
+                  {myReview ? 'You' : orderedReviews[0].created_by.first_name }
                   {orderedReviews.length > 1 ? ` and ${orderedReviews.length - 1} more friend${orderedReviews.length > 2 ? 's' : ''}` : ''}
                 </Text>
                 <Text note>- { orderedReviews[0].short_description } -</Text>
+                <Text style={entryStyles.address}>
+                    <Icon style={entryStyles.addressIcon} name="md-pin" />  Adress of the place
+                </Text>
               </Body>
+              {_.without(orderedReviews, orderedReviews[0]).map((review, index) => (
+                <Thumbnail
+                  xsmall
+                  key={shortid.generate()}
+                  style={entryStyles.thumbnailFriends(index)}
+                  source={{uri: review.created_by.picture}}
+                />
+              ))}
             </Left>
           </CardItem>
           <CardItem>

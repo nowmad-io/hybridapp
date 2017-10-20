@@ -1,5 +1,7 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 
+import { colors } from '../../parameters';
+
 export const dimension = {
   width: viewportWidth,
   height: viewportHeight
@@ -24,6 +26,33 @@ export const entryStyles = {
     paddingRight: itemHorizontalMargin + 2,
     paddingLeft: itemHorizontalMargin,
     margin: 0
+  }),
+  card: {
+    height: '100%',
+    width: '100%',
+    flex: 0
+  },
+  thumbnail: {
+    alignSelf: 'flex-start'
+  },
+  addressIcon: {
+    fontSize: 12,
+    marginRight: 10,
+    color: colors.grey
+  },
+  address: {
+    paddingTop: 4,
+    fontSize: 10,
+    color: colors.grey,
+  },
+  thumbnailFriends: (index) => ({
+    position: 'absolute',
+    top: 0,
+    right: index * 8,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.white,
+    zIndex: 100 - index
   })
 };
 
