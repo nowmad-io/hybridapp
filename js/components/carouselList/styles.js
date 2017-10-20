@@ -25,12 +25,12 @@ export const entryStyles = {
     width: itemWidth,
     paddingRight: itemHorizontalMargin + 2,
     paddingLeft: itemHorizontalMargin,
-    margin: 0
+    margin: 0,
   }),
   card: {
     height: '100%',
     width: '100%',
-    flex: 0
+    flex: 0,
   },
   thumbnail: {
     alignSelf: 'flex-start'
