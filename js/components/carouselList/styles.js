@@ -45,6 +45,11 @@ export const entryStyles = {
     fontSize: 10,
     color: colors.grey,
   },
+  imageWrapper: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 0,
+  },
   thumbnailFriends: (index) => ({
     position: 'absolute',
     top: 0,

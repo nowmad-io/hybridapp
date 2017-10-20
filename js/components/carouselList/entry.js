@@ -39,7 +39,7 @@ class Entry extends Component {
                 </Text>
                 <Text note>- { orderedReviews[0].short_description } -</Text>
                 <Text style={entryStyles.address}>
-                    <Icon style={entryStyles.addressIcon} name="md-pin" />  Adress of the place
+                    <Icon style={entryStyles.addressIcon} name="md-pin" />  River Garonne, Bordeaux, France
                 </Text>
               </Body>
               {_.without(orderedReviews, orderedReviews[0]).map((review, index) => (
@@ -52,9 +52,9 @@ class Entry extends Component {
               ))}
             </Left>
           </CardItem>
-          <CardItem>
+          <CardItem style={entryStyles.imageWrapper}>
             <Body>
-              <Image source={{uri: 'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-163188684_medium.jpg?sharp=10&vib=20&w=600'}} style={{height: 200, width: 200, flex: 1}}/>
+              <Image source={{uri: 'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-163188684_medium.jpg?sharp=10&vib=20&w=600'}} style={{height: 102, width: '100%', flex: 0}}/>
               <Text>
                 Description
               </Text>
