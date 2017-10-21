@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import shortid from 'shortid';
-
-import { selectedPlace } from '../../actions/home'
-
-import Marker from '../marker';
 
 import styles from './styles';
 
 class Map extends Component {
   static propTypes = {
-    places: PropTypes.array,
     position: PropTypes.object,
-    selectedPlace: PropTypes.number,
-    level: PropTypes.number
+    children: PropTypes.array
   }
 
   constructor(props) {
@@ -31,16 +23,11 @@ class Map extends Component {
     };
   }
 
-  onPress(place) {
-    this.props.dispatch(selectedPlace(place.id));
-  }
-
   render() {
     const { places, initialRegion, position, selectedPlace, me } = this.props;
     return (
       <MapView
         provider={PROVIDER_GOOGLE}
-        ref={(ref) => { this.mapRef = ref }}
         style={styles.map}
         showsUserLocation={true}
         initialRegion={position ? {
@@ -48,31 +35,10 @@ class Map extends Component {
           latitudeDelta: 1,
           longitudeDelta: 1
         } : initialRegion }>
-        { places && places.map(place => (
-          <MapView.Marker
-            key={shortid.generate()}
-            coordinate={{latitude: place.latitude, longitude: place.longitude}}
-            onPress={() => this.onPress(place)}
-            zIndex={selectedPlace === place.id ? 10 : 5 }
-          >
-            <Marker
-              selected={selectedPlace === place.id}
-              place={place}
-            />
-          </MapView.Marker>
-        )) }
+        {this.props.children}
       </MapView>
     )
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
-const mapStateToProps = state => ({
-  selectedPlace: state.home.selectedPlace,
-  level: state.home.level
-});
-
-export default connect(mapStateToProps, bindActions)(Map);
+export default Map;

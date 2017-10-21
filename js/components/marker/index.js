@@ -12,7 +12,7 @@ class Marker extends Component {
   static propTypes = {
     selected: PropTypes.bool,
     place: PropTypes.object,
-    me: PropTypes.object,
+    onMarkerPress: PropTypes.func,
   };
 
   constructor(props) {
@@ -38,18 +38,24 @@ class Marker extends Component {
     const _styles = styles(selected, type);
 
     return (
-      <View style={_styles.wrapper}>
-        <View style={_styles.shadow}>
-          <View style={_styles.thumbnailWrapper}>
-            {friendsCount > 1 ? (
-              <Text style={_styles.count}>{friendsCount}</Text>
-            ) : (
-              <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
-            )}
+      <MapView.Marker
+        coordinate={{latitude: place.latitude, longitude: place.longitude}}
+        onPress={() => this.props.onMarkerPress(place)}
+        zIndex={selected ? 10 : 5 }
+      >
+        <View style={_styles.wrapper}>
+          <View style={_styles.shadow}>
+            <View style={_styles.thumbnailWrapper}>
+              {friendsCount > 1 ? (
+                <Text style={_styles.count}>{friendsCount}</Text>
+              ) : (
+                <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
+              )}
+            </View>
           </View>
+          <View style={_styles.triangle}/>
         </View>
-        <View style={_styles.triangle}/>
-      </View>
+      </MapView.Marker>
     )
   }
 }

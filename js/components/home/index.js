@@ -5,10 +5,13 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
 import { View, Icon, Fab, Text } from 'native-base';
+import shortid from 'shortid';
 
 import Map from '../map';
+import Marker from '../marker';
 import CarouselList from '../carouselList';
 
+import { selectedPlace } from '../../actions/home'
 import { fetchReviews } from '../../api/reviews';
 
 import styles from './styles';
@@ -26,16 +29,51 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      map: null
+    };
+  }
+
+  componentWillReceiveProps({ selectedPlace }) {
+    if ( selectedPlace && this.carousel) {
+      let placeIndex = 0;
+      this.props.data.find(function(place, index) {
+        if (place.id === selectedPlace) {
+          placeIndex = index;
+          return true;
+        }
+        return false;
+      });
+      this.carousel.snapToItem(placeIndex);
+    }
+  }
+
+  onMarkerPress = (place) => {
+    this.props.dispatch(selectedPlace(place.id));
+  }
+
+  onRef = (ref) => {
+    this.setState({map: ref});
   }
 
   render() {
-    const { props: { places, position } } = this;
+    const { props: { places, position, selectedPlace } } = this;
     return (
       <View style={styles.container}>
         <Map
-          places={places}
           position={position}
-        />
+          onMarkerPress={this.onMarkerPress}
+        >
+          { places && places.map(place => (
+            <Marker
+              key={shortid.generate()}
+              selected={selectedPlace === place.id}
+              place={place}
+              onMarkerPress={this.onMarkerPress}
+            />
+          ))}
+        </Map>
         <Fab
           direction="up"
           style={{ backgroundColor: '#5067FF' }}
@@ -58,7 +96,8 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   places: state.home.places,
-  position: state.home.position
+  position: state.home.position,
+  selectedPlace: state.home.selectedPlace
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
