@@ -22,7 +22,6 @@ class CarouselList extends Component {
     super(props);
 
     this.state = {
-
       carouselTop: [80, 232, dimension.height - 40 - 12 ],
       level: 0
     }

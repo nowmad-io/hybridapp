@@ -28,17 +28,36 @@ export const entryStyles = {
     paddingLeft: itemHorizontalMargin,
     margin: 0,
   }),
-  card: (selected = true) => ({
+  card: (selected = true, level = 0) => ({
     position: 'relative',
-    minHeight: viewportHeight - 36,
+    minHeight: viewportHeight - 40,
     height: '100%',
     width: '100%',
     flex: 0,
     borderRadius: 0,
-    borderTopWidth: selected ? 4 : 0,
+    borderTopWidth: selected && level < 2 ? 4 : 0,
     paddingTop: selected ? 0 : 4,
-    borderColor: colors.green
+    borderColor: colors.green,
+    paddingBottom: level > 2 ? 50 : 0
   }),
+  addressWrapper: {
+    borderColor: colors.green,
+    borderBottomWidth: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: 1,
+    paddingBottom: 4
+  },
+  address: {
+    paddingTop: 4,
+    fontSize: 12,
+    alignSelf: 'center',
+    color: colors.grey,
+  },
+  addressIcon: {
+    fontSize: 10,
+    color: colors.grey
+  },
   buttonWrapper: {
     position: 'absolute',
     bottom: 0,

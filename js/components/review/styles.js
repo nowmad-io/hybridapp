@@ -71,3 +71,26 @@ export const showcaseStyles = {
     flexDirection: 'column',
   },
 }
+
+export const reviewStyle = {
+  reviewWrapper: {
+    borderBottomWidth: 1,
+    borderColor: colors.grey
+  },
+  caption: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    color: colors.white,
+    fontSize: 14
+  },
+  wishList: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  wishListIcon: {
+    flex: 1,
+    fontSize: 24,
+    color: colors.grey,
+  }
+}
