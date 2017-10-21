@@ -67,7 +67,6 @@ class CarouselList extends Component {
         data={item}
         index={index}
         selected={item.id===this.props.selectedPlace}
-        height={carouselTop[level]}
         level={level}
       />
     );
