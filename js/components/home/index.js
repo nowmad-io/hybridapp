@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
-import { View, Icon, Fab, Text } from 'native-base';
+import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
 import shortid from 'shortid';
 
 import Map from '../map';
@@ -16,10 +16,6 @@ import { selectedPlace, regionChanged } from '../../actions/home'
 import styles from './styles';
 
 class Home extends Component {
-  static navigationOptions = {
-    header: null,
-  };
-
   static propTypes = {
     navigation: PropTypes.object,
     places: PropTypes.array,
@@ -68,7 +64,20 @@ class Home extends Component {
   render() {
     const { props: { places, position, selectedPlace } } = this;
     return (
-      <View style={styles.container}>
+      <Container>
+        <Header style={styles.header}>
+          <Body>
+            <Title>Header</Title>
+          </Body>
+          <Right>
+            <Button
+              onPress={() => this.props.navigation.navigate('DrawerOpen')}
+              transparent
+            >
+              <Icon name='md-menu' />
+            </Button>
+          </Right>
+        </Header>
         <Map
           onRef={this.onRef}
           position={position || region}
@@ -84,18 +93,12 @@ class Home extends Component {
             />
           ))}
         </Map>
-        <Fab
-          direction="up"
-          style={{ backgroundColor: '#5067FF' }}
-          position="topRight"
-          onPress={() => this.props.navigation.navigate('DrawerOpen')}>
-          <Icon name="ios-menu" />
-        </Fab>
         <CarouselList
           data={places}
           customStyle={styles.carousel}
+          navigation={this.props.navigation}
         />
-      </View>
+      </Container>
     );
   }
 }

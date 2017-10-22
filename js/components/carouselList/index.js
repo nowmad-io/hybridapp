@@ -8,10 +8,12 @@ import { selectedPlace, levelChange } from '../../actions/home'
 import GestureRecognizer from '../swipeGestures';
 import Entry from './entry';
 
+import variables from "../../../native-base-theme/variables/platform";
 import styles, { dimension, sliderWidth, itemWidth } from './styles';
 
 class CarouselList extends Component {
   static propTypes = {
+    navigation: PropTypes.object,
     data: PropTypes.array,
     customStyle: PropTypes.object,
     selectedPlace: PropTypes.object,
@@ -22,7 +24,7 @@ class CarouselList extends Component {
     super(props);
 
     this.state = {
-      carouselTop: [80, 232, dimension.height - 40 - 12 ]
+      carouselTop: [80, 232, dimension.height - variables.toolbarHeight- 40 - 12 ]
     }
   }
 
@@ -66,6 +68,7 @@ class CarouselList extends Component {
         index={index}
         selected={item.id===this.props.selectedPlace}
         level={level}
+        navigation={this.props.navigation}
       />
     );
   }

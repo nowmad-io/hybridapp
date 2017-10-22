@@ -13,6 +13,7 @@ import { entryStyles } from './styles';
 class Entry extends Component {
 
   static propTypes = {
+    navigation: PropTypes.object,
     data: PropTypes.object.isRequired,
     index: PropTypes.number,
     selected: PropTypes.bool,
@@ -59,7 +60,10 @@ class Entry extends Component {
         </ScrollView>
         { level > 0 && (
           <CardItem style={entryStyles.buttonWrapper}>
-            <Button style={entryStyles.button}>
+            <Button
+              style={entryStyles.button}
+              onPress={() => this.props.navigation.navigate('AddReview')}
+            >
               <Text>ADD REVIEW</Text>
             </Button>
           </CardItem>
