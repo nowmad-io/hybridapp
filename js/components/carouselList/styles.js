@@ -36,7 +36,7 @@ export const entryStyles = {
     flex: 0,
     borderRadius: 0,
     borderTopWidth: selected && level < 2 ? 4 : 0,
-    paddingTop: selected ? 0 : 4,
+    paddingTop: selected || level === 2 ? 0 : 4,
     borderColor: colors.green,
     paddingBottom: level > 2 ? 50 : 0
   }),

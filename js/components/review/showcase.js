@@ -16,9 +16,6 @@ const Showcase = (props) => {
       return review.pictures
   }));
 
-  console.log('reviews', props.reviews)
-  console.log('pictures', pictures)
-
   const thumbnails = _.without(props.reviews, props.reviews[0]);
 
   const categories = _.uniqWith(_.flatten(props.reviews.map((review) => {

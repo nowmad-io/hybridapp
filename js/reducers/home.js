@@ -1,6 +1,7 @@
 import {
   GEOLOCATION,
-  SELECTED_PLACE
+  SELECTED_PLACE,
+  LEVEL_CHANGE
 } from '../constants/home';
 import {
   PLACES_SUCCESS
@@ -10,7 +11,7 @@ import { LOGOUT } from '../constants/auth';
 const initialState = {
   places: [],
   selectedPlace: null,
-  level: 1,
+  level: 0,
   position: null
 };
 
@@ -24,6 +25,8 @@ function HomeReducer(state = initialState, action) {
       };
     case SELECTED_PLACE:
       return { ...state, selectedPlace: action.id}
+    case LEVEL_CHANGE:
+      return { ...state, level: action.level}
     case GEOLOCATION:
       return { ...state, position: action.position}
     case LOGOUT:

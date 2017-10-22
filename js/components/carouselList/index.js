@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import shortid from 'shortid';
 
-import { selectedPlace } from '../../actions/home'
+import { selectedPlace, levelChange } from '../../actions/home'
 import GestureRecognizer from '../swipeGestures';
 import Entry from './entry';
 
@@ -22,8 +22,7 @@ class CarouselList extends Component {
     super(props);
 
     this.state = {
-      carouselTop: [80, 232, dimension.height - 40 - 12 ],
-      level: 0
+      carouselTop: [80, 232, dimension.height - 40 - 12 ]
     }
   }
 
@@ -42,17 +41,17 @@ class CarouselList extends Component {
   }
 
   onSwipeUp() {
-    if (this.state.level >= 2) {
+    if (this.props.level >= 2) {
       return;
     }
-    this.setState({level: this.state.level + 1})
+    this.props.dispatch(levelChange(this.props.level + 1));
   }
 
   onSwipeDown() {
-    if (this.state.level <= 0) {
+    if (this.props.level <= 0) {
       return;
     }
-    this.setState({level: this.state.level - 1})
+    this.props.dispatch(levelChange(this.props.level - 1))
   }
 
   onSnapToItem(selectedItem) {
@@ -72,7 +71,8 @@ class CarouselList extends Component {
   }
 
   render() {
-    const { carouselTop, level } = this.state;
+    const { carouselTop } = this.state;
+    const { level } = this.props;
     return (
       <GestureRecognizer
         onSwipeUp={() => this.onSwipeUp()}

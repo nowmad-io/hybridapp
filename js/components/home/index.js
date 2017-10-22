@@ -12,7 +12,6 @@ import Marker from '../marker';
 import CarouselList from '../carouselList';
 
 import { selectedPlace } from '../../actions/home'
-import { fetchReviews } from '../../api/reviews';
 
 import styles from './styles';
 
@@ -23,8 +22,9 @@ class Home extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
-    reviews: PropTypes.array,
-    position: PropTypes.object
+    places: PropTypes.array,
+    position: PropTypes.object,
+    level: PropTypes.number
   }
 
   constructor(props) {
@@ -36,16 +36,14 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({ selectedPlace }) {
-    if ( selectedPlace && this.carousel) {
-      let placeIndex = 0;
-      this.props.data.find(function(place, index) {
+    if ( selectedPlace && this.props.level === 1 && this._map) {
+      const selected = this.props.places.find(function(place, index) {
         if (place.id === selectedPlace) {
-          placeIndex = index;
-          return true;
+          return place;
         }
         return false;
       });
-      this.carousel.snapToItem(placeIndex);
+      this._map.animateToCoordinate(selected);
     }
   }
 
@@ -54,7 +52,7 @@ class Home extends Component {
   }
 
   onRef = (ref) => {
-    this.setState({map: ref});
+    this._map = ref;
   }
 
   render() {
@@ -62,6 +60,7 @@ class Home extends Component {
     return (
       <View style={styles.container}>
         <Map
+          onRef={this.onRef}
           position={position}
           onMarkerPress={this.onMarkerPress}
         >
@@ -97,7 +96,8 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   places: state.home.places,
   position: state.home.position,
-  selectedPlace: state.home.selectedPlace
+  selectedPlace: state.home.selectedPlace,
+  level: state.home.level
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

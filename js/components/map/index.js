@@ -7,7 +7,8 @@ import styles from './styles';
 class Map extends Component {
   static propTypes = {
     position: PropTypes.object,
-    children: PropTypes.array
+    children: PropTypes.array,
+    onRef: PropTypes.func
   }
 
   constructor(props) {
@@ -27,6 +28,7 @@ class Map extends Component {
     const { places, initialRegion, position, selectedPlace, me } = this.props;
     return (
       <MapView
+        ref={(ref) => this.props.onRef(ref)}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         showsUserLocation={true}
