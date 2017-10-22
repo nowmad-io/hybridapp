@@ -7,6 +7,7 @@ import _ from 'lodash';
 import shortid from 'shortid';
 
 import { Showcase, Review } from '../review';
+import BasicButton from '../basicButton';
 
 import { entryStyles } from './styles';
 
@@ -19,6 +20,10 @@ class Entry extends Component {
     selected: PropTypes.bool,
     level: PropTypes.number
   };
+
+  onPressAddReview = () => {
+    this.props.navigation.navigate('AddReview', { place: this.props.place })
+  }
 
   render () {
     let { place: { reviews }, index, selected, level } = this.props;
@@ -59,14 +64,9 @@ class Entry extends Component {
           </Card>
         </ScrollView>
         { level > 0 && (
-          <CardItem style={entryStyles.buttonWrapper}>
-            <Button
-              style={entryStyles.button}
-              onPress={() => this.props.navigation.navigate('AddReview', { place: this.props.place })}
-            >
-              <Text>ADD REVIEW</Text>
-            </Button>
-          </CardItem>
+          <BasicButton
+            text='ADD REVIEW'
+            onPress={this.onPressAddReview} />
         )}
       </View>
     );

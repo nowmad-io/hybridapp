@@ -58,22 +58,6 @@ export const entryStyles = {
     fontSize: 10,
     color: colors.grey
   },
-  buttonWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 3,
-    right: 5,
-    paddingTop: 8,
-    paddingRight: 12,
-    paddingLeft: 12,
-    paddingBottom: 8,
-    borderRadius: 0
-  },
-  button: {
-    height: 34,
-    width: '100%',
-    backgroundColor: colors.green,
-  }
 };
 
 export default {

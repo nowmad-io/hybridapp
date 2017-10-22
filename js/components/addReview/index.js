@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Header, Content, Left, Body, Right, Button, Icon, Text, View } from 'native-base';
+import { Container, Header, Content, Left, Body, Right, Button, Icon,
+  Text, View, Item, Input, Label, ListItem, Radio } from 'native-base';
 
 import Map from '../map';
 import Marker from '../marker';
@@ -47,7 +48,7 @@ class AddReview extends Component {
             </Button>
           </Right>
         </Header>
-        <Content>
+        <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
               onRef={this.onRef}
@@ -60,7 +61,40 @@ class AddReview extends Component {
              <Marker place={this.state.place} />
             </Map>
           </View>
+          <View>
+            <Text>My review</Text>
+            <Item stackedLabel>
+              <Label>Add a short description about this place</Label>
+              <Input placeholder="e.g The best place !" />
+            </Item>
+            <View>
+              <ListItem>
+                <Text>travelling here</Text>
+                <Right>
+                  <Radio selected={false} />
+                </Right>
+              </ListItem>
+              <ListItem>
+                <Text>living here</Text>
+                <Right>
+                  <Radio selected={true} />
+                </Right>
+              </ListItem>
+              <ListItem>
+                <Text>local</Text>
+                <Right>
+                  <Radio selected={true} />
+                </Right>
+              </ListItem>
+            </View>
+          </View>
         </Content>
+        <Button
+          style={{}}
+          onPress={() => console.log('boom')}
+        >
+          <Text>PUBLISH</Text>
+        </Button>
       </Container>
     );
   }
