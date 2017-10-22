@@ -14,14 +14,14 @@ class Entry extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
-    data: PropTypes.object.isRequired,
+    place: PropTypes.object.isRequired,
     index: PropTypes.number,
     selected: PropTypes.bool,
     level: PropTypes.number
   };
 
   render () {
-    let { data: { reviews }, index, selected, level } = this.props;
+    let { place: { reviews }, index, selected, level } = this.props;
 
     const myReview = _.find(reviews, (review) => {
       return review.user_type === 'me';
@@ -62,7 +62,7 @@ class Entry extends Component {
           <CardItem style={entryStyles.buttonWrapper}>
             <Button
               style={entryStyles.button}
-              onPress={() => this.props.navigation.navigate('AddReview')}
+              onPress={() => this.props.navigation.navigate('AddReview', { place: this.props.place })}
             >
               <Text>ADD REVIEW</Text>
             </Button>

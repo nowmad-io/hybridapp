@@ -6,10 +6,15 @@ import styles from './styles';
 
 class Map extends Component {
   static propTypes = {
-    position: PropTypes.object,
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object
+    ]),
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    zoomEnabled: PropTypes.bool,
+    rotateEnabled: PropTypes.bool,
+    scrollEnabled: PropTypes.bool,
   }
 
   constructor(props) {
@@ -17,15 +22,20 @@ class Map extends Component {
   }
 
   render() {
-    const { places, initialRegion, position, me, region } = this.props;
+    const { region, zoomEnabled, rotateEnabled, scrollEnabled } = this.props;
     return (
       <MapView
         ref={(ref) => this.props.onRef(ref)}
+        onMapReady={() => this.props.onMapReady()}
         onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         showsUserLocation={true}
-        initialRegion={region}>
+        initialRegion={region}
+        zoomEnabled={zoomEnabled}
+        rotateEnabled={rotateEnabled}
+        scrollEnabled={scrollEnabled}
+      >
         {this.props.children}
       </MapView>
     )
@@ -35,6 +45,10 @@ class Map extends Component {
 Map.defaultProps = {
   onRef: () => {},
   onRegionChangeComplete: () => {},
+  onMapReady: () => {},
+  zoomEnabled: true,
+  rotateEnabled: true,
+  scrollEnabled: true,
 }
 
 export default Map;

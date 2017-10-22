@@ -52,8 +52,11 @@ class Home extends Component {
 
   onRef = (ref) => {
     this._map = ref;
+  }
+
+  onMapReady = () => {
     if (this._map && this.props.selectedPlace) {
-      ref.animateToCoordinate(this.props.selectedPlace);
+      this._map.animateToCoordinate(this.props.selectedPlace);
     }
   }
 
@@ -62,7 +65,7 @@ class Home extends Component {
   }
 
   render() {
-    const { props: { places, position, selectedPlace } } = this;
+    const { props: { places, position, selectedPlace, region } } = this;
     return (
       <Container>
         <Header style={styles.header}>
@@ -80,6 +83,7 @@ class Home extends Component {
         </Header>
         <Map
           onRef={this.onRef}
+          onMapReady={this.onMapReady}
           position={position || region}
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -94,7 +98,7 @@ class Home extends Component {
           ))}
         </Map>
         <CarouselList
-          data={places}
+          places={places}
           customStyle={styles.carousel}
           navigation={this.props.navigation}
         />

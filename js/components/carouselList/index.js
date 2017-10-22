@@ -14,7 +14,7 @@ import styles, { dimension, sliderWidth, itemWidth } from './styles';
 class CarouselList extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    data: PropTypes.array,
+    places: PropTypes.array,
     customStyle: PropTypes.object,
     selectedPlace: PropTypes.object,
     level: PropTypes.number
@@ -31,7 +31,7 @@ class CarouselList extends Component {
   componentWillReceiveProps({ selectedPlace }) {
     if ( selectedPlace.id !== this.props.selectedPlace.id && this.carousel) {
       let placeIndex = 0;
-      this.props.data.find(function(place, index) {
+      this.props.places.find(function(place, index) {
         if (place.id === selectedPlace.id) {
           placeIndex = index;
           return true;
@@ -57,14 +57,14 @@ class CarouselList extends Component {
   }
 
   onSnapToItem(selectedItem) {
-    this.props.dispatch(selectedPlace(this.props.data[selectedItem]));
+    this.props.dispatch(selectedPlace(this.props.places[selectedItem]));
   }
 
   _renderItem ({item, index}, carouselTop, level) {
     return (
       <Entry
         key={item.id}
-        data={item}
+        place={item}
         index={index}
         selected={item.id===this.props.selectedPlace}
         level={level}
@@ -85,7 +85,7 @@ class CarouselList extends Component {
       >
         <Carousel
           ref={(c) => {this.carousel = c;}}
-          data={this.props.data}
+          data={this.props.places}
           renderItem={(data) => this._renderItem(data, carouselTop, level)}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
