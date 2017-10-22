@@ -11,7 +11,7 @@ import Map from '../map';
 import Marker from '../marker';
 import CarouselList from '../carouselList';
 
-import { selectedPlace } from '../../actions/home'
+import { selectedPlace, regionChanged } from '../../actions/home'
 
 import styles from './styles';
 
@@ -24,7 +24,9 @@ class Home extends Component {
     navigation: PropTypes.object,
     places: PropTypes.array,
     position: PropTypes.object,
-    level: PropTypes.number
+    level: PropTypes.number,
+    selectedPlace: PropTypes.object,
+    region: PropTypes.object,
   }
 
   constructor(props) {
@@ -35,10 +37,11 @@ class Home extends Component {
     };
   }
 
-  componentWillReceiveProps({ selectedPlace }) {
-    if ( selectedPlace && this.props.level === 1 && this._map) {
+  componentWillReceiveProps({ selectedPlace, level }) {
+    if (selectedPlace.id !== this.props.selectedPlace.id
+        && this.props.level === 1 && this._map) {
       const selected = this.props.places.find(function(place, index) {
-        if (place.id === selectedPlace) {
+        if (place.id === selectedPlace.id) {
           return place;
         }
         return false;
@@ -48,11 +51,18 @@ class Home extends Component {
   }
 
   onMarkerPress = (place) => {
-    this.props.dispatch(selectedPlace(place.id));
+    this.props.dispatch(selectedPlace(place));
   }
 
   onRef = (ref) => {
     this._map = ref;
+    if (this._map && this.props.selectedPlace) {
+      ref.animateToCoordinate(this.props.selectedPlace);
+    }
+  }
+
+  onRegionChangeComplete = (region) => {
+    // this.props.dispatch(regionChanged(region));
   }
 
   render() {
@@ -61,13 +71,14 @@ class Home extends Component {
       <View style={styles.container}>
         <Map
           onRef={this.onRef}
-          position={position}
+          position={position || region}
           onMarkerPress={this.onMarkerPress}
+          onRegionChangeComplete={this.onRegionChangeComplete}
         >
           { places && places.map(place => (
             <Marker
               key={shortid.generate()}
-              selected={selectedPlace === place.id}
+              selected={selectedPlace.id === place.id}
               place={place}
               onMarkerPress={this.onMarkerPress}
             />
@@ -97,7 +108,8 @@ const mapStateToProps = state => ({
   places: state.home.places,
   position: state.home.position,
   selectedPlace: state.home.selectedPlace,
-  level: state.home.level
+  level: state.home.level,
+  region: state.home.region
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

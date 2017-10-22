@@ -8,39 +8,33 @@ class Map extends Component {
   static propTypes = {
     position: PropTypes.object,
     children: PropTypes.array,
-    onRef: PropTypes.func
+    onRef: PropTypes.func,
+    onRegionChangeComplete: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      initialRegion: {
-        latitude: 40.7205699,
-        longitude: -1.840341,
-        latitudeDelta: 50,
-        longitudeDelta: 50
-      }
-    };
   }
 
   render() {
-    const { places, initialRegion, position, selectedPlace, me } = this.props;
+    const { places, initialRegion, position, me, region } = this.props;
     return (
       <MapView
         ref={(ref) => this.props.onRef(ref)}
+        onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         showsUserLocation={true}
-        initialRegion={position ? {
-          ...position,
-          latitudeDelta: 1,
-          longitudeDelta: 1
-        } : initialRegion }>
+        initialRegion={region}>
         {this.props.children}
       </MapView>
     )
   }
+}
+
+Map.defaultProps = {
+  onRef: () => {},
+  onRegionChangeComplete: () => {},
 }
 
 export default Map;

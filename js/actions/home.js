@@ -1,7 +1,8 @@
 import {
   GEOLOCATION,
   SELECTED_PLACE,
-  LEVEL_CHANGE
+  LEVEL_CHANGE,
+  REGION_CHANGE
 } from '../constants/home';
 
 export function setGeolocation(position) {
@@ -11,10 +12,10 @@ export function setGeolocation(position) {
   };
 }
 
-export function selectedPlace(id) {
+export function selectedPlace(selectedPlace) {
   return {
     type: SELECTED_PLACE,
-    id,
+    selectedPlace,
   };
 }
 
@@ -22,5 +23,12 @@ export function levelChange(level) {
   return {
     type: LEVEL_CHANGE,
     level,
+  };
+}
+
+export function regionChanged(region) {
+  return {
+    type: REGION_CHANGE,
+    region,
   };
 }

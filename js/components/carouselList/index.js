@@ -14,7 +14,7 @@ class CarouselList extends Component {
   static propTypes = {
     data: PropTypes.array,
     customStyle: PropTypes.object,
-    selectedPlace: PropTypes.number,
+    selectedPlace: PropTypes.object,
     level: PropTypes.number
   }
 
@@ -27,10 +27,10 @@ class CarouselList extends Component {
   }
 
   componentWillReceiveProps({ selectedPlace }) {
-    if ( selectedPlace && this.carousel) {
+    if ( selectedPlace.id !== this.props.selectedPlace.id && this.carousel) {
       let placeIndex = 0;
       this.props.data.find(function(place, index) {
-        if (place.id === selectedPlace) {
+        if (place.id === selectedPlace.id) {
           placeIndex = index;
           return true;
         }
@@ -55,13 +55,13 @@ class CarouselList extends Component {
   }
 
   onSnapToItem(selectedItem) {
-    this.props.dispatch(selectedPlace(this.props.data[selectedItem].id));
+    this.props.dispatch(selectedPlace(this.props.data[selectedItem]));
   }
 
   _renderItem ({item, index}, carouselTop, level) {
     return (
       <Entry
-        key={shortid.generate()}
+        key={item.id}
         data={item}
         index={index}
         selected={item.id===this.props.selectedPlace}

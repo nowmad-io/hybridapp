@@ -36,28 +36,32 @@ class Marker extends Component {
     const { selected, place } = this.props;
     const { type, friendsCount } = this.state;
     const _styles = styles(selected, type);
-
+    
     return (
       <MapView.Marker
         coordinate={{latitude: place.latitude, longitude: place.longitude}}
         onPress={() => this.props.onMarkerPress(place)}
         zIndex={selected ? 10 : 5 }
       >
-        <View style={_styles.wrapper}>
-          <View style={_styles.shadow}>
-            <View style={_styles.thumbnailWrapper}>
+        <View style={styles(selected, type).wrapper}>
+          <View style={styles(selected, type).shadow}>
+            <View style={styles(selected, type).thumbnailWrapper}>
               {friendsCount > 1 ? (
-                <Text style={_styles.count}>{friendsCount}</Text>
+                <Text style={styles(selected, type).count}>{friendsCount}</Text>
               ) : (
                 <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
               )}
             </View>
           </View>
-          <View style={_styles.triangle}/>
+          <View style={styles(selected, type).triangle}/>
         </View>
       </MapView.Marker>
     )
   }
+}
+
+Map.defaultProps = {
+  onMarkerPress: () => {}
 }
 
 export default Marker;
