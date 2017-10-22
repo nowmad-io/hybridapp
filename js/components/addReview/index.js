@@ -7,6 +7,9 @@ import { Container, Header, Content, Left, Body, Right, Button, Icon,
 
 import Map from '../map';
 import Marker from '../marker';
+import BasicButton from '../basicButton';
+
+import { addReview } from '../../api/reviews';
 
 import styles from './styles';
 
@@ -19,7 +22,10 @@ class AddReview extends Component {
     super(props);
 
     this.state = {
-      place: props.navigation.state.params.place
+      place: props.navigation.state.params.place,
+      short_description: '',
+      categories: [{name: 'city'}],
+      pictures: []
     }
   }
 
@@ -31,6 +37,16 @@ class AddReview extends Component {
     if (this._map) {
       this._map.animateToCoordinate(this.state.place);
     }
+  }
+
+  onPublish = () => {
+    this.props.dispatch(addReview({
+      ...this.state,
+      place: {
+        latitude: this.state.place.latitude,
+        longitude: this.state.place.longitude
+      }
+    }))
   }
 
   render() {
@@ -65,7 +81,9 @@ class AddReview extends Component {
             <Text>My review</Text>
             <Item stackedLabel>
               <Label>Add a short description about this place</Label>
-              <Input placeholder="e.g The best place !" />
+              <Input
+                placeholder="e.g The best place !"
+                onChangeText={short_description => this.setState({ short_description })} />
             </Item>
             <View>
               <ListItem>
@@ -89,12 +107,9 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <Button
-          style={{}}
-          onPress={() => console.log('boom')}
-        >
-          <Text>PUBLISH</Text>
-        </Button>
+        <BasicButton
+          text='PUBLISH'
+          onPress={this.onPublish} />
       </Container>
     );
   }

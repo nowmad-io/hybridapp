@@ -6,14 +6,12 @@ import styles from './styles';
 
 const BasicButton = (props) => (
   <View style={styles.buttonWrapper}>
-    <View>
-      <Button
-        style={styles.button}
-        onPress={() => props.onPress()}
-      >
-        <Text>{props.text}</Text>
-      </Button>
-    </View>
+    <Button
+      style={styles.button}
+      onPress={() => props.onPress()}
+    >
+      <Text>{props.text}</Text>
+    </Button>
   </View>
 )
 
