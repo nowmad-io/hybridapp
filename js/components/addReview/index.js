@@ -3,13 +3,14 @@ import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
-  Text, View, Item, Input, ListItem, Radio } from 'native-base';
+  Text, View, Radio } from 'native-base';
 
 import { categories, status } from '../../lists';
 import Map from '../map';
 import Marker from '../marker';
 import Tag from '../tag';
 import Label from '../label';
+import FormInput from '../formInput';
 import BasicButton from '../basicButton';
 
 import { addReview } from '../../api/reviews';
@@ -86,9 +87,10 @@ class AddReview extends Component {
               <Label
                 text="Add a short description about this place"
                 required={true} />
-              <Input
+              <FormInput
                 placeholder="e.g The best place !"
-                onChangeText={short_description => this.setState({ short_description })} />
+                onChangeText={short_description => this.setState({ short_description })}
+                maxLength={50} />
             </View>
             <View>
               <Label text="Was it..." required={true}/>

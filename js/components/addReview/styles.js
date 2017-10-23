@@ -1,7 +1,6 @@
-import React from 'react-native';
+import React, { StyleSheet } from 'react-native';
 
 import { colors } from '../../parameters';
-const { StyleSheet } = React;
 
 export default {
   mapWrapper: {

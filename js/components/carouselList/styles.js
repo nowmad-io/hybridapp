@@ -61,7 +61,7 @@ export const entryStyles = {
   wishListIcon: {
     flex: 1,
     fontSize: 24,
-    color: colors.grey,
+    color: colors.green,
   }
 };
 
