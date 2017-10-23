@@ -38,7 +38,7 @@ export const entryStyles = {
     borderTopWidth: selected && level < 2 ? 4 : 0,
     paddingTop: selected || level === 2 ? 0 : 4,
     borderColor: colors.green,
-    paddingBottom: level > 2 ? 50 : 0
+    paddingBottom: level > 1 ? 50 : 0
   }),
   addressWrapper: {
     borderColor: colors.green,
@@ -58,6 +58,11 @@ export const entryStyles = {
     fontSize: 10,
     color: colors.grey
   },
+  wishListIcon: {
+    flex: 1,
+    fontSize: 24,
+    color: colors.grey,
+  }
 };
 
 export default {

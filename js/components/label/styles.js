@@ -6,6 +6,7 @@ export default {
   LabelWrapper: {
     alignItems: "center",
     flexDirection: "row",
+    marginTop: 16
   },
   label: {
     fontSize: 16,

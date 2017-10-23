@@ -66,7 +66,11 @@ class Entry extends Component {
         { level > 0 && (
           <BasicButton
             text='ADD REVIEW'
-            onPress={this.onPressAddReview} />
+            onPress={this.onPressAddReview}>
+            <Icon
+              style={entryStyles.wishListIcon}
+              name="md-heart-outline" />
+          </BasicButton>
         )}
       </View>
     );

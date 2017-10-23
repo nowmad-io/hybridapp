@@ -32,18 +32,10 @@ const Review = props => {
       </CardItem>
       <CardItem>
         {props.review.categories.map((categorie) => (
-          <View
+          <Tag
             key={shortid.generate()}
-            style={showcaseStyles.tag}
-          >
-            <Tag text={categorie.name} />
-          </View>
+            text={categorie.name} />
         ))}
-        <View style={reviewStyle.wishList}>
-          <Icon
-            style={reviewStyle.wishListIcon}
-            name="md-heart-outline" />
-        </View>
       </CardItem>
     </View>
   )

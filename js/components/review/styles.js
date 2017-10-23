@@ -61,9 +61,6 @@ export const showcaseStyles = {
     alignItems: 'flex-start',
     flexDirection: 'row',
   },
-  tag: {
-    marginRight: 8,
-  },
   wrapperRight: {
     flex: 1,
     alignSelf: 'center',
@@ -83,14 +80,5 @@ export const reviewStyle = {
     left: 8,
     color: colors.white,
     fontSize: 14
-  },
-  wishList: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  wishListIcon: {
-    flex: 1,
-    fontSize: 24,
-    color: colors.grey,
   }
 }

@@ -43,15 +43,10 @@ const Showcase = (props) => {
         )}
         <View style={showcaseStyles.tagsWrapper}>
           {_.slice(categories, 0, 3).map((categorie) => (
-            <View
+            <Tag
               key={shortid.generate()}
-              style={showcaseStyles.tag}
-            >
-              <Tag
-                key={shortid.generate()}
-                text={categorie.name}
-              />
-            </View>
+              text={categorie.name}
+            />
           ))}
         </View>
       </CardItem>

@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Container, Header, Content, Left, Body, Right, Button, Icon,
-  Text, View, Item, Input, Label, ListItem, Radio } from 'native-base';
+import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
+  Text, View, Item, Input, ListItem, Radio } from 'native-base';
 
+import { categories, status } from '../../lists';
 import Map from '../map';
 import Marker from '../marker';
+import Tag from '../tag';
+import Label from '../label';
 import BasicButton from '../basicButton';
 
 import { addReview } from '../../api/reviews';
@@ -77,33 +80,33 @@ class AddReview extends Component {
              <Marker place={this.state.place} />
             </Map>
           </View>
-          <View>
+          <View style={styles.reviewWrapper}>
             <Text>My review</Text>
-            <Item stackedLabel>
-              <Label>Add a short description about this place</Label>
+            <View>
+              <Label
+                text="Add a short description about this place"
+                required={true} />
               <Input
                 placeholder="e.g The best place !"
                 onChangeText={short_description => this.setState({ short_description })} />
-            </Item>
+            </View>
             <View>
-              <ListItem>
-                <Text>travelling here</Text>
-                <Right>
+              <Label text="Was it..." required={true}/>
+              {status.map((text, index) => (
+                <View
+                  key={index}>
                   <Radio selected={false} />
-                </Right>
-              </ListItem>
-              <ListItem>
-                <Text>living here</Text>
-                <Right>
-                  <Radio selected={true} />
-                </Right>
-              </ListItem>
-              <ListItem>
-                <Text>local</Text>
-                <Right>
-                  <Radio selected={true} />
-                </Right>
-              </ListItem>
+                  <Text>{text}</Text>
+                </View>
+              ))}
+            </View>
+            <View>
+              <Label>Was it...</Label>
+              <View style={styles.tagWrapper}>
+                {categories.map((categorie, index) => (
+                  <Tag key={index} text={categorie} />
+                ))}
+              </View>
             </View>
           </View>
         </Content>

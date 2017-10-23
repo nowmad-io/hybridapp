@@ -6,11 +6,18 @@ import styles from './styles';
 
 const BasicButton = (props) => (
   <View style={styles.buttonWrapper}>
+    { props.children }
     <Button
-      style={styles.button}
+      style={[styles.button,
+        !props.children ? { width: '100%' } : {}
+      ]}
       onPress={() => props.onPress()}
     >
-      <Text>{props.text}</Text>
+      <Text
+        style={!props.children ? styles.text : {}}
+      >
+        {props.text}
+      </Text>
     </Button>
   </View>
 )
@@ -22,6 +29,10 @@ BasicButton.defaultProps = {
 BasicButton.propTypes = {
   onPress: PropTypes.func,
   text: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ]),
 }
 
 export default BasicButton;

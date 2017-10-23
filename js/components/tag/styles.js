@@ -10,6 +10,7 @@ export default {
     backgroundColor: colors.white,
     paddingVertical: 4,
     paddingHorizontal: 8,
+    marginRight: 8
   },
   text: {
     fontSize: 10

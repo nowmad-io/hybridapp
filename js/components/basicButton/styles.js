@@ -14,11 +14,16 @@ export default {
     paddingLeft: 12,
     paddingBottom: 8,
     borderRadius: 0,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   button: {
     height: 34,
-    width: '100%',
     backgroundColor: colors.green,
+  },
+  text: {
+    textAlign: 'center',
+    width: '100%'
   }
 };
