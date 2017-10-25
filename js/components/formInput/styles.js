@@ -4,7 +4,7 @@ import { colors } from '../../parameters';
 
 export default {
   inputWrapper: {
-    marginTop: 8,
+    marginTop: 6,
     paddingBottom: 6,
   },
   input: {

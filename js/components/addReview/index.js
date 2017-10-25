@@ -84,7 +84,7 @@ class AddReview extends Component {
             </Map>
           </View>
           <View style={styles.reviewWrapper}>
-            <Text>My review</Text>
+            <Text style={styles.title}>My review</Text>
             <View>
               <Label
                 text="Add a short description about this place"
@@ -95,7 +95,7 @@ class AddReview extends Component {
                 maxLength={50} />
             </View>
             <View>
-              <Label text="Was it..." required={true}/>
+              <Label text="You were..." required={true}/>
               <RadioButtons
                 list={status}
                 onSelect={(status) => this.setState({ status })}
@@ -103,7 +103,7 @@ class AddReview extends Component {
               </RadioButtons>
             </View>
             <View>
-              <Label>Was it...</Label>
+              <Label text="Was it..." />
               <View style={styles.tagWrapper}>
                 {categories.map((categorie, index) => (
                   <Tag key={index} text={categorie} />

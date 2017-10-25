@@ -10,11 +10,15 @@ export default {
     backgroundColor: colors.white
   },
   reviewWrapper: {
-    paddingTop: 22,
+    paddingTop: 16,
     paddingHorizontal: 16,
     paddingBottom: 50
   },
+  title: {
+    fontSize: 24
+  },
   tagWrapper: {
+    marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center'
   }
