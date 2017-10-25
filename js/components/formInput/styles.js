@@ -12,8 +12,7 @@ export default {
     fontSize: 14,
     lineHeight: 14,
     paddingTop: 0,
-    paddingLeft: 0,
-    marginLeft: 0,
+    paddingBottom: 10
   },
   length: {
     position: 'absolute',

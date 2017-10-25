@@ -4,12 +4,13 @@ import { colors } from '../../parameters';
 
 export default {
   LabelWrapper: {
+    marginTop: 16,
     alignItems: "center",
     flexDirection: "row",
-    marginTop: 16
   },
   label: {
     fontSize: 16,
+    lineHeight: 16,
     fontWeight: '500',
   },
   requiredWrapper: {

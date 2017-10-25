@@ -12,6 +12,7 @@ import Tag from '../tag';
 import Label from '../label';
 import FormInput from '../formInput';
 import BasicButton from '../basicButton';
+import RadioButtons from '../radioButtons';
 
 import { addReview } from '../../api/reviews';
 
@@ -29,6 +30,7 @@ class AddReview extends Component {
       place: props.navigation.state.params.place,
       short_description: '',
       categories: [{name: 'city'}],
+      status: '',
       pictures: []
     }
   }
@@ -94,13 +96,11 @@ class AddReview extends Component {
             </View>
             <View>
               <Label text="Was it..." required={true}/>
-              {status.map((text, index) => (
-                <View
-                  key={index}>
-                  <Radio selected={false} />
-                  <Text>{text}</Text>
-                </View>
-              ))}
+              <RadioButtons
+                list={status}
+                onSelect={(status) => this.setState({ status })}
+              >
+              </RadioButtons>
             </View>
             <View>
               <Label>Was it...</Label>
