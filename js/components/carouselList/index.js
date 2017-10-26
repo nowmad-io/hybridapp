@@ -29,7 +29,7 @@ class CarouselList extends Component {
   }
 
   componentWillReceiveProps({ selectedPlace }) {
-    if ( selectedPlace.id !== this.props.selectedPlace.id && this.carousel) {
+    if (selectedPlace && selectedPlace.id !== this.props.selectedPlace.id && this.carousel) {
       let placeIndex = 0;
       this.props.places.find(function(place, index) {
         if (place.id === selectedPlace.id) {

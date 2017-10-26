@@ -34,7 +34,7 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({ selectedPlace, level }) {
-    if (selectedPlace.id !== this.props.selectedPlace.id
+    if (selectedPlace && selectedPlace.id !== this.props.selectedPlace.id
         && this.props.level === 1 && this._map) {
       const selected = this.props.places.find(function(place, index) {
         if (place.id === selectedPlace.id) {
