@@ -28,7 +28,7 @@ const ReviewHeader = props => (
           xsmall
           key={shortid.generate()}
           style={headerStyles.thumbnailFriends(index)}
-          source={{uri: props.reviews[0].created_by.picture}}
+          source={{uri: review.created_by.picture}}
         />
       ))}
     </Left>
