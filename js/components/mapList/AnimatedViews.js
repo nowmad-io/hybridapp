@@ -169,8 +169,6 @@ class AnimatedViews extends React.Component {
       translateY
     } = this.state;
 
-    console.log('translateY', translateY);
-
     return (
       <View style={styles.container}>
         <PanController
