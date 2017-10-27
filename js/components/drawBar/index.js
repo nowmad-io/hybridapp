@@ -51,6 +51,18 @@ class DrawBar extends React.Component {
             </ListItem>
             <ListItem
               button
+              onPress={() => this._navigate('MapList')}
+            >
+              <Text>MapList</Text>
+            </ListItem>
+            <ListItem
+              button
+              onPress={() => this._navigate('Test')}
+            >
+              <Text>Test</Text>
+            </ListItem>
+            <ListItem
+              button
               onPress={() => this._logout()}
             >
               <Text>Logout</Text>

@@ -7,6 +7,7 @@ import Home from '../components/home/';
 import Friends from '../components/friends';
 import DrawBar from '../components/drawBar';
 import AddReview from '../components/addReview';
+import MapList from '../components/mapList/AnimatedViews';
 
 import { runSagas, stopSagas } from '../actions/utils';
 
@@ -14,6 +15,7 @@ const AppNavigator = DrawerNavigator({
   Home: { screen: Home },
   Friends: { screen: Friends },
   AddReview: { screen: AddReview },
+  MapList: { screen: MapList }
 },
 {
   contentComponent: props => <DrawBar {...props} />,
