@@ -8,15 +8,14 @@ import {
 
 import MapView from 'react-native-maps';
 import PanController from './PanController';
-import PriceMarker from './AnimatedPriceMarker';
 
 const screen = Dimensions.get('window');
 
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 
-const ITEM_SPACING = 10;
-const ITEM_PREVIEW = 10;
+const ITEM_SPACING = 8;
+const ITEM_PREVIEW = 8;
 const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
 const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
 const ITEM_PREVIEW_HEIGHT = 80;
@@ -69,7 +68,7 @@ class AnimatedViews extends React.Component {
 
     const translateY = scrollY.interpolate({
       inputRange: [0, BREAKPOINT1],
-      outputRange: [0, -100],
+      outputRange: [0, -screen.height],
       extrapolate: 'clamp',
     });
 
@@ -113,7 +112,6 @@ class AnimatedViews extends React.Component {
       scrollX,
       translateY,
       markers,
-      aboutToMove: false
     };
   }
 
@@ -133,13 +131,6 @@ class AnimatedViews extends React.Component {
     const topOfMainWindow = ITEM_PREVIEW_HEIGHT - panY.__getValue();
     const topOfTap = screen.height - pageY - 56;
 
-    console.log('topOfTap', topOfTap);
-    console.log('topOfMainWindow', topOfMainWindow);
-    console.log('topOfTap < topOfMainWindow', topOfTap < topOfMainWindow);
-    if (topOfTap < topOfMainWindow) {
-      this.setState({aboutToMove: true})
-    }
-
     return topOfTap < topOfMainWindow;
   }
 
@@ -150,10 +141,6 @@ class AnimatedViews extends React.Component {
     const topOfTap = screen.height - pageY - 56;
 
     return topOfTap < topOfMainWindow;
-  }
-
-  onRelease = (e) => {
-    this.setState({aboutToMove: false})
   }
 
   onPanXChange = ({ value }) => {
@@ -179,10 +166,10 @@ class AnimatedViews extends React.Component {
       animations,
       canMoveHorizontal,
       markers,
-      aboutToMove
+      translateY
     } = this.state;
 
-    const top = null;
+    console.log('translateY', translateY);
 
     return (
       <View style={styles.container}>
@@ -198,16 +185,18 @@ class AnimatedViews extends React.Component {
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
-          onRelease={this.onRelease}
         >
           <MapView.Animated
             provider={this.props.provider}
             style={styles.map}
           />
-          <View style={styles.itemContainer(aboutToMove, top)}>
+          <Animated.View style={[styles.itemContainer, {
+            transform: [
+              { translateY },
+            ],
+          }]}>
             {markers.map((marker, i) => {
               const {
-                translateY,
                 translateX,
               } = animations[i];
 
@@ -216,14 +205,13 @@ class AnimatedViews extends React.Component {
                   key={marker.id}
                   style={[styles.item, {
                     transform: [
-                      { translateY },
                       { translateX },
                     ],
                   }]}
                 />
               );
             })}
-          </View>
+          </Animated.View>
         </PanController>
       </View>
     );
@@ -238,25 +226,12 @@ const styles = {
   container: {
     ...StyleSheet.absoluteFillObject,
   },
-  itemContainer: (aboutToMove, height) => {
-    let position = null
-    if (aboutToMove) {
-      position = {
-        paddingTop: screen.height - ITEM_PREVIEW_HEIGHT - 56
-      }
-    } else {
-      position = {
-        top: screen.height - ITEM_PREVIEW_HEIGHT - 56,
-      }
-    }
-
-    return {
-      backgroundColor: 'transparent',
-      flexDirection: 'row',
-      paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
-      position: 'absolute',
-      ...position
-    }
+  itemContainer: {
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
+    position: 'absolute',
+    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - 56
   },
   map: {
     backgroundColor: 'transparent',
