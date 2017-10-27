@@ -68,7 +68,7 @@ class AnimatedViews extends React.Component {
 
     const translateY = scrollY.interpolate({
       inputRange: [0, BREAKPOINT1],
-      outputRange: [0, -screen.height],
+      outputRange: [0, -BREAKPOINT1],
       extrapolate: 'clamp',
     });
 
