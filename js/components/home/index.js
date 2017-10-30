@@ -9,7 +9,7 @@ import shortid from 'shortid';
 
 import Map from '../map';
 import Marker from '../marker';
-import CarouselList from '../carouselList';
+import MapList from '../mapList';
 
 import { selectedPlace, regionChanged } from '../../actions/home'
 
@@ -94,10 +94,8 @@ class Home extends Component {
             />
           ))}
         </Map>
-        <CarouselList
+        <MapList
           places={places}
-          customStyle={styles.carousel}
-          navigation={this.props.navigation}
         />
       </Container>
     );

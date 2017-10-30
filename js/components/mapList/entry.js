@@ -7,7 +7,6 @@ import _ from 'lodash';
 import shortid from 'shortid';
 
 import { Showcase, Review } from '../review';
-import BasicButton from '../basicButton';
 
 import { entryStyles } from './styles';
 
@@ -63,15 +62,6 @@ class Entry extends Component {
             )}
           </Card>
         </ScrollView>
-        { level > 0 && (
-          <BasicButton
-            text='ADD REVIEW'
-            onPress={this.onPressAddReview}>
-            <Icon
-              style={entryStyles.wishListIcon}
-              name="md-heart-outline" />
-          </BasicButton>
-        )}
       </View>
     );
   }

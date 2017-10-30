@@ -1,25 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   StyleSheet,
   View,
   Dimensions,
   Animated,
 } from 'react-native';
+import { Icon } from 'native-base';
 
-import MapView from 'react-native-maps';
-import PanController from './PanController';
+import PanController from './panController';
+import Entry from './entry';
+import BasicButton from '../basicButton';
 
-const screen = Dimensions.get('window');
-
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-
-const ITEM_SPACING = 8;
-const ITEM_PREVIEW = 8;
-const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
-const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
-const ITEM_PREVIEW_HEIGHT = 80;
-const BREAKPOINT1 = screen.height;
+import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, screen } from './styles';
 
 function getMarkerState(panX, panY, scrollY, i) {
   const xLeft = (-SNAP_WIDTH * i) + (SNAP_WIDTH / 2);
@@ -49,7 +42,15 @@ function getMarkerState(panX, panY, scrollY, i) {
   };
 }
 
-class AnimatedViews extends React.Component {
+class MapList extends Component {
+  static propTypes = {
+    places: PropTypes.array,
+  }
+
+  static defaultProps = {
+    places: []
+  }
+
   constructor(props) {
     super(props);
 
@@ -72,34 +73,7 @@ class AnimatedViews extends React.Component {
       extrapolate: 'clamp',
     });
 
-    const markers = [
-      {
-        id: 0,
-        amount: 99,
-        coordinate: {
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
-        },
-      },
-      {
-        id: 1,
-        amount: 199,
-        coordinate: {
-          latitude: LATITUDE + 0.004,
-          longitude: LONGITUDE - 0.004,
-        },
-      },
-      {
-        id: 2,
-        amount: 285,
-        coordinate: {
-          latitude: LATITUDE - 0.004,
-          longitude: LONGITUDE - 0.004,
-        },
-      },
-    ];
-
-    const animations = markers.map((m, i) =>
+    const animations = props.places.map((m, i) =>
       getMarkerState(panX, panY, scrollY, i));
 
     this.state = {
@@ -107,16 +81,15 @@ class AnimatedViews extends React.Component {
       panY,
       animations,
       index: 0,
-      canMoveHorizontal: true,
       scrollY,
       scrollX,
       translateY,
-      markers,
     };
   }
 
   componentDidMount() {
-    const { panX, panY, scrollX, markers } = this.state;
+    const { panX, panY, scrollX } = this.state;
+    const { places } = this.props;
 
     panX.addListener(this.onPanXChange);
     panY.addListener(this.onPanYChange);
@@ -152,7 +125,7 @@ class AnimatedViews extends React.Component {
   }
 
   onPanYChange = ({ value }) => {
-    // const { canMoveHorizontal, region, scrollY, scrollX, markers, index } = this.state;
+    // const { canMoveHorizontal } = this.state;
     // const shouldBeMovable = Math.abs(value) < 2;
     // if (shouldBeMovable !== canMoveHorizontal) {
     //   this.setState({ canMoveHorizontal: shouldBeMovable });
@@ -160,53 +133,55 @@ class AnimatedViews extends React.Component {
   }
 
   render() {
-    const {
-      panX,
-      panY,
-      animations,
-      canMoveHorizontal,
-      markers,
-      translateY
-    } = this.state;
+    const { panX, panY, animations, translateY } = this.state;
+    const { places } = this.props;
 
     return (
       <View style={styles.container}>
         <PanController
           style={styles.container}
           vertical
-          horizontal={canMoveHorizontal}
+          horizontal={true}
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
           yBounds={[-1 * screen.height, 0]}
-          xBounds={[-screen.width * (markers.length - 1), 0]}
+          xBounds={[-screen.width * (places.length - 1), 0]}
           panY={panY}
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
         >
-          <MapView.Animated
-            provider={this.props.provider}
-            style={styles.map}
-          />
           <Animated.View style={[styles.itemContainer, {
             transform: [
               { translateY },
             ],
           }]}>
-            {markers.map((marker, i) => {
+            {places.map((place, i) => {
               const {
                 translateX,
               } = animations[i];
-
               return (
                 <Animated.View
-                  key={marker.id}
+                  key={place.id}
                   style={[styles.item, {
                     transform: [
                       { translateX },
                     ],
                   }]}
-                />
+                >
+                  <Entry
+                    place={place}
+                    index={i}
+                    level={1}
+                  />
+                  <BasicButton
+                    text='ADD REVIEW'
+                    onPress={this.onPressAddReview}>
+                    <Icon
+                      style={styles.wishListIcon}
+                      name="md-heart-outline" />
+                  </BasicButton>
+                </Animated.View>
               );
             })}
           </Animated.View>
@@ -216,34 +191,4 @@ class AnimatedViews extends React.Component {
   }
 }
 
-AnimatedViews.propTypes = {
-  provider: MapView.ProviderPropType,
-};
-
-const styles = {
-  container: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  itemContainer: {
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
-    position: 'absolute',
-    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - 56
-  },
-  map: {
-    backgroundColor: 'transparent',
-    ...StyleSheet.absoluteFillObject,
-  },
-  item: {
-    width: ITEM_WIDTH,
-    height: screen.height + (2 * ITEM_PREVIEW_HEIGHT),
-    backgroundColor: 'red',
-    marginHorizontal: ITEM_SPACING / 2,
-    overflow: 'hidden',
-    borderRadius: 3,
-    borderColor: '#000',
-  },
-};
-
-module.exports = AnimatedViews;
+module.exports = MapList;

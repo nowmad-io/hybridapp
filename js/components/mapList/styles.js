@@ -1,6 +1,15 @@
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
 
 import { colors } from '../../parameters';
+
+export const screen = Dimensions.get('window');
+
+const ITEM_SPACING = 8;
+const ITEM_PREVIEW = 8;
+const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
+export const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
+export const ITEM_PREVIEW_HEIGHT = 80 - StatusBar.currentHeight - 4;
+export const BREAKPOINT1 = screen.height;
 
 export const dimension = {
   width: viewportWidth,
@@ -57,22 +66,31 @@ export const entryStyles = {
   addressIcon: {
     fontSize: 10,
     color: colors.grey
+  }
+};
+
+export default {
+  container: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  itemContainer: {
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
+    position: 'absolute',
+    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - 56
+  },
+  item: {
+    width: ITEM_WIDTH,
+    height: screen.height + (2 * ITEM_PREVIEW_HEIGHT),
+    marginHorizontal: ITEM_SPACING / 2,
+    overflow: 'hidden',
+    borderRadius: 3,
+    borderColor: '#000',
   },
   wishListIcon: {
     flex: 1,
     fontSize: 24,
     color: colors.green,
   }
-};
-
-export default {
-  carouselWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  carousel: {
-    ...StyleSheet.absoluteFillObject,
-  },
 }
