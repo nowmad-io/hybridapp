@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   View,
   Animated,
@@ -11,9 +12,8 @@ const ModePropType = PropTypes.oneOf(['decay', 'snap', 'spring-origin']);
 const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);
 const AnimatedPropType = PropTypes.any;
 
-const PanController = React.createClass({
-
-  propTypes: {
+class PanController extends Component {
+  static propTypes = {
       // Component Config
     lockDirection: PropTypes.bool,
     horizontal: PropTypes.bool,
@@ -44,49 +44,32 @@ const PanController = React.createClass({
     onReleaseX: PropTypes.func,
     onReleaseY: PropTypes.func,
     onRelease: PropTypes.func,
+  }
 
-      //...PanResponderPropTypes,
-  },
+  static defaultProps = {
+    horizontal: false,
+    vertical: false,
+    lockDirection: true,
+    overshootX: 'spring',
+    overshootY: 'spring',
+    panX: new Animated.Value(0),
+    panY: new Animated.Value(0),
+    xBounds: [-Infinity, Infinity],
+    yBounds: [-Infinity, Infinity],
+    yMode: 'decay',
+    xMode: 'decay',
+    overshootSpringConfig: { friction: 7, tension: 40 },
+    momentumDecayConfig: { deceleration: 0.993 },
+    springOriginConfig: { friction: 7, tension: 40 },
+    overshootReductionFactor: 3,
+    directionLockDistance: 10,
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+  }
 
-  getDefaultProps() {
-    return {
-      horizontal: false,
-      vertical: false,
-      lockDirection: true,
-      overshootX: 'spring',
-      overshootY: 'spring',
-      panX: new Animated.Value(0),
-      panY: new Animated.Value(0),
-      xBounds: [-Infinity, Infinity],
-      yBounds: [-Infinity, Infinity],
-      yMode: 'decay',
-      xMode: 'decay',
-      overshootSpringConfig: { friction: 7, tension: 40 },
-      momentumDecayConfig: { deceleration: 0.993 },
-      springOriginConfig: { friction: 7, tension: 40 },
-      overshootReductionFactor: 3,
-      directionLockDistance: 10,
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-    };
-  },
-
-    // getInitialState() {
-    //     //TODO:
-    //     // it's possible we want to move some props over to state.
-    //     // For example, xBounds/yBounds might need to be
-    //     // calculated/updated automatically
-    //     //
-    //     // This could also be done with a higher-order component
-    //     // that just massages props passed in...
-    //     return {
-    //
-    //     };
-    // },
-
-  _responder: null,
-  _listener: null,
-  _direction: null,
+  _responder: null;
+  _listener: null;
+  _direction: null;
 
   componentWillMount() {
     this._responder = PanResponder.create({
@@ -190,9 +173,9 @@ const PanController = React.createClass({
         }
 
         this._direction = horizontal && !vertical ? 'x' : (vertical && !horizontal ? 'y' : null);
-      },
+      }
     });
-  },
+  }
 
   handleResponderMove(anim, delta, min, max, overshoot) {
     let val = anim._offset + delta;
@@ -219,7 +202,7 @@ const PanController = React.createClass({
     }
     val = val - anim._offset;
     anim.setValue(val);
-  },
+  }
 
   handleResponderRelease(anim, min, max, velocity, overshoot, mode, snapSpacing) {
     anim.flattenOffset();
@@ -276,7 +259,7 @@ const PanController = React.createClass({
           break;
       }
     }
-  },
+  }
 
   handleResponderGrant(anim, mode) {
     switch (mode) {
@@ -289,7 +272,7 @@ const PanController = React.createClass({
         anim.setValue(0);
         break;
     }
-  },
+  }
 
   handleMomentumScroll(anim, min, max, velocity, overshoot) {
     Animated.decay(anim, {
@@ -336,7 +319,7 @@ const PanController = React.createClass({
         }
       }
     });
-  },
+  }
 
   handleSnappedScroll(anim, min, max, velocity, spacing) {
     let endX = this.momentumCenter(anim._value, velocity, spacing);
@@ -360,12 +343,12 @@ const PanController = React.createClass({
     }).start(() => {
       anim.removeListener(this._listener);
     });
-  },
+  }
 
   closestCenter(x, spacing) {
     const plus = (x % spacing) < spacing / 2 ? 0 : spacing;
     return Math.round(x / spacing) * spacing + plus;
-  },
+  }
 
   momentumCenter(x0, vx, spacing) {
     let t = 0;
@@ -384,7 +367,7 @@ const PanController = React.createClass({
       x1 = x;
     }
     return this.closestCenter(x1, spacing);
-  },
+  }
 
   velocityAtBounds(x0, vx, bounds) {
     let t = 0;
@@ -406,23 +389,11 @@ const PanController = React.createClass({
       x1 = x;
     }
     return vf;
-  },
-
-// componentDidMount() {
-//    //TODO: we may need to measure the children width/height here?
-// },
-//
-// componentWillUnmount() {
-//
-// },
-//
-// componentDidUnmount() {
-//
-// },
+  }
 
   render() {
     return <View {...this.props} {...this._responder.panHandlers} />;
-  },
-});
+  }
+}
 
 module.exports = PanController;
