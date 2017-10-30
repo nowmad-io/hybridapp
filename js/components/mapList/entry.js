@@ -36,33 +36,31 @@ class Entry extends Component {
     const orderedReviews = _.concat(_.compact([myReview]), otherReviews);
 
     return (
-      <View style={entryStyles.slideInnerContainer(index)}>
-        <ScrollView
-          scrollEnabled={level > 1}
-          showsVerticalScrollIndicator={false}
-        >
-          <Card style={entryStyles.card(selected, level)}>
-            {(level < 2) ? (
-              <Showcase
-                reviews={orderedReviews}
-                selected={selected} />
-            ) : (
-              <View>
-                <View style={entryStyles.addressWrapper}>
-                  <Text style={entryStyles.address}>
-                    <Icon style={entryStyles.addressIcon} name="md-pin" />  River Garonne, Bordeaux, France
-                  </Text>
-                </View>
-                {orderedReviews.map((review) => (
-                  <Review
-                    key={shortid.generate()}
-                    review={review} />
-                ))}
+      <ScrollView
+        scrollEnabled={level > 1}
+        showsVerticalScrollIndicator={false}
+      >
+        <Card style={entryStyles.card(selected, level)}>
+          {(level < 2) ? (
+            <Showcase
+              reviews={orderedReviews}
+              selected={selected} />
+          ) : (
+            <View>
+              <View style={entryStyles.addressWrapper}>
+                <Text style={entryStyles.address}>
+                  <Icon style={entryStyles.addressIcon} name="md-pin" />  River Garonne, Bordeaux, France
+                </Text>
               </View>
-            )}
-          </Card>
-        </ScrollView>
-      </View>
+              {orderedReviews.map((review) => (
+                <Review
+                  key={shortid.generate()}
+                  review={review} />
+              ))}
+            </View>
+          )}
+        </Card>
+      </ScrollView>
     );
   }
 }

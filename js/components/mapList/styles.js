@@ -1,45 +1,23 @@
 import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
 
 import { colors } from '../../parameters';
+import material from '../../../native-base-theme/variables/material';
 
 export const screen = Dimensions.get('window');
 
+const SCREEN_PADDING_TOP = 12;
 const ITEM_SPACING = 8;
 const ITEM_PREVIEW = 8;
+const ITEM_BORDER = 4;
 const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
+const ITEM_LEVEL1 = 80;
 export const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
-export const ITEM_PREVIEW_HEIGHT = 80 - StatusBar.currentHeight - 4;
-export const BREAKPOINT1 = screen.height;
-
-export const dimension = {
-  width: viewportWidth,
-  height: viewportHeight
-} = Dimensions.get('window');
-
-function wp(percentage) {
-  const value = (percentage * viewportWidth) / 100;
-  return Math.round(value);
-}
-
-const slideWidth = wp(92);
-const itemHorizontalMargin = 3;
-
-export const sliderWidth = viewportWidth;
-export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-
-const entryBorderRadius = 8;
+export const ITEM_PREVIEW_HEIGHT = ITEM_LEVEL1 - StatusBar.currentHeight - ITEM_BORDER;
+export const BREAKPOINT1 = (screen.height - StatusBar.currentHeight - ITEM_LEVEL1 - material.toolbarHeight - ITEM_BORDER - SCREEN_PADDING_TOP);
 
 export const entryStyles = {
-  slideInnerContainer: (index) => ({
-    width: itemWidth,
-    height: '100%',
-    paddingRight: itemHorizontalMargin + 2,
-    paddingLeft: itemHorizontalMargin,
-    margin: 0,
-  }),
   card: (selected = true, level = 0) => ({
-    position: 'relative',
-    minHeight: viewportHeight - 40,
+    minHeight: screen.height - 40,
     height: '100%',
     width: '100%',
     flex: 0,
@@ -78,11 +56,11 @@ export default {
     flexDirection: 'row',
     paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
     position: 'absolute',
-    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - 56
+    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - material.toolbarHeight
   },
   item: {
     width: ITEM_WIDTH,
-    height: screen.height + (2 * ITEM_PREVIEW_HEIGHT),
+    height: BREAKPOINT1 + ITEM_LEVEL1 + ITEM_BORDER,
     marginHorizontal: ITEM_SPACING / 2,
     overflow: 'hidden',
     borderRadius: 3,
