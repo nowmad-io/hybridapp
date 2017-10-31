@@ -143,8 +143,8 @@ class MapList extends Component {
           horizontal={true}
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
-          yBounds={[-1 * screen.height, 0]}
-          xBounds={[-screen.width * (places.length - 1), 0]}
+          yBounds={[-1 * screen.height, -BREAKPOINT2 , 0]}
+          xBounds={[-screen.width * (places.length - 1), null, 0]}
           panY={panY}
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}

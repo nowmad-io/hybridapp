@@ -54,8 +54,8 @@ class PanController extends Component {
     overshootY: 'spring',
     panX: new Animated.Value(0),
     panY: new Animated.Value(0),
-    xBounds: [-Infinity, Infinity],
-    yBounds: [-Infinity, Infinity],
+    xBounds: [-Infinity, null, Infinity],
+    yBounds: [-Infinity, null, Infinity],
     yMode: 'decay',
     xMode: 'decay',
     overshootSpringConfig: { friction: 7, tension: 40 },
@@ -119,13 +119,13 @@ class PanController extends Component {
         }
 
         if (horizontal && (!lockDirection || dir === 'x')) {
-          let [xMin, xMax] = xBounds;
+          let [xMin, xStep, xMax] = xBounds;
 
           this.handleResponderMove(panX, dx, xMin, xMax, overshootX);
         }
 
         if (vertical && (!lockDirection || dir === 'y')) {
-          let [yMin, yMax] = yBounds;
+          let [yMin, yStep, yMax] = yBounds;
 
           this.handleResponderMove(panY, dy, yMin, yMax, overshootY);
         }
@@ -157,19 +157,19 @@ class PanController extends Component {
         }
 
         if (!cancel && horizontal && (!lockDirection || dir === 'x')) {
-          let [xMin, xMax] = xBounds;
+          let [xMin, xStep, xMax] = xBounds;
           if (this.props.onReleaseX) {
             cancel = false === this.props.onReleaseX({ vx, vy, dx, dy });
           }
-          !cancel && this.handleResponderRelease(panX, xMin, xMax, vx, overshootX, xMode, snapSpacingX);
+          !cancel && this.handleResponderRelease(panX, xMin, xStep, xMax, vx, overshootX, xMode, snapSpacingX);
         }
 
         if (!cancel && vertical && (!lockDirection || dir === 'y')) {
-          let [yMin, yMax] = yBounds;
+          let [yMin, yStep, yMax] = yBounds;
           if (this.props.onReleaseY) {
             cancel = false === this.props.onReleaseY({ vx, vy, dx, dy });
           }
-          !cancel && this.handleResponderRelease(panY, yMin, yMax, vy, overshootY, yMode, snapSpacingY);
+          !cancel && this.handleResponderRelease(panY, yMin, yStep, yMax, vy, overshootY, yMode, snapSpacingY);
         }
 
         this._direction = horizontal && !vertical ? 'x' : (vertical && !horizontal ? 'y' : null);
@@ -204,7 +204,7 @@ class PanController extends Component {
     anim.setValue(val);
   }
 
-  handleResponderRelease(anim, min, max, velocity, overshoot, mode, snapSpacing) {
+  handleResponderRelease(anim, min, step, max, velocity, overshoot, mode, snapSpacing) {
     anim.flattenOffset();
 
 
@@ -247,7 +247,7 @@ class PanController extends Component {
           break;
 
         case 'decay':
-          this.handleMomentumScroll(anim, min, max, velocity, overshoot);
+          this.handleMomentumScroll(anim, min, step, max, velocity, overshoot);
           break;
 
         case 'spring-origin':
@@ -274,7 +274,7 @@ class PanController extends Component {
     }
   }
 
-  handleMomentumScroll(anim, min, max, velocity, overshoot) {
+  handleMomentumScroll(anim, min, step, max, velocity, overshoot) {
     Animated.decay(anim, {
       ...this.props.momentumDecayConfig,
       velocity,
@@ -314,7 +314,75 @@ class PanController extends Component {
             }).start();
             break;
           case 'clamp':
+            anim.setValue(max);
+            break;
+        }
+      } else if (value > step && value > step + (max - step) / 2 ) {
+        anim.removeListener(this._listener);
+        if (this.props.onOvershoot) {
+          this.props.onOvershoot(); // TODO: what args should we pass to this
+        }
+        switch (overshoot) {
+          case 'spring':
+            Animated.spring(anim, {
+              ...this.props.overshootSpringConfig,
+              toValue: max,
+              velocity,
+            }).start();
+            break;
+          case 'clamp':
+            anim.setValue(max);
+            break;
+        }
+      } else if (value > step && value < step + (max - step) / 2) {
+        anim.removeListener(this._listener);
+        if (this.props.onOvershoot) {
+          this.props.onOvershoot(); // TODO: what args should we pass to this
+        }
+        switch (overshoot) {
+          case 'spring':
+            Animated.spring(anim, {
+              ...this.props.overshootSpringConfig,
+              toValue: step,
+              velocity,
+            }).start();
+            break;
+          case 'clamp':
+            anim.setValue(step);
+            break;
+        }
+      } else if (value < step && value < min + (step - min) / 2) {
+        anim.removeListener(this._listener);
+        if (this.props.onOvershoot) {
+          this.props.onOvershoot(); // TODO: what args should we pass to this
+        }
+        switch (overshoot) {
+          case 'spring':
+            Animated.spring(anim, {
+              ...this.props.overshootSpringConfig,
+              toValue: min,
+              velocity,
+            }).start();
+            break;
+          case 'clamp':
             anim.setValue(min);
+            break;
+        }
+      } else if (value < step && value > min + (step - min) / 2) {
+        anim.removeListener(this._listener);
+        if (this.props.onOvershoot) {
+          this.props.onOvershoot(); // TODO: what args should we pass to this
+        }
+        switch (overshoot) {
+          case 'spring':
+            Animated.spring(anim, {
+              ...this.props.overshootSpringConfig,
+              toValue: step,
+              velocity,
+            }).start();
+            break;
+          case 'clamp':
+            anim.setValue(step);
             break;
         }
       }
