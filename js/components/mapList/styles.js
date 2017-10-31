@@ -11,9 +11,13 @@ const ITEM_PREVIEW = 8;
 const ITEM_BORDER = 4;
 const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
 const ITEM_LEVEL1 = 80;
+const ITEM_LEVEL2 = 232;
 export const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
 export const ITEM_PREVIEW_HEIGHT = ITEM_LEVEL1 - StatusBar.currentHeight - ITEM_BORDER;
-export const BREAKPOINT1 = (screen.height - StatusBar.currentHeight - ITEM_LEVEL1 - material.toolbarHeight - ITEM_BORDER - SCREEN_PADDING_TOP);
+const BREAKPOINT_HELPER = StatusBar.currentHeight + material.toolbarHeight + ITEM_BORDER + SCREEN_PADDING_TOP
+export const BREAKPOINT1 = (screen.height - ITEM_LEVEL1 - BREAKPOINT_HELPER);
+export const BREAKPOINT2 = (ITEM_LEVEL2 - ITEM_LEVEL1);
+export const TOOLBARHEIGHT = material.toolbarHeight
 
 export const entryStyles = {
   card: (selected = true, level = 0) => ({
@@ -44,6 +48,11 @@ export const entryStyles = {
   addressIcon: {
     fontSize: 10,
     color: colors.grey
+  },
+  wishListIcon: {
+    flex: 1,
+    fontSize: 24,
+    color: colors.green,
   }
 };
 
@@ -65,10 +74,5 @@ export default {
     overflow: 'hidden',
     borderRadius: 3,
     borderColor: '#000',
-  },
-  wishListIcon: {
-    flex: 1,
-    fontSize: 24,
-    color: colors.green,
   }
 }

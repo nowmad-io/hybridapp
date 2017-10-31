@@ -10,9 +10,8 @@ import { Icon } from 'native-base';
 
 import PanController from './panController';
 import Entry from './entry';
-import BasicButton from '../basicButton';
 
-import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, screen } from './styles';
+import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, BREAKPOINT2, TOOLBARHEIGHT, screen } from './styles';
 
 function getMarkerState(panX, panY, scrollY, i) {
   const xLeft = (-SNAP_WIDTH * i) + (SNAP_WIDTH / 2);
@@ -83,7 +82,7 @@ class MapList extends Component {
       index: 0,
       scrollY,
       scrollX,
-      translateY,
+      translateY
     };
   }
 
@@ -102,7 +101,7 @@ class MapList extends Component {
     const { panY } = this.state;
     const { pageY } = e.nativeEvent;
     const topOfMainWindow = ITEM_PREVIEW_HEIGHT - panY.__getValue();
-    const topOfTap = screen.height - pageY - 56;
+    const topOfTap = screen.height - pageY - TOOLBARHEIGHT;
 
     return topOfTap < topOfMainWindow;
   }
@@ -111,7 +110,7 @@ class MapList extends Component {
     const { panY } = this.state;
     const { pageY } = e.nativeEvent;
     const topOfMainWindow = ITEM_PREVIEW_HEIGHT - panY.__getValue();
-    const topOfTap = screen.height - pageY - 56;
+    const topOfTap = screen.height - pageY - TOOLBARHEIGHT;
 
     return topOfTap < topOfMainWindow;
   }
@@ -133,7 +132,7 @@ class MapList extends Component {
   }
 
   render() {
-    const { panX, panY, animations, translateY } = this.state;
+    const { panX, panY, animations, translateY, scrollY } = this.state;
     const { places } = this.props;
 
     return (
@@ -172,15 +171,8 @@ class MapList extends Component {
                   <Entry
                     place={place}
                     index={i}
-                    level={1}
+                    scrollY={scrollY}
                   />
-                  <BasicButton
-                    text='ADD REVIEW'
-                    onPress={this.onPressAddReview}>
-                    <Icon
-                      style={styles.wishListIcon}
-                      name="md-heart-outline" />
-                  </BasicButton>
                 </Animated.View>
               );
             })}
