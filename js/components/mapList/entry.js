@@ -9,7 +9,7 @@ import shortid from 'shortid';
 import { Showcase, Review } from '../review';
 import BasicButton from '../basicButton';
 
-import { entryStyles, BREAKPOINT1 } from './styles';
+import { entryStyles, BREAKPOINT1, BREAKPOINT2, ITEM_LEVEL1, ITEM_LEVEL2, TOOLBARHEIGHT, STATUSBARHEIGHT, SCREEN_PADDING_TOP } from './styles';
 
 class Entry extends Component {
 
@@ -29,19 +29,26 @@ class Entry extends Component {
   constructor(props) {
     super(props);
 
-    const scaleY = props.scrollY.interpolate({
-      inputRange: [0, BREAKPOINT1],
-      outputRange: [0, 1],
+    const level1Y = props.scrollY.interpolate({
+      inputRange: [BREAKPOINT2, BREAKPOINT1],
+      outputRange: [0, -ITEM_LEVEL2],
+      extrapolate: 'clamp',
+    });
+
+    let buttonY = props.scrollY.interpolate({
+      inputRange: [BREAKPOINT2, BREAKPOINT1],
+      outputRange: [0, BREAKPOINT1 - 50 - 80 + 2 - STATUSBARHEIGHT],
       extrapolate: 'clamp',
     });
 
     this.state = {
-      scaleY
+      level1Y,
+      buttonY
     }
   }
 
   render () {
-    const { scaleY } = this.state;
+    const { level1Y, buttonY } = this.state;
     const { place: { reviews }, index, selected, level } = this.props;
 
     const myReview = _.find(reviews, (review) => {
@@ -54,19 +61,44 @@ class Entry extends Component {
 
     return (
       <ScrollView
-        scrollEnabled={level > 1}
+        scrollEnabled={false}
         showsVerticalScrollIndicator={false}
       >
         <Card style={entryStyles.card(selected)}>
-          <Showcase
-            reviews={orderedReviews}
-            selected={selected}
-          />
           <Animated.View
             style={{
               transform: [
-                { scaleY },
-              ],
+                { translateY: level1Y }
+              ]
+            }}
+          >
+            <Showcase
+              style={entryStyles.showcase}
+              reviews={orderedReviews}
+              selected={selected}
+            />
+          </Animated.View>
+          <Animated.View
+          style={{
+            zIndex: 99999,
+            transform: [
+              { translateY: buttonY }
+            ]
+          }}
+          >
+            <BasicButton
+              text='ADD REVIEW'
+              onPress={this.onPressAddReview}>
+              <Icon
+                style={entryStyles.wishListIcon}
+                name="md-heart-outline" />
+            </BasicButton>
+          </Animated.View>
+          <Animated.View
+            style={{
+              transform: [
+                { translateY: level1Y }
+              ]
             }}
           >
             <View style={entryStyles.addressWrapper}>
@@ -80,13 +112,6 @@ class Entry extends Component {
                 review={review} />
             ))}
           </Animated.View>
-          <BasicButton
-            text='ADD REVIEW'
-            onPress={this.onPressAddReview}>
-            <Icon
-              style={entryStyles.wishListIcon}
-              name="md-heart-outline" />
-          </BasicButton>
         </Card>
       </ScrollView>
     );
