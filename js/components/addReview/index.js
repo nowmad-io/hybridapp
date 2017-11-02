@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
   Text, View, Radio } from 'native-base';
+import _ from 'lodash';
 
-import { categories, status } from '../../lists';
+import { categoriesList, statusList } from '../../lists';
 import Map from '../map';
 import Marker from '../marker';
 import Tag from '../tag';
@@ -29,7 +30,7 @@ class AddReview extends Component {
     this.state = {
       place: props.navigation.state.params.place,
       short_description: '',
-      categories: [{name: 'city'}],
+      categories: [],
       status: '',
       pictures: []
     }
@@ -51,11 +52,35 @@ class AddReview extends Component {
       place: {
         latitude: this.state.place.latitude,
         longitude: this.state.place.longitude
-      }
+      },
+      categories: categories.map((categorie) => ({
+        name: categorie
+      }))
     }))
   }
 
+  toggleCategorie(categorie) {
+    console.log('here ?', categorie)
+    const { categories } = this.state;
+    let newCategories = categories;
+
+    console.log('categories bef', categories)
+
+    const selected = _.indexOf(categories, categorie) !== -1;
+
+    if (selected) {
+      newCategories = _.without(newCategories, categorie);
+    } else {
+      newCategories.push(categorie);
+    }
+
+    this.setState({ categories: newCategories });
+    console.log('categories aft', categories)
+  }
+
   render() {
+    const { categories } = this.state;
+
     return (
       <Container>
         <Header>
@@ -97,7 +122,7 @@ class AddReview extends Component {
             <View>
               <Label text="You were..." required={true}/>
               <RadioButtons
-                list={status}
+                list={statusList}
                 onSelect={(status) => this.setState({ status })}
               >
               </RadioButtons>
@@ -105,8 +130,13 @@ class AddReview extends Component {
             <View>
               <Label text="Was it..." />
               <View style={styles.tagWrapper}>
-                {categories.map((categorie, index) => (
-                  <Tag key={index} text={categorie} />
+                {categoriesList.map((categorie, index) => (
+                  <Tag
+                    key={index}
+                    text={categorie}
+                    selected={_.indexOf(categories, categorie) !== -1}
+                    onPress={() => this.toggleCategorie(categorie)}
+                  />
                 ))}
               </View>
             </View>

@@ -3,16 +3,17 @@ import React from 'react-native';
 import { colors } from '../../parameters';
 
 export default {
-  tags: {
+  tags: (selected = false) => ({
     borderColor: colors.green,
     borderWidth: 1,
     borderRadius: 28,
-    backgroundColor: colors.white,
+    backgroundColor: selected ? colors.green : colors.white,
     paddingVertical: 4,
     paddingHorizontal: 8,
     marginRight: 8
-  },
-  text: {
-    fontSize: 10
-  }
+  }),
+  text: (selected = false) => ({
+    fontSize: 10,
+    color: selected ? colors.white : colors.black 
+  })
 }
