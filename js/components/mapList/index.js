@@ -44,6 +44,7 @@ function getMarkerState(panX, panY, scrollY, i) {
 class MapList extends Component {
   static propTypes = {
     places: PropTypes.array,
+    navigation: PropTypes.object,
   }
 
   static defaultProps = {
@@ -146,7 +147,7 @@ class MapList extends Component {
 
   render() {
     const { panX, panY, animations, translateY, scrollY } = this.state;
-    const { places } = this.props;
+    const { places, navigation } = this.props;
 
     return (
       <View style={styles.container}>
@@ -182,8 +183,8 @@ class MapList extends Component {
                 >
                   <Entry
                     place={place}
-                    index={i}
                     scrollY={scrollY}
+                    navigation={navigation}
                   />
                 </Animated.View>
               );

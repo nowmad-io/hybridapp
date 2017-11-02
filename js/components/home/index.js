@@ -62,7 +62,7 @@ class Home extends Component {
   }
 
   render() {
-    const { props: { places, position, selectedPlace, region } } = this;
+    const { places, position, selectedPlace, region, navigation } = this.props;
     return (
       <Container>
         <Header style={styles.header}>
@@ -71,7 +71,7 @@ class Home extends Component {
           </Body>
           <Right>
             <Button
-              onPress={() => this.props.navigation.navigate('DrawerOpen')}
+              onPress={() => navigation.navigate('DrawerOpen')}
               transparent
             >
               <Icon name='md-menu' />
@@ -96,6 +96,7 @@ class Home extends Component {
         </Map>
         <MapList
           places={places}
+          navigation={navigation}
         />
       </Container>
     );

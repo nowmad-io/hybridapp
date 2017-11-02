@@ -16,9 +16,6 @@ class Entry extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     place: PropTypes.object.isRequired,
-    index: PropTypes.number,
-    selected: PropTypes.bool,
-    level: PropTypes.number,
     scrollY: PropTypes.object
   };
 
@@ -49,7 +46,7 @@ class Entry extends Component {
 
   render () {
     const { level1Y, buttonY } = this.state;
-    const { place: { reviews }, index, selected, level } = this.props;
+    const { place: { reviews }, selected } = this.props;
 
     const myReview = _.find(reviews, (review) => {
       return review.user_type === 'me';
