@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
 import { Text, View, Button } from 'native-base';
 
 import styles from './styles';
@@ -11,7 +12,7 @@ const BasicButton = (props) => (
       style={[styles.button,
         !props.children ? { width: '100%' } : {}
       ]}
-      onPress={() => props.onPress()}
+      onPress={props.onPress}
     >
       <Text
         style={!props.children ? styles.text : {}}

@@ -30,6 +30,7 @@ class AddReview extends Component {
     this.state = {
       place: props.navigation.state.params.place,
       short_description: '',
+      information: '',
       categories: [],
       status: '',
       pictures: []
@@ -139,6 +140,14 @@ class AddReview extends Component {
                   />
                 ))}
               </View>
+            </View>
+            <View>
+              <Label text="Tell your friends about your experience" />
+              <FormInput
+                multiline={true}
+                placeholder="What made that experience mad awesome ?"
+                onChangeText={information => this.setState({ information })}
+                maxLength={300} />
             </View>
           </View>
         </Content>

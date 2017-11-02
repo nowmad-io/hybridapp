@@ -8,7 +8,6 @@ export default {
     paddingBottom: 6,
   },
   input: {
-    height: 30,
     fontSize: 14,
     lineHeight: 14,
     paddingTop: 0,
