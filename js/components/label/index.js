@@ -5,8 +5,8 @@ import { Text, View } from 'native-base';
 import styles from './styles';
 
 const Label = (props) => (
-  <View style={styles.LabelWrapper}>
-      <Text style={styles.label}>{props.text}</Text>
+  <View style={[styles.labelWrapper(props.subtitle)]}>
+      <Text style={styles.label(props.subtitle)}>{props.text}</Text>
       { props.required && (
         <View style={styles.requiredWrapper}>
           <View style={styles.required} />
@@ -22,6 +22,7 @@ Label.defaultProps = {
 Label.propTypes = {
   text: PropTypes.string,
   required: PropTypes.bool,
+  subtitle: PropTypes.bool
 }
 
 export default Label;

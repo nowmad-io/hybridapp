@@ -3,16 +3,17 @@ import React, { StyleSheet } from 'react-native';
 import { colors } from '../../parameters';
 
 export default {
-  LabelWrapper: {
-    marginTop: 16,
+  labelWrapper: (subtitle = false) => ({
+    marginTop: subtitle ? 8 : 16,
     alignItems: "center",
     flexDirection: "row",
-  },
-  label: {
-    fontSize: 16,
-    lineHeight: 16,
+  }),
+  label: (subtitle = false) => ({
+    fontSize: subtitle ? 10 : 16,
+    lineHeight: subtitle ? 10 : 20,
     fontWeight: '500',
-  },
+    color: subtitle ? colors.greyDark : colors.black
+  }),
   requiredWrapper: {
     height: '100%',
     marginLeft: 2

@@ -1,5 +1,3 @@
-import Config from 'react-native-config'
-
 import { all, takeLatest, select } from 'redux-saga/effects';
 
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';

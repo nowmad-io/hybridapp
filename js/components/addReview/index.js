@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { TouchableOpacity, Image } from 'react-native';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
   Text, View, Radio } from 'native-base';
 import _ from 'lodash';
+import Config from 'react-native-config'
+import ImagePicker from 'react-native-image-picker';
 
 import { categoriesList, statusList } from '../../lists';
 import Map from '../map';
@@ -14,6 +17,7 @@ import Label from '../label';
 import FormInput from '../formInput';
 import BasicButton from '../basicButton';
 import RadioButtons from '../radioButtons';
+import ImageHolder from '../imageHolder';
 
 import { addReview } from '../../api/reviews';
 
@@ -33,7 +37,8 @@ class AddReview extends Component {
       information: '',
       categories: [],
       status: '',
-      pictures: []
+      pictures: [],
+      imageSource: null
     }
   }
 
@@ -79,8 +84,41 @@ class AddReview extends Component {
     console.log('categories aft', categories)
   }
 
+  selectImages = () => {
+    const options = {
+      quality: 1.0,
+      storageOptions: {
+        skipBackup: true,
+        path: Config.IMAGES_FOLDER
+      }
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        // this.setState({ images: [...this.state.images, response] });
+
+        this.props.navigation.navigate('AddImage', {
+          onImageEditBack: this.onImageEditBack,
+          image: response
+        });
+      }
+    });
+  }
+
+  onImageEditBack = ({ images }) => {
+
+  }
+
   render() {
-    const { categories } = this.state;
+    const { categories, images } = this.state;
 
     return (
       <Container>
@@ -116,7 +154,7 @@ class AddReview extends Component {
                 text="Add a short description about this place"
                 required={true} />
               <FormInput
-                placeholder="e.g The best place !"
+                placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={short_description => this.setState({ short_description })}
                 maxLength={50} />
             </View>
@@ -148,6 +186,20 @@ class AddReview extends Component {
                 placeholder="What made that experience mad awesome ?"
                 onChangeText={information => this.setState({ information })}
                 maxLength={300} />
+            </View>
+            <View>
+              <Label text="Add some pictures with a caption" />
+              <Label subtitle text="You can add your best 5 pictures !" />
+              <View style={styles.imagesWrapper}>
+                <ImageHolder onPress={this.selectImages} />
+                { this.state.images && this.state.images.map((image, index) => (
+                  <ImageHolder
+                    source={image.uri} />
+                )) }
+              </View>
+              <Text  style={styles.imagesCaption}>
+                E.g A water mirror in Bordeaux !
+              </Text>
             </View>
           </View>
         </Content>

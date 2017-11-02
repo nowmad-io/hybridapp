@@ -21,5 +21,12 @@ export default {
     marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  imagesWrapper: {
+    marginVertical: 8
+  },
+  imagesCaption: {
+    fontSize: 14,
+    fontWeight: '400'
   }
 };
