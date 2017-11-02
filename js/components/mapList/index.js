@@ -72,18 +72,23 @@ class MapList extends Component {
       extrapolate: 'clamp',
     });
 
-    const animations = props.places.map((m, i) =>
-      getMarkerState(panX, panY, scrollY, i));
-
     this.state = {
+      animations: [],
       panX,
       panY,
-      animations,
       index: 0,
       scrollY,
       scrollX,
       translateY
     };
+  }
+
+  setUpAnimations(places) {
+    const { panX, panY, scrollY } = this.state;
+    const animations = places.map((m, i) =>
+      getMarkerState(panX, panY, scrollY, i));
+
+    this.setState({ animations });
   }
 
   componentDidMount() {
@@ -92,6 +97,14 @@ class MapList extends Component {
 
     panX.addListener(this.onPanXChange);
     panY.addListener(this.onPanYChange);
+
+    this.setUpAnimations(places);
+  }
+
+  componentWillReceiveProps({ places }) {
+    if (places && this.props.places) {
+      this.setUpAnimations(places);
+    }
   }
 
   onStartShouldSetPanResponder = (e) => {
@@ -156,9 +169,8 @@ class MapList extends Component {
             ],
           }]}>
             {places.map((place, i) => {
-              const {
-                translateX,
-              } = animations[i];
+              const translateX = animations && animations[i] ? animations[i].translateX : 0;
+
               return (
                 <Animated.View
                   key={place.id}
