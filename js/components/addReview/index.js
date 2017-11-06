@@ -113,11 +113,15 @@ class AddReview extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        this.props.navigation.navigate('AddImage', {
-          onImageEditBack: this.onImageEditBack,
-          image: response
-        });
+        this.navigateToImage(response);
       }
+    });
+  }
+
+  navigateToImage(image) {
+    this.props.navigation.navigate('AddImage', {
+      onImageEditBack: this.onImageEditBack,
+      image
     });
   }
 
@@ -133,7 +137,26 @@ class AddReview extends Component {
       return;
     }
 
-    this.setState({ images: [...this.state.images, image] });
+    let index = 0;
+    const exist = _.some(images, (img, i) => {
+      if (img.uri === image.uri) {
+        index = i;
+        return true;
+      }
+
+      return false
+    })
+
+    let newImages = [...images];
+
+    if (exist) {
+      newImages[index] = image;
+    } else {
+      newImages.push(image);
+    }
+
+    this.setState({ images: newImages });
+    console.log('images', this.state.images)
   }
 
   render() {
@@ -210,6 +233,7 @@ class AddReview extends Component {
                 { this.state.images && this.state.images.map((image, index) => (
                   <ImageHolder
                     key={index}
+                    onPress={() => this.navigateToImage(image)}
                     source={image.uri} />
                 )) }
               </View>

@@ -10,7 +10,7 @@ export default {
   }),
   label: (subtitle = false) => ({
     fontSize: subtitle ? 10 : 16,
-    lineHeight: subtitle ? 10 : 20,
+    lineHeight: subtitle ? 12 : 20,
     fontWeight: '500',
     color: subtitle ? colors.greyDark : colors.black
   }),

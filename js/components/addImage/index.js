@@ -84,6 +84,7 @@ class AddImage extends Component {
             <Label text="What is happening in this picture ?" required={true}/>
             <FormInput
               placeholder="E.g: The water mirror of Bordeaux"
+              defaultValue={this.state.caption}
               onChangeText={caption => this.setState({ caption })}
               maxLength={30} />
           </View>
