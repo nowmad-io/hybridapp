@@ -36,7 +36,8 @@ class AddImage extends Component {
 
     navigation.goBack();
     navigation.state.params.onImageEditBack({
-      image: this.state.image
+      image: this.state.image,
+      caption: navigation.state.params.image.caption || ''
     });
 
     return true;

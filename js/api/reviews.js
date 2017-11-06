@@ -17,3 +17,7 @@ export function fetchReviews() {
 export function addReview(review) {
   return apiCall(REVIEW_SUCCESS, REVIEW_ERROR, 'post', REVIEWS_PATH, review);
 }
+
+export function updateReview(review) {
+  return apiCall(REVIEW_SUCCESS, REVIEW_ERROR, 'put', `${REVIEWS_PATH}${review.id}/`, review);
+}

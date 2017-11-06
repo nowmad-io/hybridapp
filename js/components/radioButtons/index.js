@@ -27,7 +27,7 @@ class RadioButtons extends Component {
 
   onSelect(index) {
     this.setState({selected: index});
-    this.props.onSelect(index)
+    this.props.onSelect(this.props.list[index]);
   }
 
   render() {

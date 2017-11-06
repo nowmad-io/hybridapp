@@ -19,7 +19,7 @@ import BasicButton from '../basicButton';
 import RadioButtons from '../radioButtons';
 import ImageHolder from '../imageHolder';
 
-import { addReview } from '../../api/reviews';
+import { addReview, updateReview } from '../../api/reviews';
 
 import styles from './styles';
 
@@ -40,7 +40,7 @@ class AddReview extends Component {
     const defaultReview = {
       short_description: '',
       information: '',
-      status: '',
+      status: statusList[0],
       categories: [],
       images: []
     }
@@ -53,6 +53,7 @@ class AddReview extends Component {
     if (review) {
       this.state = {
         place,
+        id: review.id,
         short_description: review.short_description || defaultReview.short_description,
         information: review.information || defaultReview.information,
         status: review.status || defaultReview.status,
@@ -89,7 +90,7 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
-    this.props.dispatch(addReview({
+    const review = {
       ...this.state,
       place: {
         latitude: this.state.place.latitude,
@@ -97,8 +98,18 @@ class AddReview extends Component {
       },
       categories: this.state.categories.map((categorie) => ({
         name: categorie
+      })),
+      pictures: this.state.images.map((image) => ({
+        source: image.uri,
+        caption: image.caption
       }))
-    }))
+    };
+
+    if (this.state.id) {
+      this.props.dispatch(updateReview(review));
+    } else {
+      this.props.dispatch(addReview(review));
+    }
   }
 
   toggleCategorie(categorie) {
@@ -265,7 +276,7 @@ class AddReview extends Component {
                 )) }
               </View>
               <Text  style={styles.imagesCaption}>
-                E.g A water mirror in Bordeaux !
+                E.g: A water mirror in Bordeaux !
               </Text>
             </View>
           </View>
