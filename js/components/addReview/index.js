@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, BackHandler } from 'react-native';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
   Text, View, Radio } from 'native-base';
 import _ from 'lodash';
@@ -40,6 +40,22 @@ class AddReview extends Component {
       pictures: [],
       images: []
     }
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+  }
+
+  onBackPress = () => {
+    const { navigation } = this.props;
+
+    navigation.goBack();
+
+    return true;
   }
 
   onRef = (ref) => {
@@ -97,8 +113,6 @@ class AddReview extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        this.setState({ images: [...this.state.images, response] });
-
         this.props.navigation.navigate('AddImage', {
           onImageEditBack: this.onImageEditBack,
           image: response
@@ -107,8 +121,19 @@ class AddReview extends Component {
     });
   }
 
-  onImageEditBack = ({ images }) => {
+  onImageEditBack = ({ image, remove }) => {
+    const images = this.state.images;
 
+    if (!image) {
+      return;
+    }
+
+    if (image && remove) {
+      this.setState({ images: _.filter(images, (img) => (img.uri !== image.uri)) });
+      return;
+    }
+
+    this.setState({ images: [...this.state.images, image] });
   }
 
   render() {
@@ -122,6 +147,7 @@ class AddReview extends Component {
               <Icon name='arrow-back' />
             </Button>
           </Left>
+          <Right></Right>
         </Header>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
