@@ -122,11 +122,6 @@ class AddReview extends Component {
               <Icon name='arrow-back' />
             </Button>
           </Left>
-          <Right>
-            <Button transparent>
-              <Text>SAVE AND EXIT</Text>
-            </Button>
-          </Right>
         </Header>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
