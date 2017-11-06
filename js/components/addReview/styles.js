@@ -22,13 +22,12 @@ export default {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  imagesWrapper: (full = false) => ({
+  imagesWrapper: {
     marginVertical: 8,
     flexDirection: 'row',
-    justifyContent: full ? 'space-between' : 'flex-start'
-  }),
-  image: (full = false) => ({
-    marginLeft: full ? 0 : 8
+  },
+  image: (full = false, index) => ({
+    marginLeft: full && index !== 0 ? 8 : 0
   }),
   imagesCaption: {
     fontSize: 14,

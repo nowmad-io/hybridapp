@@ -232,14 +232,14 @@ class AddReview extends Component {
             <View>
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
-              <View style={styles.imagesWrapper(full)}>
+              <View style={styles.imagesWrapper}>
                 {(!this.state.images || this.state.images.length < MAX_LENGTH_IMAGES) && (
                   <ImageHolder onPress={this.selectImages} />
                 )}
                 { this.state.images && this.state.images.map((image, index) => (
                   <ImageHolder
                     key={index}
-                    style={styles.image(full)}
+                    style={styles.image(full, index)}
                     onPress={() => this.navigateToImage(image)}
                     source={image.uri} />
                 )) }
