@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated } from 'react-native';
 import { View, Card, CardItem, Text, Button, Icon } from 'native-base';
-import { ParallaxImage } from 'react-native-snap-carousel';
 import _ from 'lodash';
 import shortid from 'shortid';
 
