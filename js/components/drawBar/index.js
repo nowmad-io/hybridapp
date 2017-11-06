@@ -9,6 +9,7 @@ import {
   Content,
 } from 'native-base';
 
+import { runSagas, stopSagas } from '../../actions/utils';
 import { logoutRequest } from '../../actions/auth';
 
 class DrawBar extends React.Component {
@@ -19,6 +20,14 @@ class DrawBar extends React.Component {
   static propTypes = {
     navigation: PropTypes.object,
   };
+
+  componentWillMount() {
+    this.props.dispatch(runSagas());
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(stopSagas());
+  }
 
   _navigate(data) {
     this.props.navigation.navigate(data)
@@ -48,12 +57,6 @@ class DrawBar extends React.Component {
               onPress={() => this._navigate('Friends')}
             >
               <Text>Friends</Text>
-            </ListItem>
-            <ListItem
-              button
-              onPress={() => this._navigate('MapList')}
-            >
-              <Text>MapList</Text>
             </ListItem>
             <ListItem
               button

@@ -38,7 +38,7 @@
     "react-native-maps": "0.17.0",
     "react-native-modalbox": "1.4.2",
     "react-native-snap-carousel": "^3.3.4",
-    "react-navigation": "1.0.0-beta.13",
+    "react-navigation": "1.0.0-beta.19",
     "react-redux": "5.0.6",
     "redux": "3.7.2",
     "redux-crud-store": "5.4.0",

@@ -45,7 +45,7 @@ export default function configureStore(onCompletion:()=>void):any {
 
   persistStore(store, {
     storage: AsyncStorage,
-    blacklist: []
+    blacklist: ['nav']
   }, () => {
     sagaMiddleware.run(requestsSaga(apiConfig()));
 

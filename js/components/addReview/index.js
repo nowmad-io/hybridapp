@@ -38,7 +38,7 @@ class AddReview extends Component {
       categories: [],
       status: '',
       pictures: [],
-      imageSource: null
+      images: []
     }
   }
 
@@ -59,18 +59,15 @@ class AddReview extends Component {
         latitude: this.state.place.latitude,
         longitude: this.state.place.longitude
       },
-      categories: categories.map((categorie) => ({
+      categories: this.state.categories.map((categorie) => ({
         name: categorie
       }))
     }))
   }
 
   toggleCategorie(categorie) {
-    console.log('here ?', categorie)
     const { categories } = this.state;
     let newCategories = categories;
-
-    console.log('categories bef', categories)
 
     const selected = _.indexOf(categories, categorie) !== -1;
 
@@ -81,7 +78,6 @@ class AddReview extends Component {
     }
 
     this.setState({ categories: newCategories });
-    console.log('categories aft', categories)
   }
 
   selectImages = () => {
@@ -94,8 +90,6 @@ class AddReview extends Component {
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled photo picker');
       } else if (response.error) {
@@ -103,7 +97,7 @@ class AddReview extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        // this.setState({ images: [...this.state.images, response] });
+        this.setState({ images: [...this.state.images, response] });
 
         this.props.navigation.navigate('AddImage', {
           onImageEditBack: this.onImageEditBack,
@@ -194,6 +188,7 @@ class AddReview extends Component {
                 <ImageHolder onPress={this.selectImages} />
                 { this.state.images && this.state.images.map((image, index) => (
                   <ImageHolder
+                    key={index}
                     source={image.uri} />
                 )) }
               </View>

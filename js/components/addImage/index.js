@@ -16,7 +16,7 @@ class AddImage extends Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       image: props.navigation.state.params.image,
       caption: props.navigation.state.params.image.caption || ''

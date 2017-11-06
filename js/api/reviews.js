@@ -15,6 +15,5 @@ export function fetchReviews() {
 }
 
 export function addReview(review) {
-  console.log('review', review);
   return apiCall(REVIEW_SUCCESS, REVIEW_ERROR, 'post', REVIEWS_PATH, review);
 }
