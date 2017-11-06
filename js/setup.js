@@ -13,7 +13,7 @@ console.ignoredYellowBox = [
   'Remote debugger'
 ];
 
-function setup():React.Component {
+function setup(): React.Component {
   class Root extends Component {
     constructor() {
       super();
