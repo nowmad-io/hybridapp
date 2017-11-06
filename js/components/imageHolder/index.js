@@ -6,8 +6,8 @@ import { Icon, View } from 'native-base';
 import styles from './styles';
 
 const ImageHolder = (props) => (
-  <TouchableOpacity onPress={props.onPress}>
-    <View style={styles.wrapper}>
+  <TouchableOpacity onPress={props.onPress} style={props.style}>
+    <View style={styles.wrapper(!props.source)}>
       {props.source ? (
         <Image
           style={styles.image}
@@ -20,12 +20,14 @@ const ImageHolder = (props) => (
 )
 
 ImageHolder.defaultProps = {
-  onPress: () => {}
+  onPress: () => {},
+  style: {}
 }
 
 ImageHolder.propTypes = {
   onPress: PropTypes.func,
   source: PropTypes.string,
+  style: PropTypes.object,
 }
 
 export default ImageHolder;

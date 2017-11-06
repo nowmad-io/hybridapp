@@ -4,14 +4,24 @@ import { colors } from '../../parameters';
 const { StyleSheet } = React;
 
 export default {
-  wrapper: {
-    height: 58,
-    width: 58,
-    borderWidth: 1,
-    borderColor: colors.green,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+  wrapper: (empty, selected) => {
+    let extras = {};
+
+    if (empty || selected) {
+      extras = {
+        borderColor: colors.green,
+        borderWidth: selected ? 2 : 1
+      }
+    }
+
+    return {
+      height: 58,
+      width: 58,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...extras
+    }
   },
   image: {
     width: '100%',

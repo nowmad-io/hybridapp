@@ -22,11 +22,19 @@ export default {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  imagesWrapper: {
-    marginVertical: 8
-  },
+  imagesWrapper: (full = false) => ({
+    marginVertical: 8,
+    flexDirection: 'row',
+    justifyContent: full ? 'space-between' : 'flex-start'
+  }),
+  image: (full = false) => ({
+    marginLeft: full ? 0 : 8
+  }),
   imagesCaption: {
     fontSize: 14,
-    fontWeight: '400'
+    fontWeight: '400',
+    paddingBottom: 4,
+    borderBottomWidth: 1,
+    borderColor: colors.greyDark,
   }
 };

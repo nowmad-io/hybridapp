@@ -23,6 +23,8 @@ import { addReview } from '../../api/reviews';
 
 import styles from './styles';
 
+const MAX_LENGTH_IMAGES = 5;
+
 class AddReview extends Component {
   static propTypes = {
     navigation: PropTypes.object,
@@ -162,6 +164,8 @@ class AddReview extends Component {
   render() {
     const { categories, images } = this.state;
 
+    const full = this.state.images && this.state.images.length >= MAX_LENGTH_IMAGES;
+
     return (
       <Container>
         <Header>
@@ -228,11 +232,14 @@ class AddReview extends Component {
             <View>
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
-              <View style={styles.imagesWrapper}>
-                <ImageHolder onPress={this.selectImages} />
+              <View style={styles.imagesWrapper(full)}>
+                {(!this.state.images || this.state.images.length < MAX_LENGTH_IMAGES) && (
+                  <ImageHolder onPress={this.selectImages} />
+                )}
                 { this.state.images && this.state.images.map((image, index) => (
                   <ImageHolder
                     key={index}
+                    style={styles.image(full)}
                     onPress={() => this.navigateToImage(image)}
                     source={image.uri} />
                 )) }
