@@ -54,11 +54,6 @@ export const entryStyles = {
   addressIcon: {
     fontSize: 10,
     color: colors.grey
-  },
-  wishListIcon: {
-    flex: 1,
-    fontSize: 24,
-    color: colors.green,
   }
 };
 

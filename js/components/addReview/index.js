@@ -28,19 +28,37 @@ const MAX_LENGTH_IMAGES = 5;
 class AddReview extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    review: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      place: props.navigation.state.params.place,
+    const place = props.navigation.state.params.place;
+    const review = props.navigation.state.params.review;
+
+    const defaultReview = {
       short_description: '',
       information: '',
-      categories: [],
       status: '',
-      pictures: [],
+      categories: [],
       images: []
+    }
+
+    this.state = {
+      place,
+      ...defaultReview
+    };
+
+    if (review) {
+      this.state = {
+        place,
+        short_description: review.short_description || defaultReview.short_description,
+        information: review.information || defaultReview.information,
+        status: review.status || defaultReview.status,
+        categories: review.categories ? review.categories.map(cat => (cat.name)) : defaultReview.categories,
+        images: review.pictures || defaultReview.images
+      }
     }
   }
 
@@ -158,7 +176,6 @@ class AddReview extends Component {
     }
 
     this.setState({ images: newImages });
-    console.log('images', this.state.images)
   }
 
   render() {
@@ -196,6 +213,7 @@ class AddReview extends Component {
                 text="Add a short description about this place"
                 required={true} />
               <FormInput
+                defaultValue={this.state.short_description}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={short_description => this.setState({ short_description })}
                 maxLength={50} />
@@ -203,6 +221,7 @@ class AddReview extends Component {
             <View>
               <Label text="You were..." required={true}/>
               <RadioButtons
+                defaultValue={this.state.status}
                 list={statusList}
                 onSelect={(status) => this.setState({ status })}
               >
@@ -224,6 +243,7 @@ class AddReview extends Component {
             <View>
               <Label text="Tell your friends about your experience" />
               <FormInput
+                defaultValue={this.state.information}
                 multiline={true}
                 placeholder="What made that experience mad awesome ?"
                 onChangeText={information => this.setState({ information })}

@@ -22,6 +22,13 @@ class Entry extends Component {
     this.props.navigation.navigate('AddReview', { place: this.props.place })
   }
 
+  onPressEditReview(review) {
+    this.props.navigation.navigate('AddReview', {
+      place: this.props.place,
+      review
+    })
+  }
+
   constructor(props) {
     super(props);
 
@@ -82,13 +89,17 @@ class Entry extends Component {
             ]
           }}
           >
-            <BasicButton
-              text='ADD REVIEW'
-              onPress={this.onPressAddReview}>
-              <Icon
-                style={entryStyles.wishListIcon}
-                name="md-heart-outline" />
-            </BasicButton>
+            {myReview ? (
+              <BasicButton
+                text='MY REVIEW'
+                onPress={() => this.onPressEditReview(myReview)}>
+              </BasicButton>
+            ) : (
+              <BasicButton
+                text='ADD REVIEW'
+                onPress={this.onPressAddReview}>
+              </BasicButton>
+            )}
           </Animated.View>
           <Animated.View
             style={{
