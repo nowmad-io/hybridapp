@@ -11,13 +11,15 @@ class FormInput extends Component {
     placeholder: PropTypes.string,
     maxLength: PropTypes.number,
     multiline: PropTypes.bool,
+    defaultValue: PropTypes.string,
   }
 
   static defaultProps = {
     onChangeText: () => {},
     placeholder: '',
     maxLength: null,
-    multiline: false
+    multiline: false,
+    defaultValue: '',
   }
 
   constructor(props) {
@@ -41,6 +43,7 @@ class FormInput extends Component {
           multiline={this.props.multiline}
           maxLength={this.props.maxLength}
           placeholder={this.props.placeholder}
+          defaultValue={this.props.defaultValue}
           onChangeText={(text) => this.onChangeText(text)} />
         {this.props.maxLength && (
           <Text style={styles.length}>
