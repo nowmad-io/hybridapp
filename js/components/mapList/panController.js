@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -44,6 +42,8 @@ class PanController extends Component {
     onReleaseX: PropTypes.func,
     onReleaseY: PropTypes.func,
     onRelease: PropTypes.func,
+    onIndexChange: PropTypes.func,
+    onLevelChange: PropTypes.func,
   }
 
   static defaultProps = {
@@ -65,6 +65,8 @@ class PanController extends Component {
     directionLockDistance: 10,
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
+    onIndexChange: () => true,
+    onLevelChange: () => true,
   }
 
   _responder: null;
@@ -307,6 +309,8 @@ class PanController extends Component {
           anim.setValue(toValue);
           break;
       }
+
+      this.props.onLevelChange(toValue);
     });
   }
 
@@ -332,6 +336,8 @@ class PanController extends Component {
     }).start(() => {
       anim.removeListener(this._listener);
     });
+
+    this.props.onIndexChange(endX);
   }
 
   closestCenter(x, spacing) {

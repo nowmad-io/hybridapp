@@ -11,7 +11,7 @@ import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
 
-import { selectedPlace, regionChanged } from '../../actions/home'
+import { selectedPlace, regionChanged, levelChange } from '../../actions/home'
 
 import styles from './styles';
 
@@ -32,7 +32,7 @@ class Home extends Component {
   componentWillReceiveProps({ selectedPlace, level }) {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id
-        && this.props.level === 1 && this._map) {
+        && this.props.level === 2 && this._map) {
       const selected = this.props.places.find(function(place, index) {
         if (place.id === selectedPlace.id) {
           return place;
@@ -47,6 +47,19 @@ class Home extends Component {
     this.props.dispatch(selectedPlace(place));
   }
 
+  onIndexChange = (index) => {
+    console.log('index', index);
+    this.props.dispatch(selectedPlace(this.props.places[index]));
+  }
+
+  onLevelChange = (level) => {
+    this.props.dispatch(levelChange(level));
+  }
+
+  onRegionChangeComplete = (region) => {
+    // this.props.dispatch(regionChanged(region));
+  }
+
   onRef = (ref) => {
     this._map = ref;
   }
@@ -55,10 +68,6 @@ class Home extends Component {
     if (this._map && this.props.selectedPlace) {
       this._map.animateToCoordinate(this.props.selectedPlace);
     }
-  }
-
-  onRegionChangeComplete = (region) => {
-    // this.props.dispatch(regionChanged(region));
   }
 
   render() {
@@ -97,6 +106,8 @@ class Home extends Component {
         <MapList
           places={places}
           navigation={navigation}
+          onIndexChange={this.onIndexChange}
+          onLevelChange={this.onLevelChange}
         />
       </Container>
     );

@@ -13,6 +13,10 @@ import Entry from './entry';
 
 import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, BREAKPOINT2, TOOLBARHEIGHT, screen } from './styles';
 
+const LEVEL1 = 0,
+      LEVEL2 = -BREAKPOINT2,
+      LEVEL3 = -1 * screen.height;
+
 function getMarkerState(panX, panY, scrollY, i) {
   const xLeft = (-SNAP_WIDTH * i) + (SNAP_WIDTH / 2);
   const xRight = (-SNAP_WIDTH * i) - (SNAP_WIDTH / 2);
@@ -45,10 +49,15 @@ class MapList extends Component {
   static propTypes = {
     places: PropTypes.array,
     navigation: PropTypes.object,
+    index: PropTypes.number,
+    onIndexChange: PropTypes.func,
+    onLevelChange: PropTypes.func,
   }
 
   static defaultProps = {
-    places: []
+    places: [],
+    onIndexChange: () => {},
+    onLevelChange: () => {}
   }
 
   constructor(props) {
@@ -77,7 +86,6 @@ class MapList extends Component {
       animations: [],
       panX,
       panY,
-      index: 0,
       scrollY,
       scrollX,
       translateY
@@ -95,9 +103,6 @@ class MapList extends Component {
   componentDidMount() {
     const { panX, panY, scrollX } = this.state;
     const { places } = this.props;
-
-    panX.addListener(this.onPanXChange);
-    panY.addListener(this.onPanYChange);
 
     this.setUpAnimations(places);
   }
@@ -129,21 +134,29 @@ class MapList extends Component {
     return topOfTap < topOfMainWindow;
   }
 
-  onPanXChange = ({ value }) => {
-    const { index } = this.state;
-    const newIndex = Math.floor(((-1 * value) + (SNAP_WIDTH / 2)) / SNAP_WIDTH);
-    if (index !== newIndex) {
-      this.setState({ index: newIndex });
-    }
+  onIndexChange = (yo) => {
+    const index = Math.floor(((-1 * yo) + (SNAP_WIDTH / 2)) / SNAP_WIDTH);
+    this.props.onIndexChange(index);
   }
 
-  onPanYChange = ({ value }) => {
-    // const { canMoveHorizontal } = this.state;
-    // const shouldBeMovable = Math.abs(value) < 2;
-    // if (shouldBeMovable !== canMoveHorizontal) {
-    //   this.setState({ canMoveHorizontal: shouldBeMovable });
-    // }
+  onLevelChange = (value) => {
+    let level = 1;
+
+    switch (value) {
+      case LEVEL1:
+        level = 1;
+        break;
+      case LEVEL2:
+        level = 2;
+        break;
+      case LEVEL3:
+        level = 3;
+        break;
+    }
+
+    this.props.onLevelChange(level);
   }
+
 
   render() {
     const { panX, panY, animations, translateY, scrollY } = this.state;
@@ -157,12 +170,14 @@ class MapList extends Component {
           horizontal={true}
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
-          yBounds={[-1 * screen.height, -BREAKPOINT2 , 0]}
+          yBounds={[LEVEL3, LEVEL2 , LEVEL1]}
           xBounds={[-screen.width * (places.length - 1), null, 0]}
           panY={panY}
           panX={panX}
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
+          onIndexChange={this.onIndexChange}
+          onLevelChange={this.onLevelChange}
         >
           <Animated.View style={[styles.itemContainer, {
             transform: [
