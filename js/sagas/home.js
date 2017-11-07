@@ -1,12 +1,9 @@
 import { put, fork, takeLatest, call, take } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
-import { SEARCH_SUCCESS } from '../constants/reviews';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
 import { setGeolocation } from '../actions/home';
-import { fetchReviews } from '../api/reviews';
-import { pollSaga } from './utils';
 
 function getCurrentPosition() {
   return eventChannel(emit => {
@@ -20,18 +17,16 @@ function getCurrentPosition() {
     return () => {};
   });
 }
-export function * homeFlow() {
-  yield put(fetchReviews());
 
+export function * homeFlow() {
   const channel = yield call(getCurrentPosition);
 
   let action = yield take(channel);
   yield put(action);
-
 }
 
 export default function _root(socket) {
   return function * root() {
-    yield takeLatest(RUN_SAGAS, homeFlow);
+    yield takeLatest(RUN_SAGAS, homeFlow)
   }
 }

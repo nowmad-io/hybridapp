@@ -5,7 +5,8 @@ import {
   REGION_CHANGE
 } from '../constants/home';
 import {
-  PLACES_SUCCESS
+  PLACES_SUCCESS,
+  ADD_UPDATE_REVIEW
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -30,6 +31,10 @@ function HomeReducer(state = initialState, action) {
         places: action.payload,
         selectedPlace: action.payload.length ? action.payload[0] : null
       };
+    case ADD_UPDATE_REVIEW:
+      console.log('action.review', action.review);
+      console.log('state.places', state.places);
+      return state;
     case SELECTED_PLACE:
       return { ...state, selectedPlace: action.selectedPlace};
     case GEOLOCATION:
