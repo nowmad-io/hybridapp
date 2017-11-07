@@ -8,5 +8,5 @@ export const categoriesList = [
 export const statusList = [
   'Travelling here',
   'Living here',
-  'local',
+  'Local',
 ]
