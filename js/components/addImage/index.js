@@ -94,7 +94,7 @@ class AddImage extends Component {
             style={styles.imageWrapper}>
             <Image
               style={styles.image}
-              source={{uri: this.state.image.uri}} />
+              source={{uri: this.state.image.source || this.state.image.uri}} />
           </View>
           <View
             style={styles.actionsWrapper}>
