@@ -64,11 +64,11 @@ class AddReview extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress = () => {
@@ -100,7 +100,7 @@ class AddReview extends Component {
         name: categorie
       })),
       pictures: this.state.images.map((image) => ({
-        source: image.uri,
+        source: image.data,
         caption: image.caption
       }))
     };

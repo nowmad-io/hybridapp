@@ -27,7 +27,7 @@ export default {
     flexDirection: 'row',
   },
   image: (full = false, index) => ({
-    marginLeft: full && index !== 0 ? 8 : 0
+    marginLeft: !full || index !== 0 ? 8 : 0
   }),
   imagesCaption: {
     fontSize: 14,
