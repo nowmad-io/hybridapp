@@ -272,7 +272,7 @@ class AddReview extends Component {
                     key={index}
                     style={styles.image(full, index)}
                     onPress={() => this.navigateToImage(image)}
-                    source={image.uri} />
+                    source={image.source || image.uri} />
                 )) }
               </View>
               <Text  style={styles.imagesCaption}>
