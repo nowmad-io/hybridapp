@@ -310,7 +310,7 @@ class PanController extends Component {
           break;
       }
 
-      this.props.onLevelChange(toValue);
+      // this.props.onLevelChange(toValue);
     });
   }
 
@@ -337,7 +337,7 @@ class PanController extends Component {
       anim.removeListener(this._listener);
     });
 
-    this.props.onIndexChange(endX);
+    // this.props.onIndexChange(endX);
   }
 
   closestCenter(x, spacing) {
