@@ -12,6 +12,7 @@ const HomeRouter = DrawerNavigator({
   DrawBar: { screen: DrawBar }
 },
 {
+  drawerPosition: 'right',
   contentComponent: props => <DrawBar {...props} />
 });
 
