@@ -1,6 +1,7 @@
 import React from 'react-native';
-
 const { StyleSheet } = React;
+
+import { colors } from '../../parameters';
 
 export default {
   container: {
@@ -16,6 +17,30 @@ export default {
     left: 0,
     right: 0,
     bottom: 100,
-    zIndex: 999999999
+    zIndex: 999999999,
+  },
+  headerView: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  headerInput: {
+    flex: 1
+  },
+  headerButton: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  headerIcon: {
+    marginHorizontal: 8,
+    color: colors.white
+  },
+  menuIcon: {
+    alignSelf: 'flex-end'
   }
 };

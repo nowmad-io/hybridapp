@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
-import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
+import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text, Item } from 'native-base';
 import shortid from 'shortid';
 
 import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
+import SearchBar from '../searchBar';
 
 import { selectedPlace, regionChanged, levelChange } from '../../actions/home'
 
@@ -74,18 +75,17 @@ class Home extends Component {
     const { places, position, selectedPlace, region, navigation } = this.props;
     return (
       <Container>
-        <Header style={styles.header}>
-          <Body>
-            <Title>Header</Title>
-          </Body>
-          <Right>
+        <Header style={styles.header} searchBar={true}>
+          <View style={styles.headerView}>
+            <SearchBar style={styles.headerInput} />
             <Button
+              style={styles.headerButton}
               onPress={() => navigation.navigate('DrawerOpen')}
               transparent
             >
-              <Icon name='md-menu' />
+              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]}/>
             </Button>
-          </Right>
+          </View>
         </Header>
         <Map
           onRef={this.onRef}

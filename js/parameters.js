@@ -14,5 +14,7 @@ export const colors = {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4
-  }
+  },
+  whiteTransparent: 'rgba(255, 255, 255, 0.6)',
+  transparent: 'rgba(0, 0, 0, 0)'
 };

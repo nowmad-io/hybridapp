@@ -9,7 +9,7 @@ export default {
   },
   input: {
     fontSize: 14,
-    lineHeight: 14,
+    lineHeight: 16,
     paddingTop: 0,
     paddingBottom: 10
   },
