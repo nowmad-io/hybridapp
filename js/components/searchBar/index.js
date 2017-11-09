@@ -40,19 +40,15 @@ class SearchBar extends Component {
         empty: true,
         focused: false
       })
-      console.log('this.refs.textInput', this.refs.textInput);
+
       this.refs.textInput.blur();
     } else {
-      //search
-
+      // search
     }
   }
 
   render() {
     const { props, state} = this;
-
-    console.log('state.empty', state.empty);
-    console.log('state.focused', state.focused);
 
     return (
       <View style={[styles.searchWrapper, props.style]}>
