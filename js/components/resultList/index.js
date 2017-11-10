@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Text, Container } from 'native-base';
+import { View, Text, Container, Button } from 'native-base';
 
 import ListCluster from './listCluster';
 import ListItem from './listItem';
@@ -22,17 +22,23 @@ class ResultList extends Component {
   }
 
   render() {
-    const { style, nearbyPlaces } = this.props;
+    const { style, nearbyPlaces, onPlaceSelected } = this.props;
 
     return (
       <View style={[styles.resultWrapper, style]}>
         <ListCluster label="MAYBE YOU WERE LOOKING FOR">
-          {nearbyPlaces.map((result, index) => (
-            <ListItem
-              key={index}
-              image='google'
-              text={result.name} />
-          ))}
+          <View>
+            {nearbyPlaces.map((result, index) => (
+              <ListItem
+                key={index}
+                image='google'
+                text={result.name}
+                onPress={onPlaceSelected} />
+            ))}
+            <Button style={styles.button}>
+              <Text>Add a new place</Text>
+            </Button>
+          </View>
         </ListCluster>
       </View>
     )

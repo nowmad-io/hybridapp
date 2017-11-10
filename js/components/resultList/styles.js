@@ -13,8 +13,7 @@ export default {
   labelCluster: {
     color: colors.grey,
     fontSize: 16,
-    lineHeight: 18,
-    paddingBottom: 14
+    lineHeight: 18
   },
   itemWrapper: {
     flexDirection: 'row',
@@ -31,5 +30,9 @@ export default {
     paddingVertical: 12,
     borderBottomWidth: 0.5,
     borderColor: colors.grey
+  },
+  button: {
+    marginTop: 28,
+    alignSelf: 'flex-end'
   }
 };
