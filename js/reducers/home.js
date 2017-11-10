@@ -2,11 +2,13 @@ import {
   GEOLOCATION,
   SELECTED_PLACE,
   LEVEL_CHANGE,
-  REGION_CHANGE
+  REGION_CHANGE,
+  NEARBY,
+  NEW_PLACE
 } from '../constants/home';
 import {
   PLACES_SUCCESS,
-  ADD_UPDATE_REVIEW
+  ADD_UPDATE_REVIEW,
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -15,6 +17,7 @@ const initialState = {
   selectedPlace: null,
   level: 0,
   position: null,
+  nearbyPlaces: [],
   region: {
     latitude: 40.7205699,
     longitude: -1.840341,
@@ -35,6 +38,11 @@ function HomeReducer(state = initialState, action) {
       console.log('action.review', action.review);
       console.log('state.places', state.places);
       return state;
+    case NEW_PLACE:
+      console.log('NEW_PLACE', action);
+      return { ...state, newPlace: action.place };
+    case NEARBY:
+      return { ...state, nearbyPlaces: action.places.results };
     case SELECTED_PLACE:
       return { ...state, selectedPlace: action.selectedPlace};
     case GEOLOCATION:

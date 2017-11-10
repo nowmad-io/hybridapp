@@ -6,13 +6,15 @@ import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
 import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text, Item } from 'native-base';
 import shortid from 'shortid';
+import RNGooglePlaces from 'react-native-google-places';
 
 import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
 import SearchBar from '../searchBar';
 
-import { selectedPlace, regionChanged, levelChange } from '../../actions/home'
+import { selectedPlace, regionChanged, levelChange, selectNewPlace } from '../../actions/home'
+import { nearbyPlaces } from '../../api/home'
 
 import styles from './styles';
 
@@ -30,7 +32,7 @@ class Home extends Component {
     super(props);
   }
 
-  componentWillReceiveProps({ selectedPlace, level }) {
+  componentWillReceiveProps({ selectedPlace, level, position }) {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id
         && this.props.level === 2 && this._map) {
@@ -42,6 +44,12 @@ class Home extends Component {
       });
       this._map.animateToCoordinate(selected);
     }
+
+    if (position && position.altitude && position.longitude && this._map) {
+      this._map.fitToCoordinates([position], { animated: true });
+    }
+
+
   }
 
   onMarkerPress = (place) => {
@@ -49,7 +57,6 @@ class Home extends Component {
   }
 
   onIndexChange = (index) => {
-    console.log('index', index);
     this.props.dispatch(selectedPlace(this.props.places[index]));
   }
 
@@ -71,8 +78,13 @@ class Home extends Component {
     }
   }
 
+  onMapLongPress = ({coordinate}) => {
+    this.props.dispatch(nearbyPlaces(coordinate));
+    this.props.dispatch(selectNewPlace(coordinate));
+  }
+
   render() {
-    const { places, position, selectedPlace, region, navigation } = this.props;
+    const { places, position, selectedPlace, region, navigation, newPlace } = this.props;
     return (
       <Container>
         <Header style={styles.header} searchBar={true}>
@@ -90,6 +102,7 @@ class Home extends Component {
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
+          onLongPress={this.onMapLongPress}
           position={position || region}
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
@@ -102,6 +115,13 @@ class Home extends Component {
               onMarkerPress={this.onMarkerPress}
             />
           ))}
+          { newPlace && (
+            <Marker
+              key={shortid.generate()}
+              place={newPlace}
+              onMarkerPress={this.onNewMarkerPress}
+            />
+          )}
         </Map>
         <MapList
           places={places}
@@ -123,7 +143,9 @@ const mapStateToProps = state => ({
   position: state.home.position,
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,
-  region: state.home.region
+  region: state.home.region,
+  nearbyPlaces: state.home.nearbyPlaces,
+  newPlace: state.home.newPlace
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

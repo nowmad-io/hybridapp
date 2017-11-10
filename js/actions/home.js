@@ -2,7 +2,9 @@ import {
   GEOLOCATION,
   SELECTED_PLACE,
   LEVEL_CHANGE,
-  REGION_CHANGE
+  REGION_CHANGE,
+  NEARBY,
+  NEW_PLACE
 } from '../constants/home';
 
 export function setGeolocation(position) {
@@ -30,5 +32,19 @@ export function regionChanged(region) {
   return {
     type: REGION_CHANGE,
     region,
+  };
+}
+
+export function selectNewPlace(place) {
+  return {
+    type: NEW_PLACE,
+    place,
+  };
+}
+
+export function nearby(places) {
+  return {
+    type: NEARBY,
+    places,
   };
 }

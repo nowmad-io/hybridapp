@@ -12,6 +12,7 @@ class Map extends Component {
     ]),
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    onLongPress: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
@@ -28,6 +29,7 @@ class Map extends Component {
         ref={(ref) => this.props.onRef(ref)}
         onMapReady={() => this.props.onMapReady()}
         onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
+        onLongPress={(event) => this.props.onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         showsUserLocation={true}
@@ -43,9 +45,10 @@ class Map extends Component {
 }
 
 Map.defaultProps = {
-  onRef: () => {},
-  onRegionChangeComplete: () => {},
-  onMapReady: () => {},
+  onRef: () => true,
+  onRegionChangeComplete: () => true,
+  onMapReady: () => true,
+  onLongPress: () => true,
   zoomEnabled: true,
   rotateEnabled: true,
   scrollEnabled: true,

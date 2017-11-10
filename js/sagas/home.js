@@ -2,8 +2,22 @@ import { put, fork, takeLatest, call, take } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
+import {
+  NEARBY_SUCCESS,
+  NEARBY_ERROR,
+  NEARBY
+} from '../constants/home';
 
-import { setGeolocation } from '../actions/home';
+import { setGeolocation, nearby } from '../actions/home';
+
+
+function * nearbyFlow(actions) {
+  const { error, payload } = actions;
+
+  if (!error) {
+    yield put(nearby(payload));
+  }
+}
 
 function getCurrentPosition() {
   return eventChannel(emit => {
@@ -27,6 +41,7 @@ export function * homeFlow() {
 
 export default function _root(socket) {
   return function * root() {
-    yield takeLatest(RUN_SAGAS, homeFlow)
+    yield takeLatest(RUN_SAGAS, homeFlow);
+    yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
   }
 }
