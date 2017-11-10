@@ -12,6 +12,7 @@ import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
 import SearchBar from '../searchBar';
+import ResultList from '../resultList';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace } from '../../actions/home'
 
@@ -31,6 +32,10 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      resultListVisible: false
+    }
   }
 
   componentWillReceiveProps({ selectedPlace, level, position }) {
@@ -82,13 +87,24 @@ class Home extends Component {
     this.props.dispatch(selectNewPlace(coordinate));
   }
 
+  onSearchClear = () => {
+    console.log('clear');
+    this.props.dispatch(selectNewPlace(null));
+  }
+
   render() {
     const { places, position, selectedPlace, region, navigation, newPlace } = this.props;
+    const { resultListVisible } = this.state;
+
     return (
       <Container>
         <Header style={styles.header} searchBar={true}>
           <View style={styles.headerView}>
-            <SearchBar style={styles.headerInput} />
+            <SearchBar
+              onFocus={() => this.setState({resultListVisible: true})}
+              onBlur={() => this.setState({resultListVisible: false})}
+              onClear={() => this.onSearchClear()}
+              style={styles.headerInput} />
             <Button
               style={styles.headerButton}
               onPress={() => navigation.navigate('DrawerOpen')}
@@ -128,6 +144,9 @@ class Home extends Component {
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
         />
+        { resultListVisible && (
+          <ResultList style={styles.resultList} />
+        )}
       </Container>
     );
   }

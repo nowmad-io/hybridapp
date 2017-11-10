@@ -37,8 +37,6 @@ class Api {
 
         const requestPath = ((path.indexOf('http') === -1) ? basePath : '') + path + this.queryString(data);
 
-        console.log('path', path);
-        console.log('requestPath', requestPath);
         const body = params ? bodyEncoder(params) : undefined
 
         let fetchOptions = {

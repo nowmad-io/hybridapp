@@ -41,10 +41,3 @@ export function selectNewPlace(place) {
     place,
   };
 }
-
-export function nearby(places) {
-  return {
-    type: NEARBY,
-    places,
-  };
-}

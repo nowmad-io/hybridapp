@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View, BackHandler } from 'react-native';
-import { Button, Icon } from 'native-base';
+import { TextInput, View, BackHandler, Keyboard } from 'react-native';
+import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
+import { getNearbyPlaces } from '../../api/search'
 import { colors } from '../../parameters';
 import styles from './styles';
 
-const COORD_REGEX = /^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
+const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 
 class SearchBar extends Component {
   static defaultProps = {
     style: {},
-    coordinates: {}
+    onFocus: () => true,
+    onBlur: () => true,
+    onClear: () => true
   }
 
   static propTypes = {
     style: PropTypes.object,
-    newPlace: PropTypes.object
+    newPlace: PropTypes.object,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onClear: PropTypes.func
   }
 
   constructor(props) {
@@ -25,7 +31,6 @@ class SearchBar extends Component {
 
     this.state = {
       focused: false,
-      empty: true,
       text: '',
       previousValue: ''
     }
@@ -56,8 +61,7 @@ class SearchBar extends Component {
   }
 
   coordinatesToString(coordinates) {
-    console.log('coordinates', coordinates);
-    if ( coordinates && coordinates.latitude && coordinates.longitude) {
+    if (coordinates && coordinates.latitude && coordinates.longitude) {
       return `${coordinates.latitude},${coordinates.longitude}`
     }
 
@@ -65,40 +69,52 @@ class SearchBar extends Component {
   }
 
   onChangeText(text) {
-    this.setState({
-      empty: !text.length,
-      text
-    });
+    this.setState({text});
 
     if (!this.state.focused) {
       this.focusInput();
     }
+
+    const coord = COORD_REGEX.exec(text)
+    if (coord && coord.length >= 3) {
+      Keyboard.dismiss();
+
+      this.props.dispatch(getNearbyPlaces({
+        latitude: coord[1],
+        longitude: coord[2]
+      }));
+    }
   }
 
-  focusInput() {
+  focusInput(nativeEvent) {
     this.setState({
       focused: true,
       previousValue: this.state.text
     });
-    this.refs.textInput.focus();
+    if (!nativeEvent) {
+      this.refs.textInput.focus();
+    }
+    this.props.onFocus();
   }
 
-  blurInput() {
+  blurInput(clear) {
     this.setState({
-      text: this.state.previousValue
+      focused: false,
+      text: !clear ? this.state.previousValue : ''
     });
+
     this.refs.textInput.blur();
+    this.props.onBlur();
   }
 
   onButtonPress() {
-    if (!this.state.empty || this.state.focused) {
-      // clean
+    if (this.state.text.length || this.state.focused) {
       this.setState({
-        text: '',
         previousValue: '',
       })
-
-      this.blurInput();
+      console.log('here ?');
+      this.props.onClear();
+      this.blurInput(true);
     } else {
       this.focusInput();
     }
@@ -114,7 +130,7 @@ class SearchBar extends Component {
           style={styles.inputButton}
           onPress={() => this.onButtonPress()}
         >
-          {(!state.empty || state.focused) ? (
+          {(state.text.length || state.focused) ? (
             <Icon name='md-close' style={styles.inputIcon}/>
           ) : (
             <Icon name='md-search' style={styles.inputIcon}/>
@@ -129,8 +145,7 @@ class SearchBar extends Component {
           placeholderTextColor={colors.white}
           style={styles.searchInput}
           value={state.text}
-          onFocus={() => this.setState({focused: true})}
-          onBlur={() => this.setState({focused: false})}
+          onFocus={() => this.focusInput(true)}
           onChangeText={(text) => this.onChangeText(text)}
           withRef />
       </View>
@@ -143,7 +158,6 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  nearbyPlaces: state.search.nearbyPlaces,
   newPlace: state.home.newPlace
 });
 

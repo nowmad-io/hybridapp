@@ -1,6 +1,6 @@
-import React from 'react-native';
-const { StyleSheet } = React;
+import React, { StyleSheet } from 'react-native';
 
+import material from '../../../native-base-theme/variables/material';
 import { colors } from '../../parameters';
 
 export default {
@@ -42,5 +42,12 @@ export default {
   },
   menuIcon: {
     alignSelf: 'flex-end'
+  },
+  resultList: {
+    position: 'absolute',
+    top: material.toolbarHeight,
+    bottom: 0,
+    right: 0,
+    left: 0
   }
 };

@@ -7,7 +7,7 @@ import {
   NEARBY_ERROR
 } from '../constants/search';
 
-export function nearbyPlaces(place) {
+export function getNearbyPlaces(place) {
   const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
         key = `key=${Config.PLACES_API_KEY}`,
         location = `location=${place.latitude},${place.longitude}`,

@@ -17,7 +17,6 @@ const initialState = {
   selectedPlace: null,
   level: 0,
   position: null,
-  nearbyPlaces: [],
   region: {
     latitude: 40.7205699,
     longitude: -1.840341,

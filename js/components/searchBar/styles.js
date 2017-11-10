@@ -25,5 +25,5 @@ export default {
   inputIcon: {
     marginHorizontal: 8,
     color: colors.white
-  },
+  }
 };
