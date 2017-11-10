@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Text, Container } from 'native-base';
 
+import ListCluster from './listCluster';
+import ListItem from './listItem';
+
 import styles from './styles';
 
 class ResultList extends Component {
@@ -23,9 +26,14 @@ class ResultList extends Component {
 
     return (
       <View style={[styles.resultWrapper, style]}>
-        {nearbyPlaces.map((result) => (
-          <Text>{result.name}</Text>
-        ))}
+        <ListCluster label="MAYBE YOU WERE LOOKING FOR">
+          {nearbyPlaces.map((result, index) => (
+            <ListItem
+              key={index}
+              image='google'
+              text={result.name} />
+          ))}
+        </ListCluster>
       </View>
     )
   }

@@ -103,8 +103,8 @@ class SearchBar extends Component {
       text: !clear ? this.state.previousValue : ''
     });
 
-    this.refs.textInput.blur();
     this.props.onBlur();
+    this.refs.textInput.blur();
   }
 
   onButtonPress() {
@@ -112,7 +112,7 @@ class SearchBar extends Component {
       this.setState({
         previousValue: '',
       })
-      console.log('here ?');
+
       this.props.onClear();
       this.blurInput(true);
     } else {
