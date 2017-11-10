@@ -88,7 +88,6 @@ class Home extends Component {
   }
 
   onSearchClear = () => {
-    console.log('clear');
     this.props.dispatch(selectNewPlace(null));
   }
 
