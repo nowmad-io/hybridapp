@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, BackHandler } from 'react-native';
 import { Button, Icon } from 'native-base';
+import { connect } from 'react-redux';
 
 import { colors } from '../../parameters';
 import styles from './styles';
@@ -16,7 +17,7 @@ class SearchBar extends Component {
 
   static propTypes = {
     style: PropTypes.object,
-    coordinates: PropTypes.object
+    newPlace: PropTypes.object
   }
 
   constructor(props) {
@@ -29,20 +30,34 @@ class SearchBar extends Component {
     }
   }
 
-  componentWillReceiveProps({ coordinates }) {
-    const newCoords = this.coordinatesToString(coordinates),
-          currentCoords = this.coordinatesToString(this.props.coordinates);
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
 
-          console.log('newCoords', newCoords);
-          console.log('currentCoords', currentCoords);
-    if (!this.state.focused && newCoords !== currentCoords) {
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress = () => {
+    if (this.state.focused) {
+      this.setState({focused: false});
+      this.refs.textInput.blur();
+      return true;
+    }
+  }
+
+  componentWillReceiveProps({ newPlace }) {
+    const newCoords = this.coordinatesToString(newPlace),
+          currentCoords = this.coordinatesToString(this.props.newPlace);
+
+    if (newCoords !== currentCoords) {
       this.onChangeText(newCoords);
     }
   }
 
   coordinatesToString(coordinates) {
     console.log('coordinates', coordinates);
-    if (coordinates.latitude && coordinates.longitude) {
+    if ( coordinates && coordinates.latitude && coordinates.longitude) {
       return `${coordinates.latitude},${coordinates.longitude}`
     }
 
@@ -100,6 +115,7 @@ class SearchBar extends Component {
           selectionColor={colors.whiteTransparent}
           placeholderTextColor={colors.white}
           style={styles.searchInput}
+          value={state.text}
           onFocus={() => this.setState({focused: true})}
           onBlur={() => this.setState({focused: false})}
           onChangeText={(text) => this.onChangeText(text)}
@@ -109,4 +125,13 @@ class SearchBar extends Component {
   }
 }
 
-export default SearchBar;
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = state => ({
+  nearbyPlaces: state.search.nearbyPlaces,
+  newPlace: state.home.newPlace
+});
+
+export default connect(mapStateToProps, bindActions)(SearchBar);

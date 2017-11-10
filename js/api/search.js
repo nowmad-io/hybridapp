@@ -5,7 +5,7 @@ import { apiCall } from '../requests';
 import {
   NEARBY_SUCCESS,
   NEARBY_ERROR
-} from '../constants/home';
+} from '../constants/search';
 
 export function nearbyPlaces(place) {
   const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',

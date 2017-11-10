@@ -14,18 +14,19 @@ import MapList from '../mapList';
 import SearchBar from '../searchBar';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace } from '../../actions/home'
-import { nearbyPlaces } from '../../api/home'
 
 import styles from './styles';
 
 class Home extends Component {
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     places: PropTypes.array,
     position: PropTypes.object,
     level: PropTypes.number,
     selectedPlace: PropTypes.object,
     region: PropTypes.object,
+    newPlace: PropTypes.object
   }
 
   constructor(props) {
@@ -78,19 +79,16 @@ class Home extends Component {
   }
 
   onMapLongPress = ({coordinate}) => {
-    this.props.dispatch(nearbyPlaces(coordinate));
     this.props.dispatch(selectNewPlace(coordinate));
   }
 
   render() {
-    const { places, position, selectedPlace, region, navigation, newPlace, nearbyPlaces } = this.props;
+    const { places, position, selectedPlace, region, navigation, newPlace } = this.props;
     return (
       <Container>
         <Header style={styles.header} searchBar={true}>
           <View style={styles.headerView}>
-            <SearchBar
-              style={styles.headerInput}
-              value={newPlace}/>
+            <SearchBar style={styles.headerInput} />
             <Button
               style={styles.headerButton}
               onPress={() => navigation.navigate('DrawerOpen')}
@@ -145,7 +143,6 @@ const mapStateToProps = state => ({
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,
   region: state.home.region,
-  nearbyPlaces: state.home.nearbyPlaces,
   newPlace: state.home.newPlace
 });
 
