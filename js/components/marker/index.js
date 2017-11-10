@@ -20,11 +20,15 @@ class Marker extends Component {
 
     this.state = {
       type: this.getPlaceType(props.place),
-      friendsCount: props.place.reviews.length
+      friendsCount: props.place.reviews && props.place.reviews.length || 0
     };
   }
 
   getPlaceType(place) {
+    if (!place.reviews) {
+      return 'new';
+    }
+
     const types = _.uniq(place.reviews.map((review, index) => {
         return review.user_type;
     }));
@@ -36,7 +40,7 @@ class Marker extends Component {
     const { selected, place } = this.props;
     const { type, friendsCount } = this.state;
     const _styles = styles(selected, type);
-    
+
     return (
       <MapView.Marker
         coordinate={{latitude: place.latitude, longitude: place.longitude}}
@@ -48,7 +52,7 @@ class Marker extends Component {
             <View style={styles(selected, type).thumbnailWrapper}>
               {friendsCount > 1 ? (
                 <Text style={styles(selected, type).count}>{friendsCount}</Text>
-              ) : (
+              ) : (type !== 'new') && (
                 <Thumbnail small source={{uri: place.reviews[0].created_by.picture}} />
               )}
             </View>

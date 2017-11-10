@@ -39,7 +39,6 @@ function HomeReducer(state = initialState, action) {
       console.log('state.places', state.places);
       return state;
     case NEW_PLACE:
-      console.log('NEW_PLACE', action);
       return { ...state, newPlace: action.place };
     case NEARBY:
       return { ...state, nearbyPlaces: action.places.results };

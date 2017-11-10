@@ -6,13 +6,17 @@ import { Button, Icon } from 'native-base';
 import { colors } from '../../parameters';
 import styles from './styles';
 
+const COORD_REGEX = /^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/;
+
 class SearchBar extends Component {
   static defaultProps = {
-    style: {}
+    style: {},
+    coordinates: {}
   }
 
   static propTypes = {
-    style: PropTypes.object
+    style: PropTypes.object,
+    coordinates: PropTypes.object
   }
 
   constructor(props) {
@@ -25,11 +29,36 @@ class SearchBar extends Component {
     }
   }
 
+  componentWillReceiveProps({ coordinates }) {
+    const newCoords = this.coordinatesToString(coordinates),
+          currentCoords = this.coordinatesToString(this.props.coordinates);
+
+          console.log('newCoords', newCoords);
+          console.log('currentCoords', currentCoords);
+    if (!this.state.focused && newCoords !== currentCoords) {
+      this.onChangeText(newCoords);
+    }
+  }
+
+  coordinatesToString(coordinates) {
+    console.log('coordinates', coordinates);
+    if (coordinates.latitude && coordinates.longitude) {
+      return `${coordinates.latitude},${coordinates.longitude}`
+    }
+
+    return '';
+  }
+
   onChangeText(text) {
     this.setState({
       empty: !text.length,
       text
     });
+
+    if (!this.state.focused) {
+      this.setState({focused: true});
+      this.refs.textInput.focus();
+    }
   }
 
   onButtonPress() {
@@ -43,7 +72,7 @@ class SearchBar extends Component {
 
       this.refs.textInput.blur();
     } else {
-      // search
+      this.refs.textInput.focus();
     }
   }
 

@@ -45,10 +45,9 @@ class Home extends Component {
       this._map.animateToCoordinate(selected);
     }
 
-    if (position && position.altitude && position.longitude && this._map) {
-      this._map.fitToCoordinates([position], { animated: true });
-    }
-
+    // if (position && position.altitude && position.longitude && this._map) {
+    //   this._map.fitToCoordinates([position], { animated: true });
+    // }
 
   }
 
@@ -84,18 +83,20 @@ class Home extends Component {
   }
 
   render() {
-    const { places, position, selectedPlace, region, navigation, newPlace } = this.props;
+    const { places, position, selectedPlace, region, navigation, newPlace, nearbyPlaces } = this.props;
     return (
       <Container>
         <Header style={styles.header} searchBar={true}>
           <View style={styles.headerView}>
-            <SearchBar style={styles.headerInput} />
+            <SearchBar
+              style={styles.headerInput}
+              value={newPlace}/>
             <Button
               style={styles.headerButton}
               onPress={() => navigation.navigate('DrawerOpen')}
               transparent
             >
-              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]}/>
+              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />
             </Button>
           </View>
         </Header>

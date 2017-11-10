@@ -22,7 +22,7 @@ export default (selected = false, type = null) => {
     alignItems: 'center',
   };
   const thumbnailWrapper = {
-    backgroundColor: selected ? colors.green : colors.white,
+    backgroundColor: (selected || type === 'new') ? colors.green : colors.white,
     borderRadius: 18,
     width: 28,
     height: 28,
@@ -40,7 +40,7 @@ export default (selected = false, type = null) => {
     borderRightWidth: 6/2.0,
     borderBottomWidth: 0,
     borderLeftWidth: 6/2.0,
-    borderTopColor: selected ? colors.green : colors.white,
+    borderTopColor: (selected || type === 'new') ? colors.green : colors.white,
     borderRightColor: 'transparent',
     borderBottomColor: 'transparent',
     borderLeftColor: 'transparent',
