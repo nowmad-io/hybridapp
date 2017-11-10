@@ -26,7 +26,8 @@ class SearchBar extends Component {
     this.state = {
       focused: false,
       empty: true,
-      text: ''
+      text: '',
+      previousValue: ''
     }
   }
 
@@ -40,8 +41,7 @@ class SearchBar extends Component {
 
   onBackPress = () => {
     if (this.state.focused) {
-      this.setState({focused: false});
-      this.refs.textInput.blur();
+      this.blurInput();
       return true;
     }
   }
@@ -71,9 +71,23 @@ class SearchBar extends Component {
     });
 
     if (!this.state.focused) {
-      this.setState({focused: true});
-      this.refs.textInput.focus();
+      this.focusInput();
     }
+  }
+
+  focusInput() {
+    this.setState({
+      focused: true,
+      previousValue: this.state.text
+    });
+    this.refs.textInput.focus();
+  }
+
+  blurInput() {
+    this.setState({
+      text: this.state.previousValue
+    });
+    this.refs.textInput.blur();
   }
 
   onButtonPress() {
@@ -81,13 +95,12 @@ class SearchBar extends Component {
       // clean
       this.setState({
         text: '',
-        empty: true,
-        focused: false
+        previousValue: '',
       })
 
-      this.refs.textInput.blur();
+      this.blurInput();
     } else {
-      this.refs.textInput.focus();
+      this.focusInput();
     }
   }
 
