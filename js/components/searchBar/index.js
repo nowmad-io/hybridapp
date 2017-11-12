@@ -4,6 +4,7 @@ import { TextInput, View, BackHandler, Keyboard } from 'react-native';
 import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
+import { setFocus } from '../../actions/search'
 import { getNearbyPlaces } from '../../api/search'
 import { colors } from '../../parameters';
 import styles from './styles';
@@ -13,16 +14,12 @@ const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 class SearchBar extends Component {
   static defaultProps = {
     style: {},
-    onFocus: () => true,
-    onBlur: () => true,
     onClear: () => true
   }
 
   static propTypes = {
     style: PropTypes.object,
     newPlace: PropTypes.object,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
     onClear: PropTypes.func
   }
 
@@ -30,7 +27,6 @@ class SearchBar extends Component {
     super(props);
 
     this.state = {
-      focused: false,
       text: '',
       previousValue: ''
     }
@@ -45,7 +41,7 @@ class SearchBar extends Component {
   }
 
   onBackPress = () => {
-    if (this.state.focused) {
+    if (this.props.focus) {
       this.blurInput();
       return true;
     }
@@ -71,7 +67,7 @@ class SearchBar extends Component {
   onChangeText(text) {
     this.setState({text});
 
-    if (!this.state.focused) {
+    if (!this.props.focus) {
       this.focusInput();
     }
 
@@ -88,27 +84,25 @@ class SearchBar extends Component {
 
   focusInput(nativeEvent) {
     this.setState({
-      focused: true,
       previousValue: this.state.text
     });
     if (!nativeEvent) {
       this.refs.textInput.focus();
     }
-    this.props.onFocus();
+    this.props.dispatch(setFocus(true));
   }
 
   blurInput(clear) {
     this.setState({
-      focused: false,
       text: !clear ? this.state.previousValue : ''
     });
 
-    this.props.onBlur();
+    this.props.dispatch(setFocus(false));
     this.refs.textInput.blur();
   }
 
   onButtonPress() {
-    if (this.state.text.length || this.state.focused) {
+    if (this.state.text.length || this.props.focus) {
       this.setState({
         previousValue: '',
       })
@@ -130,7 +124,7 @@ class SearchBar extends Component {
           style={styles.inputButton}
           onPress={() => this.onButtonPress()}
         >
-          {(state.text.length || state.focused) ? (
+          {(state.text.length || props.focus) ? (
             <Icon name='md-close' style={styles.inputIcon}/>
           ) : (
             <Icon name='md-search' style={styles.inputIcon}/>
@@ -138,7 +132,7 @@ class SearchBar extends Component {
         </Button>
         <TextInput
           ref='textInput'
-          underlineColorAndroid={state.focused ? colors.white : colors.transparent}
+          underlineColorAndroid={props.focus ? colors.white : colors.transparent}
           autoCorrect={false}
           placeholder={'Search friends, reviews & places'}
           selectionColor={colors.whiteTransparent}

@@ -28,7 +28,8 @@ class Home extends Component {
     level: PropTypes.number,
     selectedPlace: PropTypes.object,
     region: PropTypes.object,
-    newPlace: PropTypes.object
+    newPlace: PropTypes.object,
+    searchFocus: PropTypes.bool
   }
 
   constructor(props) {
@@ -111,27 +112,26 @@ class Home extends Component {
   }
 
   onNearbySelected = (place) => {
-    if (place) {
-      this.props.dispatch(selectNewPlace({
-        ...this.props.selectedPlace,
-        ...place
-      }))
-    }
+    const updatedPlace = {
+      ...this.props.newPlace,
+      ...place
+    };
 
-    this.props.navigation.navigate('AddReview', { place })
+    console.log('place', place)
+    console.log('this.props.newPlace', this.props.newPlace);
+    console.log('updatedPlace', updatedPlace);
+    this.props.dispatch(selectNewPlace(updatedPlace));
+    this.props.navigation.navigate('AddReview', { place: updatedPlace });
   }
 
   render() {
-    const { places, currentPlaces, position, selectedPlace, region, navigation, newPlace } = this.props;
-    const { resultListVisible, northEast, southWest } = this.state;
+    const { places, currentPlaces, position, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
     return (
       <Container>
         <Header style={styles.header} searchBar={true}>
           <View style={styles.headerView}>
             <SearchBar
-              onFocus={() => this.setState({resultListVisible: true})}
-              onBlur={() => this.setState({resultListVisible: false})}
               onClear={() => this.onSearchClear()}
               style={styles.headerInput} />
             <Button
@@ -173,7 +173,7 @@ class Home extends Component {
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
         />
-        { resultListVisible && (
+        { searchFocus && (
           <ResultList
             style={styles.resultList}
             onNearbySelected={this.onNearbySelected} />
@@ -194,7 +194,8 @@ const mapStateToProps = state => ({
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,
   region: state.home.region,
-  newPlace: state.home.newPlace
+  newPlace: state.home.newPlace,
+  searchFocus: state.search.focus,
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
