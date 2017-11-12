@@ -4,3 +4,5 @@ export const LEVEL_CHANGE = 'home/LEVEL_CHANGE';
 export const REGION_CHANGE = 'home/REGION_CHANGE';
 
 export const NEW_PLACE = 'home/NEW_PLACE';
+
+export const CURRENT_PLACES = 'home/CURRENT_PLACES';

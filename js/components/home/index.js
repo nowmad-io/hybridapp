@@ -14,7 +14,7 @@ import MapList from '../mapList';
 import SearchBar from '../searchBar';
 import ResultList from '../resultList';
 
-import { selectedPlace, regionChanged, levelChange, selectNewPlace } from '../../actions/home'
+import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
 
 import styles from './styles';
 
@@ -23,6 +23,7 @@ class Home extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     places: PropTypes.array,
+    currentPlaces: PropTypes.array,
     position: PropTypes.object,
     level: PropTypes.number,
     selectedPlace: PropTypes.object,
@@ -70,7 +71,25 @@ class Home extends Component {
   }
 
   onRegionChangeComplete = (region) => {
-    // this.props.dispatch(regionChanged(region));
+    this.props.dispatch(regionChanged(region));
+
+    const southWest = {
+      latitude: region.latitude - region.latitudeDelta / 2,
+      longitude: region.longitude - region.longitudeDelta / 2
+    };
+    const northEast = {
+      latitude: region.latitude + region.latitudeDelta / 2,
+      longitude: region.longitude + region.longitudeDelta / 2
+    };
+
+    const newPlaces = _.filter(this.props.places, (place) => {
+      if (place.latitude > southWest.latitude && place.latitude < northEast.latitude
+          && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
+        return true;
+      }
+    })
+
+    this.props.dispatch(currentPlacesChange(newPlaces));
   }
 
   onRef = (ref) => {
@@ -92,8 +111,8 @@ class Home extends Component {
   }
 
   render() {
-    const { places, position, selectedPlace, region, navigation, newPlace } = this.props;
-    const { resultListVisible } = this.state;
+    const { places, currentPlaces, position, selectedPlace, region, navigation, newPlace } = this.props;
+    const { resultListVisible, northEast, southWest } = this.state;
 
     return (
       <Container>
@@ -124,7 +143,7 @@ class Home extends Component {
           { places && places.map(place => (
             <Marker
               key={shortid.generate()}
-              selected={selectedPlace.id === place.id}
+              selected={selectedPlace && selectedPlace.id === place.id}
               place={place}
               onMarkerPress={this.onMarkerPress}
             />
@@ -138,7 +157,7 @@ class Home extends Component {
           )}
         </Map>
         <MapList
-          places={places}
+          places={currentPlaces}
           navigation={navigation}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
@@ -157,6 +176,7 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   places: state.home.places,
+  currentPlaces: state.home.currentPlaces,
   position: state.home.position,
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,

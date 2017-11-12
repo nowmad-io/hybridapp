@@ -4,7 +4,8 @@ import {
   LEVEL_CHANGE,
   REGION_CHANGE,
   NEARBY,
-  NEW_PLACE
+  NEW_PLACE,
+  CURRENT_PLACES
 } from '../constants/home';
 import {
   PLACES_SUCCESS,
@@ -14,6 +15,7 @@ import { LOGOUT } from '../constants/auth';
 
 const initialState = {
   places: [],
+  currentPlaces: [],
   selectedPlace: null,
   level: 0,
   position: null,
@@ -56,7 +58,13 @@ function HomeReducer(state = initialState, action) {
     case LEVEL_CHANGE:
       return { ...state, level: action.level};
     case REGION_CHANGE:
-      return { ...state, position: action.region};
+      return { ...state, region: action.region};
+    case CURRENT_PLACES:
+      return {
+        ...state,
+        currentPlaces: action.places,
+        selectedPlace: action.places.length > 0 ? action.places[0] : null 
+      };
     case LOGOUT:
       return initialState;
     default:
