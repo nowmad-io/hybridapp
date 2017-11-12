@@ -32,14 +32,6 @@ class Home extends Component {
     searchFocus: PropTypes.bool
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      resultListVisible: false
-    }
-  }
-
   componentWillReceiveProps({ selectedPlace, level, position }) {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id

@@ -152,7 +152,8 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  newPlace: state.home.newPlace
+  newPlace: state.home.newPlace,
+  focus: state.search.focus
 });
 
 export default connect(mapStateToProps, bindActions)(SearchBar);
