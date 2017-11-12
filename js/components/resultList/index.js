@@ -10,19 +10,30 @@ import styles from './styles';
 
 class ResultList extends Component {
   static defaultProps = {
-    style: {}
+    style: {},
+    onNearbySelected: () => true
   }
 
   static propTypes = {
     style: PropTypes.object,
+    onNearbySelected: PropTypes.func
   }
 
   constructor(props) {
     super(props);
   }
 
+  onNearbyPress = (result) => {
+    const place = {
+      latitude: result.geometry.location.lat,
+      longitude: result.geometry.location.lng
+    }
+
+    this.props.onNearbySelected(place);
+  }
+
   render() {
-    const { style, nearbyPlaces, onPlaceSelected } = this.props;
+    const { style, nearbyPlaces, onNearbySelected } = this.props;
 
     return (
       <View style={[styles.resultWrapper, style]}>
@@ -33,9 +44,12 @@ class ResultList extends Component {
                 key={index}
                 image='google'
                 text={result.name}
-                onPress={onPlaceSelected} />
+                onPress={() => this.onNearbyPress(result)} />
             ))}
-            <Button style={styles.button}>
+            <Button
+              style={styles.button}
+              onPress={() => onNearbySelected()}
+            >
               <Text>Add a new place</Text>
             </Button>
           </View>

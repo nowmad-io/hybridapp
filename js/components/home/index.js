@@ -110,6 +110,17 @@ class Home extends Component {
     this.props.dispatch(selectNewPlace(null));
   }
 
+  onNearbySelected = (place) => {
+    if (place) {
+      this.props.dispatch(selectNewPlace({
+        ...this.props.selectedPlace,
+        ...place
+      }))
+    }
+
+    this.props.navigation.navigate('AddReview', { place })
+  }
+
   render() {
     const { places, currentPlaces, position, selectedPlace, region, navigation, newPlace } = this.props;
     const { resultListVisible, northEast, southWest } = this.state;
@@ -163,7 +174,9 @@ class Home extends Component {
           onLevelChange={this.onLevelChange}
         />
         { resultListVisible && (
-          <ResultList style={styles.resultList} />
+          <ResultList
+            style={styles.resultList}
+            onNearbySelected={this.onNearbySelected} />
         )}
       </Container>
     );
