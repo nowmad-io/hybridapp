@@ -34,5 +34,8 @@ export default {
   button: {
     marginTop: 28,
     alignSelf: 'flex-end'
+  },
+  spinner: {
+    marginTop: 28,
   }
 };

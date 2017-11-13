@@ -4,7 +4,7 @@ import { TextInput, View, BackHandler, Keyboard } from 'react-native';
 import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
-import { setFocus, nearby } from '../../actions/search'
+import { setFocus, nearby, searchType } from '../../actions/search'
 import { getNearbyPlaces } from '../../api/search'
 import { colors } from '../../parameters';
 import styles from './styles';
@@ -86,6 +86,8 @@ class SearchBar extends Component {
     const coord = COORD_REGEX.exec(text)
     if (coord && coord.length >= 3) {
       Keyboard.dismiss();
+
+      this.props.dispatch(searchType('nearby'));
 
       this.props.dispatch(getNearbyPlaces({
         latitude: coord[1],
