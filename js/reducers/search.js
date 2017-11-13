@@ -13,7 +13,10 @@ const initialState = {
 function SearchReducer(state = initialState, action) {
   switch (action.type) {
     case NEARBY:
-      return { ...state, nearbyPlaces: action.places.results };
+      return {
+        ...state,
+        nearbyPlaces: action.places ? action.places.results : initialState.nearbyPlaces
+      };
     case FOCUS:
       return { ...state, focus: action.focus };
     case LOGOUT:

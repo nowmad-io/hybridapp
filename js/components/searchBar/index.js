@@ -4,7 +4,7 @@ import { TextInput, View, BackHandler, Keyboard } from 'react-native';
 import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
-import { setFocus } from '../../actions/search'
+import { setFocus, nearby } from '../../actions/search'
 import { getNearbyPlaces } from '../../api/search'
 import { colors } from '../../parameters';
 import styles from './styles';
@@ -119,11 +119,16 @@ class SearchBar extends Component {
         previousValue: '',
       })
 
-      this.props.onClear();
+      this.onClear();
       this.blurInput(true);
     } else {
       this.focusInput();
     }
+  }
+
+  onClear = () => {
+    this.props.onClear();
+    this.props.dispatch(nearby(null));
   }
 
   render() {
