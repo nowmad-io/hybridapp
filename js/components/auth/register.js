@@ -18,9 +18,9 @@ import { registerRequest } from '../../actions/auth';
 
 import styles from './styles';
 
-const background = require('../../../images/shadow.png');
+const logo = require('../../../images/logos/full_logo.png');
 
-class Login extends Component {
+class Register extends Component {
   static navigationOptions = {
     header: null,
   };
@@ -38,7 +38,6 @@ class Login extends Component {
       password: '',
       first_name: '',
       last_name: '',
-      error: '',
     };
   }
 
@@ -57,83 +56,91 @@ class Login extends Component {
 
   render() {
     return (
-      <Container>
-        <View style={styles.container}>
-          <Content>
-            <Image source={background} style={styles.shadow}>
-              <View style={styles.bg}>
-                <Item>
-                  <Icon active name="md-mail" />
-                  <Input
-                    name="email"
-                    value={this.state.email}
-                    placeholder="EMAIL"
-                    onChangeText={email => this.setState({ email })}
-                  />
-                  {this.state.error
-                    ? <Item style={{ borderColor: 'transparent' }}>
-                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                    </Item>
-                    : <Text />}
-                </Item>
-                <Item>
-                  <Icon active name="md-person" />
-                  <Input
-                    name="first_name"
-                    value={this.state.first_name}
-                    placeholder="First Name"
-                    onChangeText={first_name => this.setState({ first_name })}
-                  />
-                  {this.state.error
-                    ? <Item style={{ borderColor: 'transparent' }}>
-                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                    </Item>
-                    : <Text />}
-                </Item>
-                <Item>
-                  <Icon active name="md-person" />
-                  <Input
-                    name="last_name"
-                    value={this.state.last_name}
-                    placeholder="Last Name"
-                    onChangeText={last_name => this.setState({ last_name })}
-                  />
-                  {this.state.error
-                    ? <Item style={{ borderColor: 'transparent' }}>
-                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                    </Item>
-                    : <Text />}
-                </Item>
-                <Item>
-                  <Icon active name="md-unlock" />
-                  <Input
-                    name="password"
-                    value={this.state.password}
-                    placeholder="PASSWORD"
-                    secureTextEntry
-                    onChangeText={password => this.setState({ password })}
-                  />
-                  {this.state.error
-                    ? <Item style={{ borderColor: 'transparent' }}>
-                      <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                      <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                    </Item>
-                    : <Text />}
-                </Item>
-                <Button
-                  style={styles.btn}
-                  onPress={() => this._register()}
-                >
-                  <Text>Register</Text>
-                </Button>
-                <Text onPress={() => this._backToLogin()}>Login</Text>
-              </View>
-            </Image>
-          </Content>
+      <Container style={styles.container}>
+        <View style={[styles.logoWrapper, styles.logoWrapperRegister]}>
+          <Image source={logo} style={styles.logo} />
         </View>
+        <Content padder style={styles.content}>
+          <View style={styles.itemsWrapper}>
+            <Item style={styles.inputItem}>
+              <Icon active name="md-mail" style={styles.inputIcon} />
+              <Input
+                style={styles.input}
+                name="email"
+                value={this.state.email}
+                placeholder="Email"
+                onChangeText={email => this.setState({ email })}
+              />
+              {this.state.error
+                ? <Item style={{ borderColor: 'transparent' }}>
+                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                </Item>
+                : <Text />}
+            </Item>
+            <Item style={styles.inputItem}>
+              <Icon active name="md-person" style={styles.inputIcon} />
+              <Input
+                style={styles.input}
+                name="first_name"
+                value={this.state.first_name}
+                placeholder="First Name"
+                onChangeText={first_name => this.setState({ first_name })}
+              />
+              {this.state.error
+                ? <Item style={{ borderColor: 'transparent' }}>
+                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
+                </Item>
+                : <Text />}
+            </Item>
+            <Item style={styles.inputItem}>
+              <Icon active name="md-person" style={styles.inputIcon} />
+              <Input
+                style={styles.input}
+                name="last_name"
+                value={this.state.last_name}
+                placeholder="Last Name"
+                onChangeText={last_name => this.setState({ last_name })}
+              />
+              {this.state.error
+                ? <Item style={{ borderColor: 'transparent' }}>
+                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
+                </Item>
+                : <Text />}
+            </Item>
+            <Item style={styles.inputItem}>
+              <Icon active name="md-unlock" style={styles.inputIcon} />
+              <Input
+                style={styles.input}
+                name="password"
+                value={this.state.password}
+                placeholder="Password"
+                secureTextEntry
+                onChangeText={password => this.setState({ password })}
+              />
+              {this.state.error
+                ? <Item style={{ borderColor: 'transparent' }}>
+                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
+                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
+                </Item>
+                : <Text />}
+            </Item>
+            <Button
+              rounded light
+              style={styles.button}
+              onPress={() => this._register()}>
+              <Text style={styles.text}>register</Text>
+            </Button>
+            <Button
+              transparent light
+              style={styles.button}
+              onPress={() => this._backToLogin()}>
+              <Text>Login</Text>
+            </Button>
+          </View>
+        </Content>
       </Container>
     );
   }
@@ -148,4 +155,4 @@ const mapStateToProps = state => ({
   error: state.auth.error,
 });
 
-export default connect(mapStateToProps, bindActions)(Login);
+export default connect(mapStateToProps, bindActions)(Register);

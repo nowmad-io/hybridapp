@@ -1,37 +1,48 @@
-import React from 'react-native';
+import React, { Dimensions } from 'react-native';
 
-const { Dimensions } = React;
+import { colors } from '../../parameters';
 
 const deviceHeight = Dimensions.get('window').height;
 
 export default {
   container: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#FBFAFA',
+    backgroundColor: colors.white,
   },
-  shadow: {
-    flex: 1,
-    width: null,
-    height: null,
+  content: {
+    backgroundColor: colors.green,
   },
-  bg: {
-    flex: 1,
-    marginTop: deviceHeight / 1.75,
+  logoWrapper: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '51%'
+  },
+  logoWrapperRegister: {
+    height: '30%'
+  },
+  logo: {
+    height: 200,
+  },
+  itemsWrapper: {
     paddingTop: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 30,
-    bottom: 0,
+    paddingHorizontal: 20,
   },
-  input: {
+  inputItem: {
     marginBottom: 20,
   },
-  btn: {
-    marginTop: 20,
-    alignSelf: 'center',
+  inputIcon: {
+    color: colors.white,
   },
+  input: {
+    color: colors.white,
+  },
+  button: {
+    marginTop: 20,
+    width: '100%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: colors.green
+  }
 };
