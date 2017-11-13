@@ -47,12 +47,20 @@ class SearchBar extends Component {
     }
   }
 
-  componentWillReceiveProps({ newPlace }) {
+  componentWillReceiveProps({ newPlace, focus }) {
     const newCoords = this.coordinatesToString(newPlace),
           currentCoords = this.coordinatesToString(this.props.newPlace);
 
     if (newCoords !== currentCoords) {
       this.onChangeText(newCoords);
+    }
+
+    if (focus !== this.props.focus) {
+      if (focus) {
+        this.focusInput();
+      } else {
+        this.blurInput();
+      }
     }
   }
 
