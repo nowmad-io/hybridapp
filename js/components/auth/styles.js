@@ -2,6 +2,8 @@ import React, { Dimensions } from 'react-native';
 
 import { colors } from '../../parameters';
 
+export { colors };
+
 const deviceHeight = Dimensions.get('window').height;
 
 export default {

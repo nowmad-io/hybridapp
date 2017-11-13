@@ -16,7 +16,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
 
-import styles from './styles';
+import styles, { colors } from './styles';
 
 const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
@@ -65,6 +65,8 @@ class Register extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="md-mail" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="email"
                 value={this.state.email}
@@ -81,6 +83,8 @@ class Register extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="md-person" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="first_name"
                 value={this.state.first_name}
@@ -97,6 +101,8 @@ class Register extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="md-person" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="last_name"
                 value={this.state.last_name}
@@ -113,6 +119,8 @@ class Register extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="md-unlock" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="password"
                 value={this.state.password}

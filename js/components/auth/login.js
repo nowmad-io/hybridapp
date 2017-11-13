@@ -16,7 +16,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
-import styles from './styles';
+import styles, { colors } from './styles';
 
 const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
@@ -34,8 +34,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: 'j@j.com',
-      password: 'j',
+      email: '',
+      password: '',
     };
 
     // Check if logged in and redirect to App if so
@@ -69,6 +69,8 @@ class Login extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="person" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="email"
                 value={this.state.email}
@@ -85,6 +87,8 @@ class Login extends Component {
             <Item style={styles.inputItem}>
               <Icon active name="unlock" style={styles.inputIcon} />
               <Input
+                selectionColor={colors.whiteTransparent}
+                placeholderTextColor={colors.white}
                 style={styles.input}
                 name="password"
                 value={this.state.password}
