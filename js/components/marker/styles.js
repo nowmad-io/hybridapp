@@ -14,7 +14,7 @@ export default (selected = false, type = null) => {
     alignItems: 'center',
   };
   const shadow = {
-    backgroundColor: (type === 'me') ? 'transparent' : colors.greenShadow,
+    backgroundColor: (type === 'me' && !selected) ? 'transparent' : colors.greenShadow,
     borderRadius: 100,
     width: wrapperSize - 1,
     height: wrapperSize - 1,
@@ -22,7 +22,7 @@ export default (selected = false, type = null) => {
     alignItems: 'center',
   };
   const thumbnailWrapper = {
-    backgroundColor: (selected || type === 'new') ? colors.green : colors.white,
+    backgroundColor: (selected || type === 'new') && (type !== 'me') ? colors.green : colors.white,
     borderRadius: 18,
     width: 28,
     height: 28,
