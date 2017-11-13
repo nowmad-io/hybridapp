@@ -18,7 +18,7 @@ import { registerRequest } from '../../actions/auth';
 
 import styles from './styles';
 
-const logo = require('../../../images/logos/full_logo.png');
+const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
 class Register extends Component {
   static navigationOptions = {
@@ -58,7 +58,7 @@ class Register extends Component {
     return (
       <Container style={styles.container}>
         <View style={[styles.logoWrapper, styles.logoWrapperRegister]}>
-          <Image source={logo} style={styles.logo} />
+          <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>

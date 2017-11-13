@@ -22,6 +22,7 @@ export default {
   },
   logo: {
     height: 200,
+    width: '100%',
   },
   itemsWrapper: {
     paddingTop: 20,

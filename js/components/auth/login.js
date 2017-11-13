@@ -18,7 +18,7 @@ import { loginRequest } from '../../actions/auth';
 
 import styles from './styles';
 
-const logo = require('../../../images/logos/full_logo.png');
+const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
 class Login extends Component {
   static navigationOptions = {
@@ -62,7 +62,7 @@ class Login extends Component {
     return (
       <Container style={styles.container}>
         <View style={styles.logoWrapper}>
-          <Image source={logo} style={styles.logo} />
+          <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>
