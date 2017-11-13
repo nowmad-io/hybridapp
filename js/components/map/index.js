@@ -12,6 +12,7 @@ class Map extends Component {
     ]),
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    region: PropTypes.object,
     onLongPress: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,

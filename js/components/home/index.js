@@ -91,8 +91,8 @@ class Home extends Component {
   }
 
   onMapReady = () => {
-    if (this._map && this.props.selectedPlace) {
-      this._map.animateToCoordinate(this.props.selectedPlace);
+    if (this._map && this.props.newPlace) {
+      this._map.animateToCoordinate(this.props.newPlace);
     }
   }
 
@@ -119,7 +119,7 @@ class Home extends Component {
   }
 
   render() {
-    const { places, currentPlaces, position, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
+    const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
     return (
       <Container>
@@ -141,7 +141,7 @@ class Home extends Component {
           onRef={this.onRef}
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
-          position={position || region}
+          region={region}
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
         >

@@ -34,6 +34,10 @@ class SearchBar extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.props.newPlace) {
+      this.onChangeText(this.coordinatesToString(this.props.newPlace), true);
+    }
   }
 
   componentWillUnmount() {
@@ -51,7 +55,7 @@ class SearchBar extends Component {
     const newCoords = this.coordinatesToString(newPlace),
           currentCoords = this.coordinatesToString(this.props.newPlace);
 
-    if (newCoords !== currentCoords) {
+    if (newPlace && newCoords !== currentCoords) {
       this.onChangeText(newCoords);
     }
 
@@ -72,10 +76,10 @@ class SearchBar extends Component {
     return '';
   }
 
-  onChangeText(text) {
+  onChangeText(text, preventFocus) {
     this.setState({text});
 
-    if (!this.props.focus) {
+    if (!this.props.focus && !preventFocus) {
       this.focusInput();
     }
 

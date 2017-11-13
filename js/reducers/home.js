@@ -19,12 +19,7 @@ const initialState = {
   selectedPlace: null,
   level: 0,
   position: null,
-  region: {
-    latitude: 40.7205699,
-    longitude: -1.840341,
-    latitudeDelta: 50,
-    longitudeDelta: 50
-  }
+  region: null
 };
 
 function HomeReducer(state = initialState, action) {
@@ -63,7 +58,7 @@ function HomeReducer(state = initialState, action) {
       return {
         ...state,
         currentPlaces: action.places,
-        selectedPlace: (action.places.length > 0 && !state.selectedPlace) ? action.places[0] : state.selectedPlace 
+        selectedPlace: (action.places.length > 0 && !state.selectedPlace) ? action.places[0] : state.selectedPlace
       };
     case LOGOUT:
       return initialState;
