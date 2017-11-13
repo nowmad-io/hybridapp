@@ -15,6 +15,7 @@ import SearchBar from '../searchBar';
 import ResultList from '../resultList';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
+import { setFocus } from '../../actions/search'
 
 import styles from './styles';
 
@@ -103,15 +104,16 @@ class Home extends Component {
     this.props.dispatch(selectNewPlace(null));
   }
 
+  onNewMarkerPress = () => {
+    this.props.dispatch(setFocus(true));
+  }
+
   onNearbySelected = (place) => {
     const updatedPlace = {
       ...this.props.newPlace,
       ...place
     };
 
-    console.log('place', place)
-    console.log('this.props.newPlace', this.props.newPlace);
-    console.log('updatedPlace', updatedPlace);
     this.props.dispatch(selectNewPlace(updatedPlace));
     this.props.navigation.navigate('AddReview', { place: updatedPlace });
   }
