@@ -16,5 +16,6 @@ export const colors = {
     shadowRadius: 4
   },
   whiteTransparent: 'rgba(255, 255, 255, 0.6)',
+  whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
   transparent: 'rgba(0, 0, 0, 0)'
 };

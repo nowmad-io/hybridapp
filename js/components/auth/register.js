@@ -16,8 +16,9 @@ import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
 
-import styles, { colors } from './styles';
+import Spinner from '../loaders/spinner';
 
+import styles, { colors } from './styles';
 const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
 class Register extends Component {
@@ -149,6 +150,7 @@ class Register extends Component {
             </Button>
           </View>
         </Content>
+        <Spinner overlay={true} visible={this.props.registerLoading}/>
       </Container>
     );
   }
@@ -161,6 +163,7 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   error: state.auth.error,
+  registerLoading: state.auth.registerLoading,
 });
 
 export default connect(mapStateToProps, bindActions)(Register);

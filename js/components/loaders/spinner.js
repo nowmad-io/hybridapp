@@ -7,7 +7,7 @@ import { Spinner as BaseSpinner } from 'native-base';
 import styles, { colors } from './styles';
 
 const Spinner = (props) => (
-  <View style={[props.style]}>
+  <View style={[props.style, props.overlay && props.visible ? styles.overlay : {}]}>
     { props.visible && (
       <BaseSpinner color={props.color} />
     )}
@@ -17,13 +17,15 @@ const Spinner = (props) => (
 Spinner.defaultProps = {
   color: colors.green,
   visible: false,
-  style: {}
+  style: {},
+  overlay: false
 }
 
 Spinner.propTypes = {
   color: PropTypes.string,
   visible: PropTypes.bool,
   style: PropTypes.object,
+  overlay: PropTypes.bool,
 }
 
 export default Spinner;

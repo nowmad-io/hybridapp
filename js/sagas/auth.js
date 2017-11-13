@@ -21,12 +21,13 @@ import {
   LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR,
-  ME_SUCCESS
+  ME_SUCCESS,
+  LOGIN_LOADING,
+  REGISTER_LOADING
 } from '../constants/auth';
 
 import {
   STOP_SAGAS,
-  SENDING_REQUEST,
   REQUEST_ERROR
 } from '../constants/utils';
 
@@ -53,7 +54,7 @@ function* loginFlow(action) {
   // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
   const { email, password } = action.data;
 
-  yield put({ type: SENDING_REQUEST, sending: true });
+  yield put({ type: LOGIN_LOADING, loading: true });
 
   const [, winner] = yield all([
     put(apiLogin({ email, password })),
@@ -64,7 +65,7 @@ function* loginFlow(action) {
     }),
   ]);
 
-  yield put({ type: SENDING_REQUEST, sending: false });
+  yield put({ type: LOGIN_LOADING, loading: false });
 
   // If `auth` was the winner...
   if (winner.loginSuccess) {
@@ -91,7 +92,7 @@ function* loginFlow(action) {
 export function * registerFlow(action) {
   const credentials = action.data;
 
-  yield put({ type: SENDING_REQUEST, sending: true });
+  yield put({ type: REGISTER_LOADING, loading: true });
 
   const [, winner] = yield all([
     put(apiRegister(credentials)),
@@ -101,7 +102,7 @@ export function * registerFlow(action) {
     }),
   ]);
 
-  yield put({ type: SENDING_REQUEST, sending: false });
+  yield put({ type: REGISTER_LOADING, loading: false });
 
   if (winner.registerSuccess) {
     yield put(loginRequest(credentials));

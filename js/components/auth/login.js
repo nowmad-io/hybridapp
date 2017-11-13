@@ -16,8 +16,9 @@ import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
-import styles, { colors } from './styles';
+import Spinner from '../loaders/spinner';
 
+import styles, { colors } from './styles';
 const logo = require('../../../images/logos/full_logo_horizontal.jpg');
 
 class Login extends Component {
@@ -117,6 +118,7 @@ class Login extends Component {
             </Button>
           </View>
         </Content>
+        <Spinner overlay={true} visible={this.props.loginLoading}/>
       </Container>
     );
   }
@@ -129,6 +131,7 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   loggedIn: !!state.auth.token,
   error: state.auth.error,
+  loginLoading: state.auth.loginLoading
 });
 
 export default connect(mapStateToProps, bindActions)(Login);
