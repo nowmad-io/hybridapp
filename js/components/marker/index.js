@@ -45,7 +45,6 @@ class Marker extends Component {
       <MapView.Marker
         coordinate={{latitude: place.latitude, longitude: place.longitude}}
         onPress={() => this.props.onMarkerPress(place)}
-        zIndex={selected ? 10 : 5 }
       >
         <View style={styles(selected, type).wrapper}>
           <View style={styles(selected, type).shadow}>
