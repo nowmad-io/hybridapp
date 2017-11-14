@@ -65,8 +65,6 @@ function* loginFlow(action) {
     }),
   ]);
 
-  yield put({ type: LOGIN_LOADING, loading: false });
-
   // If `auth` was the winner...
   if (winner.loginSuccess) {
     yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
@@ -79,8 +77,10 @@ function* loginFlow(action) {
       actions: [NavigationActions.navigate({ routeName: 'App' })],
     }));
   } else if (winner.loginFail) {
+    yield put({ type: LOGIN_LOADING, loading: false });
     yield call(parseError, { error: winner.loginFail.payload });
   } else if (winner.logout) {
+    yield put({ type: LOGIN_LOADING, loading: false });
     yield put({ type: LOGOUT }); // User is not logged in (not authorized)
   }
 }
@@ -102,11 +102,10 @@ export function * registerFlow(action) {
     }),
   ]);
 
-  yield put({ type: REGISTER_LOADING, loading: false });
-
   if (winner.registerSuccess) {
     yield put(loginRequest(credentials));
   } else if (winner.registerFail) {
+    yield put({ type: REGISTER_LOADING, loading: false });
     yield call(parseError, { error: winner.registerFail.payload });
   }
 }
@@ -114,16 +113,13 @@ export function * registerFlow(action) {
 export function * logoutFlow() {
   yield put({ type: STOP_SAGAS });
 
-  yield put(apiLogout());
-
-  yield take([LOGOUT_SUCCESS, LOGOUT_ERROR]);
-
   yield put({ type: LOGOUT });
-
   yield put(NavigationActions.reset({
     index: 0,
     actions: [NavigationActions.navigate({ routeName: 'Login' })],
   }));
+
+  yield put(apiLogout());
 }
 
 // Bootstrap sagas
