@@ -17,6 +17,7 @@ const initialState = {
   places: [],
   currentPlaces: [],
   selectedPlace: null,
+  newPlace: null,
   level: 0,
   position: null,
   region: null

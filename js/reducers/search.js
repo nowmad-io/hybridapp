@@ -22,7 +22,7 @@ function SearchReducer(state = initialState, action) {
         nearbyLoading: false
       };
     case FOCUS:
-      return { ...state, focus: action.focus };
+      return { ...state, focused: action.focused };
     case SEARCH_TYPE:
       let newState = {
         ...state,

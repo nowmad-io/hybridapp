@@ -45,13 +45,13 @@ class SearchBar extends Component {
   }
 
   onBackPress = () => {
-    if (this.props.focus) {
+    if (this.props.focused) {
       this.blurInput();
       return true;
     }
   }
 
-  componentWillReceiveProps({ newPlace, focus }) {
+  componentWillReceiveProps({ newPlace, focused }) {
     const newCoords = this.coordinatesToString(newPlace),
           currentCoords = this.coordinatesToString(this.props.newPlace);
 
@@ -59,8 +59,8 @@ class SearchBar extends Component {
       this.onChangeText(newCoords);
     }
 
-    if (focus !== this.props.focus) {
-      if (focus) {
+    if (focused !== this.props.focused) {
+      if (focused) {
         this.focusInput();
       } else {
         this.blurInput();
@@ -79,7 +79,7 @@ class SearchBar extends Component {
   onChangeText(text, preventFocus) {
     this.setState({text});
 
-    if (!this.props.focus && !preventFocus) {
+    if (!this.props.focused && !preventFocus) {
       this.focusInput();
     }
 
@@ -116,7 +116,7 @@ class SearchBar extends Component {
   }
 
   onButtonPress() {
-    if (this.state.text.length || this.props.focus) {
+    if (this.state.text.length || this.props.focused) {
       this.setState({
         previousValue: '',
       })
@@ -143,7 +143,7 @@ class SearchBar extends Component {
           style={styles.inputButton}
           onPress={() => this.onButtonPress()}
         >
-          {(state.text.length || props.focus) ? (
+          {(state.text.length || props.focused) ? (
             <Icon name='md-close' style={styles.inputIcon}/>
           ) : (
             <Icon name='md-search' style={styles.inputIcon}/>
@@ -151,7 +151,7 @@ class SearchBar extends Component {
         </Button>
         <TextInput
           ref='textInput'
-          underlineColorAndroid={props.focus ? colors.white : colors.transparent}
+          underlineColorAndroid={props.focused ? colors.white : colors.transparent}
           autoCorrect={false}
           placeholder={'Search friends, reviews & places'}
           selectionColor={colors.whiteTransparent}
@@ -172,7 +172,7 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   newPlace: state.home.newPlace,
-  focus: state.search.focus
+  focused: state.search.focused
 });
 
 export default connect(mapStateToProps, bindActions)(SearchBar);

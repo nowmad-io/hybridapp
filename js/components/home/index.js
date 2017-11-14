@@ -189,7 +189,7 @@ const mapStateToProps = state => ({
   level: state.home.level,
   region: state.home.region,
   newPlace: state.home.newPlace,
-  searchFocus: state.search.focus,
+  searchFocus: state.search.focused,
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

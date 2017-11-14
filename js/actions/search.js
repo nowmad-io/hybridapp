@@ -11,10 +11,10 @@ export function nearby(places) {
   };
 }
 
-export function setFocus(focus) {
+export function setFocus(focused) {
   return {
     type: FOCUS,
-    focus,
+    focused,
   };
 }
 
