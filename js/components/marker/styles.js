@@ -35,7 +35,7 @@ export default (selected = false, type = null) => {
   };
   const triangle = {
     position: 'absolute',
-    bottom: selected ? 3 : 0,
+    bottom: selected ? 4 : 0,
     borderTopWidth: 6,
     borderRightWidth: 6/2.0,
     borderBottomWidth: 0,
