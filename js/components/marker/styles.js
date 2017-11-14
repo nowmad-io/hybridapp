@@ -40,7 +40,7 @@ export default (selected = false, type = null) => {
     borderRightWidth: 6/2.0,
     borderBottomWidth: 0,
     borderLeftWidth: 6/2.0,
-    borderTopColor: (selected || type === 'new') ? colors.green : colors.white,
+    borderTopColor: (selected || type === 'new') && (type !== 'me') ? colors.green : colors.white,
     borderRightColor: 'transparent',
     borderBottomColor: 'transparent',
     borderLeftColor: 'transparent',
