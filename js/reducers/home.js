@@ -9,7 +9,8 @@ import {
 } from '../constants/home';
 import {
   PLACES_SUCCESS,
-  ADD_UPDATE_REVIEW,
+  UPDATE_REVIEW,
+  ADD_REVIEW,
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -23,7 +24,23 @@ const initialState = {
   region: null
 };
 
+function updateReview(currentPlaces, place, updatedReview) {
+  return currentPlaces.map((currentPlace) => {
+    if (currentPlace.id === place.id) {
+      return {
+        ...place,
+        reviews: currentPlace.reviews.map((review) => {
+          return (review.id === updatedReview.id) ? updatedReview : review;
+        })
+      }
+    }
+    return currentPlace;
+  })
+}
+
 function HomeReducer(state = initialState, action) {
+  const { place, ...review } = action.review || {};
+
   switch (action.type) {
     case PLACES_SUCCESS:
       return {
@@ -31,10 +48,20 @@ function HomeReducer(state = initialState, action) {
         places: action.payload,
         selectedPlace: action.payload.length ? action.payload[0] : null
       };
-    case ADD_UPDATE_REVIEW:
-      console.log('action.review', action.review);
-      console.log('state.places', state.places);
-      return state;
+    case ADD_REVIEW:
+      const newPlace = { ...place, reviews: [review] };
+      return {
+        ...state,
+        newPlace: null,
+        selectedPlace: newPlace,
+        places: [newPlace, ...state.places]
+      };
+    case UPDATE_REVIEW:
+      return {
+        ...state,
+        places: updateReview(state.places, place, review),
+        currentPlaces: updateReview(state.currentPlaces, place, review),
+      };
     case NEW_PLACE:
       let extras = {};
       if (!action.place) {

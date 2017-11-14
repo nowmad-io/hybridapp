@@ -5,7 +5,8 @@ import { apiCall } from '../requests';
 import {
   PLACES_SUCCESS,
   PLACES_ERROR,
-  REVIEW_SUCCESS,
+  UPDATE_REVIEW_SUCCESS,
+  ADD_REVIEW_SUCCESS,
   REVIEW_ERROR
 } from '../constants/reviews';
 
@@ -17,9 +18,9 @@ export function fetchReviews() {
 }
 
 export function addReview(review) {
-  return apiCall(REVIEW_SUCCESS, REVIEW_ERROR, 'post', REVIEWS_PATH, review);
+  return apiCall(ADD_REVIEW_SUCCESS, REVIEW_ERROR, 'post', REVIEWS_PATH, review);
 }
 
 export function updateReview(review) {
-  return apiCall(REVIEW_SUCCESS, REVIEW_ERROR, 'put', `${REVIEWS_PATH}${review.id}/`, review);
+  return apiCall(UPDATE_REVIEW_SUCCESS, REVIEW_ERROR, 'put', `${REVIEWS_PATH}${review.id}/`, review);
 }

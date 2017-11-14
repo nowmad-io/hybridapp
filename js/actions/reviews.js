@@ -1,10 +1,18 @@
 import {
-  ADD_UPDATE_REVIEW
+  ADD_REVIEW,
+  UPDATE_REVIEW
 } from '../constants/reviews';
 
-export function addOrUpdateReview(review) {
+export function addReview(review) {
   return {
-    type: ADD_UPDATE_REVIEW,
+    type: ADD_REVIEW,
+    review,
+  };
+}
+
+export function updateReview(review) {
+  return {
+    type: UPDATE_REVIEW,
     review,
   };
 }
