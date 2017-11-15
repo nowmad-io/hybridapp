@@ -29,7 +29,6 @@ function SearchReducer(state = initialState, action) {
         searchType: action.typeSearch,
       };
       newState[`${action.typeSearch}Loading`] = true;
-
       return newState;
     case LOGOUT:
       return initialState;

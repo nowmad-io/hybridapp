@@ -60,11 +60,12 @@ class SearchBar extends Component {
     }
 
     // clean input if newPlace has been added
-    if (!newPlace && currentCoords === this.state.text) {
+    if (!newPlace && this.props.newPlace && COORD_REGEX.exec(this.state.text)) {
       this.setState({
         previousValue: '',
+      }, () => {
+        this.blurInput(true);
       })
-      this.blurInput(true);
     }
 
     if (focused !== this.props.focused) {
@@ -111,25 +112,39 @@ class SearchBar extends Component {
     if (!nativeEvent) {
       this.refs.textInput.focus();
     }
-    this.props.dispatch(setFocus(true));
+
+    if (!this.props.focused) {
+      this.props.dispatch(setFocus(true));
+    }
   }
 
   blurInput(clear) {
+    console.log('blur input clear', clear)
+    console.log('this.state.previousValue', this.state.previousValue)
+
+    console.log('blur input text bef', this.state.text);
     this.setState({
       text: !clear ? this.state.previousValue : ''
     });
 
-    this.props.dispatch(setFocus(false));
+    console.log('blur input text aft', this.state.text);
+
+    if (this.props.focused) {
+      this.props.dispatch(setFocus(false));
+    }
     this.refs.textInput.blur();
   }
 
   onButtonPress() {
     if (this.state.text.length || this.props.focused) {
+      console.log('on buttin press previousValue bef', this.state.previousValue);
       this.setState({
         previousValue: '',
-      })
-      this.onClear();
-      this.blurInput(true);
+      },
+      () => {
+        this.onClear();
+        this.blurInput(true);
+      });
     } else {
       this.focusInput();
     }
