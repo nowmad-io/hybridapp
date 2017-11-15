@@ -59,6 +59,14 @@ class SearchBar extends Component {
       this.onChangeText(newCoords);
     }
 
+    // clean input if newPlace has been added
+    if (!newPlace && currentCoords === this.state.text) {
+      this.setState({
+        previousValue: '',
+      })
+      this.blurInput(true);
+    }
+
     if (focused !== this.props.focused) {
       if (focused) {
         this.focusInput();
@@ -120,7 +128,6 @@ class SearchBar extends Component {
       this.setState({
         previousValue: '',
       })
-
       this.onClear();
       this.blurInput(true);
     } else {

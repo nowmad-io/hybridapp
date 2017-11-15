@@ -33,7 +33,7 @@ class Home extends Component {
     searchFocus: PropTypes.bool
   }
 
-  componentWillReceiveProps({ selectedPlace, level, position }) {
+  componentWillReceiveProps({ selectedPlace, level }) {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id
         && this.props.level === 2 && this._map) {
@@ -45,11 +45,6 @@ class Home extends Component {
       });
       this._map.animateToCoordinate(selected);
     }
-
-    // if (position && position.altitude && position.longitude && this._map) {
-    //   this._map.fitToCoordinates([position], { animated: true });
-    // }
-
   }
 
   onMarkerPress = (place) => {
