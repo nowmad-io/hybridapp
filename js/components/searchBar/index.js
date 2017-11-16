@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { TextInput, View, BackHandler, Keyboard } from 'react-native';
 import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
+import RNGooglePlaces from 'react-native-google-places';
 
-import { setFocus, nearby, searchType } from '../../actions/search'
-import { getNearbyPlaces } from '../../api/search'
+import { setFocus, nearby, searchType, nearbyLoading, placesLoading,
+  friendsLoading, reviewsLoading, placesSearch } from '../../actions/search';
+import { getNearbyPlaces} from '../../api/search';
+import { friendsSearch } from '../../api/friends';
+import { reviewsSearch } from '../../api/reviews';
 import { colors } from '../../parameters';
 import styles from './styles';
 
@@ -96,12 +100,30 @@ class SearchBar extends Component {
     if (coord && coord.length >= 3) {
       Keyboard.dismiss();
 
-      this.props.dispatch(searchType('nearby'));
+      if (this.props.searchType !== 'nearby') {
+        this.props.dispatch(searchType('nearby'));
+      }
 
+      this.props.dispatch(nearbyLoading(true));
       this.props.dispatch(getNearbyPlaces({
         latitude: coord[1],
         longitude: coord[2]
       }));
+    } else {
+      if (this.props.searchType !== 'search') {
+        this.props.dispatch(searchType('search'));
+      }
+
+      this.props.dispatch(friendsLoading(true));
+      this.props.dispatch(friendsSearch(text));
+
+      this.props.dispatch(reviewsLoading(true));
+      this.props.dispatch(reviewsSearch(text));
+
+      this.props.dispatch(placesLoading(true));
+      RNGooglePlaces.getAutocompletePredictions(text)
+        .then((results) => this.props.dispatch(placesSearch(results)))
+        .catch((error) => console.log('error', error));
     }
   }
 
@@ -119,15 +141,9 @@ class SearchBar extends Component {
   }
 
   blurInput(clear) {
-    console.log('blur input clear', clear)
-    console.log('this.state.previousValue', this.state.previousValue)
-
-    console.log('blur input text bef', this.state.text);
     this.setState({
       text: !clear ? this.state.previousValue : ''
     });
-
-    console.log('blur input text aft', this.state.text);
 
     if (this.props.focused) {
       this.props.dispatch(setFocus(false));
@@ -137,7 +153,6 @@ class SearchBar extends Component {
 
   onButtonPress() {
     if (this.state.text.length || this.props.focused) {
-      console.log('on buttin press previousValue bef', this.state.previousValue);
       this.setState({
         previousValue: '',
       },
@@ -194,7 +209,8 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   newPlace: state.home.newPlace,
-  focused: state.search.focused
+  focused: state.search.focused,
+  searchType: state.search.searchType
 });
 
 export default connect(mapStateToProps, bindActions)(SearchBar);

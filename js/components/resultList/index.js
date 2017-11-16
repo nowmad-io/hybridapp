@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { ScrollView } from 'react-native';
 import { View, Text, Container, Button } from 'native-base';
 
 import ListCluster from './listCluster';
@@ -36,32 +37,80 @@ class ResultList extends Component {
   }
 
   render() {
-    const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading } = this.props;
-    
+    const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
+      friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
+      friendsSearch } = this.props;
+
     return (
       <View style={[styles.resultWrapper, style]}>
-        {(searchType === 'nearby') && (
-          <ListCluster label="MAYBE YOU WERE LOOKING FOR">
+        <ScrollView>
+          {(searchType === 'nearby') && (
+            <ListCluster label="MAYBE YOU WERE LOOKING FOR">
+              <View>
+                <Spinner
+                  style={styles.spinner}
+                  visible={nearbyLoading} />
+                {!nearbyLoading && nearbyPlaces.map((result, index) => (
+                  <ListItem
+                    key={index}
+                    image='google'
+                    text={result.name}
+                    onPress={() => this.onNearbyPress(result)} />
+                ))}
+                <Button
+                  style={styles.button}
+                  onPress={() => onNearbySelected()}
+                >
+                  <Text>Add a new place</Text>
+                </Button>
+              </View>
+            </ListCluster>
+          )}
+          {(searchType === 'search') && (
             <View>
-              <Spinner
-                style={styles.spinner}
-                visible={nearbyLoading} />
-              {!nearbyLoading && nearbyPlaces.map((result, index) => (
-                <ListItem
-                  key={index}
-                  image='google'
-                  text={result.name}
-                  onPress={() => this.onNearbyPress(result)} />
-              ))}
-              <Button
-                style={styles.button}
-                onPress={() => onNearbySelected()}
-              >
-                <Text>Add a new place</Text>
-              </Button>
+              <ListCluster label="RESULTS BY FRIENDS">
+                <View>
+                  <Spinner
+                    style={styles.spinner}
+                    visible={friendsLoading} />
+                  {!friendsLoading && friendsSearch.map((result, index) => (
+                    <ListItem
+                      key={index}
+                      image='friend'
+                      text={result.name}
+                      onPress={() => this.onFriendPress(result)} />
+                  ))}
+                </View>
+              </ListCluster>
+              <ListCluster label="RESULTS BY REVIEWS">
+                <View>
+                  <Spinner
+                    style={styles.spinner}
+                    visible={reviewsLoading} />
+                  {!reviewsLoading && reviewsSearch.map((result, index) => (
+                    <ListItem
+                      key={index}
+                      image='place'
+                      text={result.name}
+                      onPress={() => this.onReviewPress(result)} />
+                  ))}
+                </View>
+              </ListCluster>
+              <ListCluster label="RESULTS BY GOOGLE PLACES">
+                  <Spinner
+                    style={styles.spinner}
+                    visible={placesLoading} />
+                  {!placesLoading && placesSearch.map((result, index) => (
+                    <ListItem
+                      key={index}
+                      image='google'
+                      text={result.primaryText}
+                      onPress={() => this.onPlacePress(result)} />
+                  ))}
+              </ListCluster>
             </View>
-          </ListCluster>
-        )}
+          )}
+        </ScrollView>
       </View>
     )
   }
@@ -73,8 +122,14 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   nearbyPlaces: state.search.nearbyPlaces,
+  placesSearch: state.search.placesSearch,
+  reviewsSearch: state.search.reviewsSearch,
+  friendsSearch: state.search.friendsSearch,
   searchType: state.search.searchType,
   nearbyLoading: state.search.nearbyLoading,
+  friendsLoading: state.search.friendsLoading,
+  reviewsLoading: state.search.reviewsLoading,
+  placesLoading: state.search.placesLoading,
 });
 
 export default connect(mapStateToProps, bindActions)(ResultList);

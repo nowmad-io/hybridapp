@@ -36,6 +36,5 @@ export default {
     alignSelf: 'flex-end'
   },
   spinner: {
-    marginTop: 28,
   }
 };

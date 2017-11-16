@@ -1,8 +1,6 @@
 import { apiCall } from '../requests';
 
 import {
-  SEARCH_FRIENDS_SUCCESS,
-  SEARCH_FRIENDS_ERROR,
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDS_ERROR,
   FETCH_FRIENDSINCOMING_SUCCESS,
@@ -12,14 +10,15 @@ import {
   SEND_FRIENDSHIP_SUCCESS,
   SEND_FRIENDSHIP_ERROR
 } from '../constants/friends';
+import { FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR } from '../constants/search';
 
 import { REQUEST_SUCCESS, REQUEST_ERROR } from '../constants/utils';
 
 const PATH = 'friends/';
 const FRIENSHIPS_PATH = 'friendships/';
 
-export function searchFriends(query) {
-  return apiCall(SEARCH_FRIENDS_SUCCESS, SEARCH_FRIENDS_ERROR, 'get', `${PATH}search/`, {}, { query });
+export function friendsSearch(query) {
+  return apiCall(FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR, 'get', `${PATH}search/`, {}, { query });
 }
 
 export function fetchFriends() {

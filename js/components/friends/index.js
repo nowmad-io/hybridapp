@@ -5,7 +5,7 @@ import { Container, Header, Title, Content, Text, Button, Icon, Left, Right,
   Body, List, ListItem, View, Item, Input, Separator } from 'native-base';
 import { connect } from 'react-redux';
 
-import { fetchFriends, searchFriends, sendFriendship, acceptFriendship,
+import { fetchFriends, sendFriendship, acceptFriendship,
   rejectFriendship, cancelFriendship } from '../../api/friends';
 
 class Friends extends Component {
@@ -18,9 +18,7 @@ class Friends extends Component {
     friends: PropTypes.array,
   };
 
-  _onSearchInput(text) {
-    this.props.dispatch(searchFriends(text));
-  }
+  _onSearchInput(text) {}
 
   _onAdd(friend) {
     this.props.dispatch(sendFriendship({
