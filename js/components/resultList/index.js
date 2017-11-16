@@ -42,8 +42,8 @@ class ResultList extends Component {
       friendsSearch } = this.props;
 
     return (
-      <View style={[styles.resultWrapper, style]}>
-        <ScrollView>
+      <ScrollView style={[styles.resultWrapper, style]}>
+        <View>
           {(searchType === 'nearby') && (
             <ListCluster label="MAYBE YOU WERE LOOKING FOR">
               <View>
@@ -77,7 +77,7 @@ class ResultList extends Component {
                     <ListItem
                       key={index}
                       image='friend'
-                      text={result.name}
+                      text={`${result.first_name} ${result.last_name}`}
                       onPress={() => this.onFriendPress(result)} />
                   ))}
                 </View>
@@ -110,8 +110,8 @@ class ResultList extends Component {
               </ListCluster>
             </View>
           )}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     )
   }
 }

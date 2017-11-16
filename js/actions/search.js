@@ -6,7 +6,8 @@ import {
   NEARBY_LOADING,
   PLACES_LOADING,
   REVIEWS_LOADING,
-  FRIENDS_LOADING
+  FRIENDS_LOADING,
+  PLACES_SEARCH_ERROR
 } from '../constants/search';
 
 export function nearby(places) {
@@ -34,6 +35,12 @@ export function placesSearch(places) {
   return {
     type: PLACES_SEARCH,
     places,
+  };
+}
+
+export function placesSearchError() {
+  return {
+    type: PLACES_SEARCH_ERROR
   };
 }
 

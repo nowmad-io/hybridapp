@@ -7,13 +7,14 @@ export default {
     height: "100%",
     width: "100%",
     backgroundColor: colors.white,
-    paddingVertical: 24,
     paddingHorizontal: 16,
+    paddingBottom: 24,
   },
   labelCluster: {
+    paddingTop: 24,
     color: colors.grey,
     fontSize: 16,
-    lineHeight: 18
+    lineHeight: 18,
   },
   itemWrapper: {
     flexDirection: 'row',

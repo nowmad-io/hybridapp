@@ -4,10 +4,13 @@ import {
   FOCUS,
   SEARCH_TYPE,
   PLACES_SEARCH,
+  PLACES_SEARCH_ERROR,
   PLACES_LOADING,
   REVIEWS_SEARCH,
+  REVIEWS_SEARCH_ERROR,
   REVIEWS_LOADING,
   FRIENDS_SEARCH,
+  FRIENDS_SEARCH_ERROR,
   FRIENDS_LOADING
 } from '../constants/search';
 
@@ -34,22 +37,25 @@ function SearchReducer(state = initialState, action) {
         nearbyPlaces: action.places ? action.places.results : initialState.nearbyPlaces,
         nearbyLoading: false
       };
+    case PLACES_SEARCH_ERROR:
     case PLACES_SEARCH:
       return {
         ...state,
-        placesSearch: action.places,
+        placesSearch: action.places || initialState.placesSearch,
         placesLoading: false
       };
+    case REVIEWS_SEARCH_ERROR:
     case REVIEWS_SEARCH:
       return {
         ...state,
-        reviewsSearch: action.payload,
+        reviewsSearch: action.error ? initialState.reviewsSearch : payload,
         reviewsLoading: false
       };
+    case FRIENDS_SEARCH_ERROR:
     case FRIENDS_SEARCH:
       return {
         ...state,
-        friendsSearch: action.payload,
+        friendsSearch: action.error ? initialState.friendsSearch : action.payload,
         friendsLoading: false
       };
     case NEARBY_LOADING:

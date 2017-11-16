@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import RNGooglePlaces from 'react-native-google-places';
 
 import { setFocus, nearby, searchType, nearbyLoading, placesLoading,
-  friendsLoading, reviewsLoading, placesSearch } from '../../actions/search';
+  friendsLoading, reviewsLoading, placesSearch, placesSearchError } from '../../actions/search';
 import { getNearbyPlaces} from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearch } from '../../api/reviews';
@@ -123,7 +123,7 @@ class SearchBar extends Component {
       this.props.dispatch(placesLoading(true));
       RNGooglePlaces.getAutocompletePredictions(text)
         .then((results) => this.props.dispatch(placesSearch(results)))
-        .catch((error) => console.log('error', error));
+        .catch((error) => this.props.dispatch(placesSearchError()));
     }
   }
 
