@@ -4,6 +4,7 @@ import { TextInput, View, BackHandler, Keyboard } from 'react-native';
 import { Text, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import RNGooglePlaces from 'react-native-google-places';
+import _ from 'lodash';
 
 import { setFocus, nearby, searchType, nearbyLoading, placesLoading,
   friendsLoading, reviewsLoading, placesSearch, placesSearchError } from '../../actions/search';
@@ -89,6 +90,8 @@ class SearchBar extends Component {
     return '';
   }
 
+  getAutocompleteDebounce = _.debounce((text) => this.getAutocomplete(text), 300)
+
   onChangeText(text, preventFocus) {
     this.setState({text});
 
@@ -114,17 +117,21 @@ class SearchBar extends Component {
         this.props.dispatch(searchType('search'));
       }
 
-      this.props.dispatch(friendsLoading(true));
-      this.props.dispatch(friendsSearch(text));
-
-      this.props.dispatch(reviewsLoading(true));
-      this.props.dispatch(reviewsSearch(text));
-
-      this.props.dispatch(placesLoading(true));
-      RNGooglePlaces.getAutocompletePredictions(text)
-        .then((results) => this.props.dispatch(placesSearch(results)))
-        .catch((error) => this.props.dispatch(placesSearchError()));
+      this.getAutocompleteDebounce(text);
     }
+  }
+
+  getAutocomplete(text) {
+    this.props.dispatch(friendsLoading(true));
+    this.props.dispatch(friendsSearch(text));
+
+    this.props.dispatch(reviewsLoading(true));
+    this.props.dispatch(reviewsSearch(text));
+
+    this.props.dispatch(placesLoading(true));
+    RNGooglePlaces.getAutocompletePredictions(text)
+      .then((results) => this.props.dispatch(placesSearch(results)))
+      .catch((error) => this.props.dispatch(placesSearchError()));
   }
 
   focusInput(nativeEvent) {
