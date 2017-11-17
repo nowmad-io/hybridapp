@@ -87,12 +87,14 @@ class ResultList extends Component {
                   <Spinner
                     style={styles.spinner}
                     visible={reviewsLoading} />
-                  {!reviewsLoading && reviewsSearch.map((result, index) => (
-                    <ListItem
-                      key={index}
-                      image='place'
-                      text={result.name}
-                      onPress={() => this.onReviewPress(result)} />
+                  {!reviewsLoading && reviewsSearch.map((place) => (
+                    place.reviews.map((review, index) =>(
+                      <ListItem
+                        key={index}
+                        image='place'
+                        text={review.short_description}
+                        onPress={() => this.onReviewPress(result)} />
+                    ))
                   ))}
                 </View>
               </ListCluster>

@@ -27,5 +27,5 @@ export function updateReview(review) {
 }
 
 export function reviewsSearch(query) {
-  return apiCall(REVIEWS_SEARCH, REVIEWS_SEARCH_ERROR, 'get', `${REVIEWS_PATH}search/`, {}, { query });
+  return apiCall(REVIEWS_SEARCH, REVIEWS_SEARCH_ERROR, 'get', PLACES_PATH, {}, { query });
 }

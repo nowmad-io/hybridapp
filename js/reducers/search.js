@@ -48,7 +48,7 @@ function SearchReducer(state = initialState, action) {
     case REVIEWS_SEARCH:
       return {
         ...state,
-        reviewsSearch: action.error ? initialState.reviewsSearch : payload,
+        reviewsSearch: action.error ? initialState.reviewsSearch : action.payload,
         reviewsLoading: false
       };
     case FRIENDS_SEARCH_ERROR:
