@@ -13,12 +13,14 @@ import styles from './styles';
 class ResultList extends Component {
   static defaultProps = {
     style: {},
-    onNearbySelected: () => true
+    onNearbySelected: () => true,
+    onReviewPress: () => true
   }
 
   static propTypes = {
     style: PropTypes.object,
     onNearbySelected: PropTypes.func,
+    onReviewPress: PropTypes.func,
     searchType: PropTypes.string,
     nearbyLoading: PropTypes.bool,
   }
@@ -27,7 +29,7 @@ class ResultList extends Component {
     super(props);
   }
 
-  onNearbyPress = (result) => {
+  onNearbyPress(result) {
     const place = {
       latitude: result.geometry.location.lat,
       longitude: result.geometry.location.lng
@@ -36,13 +38,17 @@ class ResultList extends Component {
     this.props.onNearbySelected(place);
   }
 
+  onReviewPress(place) {
+    this.props.onReviewPress(place);
+  }
+
   render() {
     const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
       friendsSearch } = this.props;
 
     return (
-      <ScrollView style={[styles.resultWrapper, style]}>
+      <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
         <View>
           {(searchType === 'nearby') && (
             <ListCluster label="MAYBE YOU WERE LOOKING FOR">
@@ -93,7 +99,7 @@ class ResultList extends Component {
                         key={index}
                         image='place'
                         text={review.short_description}
-                        onPress={() => this.onReviewPress(result)} />
+                        onPress={() => this.onReviewPress(place)} />
                     ))
                   ))}
                 </View>

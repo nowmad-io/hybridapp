@@ -149,7 +149,8 @@ class SearchBar extends Component {
 
   blurInput(clear) {
     this.setState({
-      text: !clear ? this.state.previousValue : ''
+      text: !clear ? this.state.text : this.state.previousValue,
+      previousValue: !clear ? this.state.text : this.state.previousValue
     });
 
     if (this.props.focused) {

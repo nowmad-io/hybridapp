@@ -36,7 +36,7 @@ class Home extends Component {
   componentWillReceiveProps({ selectedPlace, level }) {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id
-        && this.props.level === 2 && this._map) {
+        && this._map) {
       const selected = this.props.places.find(function(place, index) {
         if (place.id === selectedPlace.id) {
           return place;
@@ -113,6 +113,11 @@ class Home extends Component {
     this.props.navigation.navigate('AddReview', { place: updatedPlace });
   }
 
+  onReviewPress = (place) => {
+    this.props.dispatch(selectedPlace(place));
+    this.props.dispatch(setFocus(false));
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
@@ -165,7 +170,8 @@ class Home extends Component {
         { searchFocus && (
           <ResultList
             style={styles.resultList}
-            onNearbySelected={this.onNearbySelected} />
+            onNearbySelected={this.onNearbySelected}
+            onReviewPress={this.onReviewPress} />
         )}
       </Container>
     );
