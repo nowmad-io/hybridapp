@@ -14,6 +14,11 @@ const ListItem = (props) => (
       { props.image === 'place' && (
         <Image source={require('../../../images/icons/place.png')} style={styles.imageItem} />
       )}
+      { props.image === 'friend' && (
+        <View>
+          <Image source={require('../../../images/icons/place.png')} style={styles.imageItem} />
+        </View>
+      )}
       <View style={styles.textWrapperItem}>
         <Text style={styles.textItem}>{props.text}</Text>
         {props.secondaryText && (
