@@ -103,6 +103,9 @@ class Home extends Component {
     if (this.props.newPlace) {
       this.props.dispatch(selectNewPlace(null));
     }
+    if (this.props.googlePlace) {
+      this.props.dispatch(googlePlace(null));
+    }
   }
 
   onNewMarkerPress = () => {

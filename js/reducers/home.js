@@ -78,12 +78,20 @@ function HomeReducer(state = initialState, action) {
         ...extras
       };
     case GOOGLE_PLACE:
+      let newPlaces = _.compact([action.place, ...state.places]),
+          newCurrentPlaces = _.compact([action.place, ...state.currentPlaces])
+
+      if (!action.place) {
+        newPlaces = _.filter(state.places, (place) => state.googlePlace.id !== place.id);
+        newCurrentPlaces = _.filter(state.currentPlaces, (currentPlace) => state.googlePlace.id !== currentPlace.id);
+      }
+
       return {
         ...state,
         newPlace: null,
         googlePlace: action.place,
-        places: _.compact([action.place, ...state.places]),
-        currentPlaces: _.compact([action.place, ...state.currentPlaces])
+        places: newPlaces,
+        currentPlaces: newCurrentPlaces
       }
     case SEARCHED_PLACES:
       // action.places
