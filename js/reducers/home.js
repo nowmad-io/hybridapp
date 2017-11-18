@@ -90,6 +90,7 @@ function HomeReducer(state = initialState, action) {
       return {
         ...state,
         newPlace: null,
+        searchedPlaces: initialState.searchedPlaces,
         googlePlace: action.place,
         places: newPlaces,
         currentPlaces: newCurrentPlaces

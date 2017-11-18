@@ -118,9 +118,7 @@ class Home extends Component {
     this.props.navigation.navigate('AddReview', { place: place });
   }
 
-  onNearbyPlaceSelected = (gPlace) => {
-    const place = this.gPlaceToPlace(gPlace);
-
+  onNearbyPlaceSelected = (place) => {
     this.props.dispatch(googlePlace(place));
     this.refs.searchWrapper.getWrappedInstance().blurInput();
     this.refs.searchWrapper.getWrappedInstance().setValue(place.name);

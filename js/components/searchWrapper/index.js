@@ -198,6 +198,10 @@ class SearchWrapper extends Component {
       });
   }
 
+  onNearbyPlaceSelected = (gPlace) => {
+    this.props.onNearbyPlaceSelected(this.gPlaceToPlace(gPlace))
+  }
+
   onSubmitEditing() {
     this.blurInput();
 
@@ -265,7 +269,7 @@ class SearchWrapper extends Component {
             onReviewPress={this.onReviewPress}
             onPlaceSelected={this.onPlaceSelected}
             onNearbySelected={this.onNearbySelected}
-            onNearbyPlaceSelected={props.onNearbyPlaceSelected}
+            onNearbyPlaceSelected={this.onNearbyPlaceSelected}
             />
         )}
       </Container>
