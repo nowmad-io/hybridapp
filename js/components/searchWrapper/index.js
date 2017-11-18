@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import RNGooglePlaces from 'react-native-google-places';
 import _ from 'lodash';
 
-import { nearby, nearbyLoading, placesSearch, placesLoading,
-  friendsLoading, reviewsLoading, placesSearchError } from '../../actions/search';
-import { getNearbyPlaces} from '../../api/search';
+import { nearby, nearbyLoading, placesLoading,
+  friendsLoading, reviewsLoading } from '../../actions/search';
+import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearch } from '../../api/reviews';
 
@@ -104,9 +104,7 @@ class SearchWrapper extends Component {
     this.props.dispatch(reviewsSearch(text));
 
     this.props.dispatch(placesLoading(true));
-    RNGooglePlaces.getAutocompletePredictions(text)
-      .then((results) => this.props.dispatch(placesSearch(results)))
-      .catch((error) => this.props.dispatch(placesSearchError()));
+    this.props.dispatch(placesSearch(text));
   }
 
   onBackPress = () => {
@@ -165,6 +163,16 @@ class SearchWrapper extends Component {
     this.props.onClear();
   }
 
+  gPlaceToPlace(gPlace) {
+    return gPlace ? {
+      ...gPlace,
+      id: gPlace.place_id,
+      address: gPlace.vicinity,
+      latitude: gPlace.geometry.location.lat,
+      longitude: gPlace.geometry.location.lng
+    } : null;
+  }
+
   onActionPress() {
     if (this.state.focused) {
       this.onBackPress();
@@ -175,8 +183,24 @@ class SearchWrapper extends Component {
     }
   }
 
+  onNearbySelected = (gPlace) => {
+    this.props.onNearbySelected(this.gPlaceToPlace(gPlace));
+  }
+
+  onPlaceSelected = (gPlace) => {
+    return placeDetails(gPlace.place_id)
+      .then((response) => response.json())
+      .then(({result}) => {
+        this.props.onPlaceSelected(this.gPlaceToPlace(result))
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   onSubmitEditing() {
     this.blurInput();
+
   }
 
   render() {
@@ -230,7 +254,6 @@ class SearchWrapper extends Component {
           <ResultList
             style={styles.resultList}
             searchType={state.searchType}
-            onReviewPress={this.onReviewPress}
             nearbyPlaces={props.nearbyPlaces}
             placesSearch={props.placesSearch}
             reviewsSearch={props.reviewsSearch}
@@ -239,8 +262,9 @@ class SearchWrapper extends Component {
             friendsLoading={props.friendsLoading}
             reviewsLoading={props.reviewsLoading}
             placesLoading={props.placesLoading}
-            onPlaceSelected={props.onPlaceSelected}
-            onNearbySelected={props.onNearbySelected}
+            onReviewPress={this.onReviewPress}
+            onPlaceSelected={this.onPlaceSelected}
+            onNearbySelected={this.onNearbySelected}
             onNearbyPlaceSelected={props.onNearbyPlaceSelected}
             />
         )}

@@ -21,6 +21,7 @@ import { LOGOUT } from '../constants/auth';
 const initialState = {
   places: [],
   currentPlaces: [],
+  searchedPlaces: [],
   selectedPlace: null,
   newPlace: null,
   googlePlace: null,
@@ -94,8 +95,10 @@ function HomeReducer(state = initialState, action) {
         currentPlaces: newCurrentPlaces
       }
     case SEARCHED_PLACES:
-      // action.places
-      return state;
+      return {
+        ...state,
+        searchedPlaces: action.places || initialState.searchedPlaces
+      };
     case NEARBY:
       return { ...state, nearbyPlaces: action.places.results };
     case SELECTED_PLACE:

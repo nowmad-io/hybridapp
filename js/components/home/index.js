@@ -106,6 +106,7 @@ class Home extends Component {
     if (this.props.googlePlace) {
       this.props.dispatch(googlePlace(null));
     }
+    this.props.dispatch(searchedPlaces(null));
   }
 
   onNewMarkerPress = () => {
@@ -113,31 +114,30 @@ class Home extends Component {
   }
 
   onNearbySelected = (place) => {
-    const updatedPlace = {
-      ...this.props.newPlace,
-      ...place
-    };
-
-    this.props.dispatch(selectNewPlace(updatedPlace));
-    this.props.navigation.navigate('AddReview', { place: updatedPlace });
+    this.props.dispatch(selectNewPlace(place));
+    this.props.navigation.navigate('AddReview', { place: place });
   }
 
   onNearbyPlaceSelected = (gPlace) => {
-    const place = {
-      ...gPlace,
-      id: gPlace.place_id,
-      address: gPlace.vicinity,
-      latitude: gPlace.geometry.location.lat,
-      longitude: gPlace.geometry.location.lng
-    }
+    const place = this.gPlaceToPlace(gPlace);
 
     this.props.dispatch(googlePlace(place));
     this.refs.searchWrapper.getWrappedInstance().blurInput();
     this.refs.searchWrapper.getWrappedInstance().setValue(place.name);
   }
 
-  onPlaceSelected = (places) => {
-    this.props.dispatch(searchedPlaces(places));
+  onPlaceSelected = (place) => {
+    this.props.dispatch(searchedPlaces([place]));
+    this.refs.searchWrapper.getWrappedInstance().blurInput();
+    this._map.animateToCoordinate(place);
+  }
+
+  onPlacesSelected = (place, places) => {
+    this.props.dispatch(searchedPlaces(_.compact([place, ...places])));
+    this.refs.searchWrapper.getWrappedInstance().blurInput();
+    if (place) {
+      this._map.animateToCoordinate(place);
+    }
   }
 
   onReviewPress = (place) => {
@@ -146,7 +146,7 @@ class Home extends Component {
 
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
-      searchFocus, googlePlace } = this.props;
+      searchFocus, googlePlace, searchedPlaces } = this.props;
 
     return (
       <SearchWrapper
@@ -154,7 +154,8 @@ class Home extends Component {
         onClear={() => this.onSearchClear()}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
-        onPlaceSelected={this.onPlaceSelected}>
+        onPlaceSelected={this.onPlaceSelected}
+        onPlacesSelected={this.onPlacesSelected}>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
@@ -163,7 +164,7 @@ class Home extends Component {
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
         >
-          { places && places.map(place => (
+          { (searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker
               key={shortid.generate()}
               selected={selectedPlace && selectedPlace.id === place.id}
@@ -187,7 +188,7 @@ class Home extends Component {
           )}
         </Map>
         <MapList
-          places={currentPlaces}
+          places={searchedPlaces.length ? searchedPlaces : currentPlaces}
           navigation={navigation}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
@@ -204,6 +205,7 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   places: state.home.places,
   currentPlaces: state.home.currentPlaces,
+  searchedPlaces: state.home.searchedPlaces,
   position: state.home.position,
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,

@@ -38,7 +38,7 @@ function SearchReducer(state = initialState, action) {
     case PLACES_SEARCH:
       return {
         ...state,
-        placesSearch: action.places || initialState.placesSearch,
+        placesSearch: (action.error || !action.payload) ? initialState.placesSearch : action.payload.predictions,
         placesLoading: false
       };
     case REVIEWS_SEARCH_ERROR:

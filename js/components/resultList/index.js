@@ -50,7 +50,7 @@ class ResultList extends Component {
   render() {
     const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
-      friendsSearch } = this.props;
+      friendsSearch, onPlaceSelected } = this.props;
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
@@ -117,8 +117,8 @@ class ResultList extends Component {
                     <ListItem
                       key={index}
                       image='google'
-                      text={result.primaryText}
-                      onPress={() => this.onPlacePress(result)} />
+                      text={result.description}
+                      onPress={() => onPlaceSelected(result)} />
                   ))}
               </ListCluster>
             </View>
