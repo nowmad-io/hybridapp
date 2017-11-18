@@ -53,27 +53,15 @@ class Entry extends Component {
   render () {
     const { level1Y, buttonY } = this.state;
     const { place: { name, types, scope, reviews, address }, selected } = this.props;
-    let orderedReviews = [];
 
     const myReview = _.find(reviews, (review) => {
       return review.user_type === 'me';
     })
 
-    if (scope === 'GOOGLE') {
-      orderedReviews.push({
-        created_by: {
-          first_name: name
-        },
-        short_description: types ? types.join(', ') : '',
-        categories: [],
-        pictures: []
-      })
-    } else {
-      const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
+    const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
 
-      orderedReviews = _.compact(_.concat(_.compact([myReview]), otherReviews));
-    }
-    
+    const orderedReviews = _.compact(_.concat(_.compact([myReview]), otherReviews));
+
     return (
       <ScrollView
         scrollEnabled={false}

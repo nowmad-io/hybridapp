@@ -55,13 +55,26 @@ function HomeReducer(state = initialState, action) {
         selectedPlace: action.payload.length ? action.payload[0] : null
       };
     case ADD_REVIEW:
-      const newPlace = { ...place, reviews: [review] };
+      let exist = false;
+
+      const newPlaces_addreview = state.places.map((statePlace) => {
+        if (statePlace.id === place.id) {
+          exist = true;
+          return {
+            ...statePlace,
+            reviews: [review, ...statePlace.reviews]
+          };
+        }
+
+        return statePlace;
+      });
+
       return {
         ...state,
         newPlace: initialState.newPlace,
         searchedPlaces: initialState.searchedPlaces,
-        selectedPlace: newPlace,
-        places: [newPlace, ...state.places],
+        selectedPlace: { ...place, reviews: [review] },
+        places: exist ? newPlaces_addreview : [{ ...place, reviews: [review] }, ...state.places],
       };
     case UPDATE_REVIEW:
       return {
