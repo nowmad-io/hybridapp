@@ -7,13 +7,15 @@ import Config from 'react-native-config'
 import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text, Item } from 'native-base';
 import shortid from 'shortid';
 import RNGooglePlaces from 'react-native-google-places';
+import _ from 'lodash';
 
 import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
 import SearchWrapper from '../searchWrapper';
 
-import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
+import { selectedPlace, regionChanged, levelChange, selectNewPlace,
+  currentPlacesChange, searchedPlaces, googlePlace } from '../../actions/home'
 
 import styles from './styles';
 
@@ -30,10 +32,13 @@ class Home extends Component {
     newPlace: PropTypes.object,
     searchFocus: PropTypes.bool
   }
+
   componentDidMount() {
-    console.log('this.refs', this.refs);
     if (this.props.newPlace) {
       this.refs.searchWrapper.getWrappedInstance().searchCoordinates(this.props.newPlace, true);
+    }
+    if (this.props.googlePlace) {
+      this.refs.searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
     }
   }
 
@@ -41,13 +46,7 @@ class Home extends Component {
     if (selectedPlace && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id
         && this._map) {
-      const selected = this.props.places.find(function(place, index) {
-        if (place.id === selectedPlace.id) {
-          return place;
-        }
-        return false;
-      });
-      this._map.animateToCoordinate(selected);
+      this._map.animateToCoordinate(selectedPlace);
     }
   }
 
@@ -120,18 +119,39 @@ class Home extends Component {
     this.props.navigation.navigate('AddReview', { place: updatedPlace });
   }
 
+  onNearbyPlaceSelected = (gPlace) => {
+    const place = {
+      ...gPlace,
+      id: gPlace.place_id,
+      address: gPlace.vicinity,
+      latitude: gPlace.geometry.location.lat,
+      longitude: gPlace.geometry.location.lng
+    }
+
+    this.props.dispatch(googlePlace(place));
+    this.refs.searchWrapper.getWrappedInstance().blurInput();
+    this.refs.searchWrapper.getWrappedInstance().setValue(place.name);
+  }
+
+  onPlaceSelected = (places) => {
+    this.props.dispatch(searchedPlaces(places));
+  }
+
   onReviewPress = (place) => {
     this.props.dispatch(selectedPlace(place));
   }
 
   render() {
-    const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
+    const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
+      searchFocus, googlePlace } = this.props;
 
     return (
       <SearchWrapper
         ref='searchWrapper'
         onClear={() => this.onSearchClear()}
-        onNearbySelected={this.onNearbySelected}>
+        onNearbySelected={this.onNearbySelected}
+        onNearbyPlaceSelected={this.onNearbyPlaceSelected}
+        onPlaceSelected={this.onPlaceSelected}>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
@@ -153,6 +173,13 @@ class Home extends Component {
               key={shortid.generate()}
               place={newPlace}
               onMarkerPress={this.onNewMarkerPress}
+            />
+          )}
+          { googlePlace && (
+            <Marker
+              key={shortid.generate()}
+              place={googlePlace}
+              onMarkerPress={this.onMarkerPress}
             />
           )}
         </Map>
@@ -179,6 +206,7 @@ const mapStateToProps = state => ({
   level: state.home.level,
   region: state.home.region,
   newPlace: state.home.newPlace,
+  googlePlace: state.home.googlePlace,
   searchFocus: state.search.focused,
 });
 

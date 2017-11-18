@@ -5,7 +5,9 @@ import {
   REGION_CHANGE,
   NEARBY,
   NEW_PLACE,
-  CURRENT_PLACES
+  CURRENT_PLACES,
+  GOOGLE_PLACE,
+  SEARCHED_PLACES
 } from '../constants/home';
 
 export function setGeolocation(position) {
@@ -46,6 +48,20 @@ export function selectNewPlace(place) {
 export function currentPlacesChange(places) {
   return {
     type: CURRENT_PLACES,
+    places,
+  };
+}
+
+export function googlePlace(place) {
+  return {
+    type: GOOGLE_PLACE,
+    place,
+  };
+}
+
+export function searchedPlaces(places) {
+  return {
+    type: SEARCHED_PLACES,
     places,
   };
 }

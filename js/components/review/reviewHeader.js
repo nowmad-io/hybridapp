@@ -5,10 +5,12 @@ import shortid from 'shortid';
 
 import { headerStyles } from './styles';
 
+const googleImg = require('../../../images/icons/google.png');
+
 const ReviewHeader = props => (
   <CardItem style={headerStyles.infoWrapper}>
     <Left>
-      <Thumbnail style={headerStyles.thumbnail} source={{uri: props.reviews[0].created_by.picture}} />
+      <Thumbnail style={headerStyles.thumbnail} source={props.reviews[0].created_by.picture ? {uri: props.reviews[0].created_by.picture} : googleImg} />
       <Body>
         <Text>
           <Text>
@@ -19,7 +21,7 @@ const ReviewHeader = props => (
         <Text note>- { props.reviews[0].short_description } -</Text>
         { props.showcase && (
           <Text style={headerStyles.address}>
-            <Icon style={headerStyles.addressIcon} name="md-pin" />  River Garonne, Bordeaux, France
+            <Icon style={headerStyles.addressIcon} name="md-pin" /> {props.placeAddress}
           </Text>
         )}
       </Body>
@@ -37,13 +39,15 @@ const ReviewHeader = props => (
 
 ReviewHeader.defaultProps = {
   thumbnails: [],
-  showcase: false
+  showcase: false,
+  placeAddress: ''
 }
 
 ReviewHeader.propTypes = {
   reviews: PropTypes.array,
   showcase: PropTypes.bool,
-  thumbnails: PropTypes.array
+  thumbnails: PropTypes.array,
+  placeAddress: PropTypes.string
 };
 
 export default ReviewHeader;

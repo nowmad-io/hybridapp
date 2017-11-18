@@ -6,3 +6,5 @@ export const REGION_CHANGE = 'home/REGION_CHANGE';
 export const NEW_PLACE = 'home/NEW_PLACE';
 
 export const CURRENT_PLACES = 'home/CURRENT_PLACES';
+export const GOOGLE_PLACE = 'home/GOOGLE_PLACE';
+export const SEARCHED_PLACES = 'home/SEARCHED_PLACES';

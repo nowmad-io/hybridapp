@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   GEOLOCATION,
   SELECTED_PLACE,
@@ -5,7 +7,9 @@ import {
   REGION_CHANGE,
   NEARBY,
   NEW_PLACE,
-  CURRENT_PLACES
+  CURRENT_PLACES,
+  GOOGLE_PLACE,
+  SEARCHED_PLACES
 } from '../constants/home';
 import {
   PLACES_SUCCESS,
@@ -19,6 +23,7 @@ const initialState = {
   currentPlaces: [],
   selectedPlace: null,
   newPlace: null,
+  googlePlace: null,
   level: 0,
   position: null,
   region: null
@@ -45,7 +50,7 @@ function HomeReducer(state = initialState, action) {
     case PLACES_SUCCESS:
       return {
         ...state,
-        places: action.payload,
+        places: _.compact([state.googlePlace, ...action.payload]),
         selectedPlace: action.payload.length ? action.payload[0] : null
       };
     case ADD_REVIEW:
@@ -72,6 +77,17 @@ function HomeReducer(state = initialState, action) {
         newPlace: action.place,
         ...extras
       };
+    case GOOGLE_PLACE:
+      return {
+        ...state,
+        newPlace: null,
+        googlePlace: action.place,
+        places: _.compact([action.place, ...state.places]),
+        currentPlaces: _.compact([action.place, ...state.currentPlaces])
+      }
+    case SEARCHED_PLACES:
+      // action.places
+      return state;
     case NEARBY:
       return { ...state, nearbyPlaces: action.places.results };
     case SELECTED_PLACE:

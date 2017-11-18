@@ -22,7 +22,6 @@ const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 class SearchWrapper extends Component {
   static defaultProps = {
     onClear: () => true,
-    onNearbySelected: () => true
   }
 
   static propTypes = {
@@ -36,7 +35,6 @@ class SearchWrapper extends Component {
     friendsLoading: PropTypes.bool,
     reviewsLoading: PropTypes.bool,
     placesLoading: PropTypes.bool,
-    onNearbySelected: PropTypes.func,
   }
 
   constructor(props) {
@@ -79,6 +77,13 @@ class SearchWrapper extends Component {
     if (!init) {
       this.onChangeText(parsedCoords);
     }
+  }
+
+  setValue(text) {
+    this.setState({
+      text,
+      previousValue: text
+    });
   }
 
   focusInput() {
@@ -225,7 +230,6 @@ class SearchWrapper extends Component {
           <ResultList
             style={styles.resultList}
             searchType={state.searchType}
-            onNearbySelected={this.onNearbySelected}
             onReviewPress={this.onReviewPress}
             nearbyPlaces={props.nearbyPlaces}
             placesSearch={props.placesSearch}
@@ -235,7 +239,9 @@ class SearchWrapper extends Component {
             friendsLoading={props.friendsLoading}
             reviewsLoading={props.reviewsLoading}
             placesLoading={props.placesLoading}
+            onPlaceSelected={props.onPlaceSelected}
             onNearbySelected={props.onNearbySelected}
+            onNearbyPlaceSelected={props.onNearbyPlaceSelected}
             />
         )}
       </Container>

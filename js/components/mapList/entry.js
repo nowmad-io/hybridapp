@@ -52,16 +52,28 @@ class Entry extends Component {
 
   render () {
     const { level1Y, buttonY } = this.state;
-    const { place: { reviews }, selected } = this.props;
+    const { place: { name, types, scope, reviews, address }, selected } = this.props;
+    let orderedReviews = [];
 
     const myReview = _.find(reviews, (review) => {
       return review.user_type === 'me';
     })
 
-    const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
+    if (scope === 'GOOGLE') {
+      orderedReviews.push({
+        created_by: {
+          first_name: name
+        },
+        short_description: types ? types.join(', ') : '',
+        categories: [],
+        pictures: []
+      })
+    } else {
+      const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
 
-    const orderedReviews = _.concat(_.compact([myReview]), otherReviews);
-
+      orderedReviews = _.compact(_.concat(_.compact([myReview]), otherReviews));
+    }
+    
     return (
       <ScrollView
         scrollEnabled={false}
@@ -78,7 +90,7 @@ class Entry extends Component {
             <Showcase
               style={entryStyles.showcase}
               reviews={orderedReviews}
-              selected={selected}
+              placeAddress={address}
             />
           </Animated.View>
           <Animated.View
@@ -110,10 +122,10 @@ class Entry extends Component {
           >
             <View style={entryStyles.addressWrapper}>
               <Text style={entryStyles.address}>
-                <Icon style={entryStyles.addressIcon} name="md-pin" />  River Garonne, Bordeaux, France
+                <Icon style={entryStyles.addressIcon} name="md-pin" /> {address}
               </Text>
             </View>
-            {orderedReviews.map((review) => (
+            {orderedReviews && orderedReviews.map((review) => (
               <Review
                 key={shortid.generate()}
                 review={review} />

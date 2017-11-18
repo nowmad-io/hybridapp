@@ -18,7 +18,9 @@ class ResultList extends Component {
   static defaultProps = {
     style: {},
     onNearbySelected: () => true,
-    onReviewPress: () => true
+    onNearbyPlaceSelected: () => true,
+    onReviewPress: () => true,
+    onPlaceSelected: () => true
   }
 
   static propTypes = {
@@ -32,19 +34,13 @@ class ResultList extends Component {
     friendsLoading: PropTypes.bool,
     reviewsLoading: PropTypes.bool,
     placesLoading: PropTypes.bool,
+    onNearbySelected: PropTypes.func,
+    onReviewPress: PropTypes.func,
+    onPlaceSelected: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
-  }
-
-  onNearbyPress(result) {
-    const place = {
-      latitude: result.geometry.location.lat,
-      longitude: result.geometry.location.lng
-    }
-
-    this.props.onNearbySelected(place);
   }
 
   onReviewPress(place) {
@@ -70,7 +66,7 @@ class ResultList extends Component {
                     key={index}
                     image='google'
                     text={result.name}
-                    onPress={() => this.onNearbyPress(result)} />
+                    onPress={() => this.props.onNearbyPlaceSelected(result)} />
                 ))}
                 <Button
                   style={styles.button}

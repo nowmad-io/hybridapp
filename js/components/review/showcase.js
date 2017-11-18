@@ -18,14 +18,15 @@ const Showcase = (props) => {
 
   const thumbnails = _.without(props.reviews, props.reviews[0]);
 
-  const categories = _.uniqWith(_.flatten(props.reviews.map((review) => {
+  const categories = props.categories ? _.uniqWith(_.flatten(props.reviews.map((review) => {
     return review.categories
-  })));
+  }))) : [];
 
   return (
     <View>
       <ReviewHeader
         reviews={props.reviews}
+        placeAddress={props.placeAddress}
         showcase={true}
         thumbnails={thumbnails}
       />
@@ -56,7 +57,8 @@ const Showcase = (props) => {
 
 
 Showcase.propTypes = {
-  reviews: PropTypes.array
+  reviews: PropTypes.array,
+  placeAddress: PropTypes.string
 };
 
 export default Showcase;
