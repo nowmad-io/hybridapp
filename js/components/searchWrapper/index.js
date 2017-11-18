@@ -203,8 +203,20 @@ class SearchWrapper extends Component {
   }
 
   onSubmitEditing() {
-    this.blurInput();
+    if (this.props.placesSearch.length) {
+      return placeDetails(this.props.placesSearch[0].place_id)
+        .then((response) => response.json())
+        .then(({result}) => {
+          this.props.onPlacesSelected(this.gPlaceToPlace(result), this.props.reviewsSearch);
+          this.blurInput();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
 
+    this.props.onPlacesSelected(null, this.props.reviewsSearch)
+    this.blurInput();
   }
 
   render() {

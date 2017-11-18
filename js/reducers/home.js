@@ -58,9 +58,10 @@ function HomeReducer(state = initialState, action) {
       const newPlace = { ...place, reviews: [review] };
       return {
         ...state,
-        newPlace: null,
+        newPlace: initialState.newPlace,
+        searchedPlaces: initialState.searchedPlaces,
         selectedPlace: newPlace,
-        places: [newPlace, ...state.places]
+        places: [newPlace, ...state.places],
       };
     case UPDATE_REVIEW:
       return {
