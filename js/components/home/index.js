@@ -130,7 +130,8 @@ class Home extends Component {
     return (
       <SearchWrapper
         ref='searchWrapper'
-        onClear={() => this.onSearchClear()}>
+        onClear={() => this.onSearchClear()}
+        onNearbySelected={this.onNearbySelected}>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
