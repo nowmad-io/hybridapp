@@ -24,6 +24,15 @@ class SearchWrapper extends Component {
 
   static propTypes = {
     children: PropTypes.array,
+    searchType: PropTypes.string,
+    nearbyPlaces: PropTypes.array,
+    placesSearch: PropTypes.array,
+    reviewsSearch: PropTypes.array,
+    friendsSearch: PropTypes.array,
+    nearbyLoading: PropTypes.bool,
+    friendsLoading: PropTypes.bool,
+    reviewsLoading: PropTypes.bool,
+    placesLoading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -41,13 +50,23 @@ class SearchWrapper extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
 
     if (this.props.newPlace) {
-      this.onChangeText(this.coordinatesToString(this.props.newPlace), true);
+      this.setState({text: this.coordinatesToString(this.props.newPlace)});
     }
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
+
+  coordinatesToString(coordinates) {
+    if (coordinates && coordinates.latitude && coordinates.longitude) {
+      return `${coordinates.latitude},${coordinates.longitude}`
+    }
+
+    return '';
+  }
+
+  componentWillReceiveProps() {}
 
   onBackPress = () => {
     if (this.state.focused) {
@@ -56,8 +75,6 @@ class SearchWrapper extends Component {
       return true;
     }
   }
-
-  componentWillReceiveProps() {}
 
   focusInput() {
     this.setState({ focused: true });
@@ -84,9 +101,11 @@ class SearchWrapper extends Component {
 
   onFocus() {
     this.setState({ focused: true });
+
+    this.search(this.state.text);
   }
 
-  getAutocompleteDebounce = _.debounce((text) => this.getAutocomplete(text), 300)
+  getAutocompleteDebounce = _.debounce((text) => this.getAutocomplete(text), 500)
 
   onChangeText(text, preventFocus) {
     this.setState({text});
@@ -94,6 +113,12 @@ class SearchWrapper extends Component {
     if (!this.props.focused && !preventFocus) {
       this.focusInput();
     }
+
+    this.search(text)
+  }
+
+  search(query) {
+    const text = query || this.state.text;
 
     const coord = COORD_REGEX.exec(text)
     if (coord && coord.length >= 3) {

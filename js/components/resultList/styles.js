@@ -1,5 +1,6 @@
 import React, { StyleSheet } from 'react-native';
 
+import material from '../../../native-base-theme/variables/material';
 import { colors } from '../../parameters';
 
 export default {
@@ -8,7 +9,9 @@ export default {
     width: "100%",
     backgroundColor: colors.white,
     paddingHorizontal: 16,
-    paddingBottom: 24,
+  },
+  resultView: {
+    paddingBottom: material.toolbarHeight + 24,
   },
   labelCluster: {
     paddingTop: 24,

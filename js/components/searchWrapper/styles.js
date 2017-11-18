@@ -53,6 +53,6 @@ export default {
     top: material.toolbarHeight,
     bottom: 0,
     right: 0,
-    left: 0
+    left: 0,
   }
 };

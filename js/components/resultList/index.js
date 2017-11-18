@@ -10,6 +10,10 @@ import Spinner from '../loaders/spinner';
 
 import styles from './styles';
 
+
+const MAX_FRIENDS = 10
+const MAX_REVIEWS = 5
+
 class ResultList extends Component {
   static defaultProps = {
     style: {},
@@ -54,7 +58,7 @@ class ResultList extends Component {
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
-        <View>
+        <View style={styles.resultView}>
           {(searchType === 'nearby') && (
             <ListCluster label="MAYBE YOU WERE LOOKING FOR">
               <View>
@@ -84,7 +88,7 @@ class ResultList extends Component {
                   <Spinner
                     style={styles.spinner}
                     visible={friendsLoading} />
-                  {!friendsLoading && friendsSearch.map((result, index) => (
+                  {!friendsLoading && friendsSearch.slice(0, MAX_FRIENDS).map((result, index) => (
                     <ListItem
                       key={index}
                       image='friend'
@@ -98,7 +102,7 @@ class ResultList extends Component {
                   <Spinner
                     style={styles.spinner}
                     visible={reviewsLoading} />
-                  {!reviewsLoading && reviewsSearch.map((place) => (
+                  {!reviewsLoading && reviewsSearch.slice(0, MAX_REVIEWS).map((place) => (
                     place.reviews.map((review, index) =>(
                       <ListItem
                         key={index}
