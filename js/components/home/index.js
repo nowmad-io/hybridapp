@@ -11,7 +11,7 @@ import RNGooglePlaces from 'react-native-google-places';
 import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
-import SearchBar from '../searchBar';
+import SearchWrapper from '../searchWrapper';
 import ResultList from '../resultList';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
@@ -122,21 +122,7 @@ class Home extends Component {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
     return (
-      <Container>
-        <Header style={styles.header} searchBar={true}>
-          <View style={styles.headerView}>
-            <SearchBar
-              onClear={() => this.onSearchClear()}
-              style={styles.headerInput} />
-            <Button
-              style={styles.headerButton}
-              onPress={() => navigation.navigate('DrawerOpen')}
-              transparent
-            >
-              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />
-            </Button>
-          </View>
-        </Header>
+      <SearchWrapper>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
@@ -167,13 +153,7 @@ class Home extends Component {
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
         />
-        { searchFocus && (
-          <ResultList
-            style={styles.resultList}
-            onNearbySelected={this.onNearbySelected}
-            onReviewPress={this.onReviewPress} />
-        )}
-      </Container>
+      </SearchWrapper>
     );
   }
 }

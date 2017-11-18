@@ -1,0 +1,193 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TextInput, BackHandler, Keyboard } from 'react-native';
+import { Container, Header, Text, Button, Icon, View } from 'native-base';
+import { connect } from 'react-redux';
+import RNGooglePlaces from 'react-native-google-places';
+import _ from 'lodash';
+
+import { nearby, nearbyLoading, placesSearch, placesLoading,
+  friendsLoading, reviewsLoading, placesSearchError } from '../../actions/search';
+import { getNearbyPlaces} from '../../api/search';
+import { friendsSearch } from '../../api/friends';
+import { reviewsSearch } from '../../api/reviews';
+
+import { colors } from '../../parameters';
+import styles from './styles';
+
+const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
+
+class SearchWrapper extends Component {
+  static defaultProps = {}
+
+  static propTypes = {
+    children: PropTypes.array,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: '',
+      previousValue: '',
+      focused: false,
+      searchType: 'places'
+    }
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.props.newPlace) {
+      this.onChangeText(this.coordinatesToString(this.props.newPlace), true);
+    }
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress = () => {
+    if (this.state.focused) {
+      this.setState({text: this.state.previousValue})
+      this.blurInput();
+      return true;
+    }
+  }
+
+  componentWillReceiveProps() {}
+
+  focusInput() {
+    this.setState({ focused: true });
+    this.refs.textInput.focus();
+  }
+
+  blurInput() {
+    this.setState({ focused: false });
+    this.refs.textInput.blur();
+  }
+
+  getAutocomplete(text) {
+    this.props.dispatch(friendsLoading(true));
+    this.props.dispatch(friendsSearch(text));
+
+    this.props.dispatch(reviewsLoading(true));
+    this.props.dispatch(reviewsSearch(text));
+
+    this.props.dispatch(placesLoading(true));
+    RNGooglePlaces.getAutocompletePredictions(text)
+      .then((results) => this.props.dispatch(placesSearch(results)))
+      .catch((error) => this.props.dispatch(placesSearchError()));
+  }
+
+  onFocus() {
+    this.setState({ focused: true });
+  }
+
+  getAutocompleteDebounce = _.debounce((text) => this.getAutocomplete(text), 300)
+
+  onChangeText(text, preventFocus) {
+    this.setState({text});
+
+    if (!this.props.focused && !preventFocus) {
+      this.focusInput();
+    }
+
+    const coord = COORD_REGEX.exec(text)
+    if (coord && coord.length >= 3) {
+      Keyboard.dismiss();
+
+      if (this.state.searchType !== 'nearby') {
+        this.setState({ searchType: 'nearby' });
+      }
+
+      this.props.dispatch(nearbyLoading(true));
+      this.props.dispatch(getNearbyPlaces({
+        latitude: coord[1],
+        longitude: coord[2]
+      }));
+    } else {
+      if (this.state.searchType !== 'places') {
+        this.setState({ searchType: 'places' });
+      }
+
+      this.getAutocompleteDebounce(text);
+    }
+  }
+
+  clear() {
+    this.setState({ text: '' });
+  }
+
+  onActionPress() {
+    if (this.state.focused) {
+      this.onBackPress();
+    } else if (this.state.text.length) {
+      this.clear();
+    } else {
+      this.focusInput();
+    }
+  }
+
+  onSubmitEditing() {
+    this.blurInput();
+  }
+
+  render() {
+    const { props, state} = this;
+
+    return (
+      <Container>
+        <Header style={styles.header} searchBar={true}>
+          <View style={styles.headerView}>
+            <Button
+              transparent
+              style={styles.headerButton}
+              onPress={() => this.onActionPress()}
+            >
+              {state.focused ? (
+                <Icon name='md-arrow-back' style={styles.headerIcon}/>
+              ) : state.text.length ? (
+                <Icon name='md-close' style={styles.headerIcon}/>
+              ) : (
+                <Icon name='md-search' style={styles.headerIcon}/>
+              )}
+            </Button>
+
+            <TextInput
+              ref='textInput'
+              underlineColorAndroid={state.focused ? colors.white : colors.transparent}
+              autoCorrect={false}
+              placeholder={'Search friends, reviews & places'}
+              selectionColor={colors.whiteTransparent}
+              placeholderTextColor={colors.white}
+              style={styles.searchInput}
+              value={state.text}
+              onSubmitEditing={() => this.onSubmitEditing()}
+              onFocus={() => this.onFocus()}
+              onChangeText={(text) => this.onChangeText(text)}
+              withRef />
+
+            <Button
+              style={styles.headerButton}
+              onPress={() => this.onDrawerPress()}
+              transparent
+            >
+              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />
+            </Button>
+          </View>
+        </Header>
+
+        {this.props.children}
+      </Container>
+    )
+  }
+}
+
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = null;
+
+export default connect(mapStateToProps, bindActions)(SearchWrapper);

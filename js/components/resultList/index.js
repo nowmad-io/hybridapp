@@ -43,9 +43,6 @@ class ResultList extends Component {
   }
 
   render() {
-    const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
-      friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
-      friendsSearch } = this.props;
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
@@ -124,20 +121,4 @@ class ResultList extends Component {
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
-const mapStateToProps = state => ({
-  nearbyPlaces: state.search.nearbyPlaces,
-  placesSearch: state.search.placesSearch,
-  reviewsSearch: state.search.reviewsSearch,
-  friendsSearch: state.search.friendsSearch,
-  searchType: state.search.searchType,
-  nearbyLoading: state.search.nearbyLoading,
-  friendsLoading: state.search.friendsLoading,
-  reviewsLoading: state.search.reviewsLoading,
-  placesLoading: state.search.placesLoading,
-});
-
-export default connect(mapStateToProps, bindActions)(ResultList);
+export default ResultList;
