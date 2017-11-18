@@ -48,10 +48,6 @@ class SearchWrapper extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-
-    if (this.props.newPlace) {
-      this.setState({text: this.coordinatesToString(this.props.newPlace)});
-    }
   }
 
   componentWillUnmount() {
@@ -68,11 +64,16 @@ class SearchWrapper extends Component {
 
   componentWillReceiveProps() {}
 
-  onBackPress = () => {
-    if (this.state.focused) {
-      this.setState({text: this.state.previousValue})
-      this.blurInput();
-      return true;
+  searchCoordinates(coords, init) {
+    const parsedCoords = this.coordinatesToString(coords);
+
+    this.setState({
+      text : parsedCoords,
+      previousValue: parsedCoords
+    });
+
+    if (!init) {
+      this.onChangeText(parsedCoords);
     }
   }
 
@@ -97,6 +98,14 @@ class SearchWrapper extends Component {
     RNGooglePlaces.getAutocompletePredictions(text)
       .then((results) => this.props.dispatch(placesSearch(results)))
       .catch((error) => this.props.dispatch(placesSearchError()));
+  }
+
+  onBackPress = () => {
+    if (this.state.focused) {
+      this.setState({text: this.state.previousValue})
+      this.blurInput();
+      return true;
+    }
   }
 
   onFocus() {
@@ -244,4 +253,4 @@ const mapStateToProps = state => ({
   placesLoading: state.search.placesLoading,
 });
 
-export default connect(mapStateToProps, bindActions)(SearchWrapper);
+export default connect(mapStateToProps, bindActions, null, { withRef: true })(SearchWrapper);

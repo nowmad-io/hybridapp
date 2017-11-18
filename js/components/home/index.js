@@ -14,7 +14,6 @@ import MapList from '../mapList';
 import SearchWrapper from '../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
-import { setFocus } from '../../actions/search'
 
 import styles from './styles';
 
@@ -30,6 +29,12 @@ class Home extends Component {
     region: PropTypes.object,
     newPlace: PropTypes.object,
     searchFocus: PropTypes.bool
+  }
+  componentDidMount() {
+    console.log('this.refs', this.refs);
+    if (this.props.newPlace) {
+      this.refs.searchWrapper.getWrappedInstance().searchCoordinates(this.props.newPlace, true);
+    }
   }
 
   componentWillReceiveProps({ selectedPlace, level }) {
@@ -91,6 +96,7 @@ class Home extends Component {
   }
 
   onMapLongPress = ({coordinate}) => {
+    this.refs.searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
     this.props.dispatch(selectNewPlace(coordinate));
   }
 
@@ -99,7 +105,7 @@ class Home extends Component {
   }
 
   onNewMarkerPress = () => {
-    this.props.dispatch(setFocus(true));
+    this.refs.searchWrapper.getWrappedInstance().focusInput();
   }
 
   onNearbySelected = (place) => {
@@ -114,14 +120,13 @@ class Home extends Component {
 
   onReviewPress = (place) => {
     this.props.dispatch(selectedPlace(place));
-    this.props.dispatch(setFocus(false));
   }
 
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
     return (
-      <SearchWrapper>
+      <SearchWrapper ref='searchWrapper' withRef>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
