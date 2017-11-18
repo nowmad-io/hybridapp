@@ -1,8 +1,6 @@
 export const NEARBY_SUCCESS = 'search/NEARBY_SUCCESS';
 export const NEARBY_ERROR = 'search/NEARBY_ERROR';
 export const NEARBY = 'search/NEARBY';
-export const FOCUS = 'search/FOCUS';
-export const SEARCH_TYPE = 'search/SEARCH_TYPE';
 
 export const NEARBY_LOADING = 'search/NEARBY_LOADING';
 export const PLACES_LOADING = 'search/PLACES_LOADING';

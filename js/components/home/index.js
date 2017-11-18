@@ -12,7 +12,6 @@ import Map from '../map';
 import Marker from '../marker';
 import MapList from '../mapList';
 import SearchWrapper from '../searchWrapper';
-import ResultList from '../resultList';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace, currentPlacesChange } from '../../actions/home'
 import { setFocus } from '../../actions/search'

@@ -19,10 +19,15 @@ class ResultList extends Component {
 
   static propTypes = {
     style: PropTypes.object,
-    onNearbySelected: PropTypes.func,
-    onReviewPress: PropTypes.func,
     searchType: PropTypes.string,
+    nearbyPlaces: PropTypes.array,
+    placesSearch: PropTypes.array,
+    reviewsSearch: PropTypes.array,
+    friendsSearch: PropTypes.array,
     nearbyLoading: PropTypes.bool,
+    friendsLoading: PropTypes.bool,
+    reviewsLoading: PropTypes.bool,
+    placesLoading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -43,6 +48,9 @@ class ResultList extends Component {
   }
 
   render() {
+    const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
+      friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
+      friendsSearch } = this.props;
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
@@ -69,7 +77,7 @@ class ResultList extends Component {
               </View>
             </ListCluster>
           )}
-          {(searchType === 'search') && (
+          {(searchType === 'places') && (
             <View>
               <ListCluster label="RESULTS BY FRIENDS">
                 <View>

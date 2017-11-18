@@ -12,6 +12,8 @@ import { getNearbyPlaces} from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearch } from '../../api/reviews';
 
+import ResultList from '../resultList';
+
 import { colors } from '../../parameters';
 import styles from './styles';
 
@@ -179,6 +181,23 @@ class SearchWrapper extends Component {
         </Header>
 
         {this.props.children}
+
+        { state.focused && (
+          <ResultList
+            style={styles.resultList}
+            searchType={state.searchType}
+            onNearbySelected={this.onNearbySelected}
+            onReviewPress={this.onReviewPress}
+            nearbyPlaces={props.nearbyPlaces}
+            placesSearch={props.placesSearch}
+            reviewsSearch={props.reviewsSearch}
+            friendsSearch={props.friendsSearch}
+            nearbyLoading={props.nearbyLoading}
+            friendsLoading={props.friendsLoading}
+            reviewsLoading={props.reviewsLoading}
+            placesLoading={props.placesLoading}
+            />
+        )}
       </Container>
     )
   }
@@ -188,6 +207,16 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = null;
+const mapStateToProps = state => ({
+  nearbyPlaces: state.search.nearbyPlaces,
+  placesSearch: state.search.placesSearch,
+  reviewsSearch: state.search.reviewsSearch,
+  friendsSearch: state.search.friendsSearch,
+  searchType: state.search.searchType,
+  nearbyLoading: state.search.nearbyLoading,
+  friendsLoading: state.search.friendsLoading,
+  reviewsLoading: state.search.reviewsLoading,
+  placesLoading: state.search.placesLoading,
+});
 
 export default connect(mapStateToProps, bindActions)(SearchWrapper);

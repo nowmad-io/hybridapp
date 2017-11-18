@@ -1,8 +1,6 @@
 import {
   NEARBY,
   NEARBY_LOADING,
-  FOCUS,
-  SEARCH_TYPE,
   PLACES_SEARCH,
   PLACES_SEARCH_ERROR,
   PLACES_LOADING,
@@ -21,11 +19,10 @@ const initialState = {
   reviewsSearch: [],
   friendsSearch: [],
   placesSearch: [],
-  nearbyLoading: true,
-  reviewsLoading: true,
-  friendsLoading: true,
-  placesLoading: true,
-  focused: false,
+  nearbyLoading: false,
+  reviewsLoading: false,
+  friendsLoading: false,
+  placesLoading: false,
   searchType: null
 };
 
@@ -78,13 +75,6 @@ function SearchReducer(state = initialState, action) {
         ...state,
         placesLoading: action.loading
       }
-    case SEARCH_TYPE:
-      return {
-        ...state,
-        searchType: action.typeSearch,
-      };
-    case FOCUS:
-      return { ...state, focused: action.focused };
     case LOGOUT:
       return initialState;
     default:
