@@ -20,7 +20,9 @@ import styles from './styles';
 const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 
 class SearchWrapper extends Component {
-  static defaultProps = {}
+  static defaultProps = {
+    onClear: () => true
+  }
 
   static propTypes = {
     children: PropTypes.array,
@@ -153,6 +155,7 @@ class SearchWrapper extends Component {
 
   clear() {
     this.setState({ text: '' });
+    this.props.onClear();
   }
 
   onActionPress() {

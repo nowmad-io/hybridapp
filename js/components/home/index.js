@@ -101,7 +101,9 @@ class Home extends Component {
   }
 
   onSearchClear = () => {
-    this.props.dispatch(selectNewPlace(null));
+    if (this.props.newPlace) {
+      this.props.dispatch(selectNewPlace(null));
+    }
   }
 
   onNewMarkerPress = () => {
@@ -126,7 +128,9 @@ class Home extends Component {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace, searchFocus } = this.props;
 
     return (
-      <SearchWrapper ref='searchWrapper' withRef>
+      <SearchWrapper
+        ref='searchWrapper'
+        onClear={() => this.onSearchClear()}>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
