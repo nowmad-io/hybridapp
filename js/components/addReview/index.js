@@ -36,7 +36,7 @@ class AddReview extends Component {
 
     const place = props.navigation.state.params.place;
     const review = props.navigation.state.params.review;
-
+    
     const defaultReview = {
       short_description: '',
       information: '',

@@ -190,15 +190,19 @@ class SearchWrapper extends Component {
     }
   }
 
-  onNearbySelected = (gPlace) => {
-    this.props.onNearbySelected(this.gPlaceToPlace(gPlace));
+  onNearbySelected = () => {
+    const coord = COORD_REGEX.exec(this.state.text);
+
+    this.props.onNearbySelected({
+      latitude: +coord[1],
+      longitude: +coord[2]
+    });
   }
 
   onPlaceSelected = (gPlace) => {
     return placeDetails(gPlace.place_id)
       .then((response) => response.json())
       .then(({result}) => {
-        console.log('result', result);
         this.props.onPlaceSelected(this.gPlaceToPlace(result));
       })
       .catch((error) => {

@@ -114,7 +114,7 @@ class Home extends Component {
 
   onNearbySelected = (place) => {
     this.props.dispatch(selectNewPlace(place));
-    this.props.navigation.navigate('AddReview', { place: place });
+    this.props.navigation.navigate('AddReview', { place });
   }
 
   onNearbyPlaceSelected = (place) => {

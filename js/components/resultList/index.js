@@ -70,7 +70,7 @@ class ResultList extends Component {
                 ))}
                 <Button
                   style={styles.button}
-                  onPress={() => onNearbySelected()}
+                  onPress={onNearbySelected}
                 >
                   <Text>Add a new place</Text>
                 </Button>
