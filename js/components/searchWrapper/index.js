@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { TextInput, BackHandler, Keyboard } from 'react-native';
 import { Container, Header, Text, Button, Icon, View } from 'native-base';
 import { connect } from 'react-redux';
-import RNGooglePlaces from 'react-native-google-places';
 import _ from 'lodash';
 
 import { nearby, nearbyLoading, placesLoading,
@@ -169,7 +168,15 @@ class SearchWrapper extends Component {
       id: gPlace.place_id,
       address: gPlace.vicinity,
       latitude: gPlace.geometry.location.lat,
-      longitude: gPlace.geometry.location.lng
+      longitude: gPlace.geometry.location.lng,
+      reviews: [{
+        created_by: {
+          first_name: gPlace.name
+        },
+        short_description: gPlace.types ? gPlace.types.join(', ') : '',
+        categories: [],
+        pictures: []
+      }]
     } : null;
   }
 
@@ -191,7 +198,8 @@ class SearchWrapper extends Component {
     return placeDetails(gPlace.place_id)
       .then((response) => response.json())
       .then(({result}) => {
-        this.props.onPlaceSelected(this.gPlaceToPlace(result))
+        console.log('result', result);
+        this.props.onPlaceSelected(this.gPlaceToPlace(result));
       })
       .catch((error) => {
         console.error(error);
@@ -199,7 +207,7 @@ class SearchWrapper extends Component {
   }
 
   onNearbyPlaceSelected = (gPlace) => {
-    this.props.onNearbyPlaceSelected(this.gPlaceToPlace(gPlace))
+    this.props.onNearbyPlaceSelected(this.gPlaceToPlace(gPlace));
   }
 
   onSubmitEditing() {

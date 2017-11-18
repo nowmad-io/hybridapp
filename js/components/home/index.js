@@ -6,7 +6,6 @@ import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config'
 import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text, Item } from 'native-base';
 import shortid from 'shortid';
-import RNGooglePlaces from 'react-native-google-places';
 import _ from 'lodash';
 
 import Map from '../map';
