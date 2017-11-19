@@ -232,7 +232,7 @@ class SearchWrapper extends Component {
   }
 
   render() {
-    const { props, state} = this;
+    const { props, state } = this;
 
     return (
       <Container>
@@ -268,7 +268,7 @@ class SearchWrapper extends Component {
 
             <Button
               style={styles.headerButton}
-              onPress={() => this.onDrawerPress()}
+              onPress={props.onMenuPress}
               transparent
             >
               <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />

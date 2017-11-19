@@ -140,7 +140,7 @@ class Home extends Component {
   onReviewPress = (place) => {
     this.props.dispatch(selectedPlace(place));
   }
-
+  
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, googlePlace, searchedPlaces } = this.props;
@@ -152,7 +152,8 @@ class Home extends Component {
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
         onPlaceSelected={this.onPlaceSelected}
-        onPlacesSelected={this.onPlacesSelected}>
+        onPlacesSelected={this.onPlacesSelected}
+        onMenuPress={() => navigation.navigate('DrawerOpen')}>
         <Map
           onRef={this.onRef}
           onMapReady={this.onMapReady}
