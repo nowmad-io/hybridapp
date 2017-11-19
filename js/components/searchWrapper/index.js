@@ -120,7 +120,7 @@ class SearchWrapper extends Component {
     this.search(this.state.text);
   }
 
-  getAutocompleteDebounce = _.debounce((text) => this.getAutocomplete(text), 500)
+  getAutocompleteDebounce = _.debounce(this.getAutocomplete, 300)
 
   onChangeText(text, preventFocus) {
     this.setState({text});
@@ -133,7 +133,7 @@ class SearchWrapper extends Component {
   }
 
   search(query) {
-    const text = query || this.state.text;
+    const text = query === null ? this.state.text : query;
 
     const coord = COORD_REGEX.exec(text)
     if (coord && coord.length >= 3) {
