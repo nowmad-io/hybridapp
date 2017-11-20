@@ -50,7 +50,7 @@ class ResultList extends Component {
   render() {
     const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
-      friendsSearch, onPlaceSelected } = this.props;
+      friendsSearch, onPlaceSelected, onFriendPress } = this.props;
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
@@ -89,7 +89,7 @@ class ResultList extends Component {
                       key={index}
                       image='friend'
                       text={`${result.first_name} ${result.last_name}`}
-                      onPress={() => this.onFriendPress(result)} />
+                      onPress={() => onFriendPress(result)} />
                   ))}
                 </View>
               </ListCluster>

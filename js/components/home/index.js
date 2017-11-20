@@ -140,7 +140,12 @@ class Home extends Component {
   onReviewPress = (place) => {
     this.props.dispatch(selectedPlace(place));
   }
-  
+
+  onFriendPress = (user) => {
+    this.refs.searchWrapper.getWrappedInstance().blurInput();
+    this.refs.searchWrapper.getWrappedInstance().setValue(user.first_name);
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, googlePlace, searchedPlaces } = this.props;
@@ -153,6 +158,7 @@ class Home extends Component {
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
         onPlaceSelected={this.onPlaceSelected}
         onPlacesSelected={this.onPlacesSelected}
+        onFriendPress={this.onFriendPress}
         onMenuPress={() => navigation.navigate('DrawerOpen')}>
         <Map
           onRef={this.onRef}

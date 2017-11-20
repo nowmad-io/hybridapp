@@ -112,7 +112,7 @@ function HomeReducer(state = initialState, action) {
     case SEARCHED_PLACES:
       return {
         ...state,
-        searchedPlaces: action.places || initialState.searchedPlaces
+        searchedPlaces: action.places || action.payload || initialState.searchedPlaces
       };
     case NEARBY:
       return { ...state, nearbyPlaces: action.places.results };

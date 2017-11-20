@@ -9,7 +9,7 @@ import { nearby, nearbyLoading, placesLoading,
   friendsLoading, reviewsLoading } from '../../actions/search';
 import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
-import { reviewsSearch } from '../../api/reviews';
+import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
 import ResultList from '../resultList';
 
@@ -100,7 +100,7 @@ class SearchWrapper extends Component {
     this.props.dispatch(friendsSearch(text));
 
     this.props.dispatch(reviewsLoading(true));
-    this.props.dispatch(reviewsSearch(text));
+    this.props.dispatch(reviewsSearchByQuery(text));
 
     this.props.dispatch(placesLoading(true));
     this.props.dispatch(placesSearch(text));
@@ -231,6 +231,11 @@ class SearchWrapper extends Component {
     this.blurInput();
   }
 
+  onFriendPress = (user) => {
+    this.props.dispatch(reviewsSearchByUser(user.email));
+    this.props.onFriendPress(user);
+  }
+
   render() {
     const { props, state } = this;
 
@@ -290,6 +295,7 @@ class SearchWrapper extends Component {
             friendsLoading={props.friendsLoading}
             reviewsLoading={props.reviewsLoading}
             placesLoading={props.placesLoading}
+            onFriendPress={this.onFriendPress}
             onReviewPress={this.onReviewPress}
             onPlaceSelected={this.onPlaceSelected}
             onNearbySelected={this.onNearbySelected}
