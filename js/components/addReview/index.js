@@ -25,7 +25,7 @@ import { reviewLoading } from '../../actions/reviews';
 
 import styles from './styles';
 
-const MAX_LENGTH_IMAGES = 5;
+const MAX_LENGTH_PICTURES = 5;
 
 class AddReview extends Component {
   static propTypes = {
@@ -44,7 +44,7 @@ class AddReview extends Component {
       information: '',
       status: statusList[0],
       categories: [],
-      images: []
+      pictures: []
     }
 
     this.state = {
@@ -60,13 +60,17 @@ class AddReview extends Component {
         information: review.information || defaultReview.information,
         status: review.status || defaultReview.status,
         categories: review.categories ? review.categories.map(cat => (cat.name)) : defaultReview.categories,
-        images: review.pictures || defaultReview.images
+        pictures: review.pictures || defaultReview.pictures
       }
     }
   }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+
+    if (this.props.reviewLoading) {
+      this.props.dispatch(reviewLoading(false));
+    }
   }
 
   componentWillUnmount() {
@@ -101,10 +105,14 @@ class AddReview extends Component {
       categories: this.state.categories.map((categorie) => ({
         name: categorie
       })),
-      pictures: this.state.images.map((image) => ({
-        source: image.data,
-        caption: image.caption
-      }))
+      pictures: this.state.pictures.map((image) => {
+        const picture = image.id ? { id: image.id } : { source: image.data }
+
+        return {
+          ...picture,
+          caption: image.caption
+        }
+      })
     };
 
     Keyboard.dismiss();
@@ -132,7 +140,7 @@ class AddReview extends Component {
     this.setState({ categories: newCategories });
   }
 
-  selectImages = () => {
+  selectPictures = () => {
     const options = {
       quality: 1.0,
       storageOptions: {
@@ -140,14 +148,11 @@ class AddReview extends Component {
         path: Config.IMAGES_FOLDER
       }
     };
+    this.props.dispatch(reviewLoading(true));
 
     ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled photo picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+      if (response.didCancel || response.error) {
+        this.props.dispatch(reviewLoading(false));
       } else {
         this.navigateToImage(response);
       }
@@ -162,19 +167,21 @@ class AddReview extends Component {
   }
 
   onImageEditBack = ({ image, remove }) => {
-    const images = this.state.images;
+    const pictures = this.state.pictures;
+
+    this.props.dispatch(reviewLoading(false));
 
     if (!image) {
       return;
     }
 
     if (image && remove) {
-      this.setState({ images: _.filter(images, (img) => (img.uri !== image.uri)) });
+      this.setState({ pictures: _.filter(pictures, (img) => (img.uri !== image.uri)) });
       return;
     }
 
     let index = 0;
-    const exist = _.some(images, (img, i) => {
+    const exist = _.some(pictures, (img, i) => {
       if (img.uri === image.uri) {
         index = i;
         return true;
@@ -183,21 +190,21 @@ class AddReview extends Component {
       return false
     })
 
-    let newImages = [...images];
+    let newPictures = [...pictures];
 
     if (exist) {
-      newImages[index] = image;
+      newPictures[index] = image;
     } else {
-      newImages.push(image);
+      newPictures.push(image);
     }
 
-    this.setState({ images: newImages });
+    this.setState({ pictures: newPictures });
   }
 
   render() {
-    const { categories, images } = this.state;
+    const { categories, pictures } = this.state;
 
-    const full = this.state.images && this.state.images.length >= MAX_LENGTH_IMAGES;
+    const full = this.state.pictures && this.state.pictures.length >= MAX_LENGTH_PICTURES;
 
     return (
       <Container>
@@ -269,10 +276,10 @@ class AddReview extends Component {
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
               <View style={styles.imagesWrapper}>
-                {(!this.state.images || this.state.images.length < MAX_LENGTH_IMAGES) && (
-                  <ImageHolder onPress={this.selectImages} />
+                {(!this.state.pictures || this.state.pictures.length < MAX_LENGTH_PICTURES) && (
+                  <ImageHolder onPress={this.selectPictures} />
                 )}
-                { this.state.images && this.state.images.map((image, index) => (
+                { this.state.pictures && this.state.pictures.map((image, index) => (
                   <ImageHolder
                     key={index}
                     style={styles.image(full, index)}
