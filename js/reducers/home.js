@@ -15,6 +15,7 @@ import {
   PLACES_SUCCESS,
   UPDATE_REVIEW,
   ADD_REVIEW,
+  REVIEW_LOADING,
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -27,7 +28,8 @@ const initialState = {
   googlePlace: null,
   level: 0,
   position: null,
-  region: null
+  region: null,
+  reviewLoading: false,
 };
 
 function updateReview(currentPlaces, place, updatedReview) {
@@ -48,6 +50,11 @@ function HomeReducer(state = initialState, action) {
   const { place, ...review } = action.review || {};
 
   switch (action.type) {
+    case REVIEW_LOADING:
+      return {
+        ...state,
+        reviewLoading: action.loading
+      }
     case PLACES_SUCCESS:
       return {
         ...state,

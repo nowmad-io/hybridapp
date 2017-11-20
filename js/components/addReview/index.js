@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler } from 'react-native';
+import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
   Text, View, Radio } from 'native-base';
 import _ from 'lodash';
@@ -18,8 +18,10 @@ import FormInput from '../formInput';
 import BasicButton from '../basicButton';
 import RadioButtons from '../radioButtons';
 import ImageHolder from '../imageHolder';
+import Spinner from '../loaders/spinner';
 
 import { addReview, updateReview } from '../../api/reviews';
+import { reviewLoading } from '../../actions/reviews';
 
 import styles from './styles';
 
@@ -36,7 +38,7 @@ class AddReview extends Component {
 
     const place = props.navigation.state.params.place;
     const review = props.navigation.state.params.review;
-    
+
     const defaultReview = {
       short_description: '',
       information: '',
@@ -105,6 +107,9 @@ class AddReview extends Component {
       }))
     };
 
+    Keyboard.dismiss();
+
+    this.props.dispatch(reviewLoading(true));
     if (this.state.id) {
       this.props.dispatch(updateReview(review));
     } else {
@@ -284,6 +289,8 @@ class AddReview extends Component {
         <BasicButton
           text='PUBLISH'
           onPress={this.onPublish} />
+
+        <Spinner overlay={true} visible={this.props.reviewLoading}/>
       </Container>
     );
   }
@@ -294,7 +301,8 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = (state) => ({
-  region: state.home.region
+  region: state.home.region,
+  reviewLoading: state.home.reviewLoading
 });
 
 export default connect(mapStateToProps, bindActions)(AddReview);

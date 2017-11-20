@@ -8,7 +8,7 @@ import {
 } from '../constants/reviews';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
-import { addReview, updateReview } from '../actions/reviews';
+import { addReview, updateReview, reviewLoading } from '../actions/reviews';
 import { fetchReviews } from '../api/reviews';
 import { pollSaga } from './utils';
 
@@ -19,6 +19,8 @@ export function * reviewsFlow() {
 const _reviewFlow = (update) =>
 function * reviewFlow(action) {
   const { error, payload } = action;
+
+  yield put(reviewLoading(false));
 
   if (!error) {
     yield put(update ? updateReview(payload) : addReview(payload));
