@@ -52,15 +52,21 @@ class Entry extends Component {
 
   render () {
     const { level1Y, buttonY } = this.state;
-    const { place: { name, types, scope, reviews, address }, selected } = this.props;
+    const { place: { name, types, scope, address, reviews, all_reviews }, selected } = this.props;
 
-    const myReview = _.find(reviews, (review) => {
+    const reviewsToOrder = all_reviews || reviews;
+
+    const starredReview = _.find(reviewsToOrder, (review) => {
+      if (all_reviews) {
+        return reviews[0].created_by.email === review.created_by.email
+      }
       return review.user_type === 'me';
     })
 
-    const otherReviews = myReview ? _.filter(reviews, (review) => review.id !== myReview.id) : reviews;
+    const myReview = !all_reviews ? starredReview : _.find(reviewsToOrder, (review) => review.user_type === 'me');
 
-    const orderedReviews = _.compact(_.concat(_.compact([myReview]), otherReviews));
+    const friendsReviews = starredReview ? _.filter(reviewsToOrder, (review) => review.id !== starredReview.id) : reviewsToOrder;
+    const orderedReviews = _.compact(_.concat(_.compact([starredReview]), friendsReviews));
 
     return (
       <ScrollView
@@ -77,7 +83,7 @@ class Entry extends Component {
           >
             <Showcase
               style={entryStyles.showcase}
-              reviews={orderedReviews}
+              reviews={all_reviews ? reviews : orderedReviews}
               placeAddress={address}
             />
           </Animated.View>
@@ -89,7 +95,7 @@ class Entry extends Component {
             ]
           }}
           >
-            {myReview ? (
+            { myReview ? (
               <BasicButton
                 text='MY REVIEW'
                 onPress={() => this.onPressEditReview(myReview)}>
