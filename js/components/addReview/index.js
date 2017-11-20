@@ -106,7 +106,7 @@ class AddReview extends Component {
         name: categorie
       })),
       pictures: this.state.pictures.map((image) => {
-        const picture = image.id ? { id: image.id } : { source: image.data }
+        const picture = image.id ? { pictureId: image.id } : { source: image.data }
 
         return {
           ...picture,
