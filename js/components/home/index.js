@@ -167,6 +167,10 @@ class Home extends Component {
           region={region}
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
+          padding={{
+            top: 56,
+            bottom: 80
+          }}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker

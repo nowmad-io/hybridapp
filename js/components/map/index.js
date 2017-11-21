@@ -17,27 +17,42 @@ class Map extends Component {
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
+    padding: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
   }
 
+  onRef(ref) {
+    this._ref = ref;
+    this.props.onRef(ref);
+  }
+
+  onMapReady() {
+    if (this._ref) {
+      this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 0} });
+    }
+
+    this.props.onMapReady();
+  }
+
   render() {
-    const { region, zoomEnabled, rotateEnabled, scrollEnabled } = this.props;
+    const { region, zoomEnabled, rotateEnabled, scrollEnabled, padding } = this.props;
     return (
       <MapView
-        ref={(ref) => this.props.onRef(ref)}
-        onMapReady={() => this.props.onMapReady()}
+        ref={(ref) => this.onRef(ref)}
+        onMapReady={() => this.onMapReady()}
         onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
         onLongPress={(event) => this.props.onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
-        style={styles.map}
+        style={{...styles.map, marginBottom: 1}}
         showsUserLocation={true}
         initialRegion={region}
         zoomEnabled={zoomEnabled}
         rotateEnabled={rotateEnabled}
         scrollEnabled={scrollEnabled}
+        mapPadding={padding}
       >
         {this.props.children}
       </MapView>
