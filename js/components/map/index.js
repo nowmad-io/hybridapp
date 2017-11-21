@@ -37,6 +37,18 @@ class Map extends Component {
     this.props.onMapReady();
   }
 
+  updatePadding(mapPadding) {
+    this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 1} });
+    this._ref.map.setNativeProps({ mapPadding });
+    setTimeout(() => {
+      this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 0} });
+    }, 100);
+  }
+
+  animateToCoordinate(place) {
+    this._ref.animateToCoordinate(place);
+  }
+
   render() {
     const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding } = this.props;
     return (

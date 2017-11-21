@@ -42,22 +42,21 @@ class Home extends Component {
   }
 
   componentWillUpdate({ selectedPlace, level }) {
-    if (this._map && this.props.selectedPlace) {
-      if (selectedPlace
-          && selectedPlace.id !== this.props.selectedPlace.id
-          && this.props.level === 2) {
-        this._map.animateToCoordinate(selectedPlace);
-      }
+    if (selectedPlace
+        && this.props.selectedPlace
+        && selectedPlace.id !== this.props.selectedPlace.id
+        && this.props.level === 2) {
+      this.refs.map.animateToCoordinate(selectedPlace);
+    }
 
-      if (level && level !== this.props.level) {
-          this._map.map.setNativeProps({ mapPadding: {
-            top: sizes.toolbarHeight,
-            bottom: level === 1 ? sizes.ITEM_LEVEL1 : sizes.ITEM_LEVEL2
-          }});
+    if (level && level !== this.props.level) {
+      this.refs.map.updatePadding({
+        top: sizes.toolbarHeight,
+        bottom: level === 1 ? sizes.ITEM_LEVEL1 : sizes.ITEM_LEVEL2
+      });
 
-        if (level < 3) {
-          this._map.animateToCoordinate(this.props.selectedPlace);
-        }
+      if (level < 3 && this.props.selectedPlace) {
+        this.refs.map.animateToCoordinate(this.props.selectedPlace);
       }
     }
   }
@@ -174,7 +173,7 @@ class Home extends Component {
         onFriendPress={this.onFriendPress}
         onMenuPress={() => navigation.navigate('DrawerOpen')}>
         <Map
-          onRef={this.onRef}
+          ref='map'
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
