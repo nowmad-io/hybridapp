@@ -1,7 +1,6 @@
 import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
 
-import { colors } from '../../parameters';
-import material from '../../../native-base-theme/variables/material';
+import { colors, sizes } from '../../parameters';
 
 export const screen = Dimensions.get('window');
 
@@ -10,15 +9,15 @@ const ITEM_SPACING = 8;
 const ITEM_PREVIEW = 8;
 const ITEM_BORDER = 4;
 const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
-export const ITEM_LEVEL1 = 80;
-export const ITEM_LEVEL2 = 232;
+export const ITEM_LEVEL1 = sizes.ITEM_LEVEL1;
+export const ITEM_LEVEL2 = sizes.ITEM_LEVEL2;
 export const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
-export const ITEM_PREVIEW_HEIGHT = ITEM_LEVEL1 - StatusBar.currentHeight - ITEM_BORDER;
-const BREAKPOINT_HELPER = StatusBar.currentHeight + material.toolbarHeight + ITEM_BORDER + SCREEN_PADDING_TOP
+export const ITEM_PREVIEW_HEIGHT = ITEM_LEVEL1 - sizes.statusBar - ITEM_BORDER;
+const BREAKPOINT_HELPER = sizes.statusBar + sizes.toolbarHeight + ITEM_BORDER + SCREEN_PADDING_TOP
 export const BREAKPOINT1 = (screen.height - ITEM_LEVEL1 - BREAKPOINT_HELPER);
 export const BREAKPOINT2 = (ITEM_LEVEL2 - ITEM_LEVEL1);
-export const TOOLBARHEIGHT = material.toolbarHeight;
-export const STATUSBARHEIGHT = StatusBar.currentHeight;
+export const TOOLBARHEIGHT = sizes.toolbarHeight;
+export const STATUSBARHEIGHT = sizes.statusBar;
 
 export const entryStyles = {
   card: (selected = true, level = 0) => ({
@@ -66,7 +65,7 @@ export default {
     flexDirection: 'row',
     paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
     position: 'absolute',
-    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - material.toolbarHeight
+    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - sizes.toolbarHeight
   },
   item: {
     width: ITEM_WIDTH,

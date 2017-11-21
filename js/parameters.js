@@ -1,4 +1,6 @@
-import React from 'react-native';
+import React, { StatusBar } from 'react-native';
+
+import material from '../native-base-theme/variables/material';
 
 export const colors = {
   green: '#00C69F',
@@ -19,3 +21,10 @@ export const colors = {
   whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
   transparent: 'rgba(0, 0, 0, 0)'
 };
+
+export const sizes = {
+  toolbarHeight: material.toolbarHeight,
+  statusBar: StatusBar.currentHeight,
+  ITEM_LEVEL1: 80,
+  ITEM_LEVEL2: 232,
+}

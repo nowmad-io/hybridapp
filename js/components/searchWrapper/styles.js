@@ -1,7 +1,6 @@
 import React, { StyleSheet } from 'react-native';
 
-import material from '../../../native-base-theme/variables/material';
-import { colors } from '../../parameters';
+import { colors, sizes } from '../../parameters';
 
 export default {
   header: {
@@ -50,7 +49,7 @@ export default {
   },
   resultList: {
     position: 'absolute',
-    top: material.toolbarHeight,
+    top: sizes.toolbarHeight,
     bottom: 0,
     right: 0,
     left: 0,

@@ -16,7 +16,7 @@ import SearchWrapper from '../searchWrapper';
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace } from '../../actions/home'
 
-import styles from './styles';
+import styles, { sizes } from './styles';
 
 class Home extends Component {
   static propTypes = {
@@ -168,8 +168,8 @@ class Home extends Component {
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
           padding={{
-            top: 56,
-            bottom: 80
+            top: sizes.toolbarHeight,
+            bottom: sizes.ITEM_LEVEL1
           }}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (

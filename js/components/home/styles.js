@@ -1,7 +1,8 @@
 import React, { StyleSheet } from 'react-native';
 
-import material from '../../../native-base-theme/variables/material';
-import { colors } from '../../parameters';
+import { colors, sizes } from '../../parameters';
+
+export { sizes }
 
 export default {
   container: {
