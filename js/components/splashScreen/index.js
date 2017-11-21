@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Content, Text } from 'native-base';
+import { Image } from 'react-native';
+import { Container } from 'native-base';
+
+import styles from './styles';
+const logo = require('../../../images/logos/logo_white.png');
 
 const SplashScreen = props => (
-  <Container>
-    <Content padder>
-      <Text>
-        Splash screen...
-      </Text>
-    </Content>
+  <Container style={styles.container}>
+    <Image source={logo} style={styles.logo} />
   </Container>
 );
 
