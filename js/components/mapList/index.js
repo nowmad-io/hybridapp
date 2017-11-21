@@ -134,14 +134,16 @@ class MapList extends Component {
     return topOfTap < topOfMainWindow;
   }
 
-  onIndexChange = (yo) => {
-    const index = Math.floor(((-1 * yo) + (SNAP_WIDTH / 2)) / SNAP_WIDTH);
-    this.props.onIndexChange(index);
+  onIndexChange = (endX) => {
+    const index = Math.floor(((-1 * endX) + (SNAP_WIDTH / 2)) / SNAP_WIDTH);
+    console.log('index', index);
+    this.props.onIndexChange(this.props.places[index]);
   }
 
   onLevelChange = (value) => {
     let level = 1;
 
+    console.log('value', value);
     switch (value) {
       case LEVEL1:
         level = 1;

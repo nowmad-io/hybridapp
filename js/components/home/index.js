@@ -41,11 +41,24 @@ class Home extends Component {
     }
   }
 
-  componentWillReceiveProps({ selectedPlace, level }) {
-    if (selectedPlace && this.props.selectedPlace
-        && selectedPlace.id !== this.props.selectedPlace.id
-        && this._map) {
-      this._map.animateToCoordinate(selectedPlace);
+  componentWillUpdate({ selectedPlace, level }) {
+    if (this._map && this.props.selectedPlace) {
+      if (selectedPlace
+          && selectedPlace.id !== this.props.selectedPlace.id
+          && this.props.level === 2) {
+        this._map.animateToCoordinate(selectedPlace);
+      }
+
+      if (level && level !== this.props.level) {
+          this._map.map.setNativeProps({ mapPadding: {
+            top: sizes.toolbarHeight,
+            bottom: level === 1 ? sizes.ITEM_LEVEL1 : sizes.ITEM_LEVEL2
+          }});
+
+        if (level < 3) {
+          this._map.animateToCoordinate(this.props.selectedPlace);
+        }
+      }
     }
   }
 
@@ -53,8 +66,8 @@ class Home extends Component {
     this.props.dispatch(selectedPlace(place));
   }
 
-  onIndexChange = (index) => {
-    this.props.dispatch(selectedPlace(this.props.places[index]));
+  onIndexChange = (place) => {
+    this.props.dispatch(selectedPlace(place));
   }
 
   onLevelChange = (level) => {
@@ -167,7 +180,7 @@ class Home extends Component {
           region={region}
           onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
-          padding={{
+          mapPadding={{
             top: sizes.toolbarHeight,
             bottom: sizes.ITEM_LEVEL1
           }}

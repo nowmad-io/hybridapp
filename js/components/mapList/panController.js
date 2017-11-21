@@ -219,7 +219,7 @@ class PanController extends Component {
             ...this.props.overshootSpringConfig,
             toValue: min,
             velocity,
-          }).start();
+          }).start(() => this.props.onLevelChange(min));
           break;
         case 'clamp':
           anim.setValue(min);
@@ -235,7 +235,7 @@ class PanController extends Component {
             ...this.props.overshootSpringConfig,
             toValue: max,
             velocity,
-          }).start();
+          }).start(() => this.props.onLevelChange(max));
           break;
         case 'clamp':
           anim.setValue(min);
@@ -303,14 +303,12 @@ class PanController extends Component {
             ...this.props.overshootSpringConfig,
             toValue,
             velocity,
-          }).start();
+          }).start(() => this.props.onLevelChange(toValue));
           break;
         case 'clamp':
           anim.setValue(toValue);
           break;
       }
-
-      // this.props.onLevelChange(toValue);
     });
   }
 
@@ -335,9 +333,8 @@ class PanController extends Component {
       velocity,
     }).start(() => {
       anim.removeListener(this._listener);
+      this.props.onIndexChange(endX);
     });
-
-    // this.props.onIndexChange(endX);
   }
 
   closestCenter(x, spacing) {

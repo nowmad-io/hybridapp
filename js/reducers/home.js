@@ -26,7 +26,7 @@ const initialState = {
   selectedPlace: null,
   newPlace: null,
   googlePlace: null,
-  level: 0,
+  level: 1,
   position: null,
   region: null,
   reviewLoading: false,
