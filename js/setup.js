@@ -24,19 +24,19 @@ function setup(): React.Component {
     }
 
     render() {
-      // if (this.state.isLoading) {
+      if (this.state.isLoading) {
         return (
           <SplashScreen />
         );
-      // }
+      }
 
-      // return (
-      //   <StyleProvider style={getTheme(platform)}>
-      //     <Provider store={this.state.store}>
-      //       <App />
-      //     </Provider>
-      //   </StyleProvider>
-      // );
+      return (
+        <StyleProvider style={getTheme(platform)}>
+          <Provider store={this.state.store}>
+            <App />
+          </Provider>
+        </StyleProvider>
+      );
     }
   }
 
