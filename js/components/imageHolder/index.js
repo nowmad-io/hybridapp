@@ -11,6 +11,7 @@ const ImageHolder = (props) => (
       {props.source ? (
         <Image
           style={styles.image}
+          resizeMethod="resize"
           source={{uri: props.source}} />
       ) : (
         <Icon name='md-camera' style={styles.icon}/>

@@ -94,6 +94,7 @@ class AddImage extends Component {
             style={styles.imageWrapper}>
             <Image
               style={styles.image}
+              resizeMethod="resize"
               source={{uri: this.state.image.source || this.state.image.uri}} />
           </View>
           <View
