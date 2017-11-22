@@ -1,35 +1,30 @@
-import {
-  apiCall,
-  fetchRecord
-} from 'redux-crud-store';
+import { apiCall } from '../requests';
 
 import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
-  REQUEST_ERROR
+  LOGOUT_ERROR,
+  ME_SUCCESS,
+  ME_ERROR
 } from '../constants/auth';
 
+import { REQUEST_ERROR } from '../constants/utils';
+
 const PATH = 'auth';
-const MODEL = 'me';
 
-export function apiLogin(data = {}) {
-  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/login/`, {}, data);
+export function apiLogin(params = {}) {
+  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/token/create/`, params);
 }
 
-export function apiRegister(data = {}) {
-  return apiCall(REGISTER_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/register/`, {}, data);
+export function apiRegister(params = {}) {
+  return apiCall(REGISTER_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/register/`, params);
 }
 
-export function apiLogout(data = {}) {
-  return apiCall(LOGOUT_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/register/`, {}, data);
+export function apiLogout() {
+  return apiCall(LOGOUT_SUCCESS, LOGOUT_ERROR, 'post', `${PATH}/token/destroy/`);
 }
 
-export function getMe(state, params = {}) {
-  const fetchConfig = {
-    headers: {
-      Authorization: `Token ${state.auth.token}`,
-    }
-  };
-  return fetchRecord(MODEL, 'me', `${PATH}/me/`, params, { fetchConfig: fetchConfig });
+export function apiMe() {
+  return apiCall(ME_SUCCESS, ME_ERROR, 'get', `${PATH}/me/`);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   Text,
   Container,
@@ -8,9 +9,10 @@ import {
   Content,
 } from 'native-base';
 
-const routes = ['Home', 'BlankPage'];
+import { runSagas, stopSagas } from '../../actions/utils';
+import { logoutRequest } from '../../actions/auth';
 
-export default class DrawBar extends React.Component {
+class DrawBar extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -18,6 +20,22 @@ export default class DrawBar extends React.Component {
   static propTypes = {
     navigation: PropTypes.object,
   };
+
+  componentWillMount() {
+    this.props.dispatch(runSagas());
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(stopSagas());
+  }
+
+  _navigate(data) {
+    this.props.navigation.navigate(data)
+  }
+
+  _logout() {
+    this.props.dispatch(logoutRequest());
+  }
 
   render() {
     return (
@@ -27,18 +45,36 @@ export default class DrawBar extends React.Component {
             style={{
               paddingTop: 18,
             }}
-            dataArray={routes}
-            renderRow={data => (
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data)}
-              >
-                <Text>{data}</Text>
-              </ListItem>
-            )}
-          />
+          >
+            <ListItem
+              button
+              onPress={() => this._navigate('Home')}
+            >
+              <Text>Home</Text>
+            </ListItem>
+            <ListItem
+              button
+              onPress={() => this._navigate('Friends')}
+            >
+              <Text>Friends</Text>
+            </ListItem>
+            <ListItem
+              button
+              onPress={() => this._logout()}
+            >
+              <Text>Logout</Text>
+            </ListItem>
+          </List>
         </Content>
       </Container>
     );
   }
 }
+
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = null
+
+export default connect(mapStateToProps, bindActions)(DrawBar);

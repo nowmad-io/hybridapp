@@ -1,12 +1,13 @@
-import { crudReducer } from 'redux-crud-store';
-
 import auth from './auth';
-import reviews from './reviews';
+import friends from './friends';
+import home from './home';
+import search from './search';
 import nav from './nav';
 
 export default {
   nav,
   auth,
-  reviews,
-  models: crudReducer
+  home,
+  search,
+  friends
 };

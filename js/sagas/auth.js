@@ -1,9 +1,11 @@
-import { take, put, race, call, takeLatest } from 'redux-saga/effects';
+import { all, take, put, race, call, takeLatest } from 'redux-saga/effects';
 import { NavigationActions } from 'react-navigation';
 
 import {
   apiLogin,
-  apiRegister
+  apiRegister,
+  apiLogout,
+  apiMe
 } from '../api/auth';
 
 import { loginRequest } from '../actions/auth';
@@ -15,21 +17,21 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   LOGOUT_REQUEST,
-  SENDING_REQUEST,
-  REQUEST_ERROR,
-  FORM_ERROR
+  FORM_ERROR,
+  ME_SUCCESS,
+  LOGIN_LOADING,
+  REGISTER_LOADING
 } from '../constants/auth';
 
-const localStorage = global.window.localStorage;
+import {
+  STOP_SAGAS,
+  REQUEST_ERROR
+} from '../constants/utils';
 
-function tokenHelper({ payload }) {
-  if (payload && payload.auth_token) {
-    // localStorage.setItem('token', payload.auth_token);
-  } else {
-    // localStorage.removeItem('token');
-  }
-}
+import { TOKEN } from '../requests';
 
 export function * parseError({ error }) {
   let parsedError = {};
@@ -52,30 +54,33 @@ function* loginFlow(action) {
   // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
   const { email, password } = action.data;
 
-  yield put({ type: SENDING_REQUEST, sending: true });
+  yield put({ type: LOGIN_LOADING, loading: true });
 
-  const [, winner] = yield [
+  const [, winner] = yield all([
     put(apiLogin({ email, password })),
     race({
       loginSuccess: take(LOGIN_SUCCESS),
       loginFail: take(REQUEST_ERROR),
       logout: take(LOGOUT_REQUEST),
     }),
-  ];
-
-  yield put({ type: SENDING_REQUEST, sending: false });
+  ]);
 
   // If `auth` was the winner...
   if (winner.loginSuccess) {
-    yield put({ type: LOGIN, token: winner.loginSuccess.payload.auth_token }); // User is logged in (authorized)
-    
+    yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
+    yield put(apiMe());
+
+    yield take(ME_SUCCESS);
+
     yield put(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'App' })],
     }));
   } else if (winner.loginFail) {
+    yield put({ type: LOGIN_LOADING, loading: false });
     yield call(parseError, { error: winner.loginFail.payload });
   } else if (winner.logout) {
+    yield put({ type: LOGIN_LOADING, loading: false });
     yield put({ type: LOGOUT }); // User is not logged in (not authorized)
   }
 }
@@ -85,36 +90,43 @@ function* loginFlow(action) {
  * Very similar to log in saga!
  */
 export function * registerFlow(action) {
-  const { email, password } = action.data;
+  const credentials = action.data;
 
-  yield put({ type: SENDING_REQUEST, sending: true });
+  yield put({ type: REGISTER_LOADING, loading: true });
 
-  const [, winner] = yield [
-    put(apiRegister({ email, password })),
+  const [, winner] = yield all([
+    put(apiRegister(credentials)),
     race({
       registerSuccess: take(REGISTER_SUCCESS),
       registerFail: take(REQUEST_ERROR),
     }),
-  ];
-
-  yield put({ type: SENDING_REQUEST, sending: false });
+  ]);
 
   if (winner.registerSuccess) {
-    yield put(loginRequest({ email, password }));
+    yield put(loginRequest(credentials));
   } else if (winner.registerFail) {
+    yield put({ type: REGISTER_LOADING, loading: false });
     yield call(parseError, { error: winner.registerFail.payload });
   }
 }
 
 export function * logoutFlow() {
-  // TODO: clear user models reviews
+  yield put({ type: STOP_SAGAS });
+
   yield put({ type: LOGOUT });
+  yield put(NavigationActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+  }));
+
+  yield put(apiLogout());
 }
 
 // Bootstrap sagas
-export default function* root() {
-  yield takeLatest(LOGIN_REQUEST, loginFlow);
-  yield takeLatest(REGISTER_REQUEST, registerFlow);
-  yield takeLatest(LOGOUT_REQUEST, logoutFlow);
-  yield takeLatest([LOGIN, LOGOUT], tokenHelper);
+export default function _root(socket) {
+  return function* root() {
+    yield takeLatest(LOGIN_REQUEST, loginFlow);
+    yield takeLatest(REGISTER_REQUEST, registerFlow);
+    yield takeLatest(LOGOUT_REQUEST, logoutFlow);
+  }
 }

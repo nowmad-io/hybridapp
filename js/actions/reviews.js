@@ -1,43 +1,26 @@
 import {
-  SEARCH_RESULTS,
-  BOUNDS_CHANGES,
-  MARKER_SELECTED,
-  SEARCH_SELECTED,
-  UNSELECT
+  ADD_REVIEW,
+  UPDATE_REVIEW,
+  REVIEW_LOADING
 } from '../constants/reviews';
 
-export function displayResults(data, center) {
+export function addReview(review) {
   return {
-    type: SEARCH_RESULTS,
-    data,
-    center
+    type: ADD_REVIEW,
+    review,
   };
 }
 
-export function changeBounds(bounds, center) {
+export function updateReview(review) {
   return {
-    type: BOUNDS_CHANGES,
-    bounds,
-    center
+    type: UPDATE_REVIEW,
+    review,
   };
 }
 
-export function selectMarker(marker) {
+export function reviewLoading(loading) {
   return {
-    type: MARKER_SELECTED,
-    marker
-  };
-}
-
-export function selectSearch(search) {
-  return {
-    type: SEARCH_SELECTED,
-    search
-  };
-}
-
-export function unselect() {
-  return {
-    type: UNSELECT
+    type: REVIEW_LOADING,
+    loading,
   };
 }

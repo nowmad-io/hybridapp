@@ -9,12 +9,8 @@ export default (variables = variable) => {
       shadowRadius: null,
       elevation: null
     },
-    marginVertical: 5,
-    marginHorizontal: 2,
     flex: 1,
-    borderWidth: variables.borderWidth,
-    borderRadius: 2,
-    borderColor: variables.cardBorderColor,
+    borderRadius: 0,
     flexWrap: "wrap",
     backgroundColor: variables.cardDefaultBg,
     shadowColor: "#000",

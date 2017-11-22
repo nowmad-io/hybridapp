@@ -1,8 +1,10 @@
-const React = require('react-native');
+import React, { StyleSheet } from 'react-native';
 
-const { StyleSheet } = React;
+import { colors, sizes } from '../../parameters';
 
-export default{
+export { sizes }
+
+export default {
   container: {
     ...StyleSheet.absoluteFillObject,
     height: "100%",

@@ -90,7 +90,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.travelnetwork"
+        applicationId "com.nowmad"
         minSdkVersion 16
         targetSdkVersion 22
         multiDexEnabled true
@@ -110,18 +110,17 @@ android {
     }
     signingConfigs {
         release {
-            if (project.hasProperty('UNIVERSAL_RELEASE_STORE_FILE')) {
-                storeFile file(UNIVERSAL_RELEASE_STORE_FILE)
-                storePassword pass
-                keyAlias UNIVERSAL_RELEASE_KEY_ALIAS
-                keyPassword pass
-            }
+            storeFile file(UNIVERSAL_RELEASE_STORE_FILE)
+            storePassword pass
+            keyAlias UNIVERSAL_RELEASE_KEY_ALIAS
+            keyPassword pass
         }
     }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -140,8 +139,10 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-config')
     compile project(':react-native-maps')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-config')
     compile project(':react-native-code-push')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"

@@ -1,20 +1,20 @@
-import React from 'react';
-import { DrawerNavigator } from 'react-navigation';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { StackNavigator } from 'react-navigation';
 
-import Home from '../components/home/';
-import BlankPage from '../components/blankPage';
-import DrawBar from '../components/drawBar';
+import HomeRouter from './HomeRouter';
 
-const AppRouter = DrawerNavigator({
-  Home: { screen: Home },
-  BlankPage: { screen: BlankPage },
-},
-{
-  contentComponent: props => <DrawBar {...props} />,
-});
+import AddReview from '../components/addReview';
+import AddImage from '../components/addImage';
 
-AppRouter.navigationOptions = () => ({
-  header: null,
+const AppRouter = StackNavigator({
+  Home: { screen: HomeRouter },
+  AddReview: { screen: AddReview },
+  AddImage: { screen: AddImage }
+}, {
+  navigationOptions: {
+    header: null,
+  }
 });
 
 export default AppRouter;
