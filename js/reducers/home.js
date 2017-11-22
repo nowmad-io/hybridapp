@@ -9,7 +9,8 @@ import {
   NEW_PLACE,
   CURRENT_PLACES,
   GOOGLE_PLACE,
-  SEARCHED_PLACES
+  SEARCHED_PLACES,
+  FROM_REVIEW
 } from '../constants/home';
 import {
   PLACES_SUCCESS,
@@ -30,6 +31,7 @@ const initialState = {
   position: null,
   region: null,
   reviewLoading: false,
+  fromReview: false,
 };
 
 function updateReview(currentPlaces, place, updatedReview) {
@@ -50,6 +52,11 @@ function HomeReducer(state = initialState, action) {
   const { place, ...review } = action.review || {};
 
   switch (action.type) {
+    case FROM_REVIEW:
+      return {
+        ...state,
+        fromReview: action.from
+      }
     case REVIEW_LOADING:
       return {
         ...state,
@@ -69,7 +76,8 @@ function HomeReducer(state = initialState, action) {
           exist = true;
           return {
             ...statePlace,
-            reviews: [review, ...statePlace.reviews]
+            reviews: [review, ...statePlace.reviews],
+            selectedPlace: review,
           };
         }
 
@@ -97,6 +105,7 @@ function HomeReducer(state = initialState, action) {
       return {
         ...state,
         newPlace: action.place,
+        selectedPlace: action.place,
         ...extras
       };
     case GOOGLE_PLACE:
@@ -114,7 +123,8 @@ function HomeReducer(state = initialState, action) {
         searchedPlaces: initialState.searchedPlaces,
         googlePlace: action.place,
         places: newPlaces,
-        currentPlaces: newCurrentPlaces
+        currentPlaces: newCurrentPlaces,
+        selectedPlace: action.place,
       }
     case SEARCHED_PLACES:
       return {

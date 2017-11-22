@@ -14,7 +14,7 @@ import MapList from '../mapList';
 import SearchWrapper from '../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, searchedPlaces, googlePlace } from '../../actions/home'
+  currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../actions/home'
 
 import styles, { sizes } from './styles';
 
@@ -41,7 +41,19 @@ class Home extends Component {
     }
   }
 
-  componentWillUpdate({ selectedPlace, level }) {
+  componentWillReceiveProps({ fromReview }) {
+    console.log('fromReview', fromReview)
+    console.log('this.props.fromReview', this.props.fromReview)
+    if (fromReview) {
+      console.log('yoo call clear');
+      this.refs.searchWrapper.getWrappedInstance().clear();
+      this.refs.searchWrapper.getWrappedInstance().blurInput();
+      this.onRegionChangeComplete(this.props.region);
+      this.props.dispatch(setFromReview(false));
+    }
+  }
+
+  componentWillUpdate({ selectedPlace, level, fromReview }) {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
@@ -84,7 +96,7 @@ class Home extends Component {
   onRegionChangeComplete = (region) => {
     const scale = Math.pow(2, Math.log2(360 * ((sizes.screen.width/256) / region.longitudeDelta)) + 1) + 1,
           { level } = this.props;
-          
+
     this.props.dispatch(regionChanged(region));
 
     const southWest = {
@@ -246,6 +258,7 @@ const mapStateToProps = state => ({
   region: state.home.region,
   newPlace: state.home.newPlace,
   googlePlace: state.home.googlePlace,
+  fromReview: state.home.fromReview,
   searchFocus: state.search.focused,
 });
 

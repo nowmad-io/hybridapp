@@ -158,7 +158,10 @@ class SearchWrapper extends Component {
   }
 
   clear() {
-    this.setState({ text: '' });
+    this.setState({
+      text: '',
+      previousValue: ''
+    });
     this.props.onClear();
   }
 

@@ -7,7 +7,8 @@ import {
   NEW_PLACE,
   CURRENT_PLACES,
   GOOGLE_PLACE,
-  SEARCHED_PLACES
+  SEARCHED_PLACES,
+  FROM_REVIEW
 } from '../constants/home';
 
 export function setGeolocation(position) {
@@ -63,5 +64,12 @@ export function searchedPlaces(places) {
   return {
     type: SEARCHED_PLACES,
     places,
+  };
+}
+
+export function setFromReview(from) {
+  return {
+    type: FROM_REVIEW,
+    from,
   };
 }

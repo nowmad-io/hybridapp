@@ -8,6 +8,7 @@ import {
 } from '../constants/reviews';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
+import { setFromReview } from '../actions/home';
 import { addReview, updateReview, reviewLoading } from '../actions/reviews';
 import { fetchReviews } from '../api/reviews';
 import { pollSaga } from './utils';
@@ -25,6 +26,7 @@ function * reviewFlow(action) {
   if (!error) {
     yield put(update ? updateReview(payload) : addReview(payload));
     yield put(NavigationActions.back());
+    yield put(setFromReview(true));
   }
 }
 
