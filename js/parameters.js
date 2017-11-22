@@ -1,4 +1,4 @@
-import React, { StatusBar } from 'react-native';
+import React, { StatusBar, Dimensions } from 'react-native';
 
 import material from '../native-base-theme/variables/material';
 
@@ -27,4 +27,5 @@ export const sizes = {
   statusBar: StatusBar.currentHeight,
   ITEM_LEVEL1: 80,
   ITEM_LEVEL2: 232,
+  screen: Dimensions.get('window')
 }

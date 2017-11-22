@@ -1,8 +1,8 @@
-import { StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform, StatusBar } from 'react-native';
 
 import { colors, sizes } from '../../parameters';
 
-export const screen = Dimensions.get('window');
+export const screen = sizes.screen;
 
 export const SCREEN_PADDING_TOP = 12;
 const ITEM_SPACING = 8;

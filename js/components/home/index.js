@@ -82,14 +82,18 @@ class Home extends Component {
   }
 
   onRegionChangeComplete = (region) => {
+    const scale = Math.pow(2, Math.log2(360 * ((sizes.screen.width/256) / region.longitudeDelta)) + 1) + 1,
+          { level } = this.props;
+          
     this.props.dispatch(regionChanged(region));
 
     const southWest = {
-      latitude: region.latitude - region.latitudeDelta / 2,
+      latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? sizes.ITEM_LEVEL1 : sizes.ITEM_LEVEL2) / scale),
       longitude: region.longitude - region.longitudeDelta / 2
     };
+
     const northEast = {
-      latitude: region.latitude + region.latitudeDelta / 2,
+      latitude: (region.latitude + region.latitudeDelta / 2) - (sizes.toolbarHeight / scale),
       longitude: region.longitude + region.longitudeDelta / 2
     };
 
