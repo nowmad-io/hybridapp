@@ -44,9 +44,13 @@ class Home extends Component {
   componentWillUpdate({ selectedPlace, level }) {
     if (selectedPlace
         && this.props.selectedPlace
-        && selectedPlace.id !== this.props.selectedPlace.id
-        && this.props.level === 2) {
-      this.refs.map.animateToCoordinate(selectedPlace);
+        && selectedPlace.id !== this.props.selectedPlace.id) {
+
+      this.refs.mapList.goToEntry(selectedPlace);
+
+      if (this.props.level === 2) {
+        this.refs.map.animateToCoordinate(selectedPlace);
+      }
     }
 
     if (level && level !== this.props.level) {
@@ -61,8 +65,12 @@ class Home extends Component {
     }
   }
 
-  onMarkerPress = (place) => {
+  onMarkerPress = (e, place) => {
     this.props.dispatch(selectedPlace(place));
+
+    if (this.props.level === 2) {
+      this.refs.map.animateToCoordinate(place);
+    }
   }
 
   onIndexChange = (place) => {
@@ -101,7 +109,7 @@ class Home extends Component {
 
   onMapReady = () => {
     if (this._map && this.props.newPlace) {
-      this._map.animateToCoordinate(this.props.newPlace);
+      this.refs.map.animateToCoordinate(this.props.newPlace);
     }
   }
 
@@ -138,14 +146,14 @@ class Home extends Component {
   onPlaceSelected = (place) => {
     this.props.dispatch(searchedPlaces([place]));
     this.refs.searchWrapper.getWrappedInstance().blurInput();
-    this._map.animateToCoordinate(place);
+    this.refs.map.animateToCoordinate(place);
   }
 
   onPlacesSelected = (place, places) => {
     this.props.dispatch(searchedPlaces(_.compact([place, ...places])));
     this.refs.searchWrapper.getWrappedInstance().blurInput();
     if (place) {
-      this._map.animateToCoordinate(place);
+      this.refs.map.animateToCoordinate(place);
     }
   }
 
@@ -174,6 +182,7 @@ class Home extends Component {
         onMenuPress={() => navigation.navigate('DrawerOpen')}>
         <Map
           ref='map'
+          moveOnMarkerPress={false}
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
@@ -208,6 +217,7 @@ class Home extends Component {
           )}
         </Map>
         <MapList
+          ref='mapList'
           places={searchedPlaces.length ? searchedPlaces : currentPlaces}
           navigation={navigation}
           onIndexChange={this.onIndexChange}

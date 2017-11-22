@@ -17,6 +17,7 @@ class Map extends Component {
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
+    moveOnMarkerPress: PropTypes.bool,
     mapPadding: PropTypes.object,
   }
 
@@ -50,7 +51,8 @@ class Map extends Component {
   }
 
   render() {
-    const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding } = this.props;
+    const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding,
+      moveOnMarkerPress } = this.props;
     return (
       <MapView
         ref={(ref) => this.onRef(ref)}
@@ -65,6 +67,7 @@ class Map extends Component {
         rotateEnabled={rotateEnabled}
         scrollEnabled={scrollEnabled}
         mapPadding={mapPadding}
+        moveOnMarkerPress={moveOnMarkerPress}
       >
         {this.props.children}
       </MapView>

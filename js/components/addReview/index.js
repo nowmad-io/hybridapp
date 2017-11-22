@@ -91,7 +91,7 @@ class AddReview extends Component {
 
   onMapReady = () => {
     if (this._map) {
-      this._map.animateToCoordinate(this.state.place);
+      this.refs.map.animateToCoordinate(this.state.place);
     }
   }
 
@@ -219,7 +219,7 @@ class AddReview extends Component {
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
-              onRef={this.onRef}
+              ref='map'
               onMapReady={this.onMapReady}
               zoomEnabled={true}
               rotateEnabled={false}

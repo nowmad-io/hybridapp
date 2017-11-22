@@ -383,6 +383,12 @@ class PanController extends Component {
     return vf;
   }
 
+  goToX(toValue) {
+    const { panX } = this.props;
+
+    panX.setValue(toValue);
+  }
+
   render() {
     return <View {...this.props} {...this._responder.panHandlers} />;
   }

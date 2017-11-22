@@ -108,8 +108,9 @@ class MapList extends Component {
   }
 
   componentWillReceiveProps({ places }) {
-    if (places && this.props.places) {
+    if (places && this.props.places && !_.isEqual(places, this.props.places)) {
       this.setUpAnimations(places);
+      this.goToIndex(0);
     }
   }
 
@@ -136,14 +137,13 @@ class MapList extends Component {
 
   onIndexChange = (endX) => {
     const index = Math.floor(((-1 * endX) + (SNAP_WIDTH / 2)) / SNAP_WIDTH);
-    console.log('index', index);
+
     this.props.onIndexChange(this.props.places[index]);
   }
 
   onLevelChange = (value) => {
     let level = 1;
 
-    console.log('value', value);
     switch (value) {
       case LEVEL1:
         level = 1;
@@ -159,6 +159,25 @@ class MapList extends Component {
     this.props.onLevelChange(level);
   }
 
+  goToEntry(entry) {
+    index = 0;
+    this.props.places.some((place, i) => {
+      if (place.id === entry.id) {
+        index = i;
+        return true;
+      }
+      return false;
+    });
+
+    this.goToIndex(index);
+  }
+
+  goToIndex(index) {
+    const toValue = -index * SNAP_WIDTH;
+
+    this.refs.panController.goToX(toValue);
+  }
+
 
   render() {
     const { panX, panY, animations, translateY, scrollY } = this.state;
@@ -167,6 +186,7 @@ class MapList extends Component {
     return (
       <View style={styles.container}>
         <PanController
+          ref='panController'
           style={styles.container}
           vertical
           horizontal={true}
