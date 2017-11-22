@@ -42,10 +42,7 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({ fromReview }) {
-    console.log('fromReview', fromReview)
-    console.log('this.props.fromReview', this.props.fromReview)
     if (fromReview) {
-      console.log('yoo call clear');
       this.refs.searchWrapper.getWrappedInstance().clear();
       this.refs.searchWrapper.getWrappedInstance().blurInput();
       this.onRegionChangeComplete(this.props.region);
