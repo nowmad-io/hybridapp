@@ -6,6 +6,8 @@ import Home from '../components/home/';
 import Friends from '../components/friends';
 import DrawBar from '../components/drawBar';
 
+import { sizes } from '../parameters/';
+
 const HomeRouter = DrawerNavigator({
   Home: { screen: Home },
   Friends: { screen: Friends },
@@ -13,7 +15,8 @@ const HomeRouter = DrawerNavigator({
 },
 {
   drawerPosition: 'right',
-  contentComponent: props => <DrawBar {...props} />
+  contentComponent: props => <DrawBar {...props} />,
+  drawerWidth: sizes.drawerWidth
 });
 
 HomeRouter.navigationOptions = () => ({

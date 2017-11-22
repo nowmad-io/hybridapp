@@ -27,5 +27,6 @@ export const sizes = {
   statusBar: StatusBar.currentHeight,
   ITEM_LEVEL1: 80,
   ITEM_LEVEL2: 232,
-  screen: Dimensions.get('window')
+  screen: Dimensions.get('window'),
+  drawerWidth: 0.625 * Dimensions.get('window').width
 }
