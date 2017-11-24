@@ -6,7 +6,7 @@ import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
 import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
   Text, View, Radio } from 'native-base';
 import _ from 'lodash';
-import Config from 'react-native-config'
+import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 
 import { categoriesList, statusList } from '../../lists';
