@@ -11,12 +11,14 @@ export const colors = {
   greyDark: '#5E5D5D',
   red: '#FF4A40',
   blue: '#0076FF',
+  blueDark: '#101172',
   blackShadow: {
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4
   },
+  greyTransparent: 'rgba(188, 185, 185, 0.2)',
   whiteTransparent: 'rgba(255, 255, 255, 0.6)',
   whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
   transparent: 'rgba(0, 0, 0, 0)'
