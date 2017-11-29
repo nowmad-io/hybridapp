@@ -7,7 +7,7 @@ import styles from './styles';
 
 const ListItem = (props) => (
   <TouchableOpacity onPress={props.onPress}>
-    <View style={styles.itemWrapper}>
+    <View style={styles.itemWrapper(props.other)}>
       { props.image === 'google' && (
         <Image source={require('../../../images/icons/google.png')} style={styles.imageItem} />
       )}
@@ -16,13 +16,13 @@ const ListItem = (props) => (
       )}
       { props.image === 'friend' && (
         <View>
-          <Image source={require('../../../images/icons/place.png')} style={styles.imageItem} />
+          <Image source={{uri: props.thumbnail}} style={[styles.imageItem, styles.thumbnail]} />
         </View>
       )}
       <View style={styles.textWrapperItem}>
         <Text style={styles.textItem}>{props.text}</Text>
         {props.secondaryText && (
-          <Text style={styles.secondaryTextItem}> - {props.secondaryTextItem}</Text>
+          <Text style={styles.secondaryTextItem}> - {props.secondaryText}</Text>
         )}
       </View>
     </View>
@@ -37,6 +37,7 @@ ListItem.propTypes = {
   image: PropTypes.string,
   text: PropTypes.string,
   secondaryText: PropTypes.string,
+  other: PropTypes.bool,
   children: PropTypes.array,
   onPress: PropTypes.func,
 }

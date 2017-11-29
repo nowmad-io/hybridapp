@@ -11,7 +11,7 @@ import Spinner from '../loaders/spinner';
 import styles from './styles';
 
 
-const MAX_FRIENDS = 10
+const MAX_FRIENDS = 5
 const MAX_REVIEWS = 5
 
 class ResultList extends Component {
@@ -29,7 +29,7 @@ class ResultList extends Component {
     nearbyPlaces: PropTypes.array,
     placesSearch: PropTypes.array,
     reviewsSearch: PropTypes.array,
-    friendsSearch: PropTypes.array,
+    friendsSearch: PropTypes.object,
     nearbyLoading: PropTypes.bool,
     friendsLoading: PropTypes.bool,
     reviewsLoading: PropTypes.bool,
@@ -51,6 +51,26 @@ class ResultList extends Component {
     const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
       friendsSearch, onPlaceSelected, onFriendPress } = this.props;
+
+    let friendsSearchList = [];
+
+    console.log('friendsSearch', friendsSearch);
+    if (friendsSearch) {
+      console.log('friendsSearch.friends', friendsSearch.friends);
+      console.log('friendsSearch.friends_friends', friendsSearch.friends_friends);
+      console.log('friendsSearch.others', friendsSearch.others);
+      friendsSearchList = [
+        ...friendsSearch.friends,
+        ...friendsSearch.friends_friends.map(friend => ({
+          ...friend,
+          type: 'friends_friends'
+        })),
+        ...friendsSearch.others.map(other => ({
+          ...other,
+          type: 'other'
+        }))
+      ]
+    }
 
     return (
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
@@ -84,11 +104,14 @@ class ResultList extends Component {
                   <Spinner
                     style={styles.spinner}
                     visible={friendsLoading} />
-                  {!friendsLoading && friendsSearch.slice(0, MAX_FRIENDS).map((result, index) => (
+                  {!friendsLoading && friendsSearchList.slice(0, MAX_FRIENDS).map((result, index) => (
                     <ListItem
                       key={index}
                       image='friend'
+                      thumbnail={result.picture}
                       text={`${result.first_name} ${result.last_name}`}
+                      secondaryText={result.type === 'friends_friends' ? '2nd' : null}
+                      other={result.type === 'other'}
                       onPress={() => onFriendPress(result)} />
                   ))}
                 </View>
@@ -104,6 +127,7 @@ class ResultList extends Component {
                         key={index}
                         image='place'
                         text={review.short_description}
+                        secondaryText={review.created_by.first_name}
                         onPress={() => this.onReviewPress(place)} />
                     ))
                   ))}

@@ -18,7 +18,7 @@ const PATH = 'friends/';
 const FRIENSHIPS_PATH = 'friendships/';
 
 export function friendsSearch(query) {
-  return apiCall(FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR, 'get', PATH, {}, { query });
+  return apiCall(FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR, 'get', `${PATH}search/`, {}, { query });
 }
 
 export function fetchFriends() {
