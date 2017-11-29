@@ -54,11 +54,7 @@ class ResultList extends Component {
 
     let friendsSearchList = [];
 
-    console.log('friendsSearch', friendsSearch);
     if (friendsSearch) {
-      console.log('friendsSearch.friends', friendsSearch.friends);
-      console.log('friendsSearch.friends_friends', friendsSearch.friends_friends);
-      console.log('friendsSearch.others', friendsSearch.others);
       friendsSearchList = [
         ...friendsSearch.friends,
         ...friendsSearch.friends_friends.map(friend => ({

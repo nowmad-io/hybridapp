@@ -31,6 +31,13 @@ function subscribe({socket, me}) {
         emit(DeleteIncomingRequest(request));
       }
     });
+    socket.on('friend.cancel', function ({ request }) {
+      if (request.to_user.id === me.id) {
+        emit(DeleteIncomingRequest(request));
+      } else {
+        emit(DeleteOutgoingRequest(request));
+      }
+    });
     return () => {};
   });
 }

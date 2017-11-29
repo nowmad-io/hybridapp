@@ -46,5 +46,5 @@ export function rejectFriendship(id) {
 }
 
 export function cancelFriendship(id) {
-  return apiCall(REQUEST_SUCCESS, REQUEST_ERROR, 'delete', `${FRIENSHIPS_PATH}${id}/`);
+  return apiCall(REQUEST_SUCCESS, REQUEST_ERROR, 'get', `${FRIENSHIPS_PATH}cancel/${id}/`);
 }
