@@ -42,8 +42,6 @@ class AddFriend extends Component {
   }
 
   onSendRequest() {
-    console.log('this.state.email', this.state.email)
-    console.log('this.state.user.email', this.state.user.email)
     if (this.state.email === this.state.user.email) {
       this.props.dispatch(sendFriendship({
         from_user_id: this.props.me.id,
