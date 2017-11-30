@@ -386,7 +386,9 @@ class PanController extends Component {
   goToX(toValue) {
     const { panX } = this.props;
 
-    panX.setValue(toValue);
+    Animated.spring(panX, {
+      toValue
+    }).start();
   }
 
   render() {
