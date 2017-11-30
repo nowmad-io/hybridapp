@@ -29,7 +29,7 @@ class SearchWrapper extends Component {
     nearbyPlaces: PropTypes.array,
     placesSearch: PropTypes.array,
     reviewsSearch: PropTypes.array,
-    friendsSearch: PropTypes.array,
+    friendsSearch: PropTypes.object,
     nearbyLoading: PropTypes.bool,
     friendsLoading: PropTypes.bool,
     reviewsLoading: PropTypes.bool,

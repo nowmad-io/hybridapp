@@ -17,7 +17,7 @@ import { LOGOUT } from '../constants/auth';
 const initialState = {
   nearbyPlaces: [],
   reviewsSearch: [],
-  friendsSearch: [],
+  friendsSearch: null,
   placesSearch: [],
   nearbyLoading: false,
   reviewsLoading: false,

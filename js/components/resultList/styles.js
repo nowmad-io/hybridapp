@@ -18,21 +18,29 @@ export default {
     fontSize: 16,
     lineHeight: 18,
   },
-  itemWrapper: {
+  itemWrapper: (other) => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
+    opacity: other ? 0.5 : 1
+  }),
   imageItem: {
     height: 24,
     width: 24,
     marginRight: 10
   },
+  thumbnail: {
+    borderRadius: 50
+  },
   textWrapperItem: {
+    flexDirection: "row",
     flex: 1,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
     borderColor: colors.grey
+  },
+  secondaryTextItem: {
+    color: colors.grey
   },
   button: {
     marginTop: 28,

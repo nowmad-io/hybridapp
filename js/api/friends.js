@@ -18,7 +18,7 @@ const PATH = 'friends/';
 const FRIENSHIPS_PATH = 'friendships/';
 
 export function friendsSearch(query) {
-  return apiCall(FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR, 'get', PATH, {}, { query });
+  return apiCall(FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR, 'get', `${PATH}search/`, {}, { query });
 }
 
 export function fetchFriends() {
@@ -46,5 +46,5 @@ export function rejectFriendship(id) {
 }
 
 export function cancelFriendship(id) {
-  return apiCall(REQUEST_SUCCESS, REQUEST_ERROR, 'delete', `${FRIENSHIPS_PATH}${id}/`);
+  return apiCall(REQUEST_SUCCESS, REQUEST_ERROR, 'get', `${FRIENSHIPS_PATH}cancel/${id}/`);
 }

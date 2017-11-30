@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga'
-import Config from 'react-native-config'
+import createSagaMiddleware from 'redux-saga';
+import Config from 'react-native-config';
 
 import { requestsSaga, Api } from './requests';
 

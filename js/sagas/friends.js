@@ -17,6 +17,7 @@ function subscribe({socket, me}) {
     socket.on('friend.new', function ({ friend }) {
       emit(AddNewFriend(friend));
     });
+
     socket.on('friend.create', function ({ request }) {
       if (request.from_user.id === me.id) {
         emit(NewOutgoingRequest(request));
@@ -24,11 +25,20 @@ function subscribe({socket, me}) {
         emit(NewIncomingRequest(request));
       }
     });
+
     socket.on('friend.reject', function ({ request }) {
       if (request.from_user.id === me.id) {
         emit(DeleteOutgoingRequest(request));
       } else {
         emit(DeleteIncomingRequest(request));
+      }
+    });
+
+    socket.on('friend.cancel', function ({ request }) {
+      if (request.to_user.id === me.id) {
+        emit(DeleteIncomingRequest(request));
+      } else {
+        emit(DeleteOutgoingRequest(request));
       }
     });
     return () => {};
