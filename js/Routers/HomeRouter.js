@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { DrawerNavigator } from 'react-navigation';
 
 import Home from '../components/home/';
-import Friends from '../components/friends';
 import DrawBar from '../components/drawBar';
 
 import { sizes } from '../parameters/';
 
 const HomeRouter = DrawerNavigator({
   Home: { screen: Home },
-  Friends: { screen: Friends },
   DrawBar: { screen: DrawBar }
 },
 {
