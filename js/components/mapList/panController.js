@@ -324,7 +324,7 @@ class PanController extends Component {
         Animated.spring(anim, {
           toValue: endX,
           velocity: endV,
-        }).start();
+        }).start(() => this.props.onIndexChange(endX));
       }
     });
 
@@ -333,7 +333,6 @@ class PanController extends Component {
       velocity,
     }).start(() => {
       anim.removeListener(this._listener);
-      this.props.onIndexChange(endX);
     });
   }
 
