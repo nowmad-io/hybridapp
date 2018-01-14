@@ -9,58 +9,13 @@ import {
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
-import { AddNewFriend, NewOutgoingRequest, NewIncomingRequest,
-  DeleteOutgoingRequest, DeleteIncomingRequest } from '../actions/friends';
 
-function subscribe({socket, me}) {
-  return eventChannel(emit => {
-    socket.on('friend.new', function ({ friend }) {
-      emit(AddNewFriend(friend));
-    });
-
-    socket.on('friend.create', function ({ request }) {
-      if (request.from_user.id === me.id) {
-        emit(NewOutgoingRequest(request));
-      } else {
-        emit(NewIncomingRequest(request));
-      }
-    });
-
-    socket.on('friend.reject', function ({ request }) {
-      if (request.from_user.id === me.id) {
-        emit(DeleteOutgoingRequest(request));
-      } else {
-        emit(DeleteIncomingRequest(request));
-      }
-    });
-
-    socket.on('friend.cancel', function ({ request }) {
-      if (request.to_user.id === me.id) {
-        emit(DeleteIncomingRequest(request));
-      } else {
-        emit(DeleteOutgoingRequest(request));
-      }
-    });
-    return () => {};
-  });
-}
-
-export const _friendsFlow = (socket) =>
-function * friendsFlow() {
+export function * friendsFlow() {
   yield put(fetchFriends());
   yield put(fetchIncomingRequests());
   yield put(fetchOutgoingRequests());
-
-  const me = yield select((state) => state.auth.me);
-  const channel = yield call(subscribe, {socket, me});
-  while (true) {
-    let action = yield take(channel);
-    yield put(action);
-  }
 }
 
-export default function _root(socket) {
-  return function * root() {
-    yield takeLatest(RUN_SAGAS, _friendsFlow(socket));
-  }
+export default function * root() {
+  yield takeLatest(RUN_SAGAS, friendsFlow);
 }

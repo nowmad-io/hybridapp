@@ -39,9 +39,7 @@ export function * homeFlow() {
   yield put(action);
 }
 
-export default function _root(socket) {
-  return function * root() {
-    yield takeLatest(RUN_SAGAS, homeFlow);
-    yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
-  }
+export default function * root() {
+  yield takeLatest(RUN_SAGAS, homeFlow);
+  yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
 }

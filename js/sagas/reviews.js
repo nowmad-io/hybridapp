@@ -30,10 +30,8 @@ function * reviewFlow(action) {
   }
 }
 
-export default function _root(socket) {
-  return function * root() {
-    yield takeLatest(RUN_SAGAS, reviewsFlow);
-    yield takeLatest([UPDATE_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow(true));
-    yield takeLatest([ADD_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow());
-  }
+export default function * root() {
+  yield takeLatest(RUN_SAGAS, reviewsFlow);
+  yield takeLatest([UPDATE_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow(true));
+  yield takeLatest([ADD_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow());
 }
