@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { Container } from 'native-base';
 
 import styles from './styles';
-const logo = require('../../../images/logos/logo_white.png');
+const logo = require('../../../assets/images/logos/logo_white.png');
 
 const SplashScreen = props => (
   <Container style={styles.container}>

@@ -5,7 +5,7 @@ import shortid from 'shortid';
 
 import { headerStyles } from './styles';
 
-const googleImg = require('../../../images/icons/google.png');
+const googleImg = require('../../../assets/images/icons/google.png');
 
 const ReviewHeader = props => (
   <CardItem style={headerStyles.infoWrapper}>

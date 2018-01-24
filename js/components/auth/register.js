@@ -19,7 +19,7 @@ import { registerRequest } from '../../actions/auth';
 import Spinner from '../loaders/spinner';
 
 import styles, { colors } from './styles';
-const logo = require('../../../images/logos/full_logo_horizontal.png');
+const logo = require('../../../assets/images/logos/full_logo_horizontal.png');
 
 class Register extends Component {
   static navigationOptions = {

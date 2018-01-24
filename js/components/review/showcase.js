@@ -9,7 +9,7 @@ import Tag from '../tag'
 import ReviewHeader from './reviewHeader';
 
 import { showcaseStyles } from './styles';
-const pictureHolder = require('../../../images/picture_holder.jpg');
+const pictureHolder = require('../../../assets/images/picture_holder.jpg');
 
 const Showcase = (props) => {
   const pictures = _.flatten(props.reviews.map((review) => {

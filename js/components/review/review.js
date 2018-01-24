@@ -7,7 +7,7 @@ import shortid from 'shortid';
 import Tag from '../tag';
 import ReviewHeader from './reviewHeader';
 import { reviewStyle, showcaseStyles } from './styles';
-const pictureHolder = require('../../../images/picture_holder.jpg');
+const pictureHolder = require('../../../assets/images/picture_holder.jpg');
 
 const Review = props => {
   const categories = props.review.categories.map((categorie) => {
