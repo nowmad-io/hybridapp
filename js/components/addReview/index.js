@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Animated, PanResponder } from 'react-native';
+import { Animated, PanResponder, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler, Keyboard, View } from 'react-native';
+import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
 import { CardItem, Content, Left, Body, Right, Button, Radio } from 'native-base';
 import _ from 'lodash';
 
 import Icon from '../dumbs/icon';
-import Header from '../dumbs/header';
-import Container from '../dumbs/container';
+import LayoutView from '../dumbs/layoutView';
 import Text from '../dumbs/text';
 
 import Config from 'react-native-config';
@@ -212,15 +211,15 @@ class AddReview extends Component {
     const full = this.state.pictures && this.state.pictures.length >= MAX_LENGTH_PICTURES;
 
     return (
-      <Container>
-        <Header>
+      <LayoutView type='container'>
+        <LayoutView type='header'>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name='arrow-back' />
             </Button>
           </Left>
           <Right></Right>
-        </Header>
+        </LayoutView>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
@@ -303,7 +302,7 @@ class AddReview extends Component {
           onPress={this.onPublish} />
 
         <Spinner overlay={true} visible={this.props.reviewLoading}/>
-      </Container>
+      </LayoutView>
     );
   }
 }

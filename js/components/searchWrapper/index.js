@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, BackHandler, Keyboard } from 'react-native';
-import { Button, View } from 'native-base';
+import { TextInput, BackHandler, Keyboard, View } from 'react-native';
+import { Button } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -11,9 +11,8 @@ import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
+import LayoutView from '../dumbs/layoutView';
 import Icon from '../dumbs/icon';
-import Header from '../dumbs/header';
-import Container from '../dumbs/container';
 import ResultList from '../resultList';
 
 import { colors } from '../../parameters';
@@ -246,8 +245,8 @@ class SearchWrapper extends Component {
     const { props, state } = this;
 
     return (
-      <Container>
-        <Header style={styles.header} searchBar={true}>
+      <LayoutView type='container'>
+        <LayoutView type='header' style={styles.header} searchBar={true}>
           <View style={styles.headerView}>
             <Button
               transparent
@@ -285,7 +284,7 @@ class SearchWrapper extends Component {
               <Icon name='menu' style={[styles.headerIcon, styles.menuIcon]} />
             </Button>
           </View>
-        </Header>
+        </LayoutView>
 
         {this.props.children}
 
@@ -308,7 +307,7 @@ class SearchWrapper extends Component {
             onNearbyPlaceSelected={this.onNearbyPlaceSelected}
             />
         )}
-      </Container>
+      </LayoutView>
     )
   }
 }

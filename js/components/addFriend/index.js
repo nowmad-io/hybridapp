@@ -5,9 +5,8 @@ import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
 import { Left, Right, Button, Content } from 'native-base';
 
 import Icon from '../dumbs/icon';
-import Header from '../dumbs/header';
+import LayoutView from '../dumbs/layoutView';
 import Text from '../dumbs/text';
-import Container from '../dumbs/container';
 
 import { acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship } from '../../api/friends';
 import { reviewsSearchByUser } from '../../api/reviews';
@@ -90,15 +89,15 @@ class AddFriend extends Component {
           });
 
     return (
-      <Container>
-        <Header>
+      <LayoutView type='container'>
+        <LayoutView type='header'>
           <Left>
             <Button transparent onPress={this.onBackPress}>
               <Icon name='arrow-back' />
             </Button>
           </Left>
           <Right></Right>
-        </Header>
+        </LayoutView>
         <Content style={styles.content}>
           <View style={styles.profileWrapper}>
             <View>
@@ -150,7 +149,7 @@ class AddFriend extends Component {
             )}
           </View>
         </Content>
-      </Container>
+      </LayoutView>
     );
   }
 }

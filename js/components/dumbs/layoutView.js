@@ -2,22 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ViewPropTypes, StyleSheet, View } from 'react-native';
 
-import { sizes, colors } from '../../parameters';
+import { colors, sizes } from '../../parameters';
 
-export default class Header extends Component {
+export default class LayoutView extends Component {
   static propTypes = {
+  	...ViewPropTypes,
   	style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array
+    ]),
+    type: PropTypes.oneOf([
+      'header',
+      'container',
+      'left',
+      'right'
     ])
   };
 
   render() {
-    const { style } = this.props;
+    const { style, type } = this.props;
 
 		return (
-			<View {...this.props} style={[styles.header, style]}>
+			<View {...this.props} style={[styles[type], style]}>
 				{this.props.children}
 			</View>
 		);
@@ -42,5 +49,19 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0
+  },
+  container: {
+    flex: 1,
+    height: sizes.height
+  },
+  left: {
+    flex: 1,
+		alignSelf: 'center',
+		alignItems: 'flex-start',
+  },
+  right: {
+    flex: 1,
+		alignSelf: 'center',
+		alignItems: 'flex-end',
   }
 });

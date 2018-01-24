@@ -13,7 +13,7 @@ import { NavigationActions } from 'react-navigation';
 import { loginRequest } from '../../actions/auth';
 
 import Icon from '../dumbs/icon';
-import Container from '../dumbs/container';
+import LayoutView from '../dumbs/layoutView';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
 
@@ -60,7 +60,7 @@ class Login extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <LayoutView type='container' style={styles.container}>
         <View style={styles.logoWrapper}>
           <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
@@ -118,7 +118,7 @@ class Login extends Component {
           </View>
         </Content>
         <Spinner overlay={true} visible={this.props.loginLoading}/>
-      </Container>
+      </LayoutView>
     );
   }
 }

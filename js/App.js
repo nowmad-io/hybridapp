@@ -6,7 +6,7 @@ import Modal from 'react-native-modalbox';
 import MainRouter from './Routers/MainRouter';
 import ProgressBar from './components/loaders/ProgressBar';
 import Text from './components/dumbs/text';
-import Container from './components/dumbs/container';
+import LayoutView from './components/dumbs/layoutView';
 
 import theme from './themes/base-theme';
 
@@ -59,7 +59,7 @@ class App extends Component {
   render() {
     if (this.state.showDownloadingModal) {
       return (
-        <Container>
+        <LayoutView type='container'>
           <Modal
             style={[styles.modal, styles.modal1]}
             backdrop={false}
@@ -114,7 +114,7 @@ class App extends Component {
                 </View>}
             </View>
           </Modal>
-        </Container>
+        </LayoutView>
       );
     }
 

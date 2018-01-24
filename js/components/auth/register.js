@@ -13,7 +13,7 @@ import { NavigationActions } from 'react-navigation';
 import { registerRequest } from '../../actions/auth';
 
 import Icon from '../dumbs/icon';
-import Container from '../dumbs/container';
+import LayoutView from '../dumbs/layoutView';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
 
@@ -56,7 +56,7 @@ class Register extends Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <LayoutView type='container' style={styles.container}>
         <View style={[styles.logoWrapper, styles.logoWrapperRegister]}>
           <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
@@ -150,7 +150,7 @@ class Register extends Component {
           </View>
         </Content>
         <Spinner overlay={true} visible={this.props.registerLoading}/>
-      </Container>
+      </LayoutView>
     );
   }
 }

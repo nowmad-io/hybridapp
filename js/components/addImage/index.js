@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
 import { Left, Right, Button, Content } from 'native-base';
 
-import Header from '../dumbs/header';
 import Text from '../dumbs/text';
-import Container from '../dumbs/container';
+import LayoutView from '../dumbs/layoutView';
 import Icon from '../dumbs/icon';
 
 import Label from '../label';
@@ -73,8 +72,8 @@ class AddImage extends Component {
 
   render() {
     return (
-      <Container>
-        <Header>
+      <LayoutView type='container'>
+        <LayoutView type='header'>
           <Left>
             <Button transparent onPress={this.onBackPress}>
               <Icon name='arrow-back' />
@@ -85,7 +84,7 @@ class AddImage extends Component {
               <Text>SAVE</Text>
             </Button>
           </Right>
-        </Header>
+        </LayoutView>
         <Content style={styles.content}>
           <View>
             <Label text="What is happening in this picture ?" required={true}/>
@@ -110,7 +109,7 @@ class AddImage extends Component {
               onPress={this.onDeletePress}/>
           </View>
         </Content>
-      </Container>
+      </LayoutView>
     );
   }
 }
