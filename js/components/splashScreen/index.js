@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
-import { Container } from 'native-base';
+
+import Container from '../dumbs/container';
 
 import styles from './styles';
 const logo = require('../../../assets/images/logos/logo_white.png');

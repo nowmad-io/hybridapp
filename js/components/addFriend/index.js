@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler } from 'react-native';
-import { Container, Header, Left, Right, Button, Content, Icon, View } from 'native-base';
+import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
+import { Header, Left, Right, Button, Content, Icon } from 'native-base';
 
 import Text from '../dumbs/text';
+import Container from '../dumbs/container';
 
 import { acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship } from '../../api/friends';
 import { reviewsSearchByUser } from '../../api/reviews';

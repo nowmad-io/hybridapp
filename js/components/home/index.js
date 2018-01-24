@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config';
-import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Item } from 'native-base';
 import shortid from 'shortid';
 import _ from 'lodash';
 
@@ -91,7 +90,7 @@ class Home extends Component {
   }
 
   onRegionChangeComplete = (region) => {
-    const scale = Math.pow(2, Math.log2(360 * ((sizes.screen.width/256) / region.longitudeDelta)) + 1) + 1,
+    const scale = Math.pow(2, Math.log2(360 * ((sizes.width/256) / region.longitudeDelta)) + 1) + 1,
           { level } = this.props;
 
     this.props.dispatch(regionChanged(region));

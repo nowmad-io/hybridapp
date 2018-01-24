@@ -1,4 +1,4 @@
-import React, { StatusBar, Dimensions } from 'react-native';
+import React, { Platform, StatusBar, Dimensions } from 'react-native';
 
 import material from '../native-base-theme/variables/material';
 
@@ -43,11 +43,15 @@ export const colors = {
   transparent: 'rgba(0, 0, 0, 0)'
 };
 
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
+
 export const sizes = {
+  height: Platform.OS === "ios" ? deviceHeight : deviceHeight - 20,
+  width: deviceWidth,
   toolbarHeight: material.toolbarHeight,
   statusBar: StatusBar.currentHeight,
   ITEM_LEVEL1: 80,
   ITEM_LEVEL2: 232,
-  screen: Dimensions.get('window'),
   drawerWidth: 0.625 * Dimensions.get('window').width
 }

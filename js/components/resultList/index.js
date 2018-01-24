@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native';
-import { View, Container, Button } from 'native-base';
+import { View, Button } from 'native-base';
 
 import Text from '../dumbs/text';
 import ListCluster from './listCluster';

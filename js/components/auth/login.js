@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  Container,
   Content,
   Item,
   Input,
@@ -15,6 +14,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
+import Container from '../dumbs/container';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
 

@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import CodePush from 'react-native-code-push';
 
-import { Container, Content, View } from 'native-base';
 import Modal from 'react-native-modalbox';
 import MainRouter from './Routers/MainRouter';
 import ProgressBar from './components/loaders/ProgressBar';
 import Text from './components/dumbs/text';
+import Container from './components/dumbs/container';
 
 import theme from './themes/base-theme';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: null,
-    height: null,
-  },
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -64,29 +59,43 @@ class App extends Component {
   render() {
     if (this.state.showDownloadingModal) {
       return (
-        <Container
-          theme={theme}
-          style={{ backgroundColor: theme.defaultBackgroundColor }}
-        >
-          <Content style={styles.container}>
-            <Modal
-              style={[styles.modal, styles.modal1]}
-              backdrop={false}
-              ref={(c) => {
-                this._modal = c;
+        <Container>
+          <Modal
+            style={[styles.modal, styles.modal1]}
+            backdrop={false}
+            ref={(c) => {
+              this._modal = c;
+            }}
+            swipeToClose={false}
+          >
+            <View
+              style={{
+                flex: 1,
+                alignSelf: 'stretch',
+                justifyContent: 'center',
+                padding: 20,
               }}
-              swipeToClose={false}
             >
-              <View
-                style={{
-                  flex: 1,
-                  alignSelf: 'stretch',
-                  justifyContent: 'center',
-                  padding: 20,
-                }}
-              >
-                {this.state.showInstalling
-                  ? <Text
+              {this.state.showInstalling
+                ? <Text
+                  style={{
+                    color: theme.brandPrimary,
+                    textAlign: 'center',
+                    marginBottom: 15,
+                    fontSize: 15,
+                  }}
+                >
+                    Installing update...
+                </Text>
+                : <View
+                  style={{
+                    flex: 1,
+                    alignSelf: 'stretch',
+                    justifyContent: 'center',
+                    padding: 20,
+                  }}
+                >
+                  <Text
                     style={{
                       color: theme.brandPrimary,
                       textAlign: 'center',
@@ -94,36 +103,17 @@ class App extends Component {
                       fontSize: 15,
                     }}
                   >
-                      Installing update...
+                      Downloading update...
+                    {' '}
+                    {`${parseInt(this.state.downloadProgress, 10)} %`}
                   </Text>
-                  : <View
-                    style={{
-                      flex: 1,
-                      alignSelf: 'stretch',
-                      justifyContent: 'center',
-                      padding: 20,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: theme.brandPrimary,
-                        textAlign: 'center',
-                        marginBottom: 15,
-                        fontSize: 15,
-                      }}
-                    >
-                        Downloading update...
-                      {' '}
-                      {`${parseInt(this.state.downloadProgress, 10)} %`}
-                    </Text>
-                    <ProgressBar
-                      color="theme.brandPrimary"
-                      progress={parseInt(this.state.downloadProgress, 10)}
-                    />
-                  </View>}
-              </View>
-            </Modal>
-          </Content>
+                  <ProgressBar
+                    color="theme.brandPrimary"
+                    progress={parseInt(this.state.downloadProgress, 10)}
+                  />
+                </View>}
+            </View>
+          </Modal>
         </Container>
       );
     }
