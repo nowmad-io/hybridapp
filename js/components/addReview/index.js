@@ -3,9 +3,11 @@ import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
-import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon,
-  Text, View, Radio } from 'native-base';
+import { CardItem, Container, Header, Content, Left, Body, Right, Button, Icon, View, Radio } from 'native-base';
 import _ from 'lodash';
+
+import Text from '../dumbs/text';
+
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 

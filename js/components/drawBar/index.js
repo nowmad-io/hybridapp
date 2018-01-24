@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, Icon, Text, List, ListItem, Right, Left, Body } from 'native-base';
+import { Button, Icon, List, ListItem, Right, Left, Body } from 'native-base';
+
+import Text from '../dumbs/text';
 
 import { runSagas, stopSagas } from '../../actions/utils';
 import { logoutRequest } from '../../actions/auth';

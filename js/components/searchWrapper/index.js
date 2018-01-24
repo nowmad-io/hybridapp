@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, BackHandler, Keyboard } from 'react-native';
-import { Container, Header, Text, Button, Icon, View } from 'native-base';
+import { Container, Header, Button, Icon, View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 

@@ -9,13 +9,13 @@ import {
   Input,
   Button,
   Icon,
-  View,
-  Text,
+  View
 } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
+import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
 
 import styles, { colors } from './styles';

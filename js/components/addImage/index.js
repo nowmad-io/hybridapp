@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, BackHandler } from 'react-native';
-import { Container, Header, Left, Right, Button, Text, Content, Icon, View } from 'native-base';
+import { Container, Header, Left, Right, Button, Content, Icon, View } from 'native-base';
+
+import Text from '../dumbs/text';
 
 import Label from '../label';
 import FormInput from '../formInput';

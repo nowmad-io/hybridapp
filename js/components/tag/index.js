@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity } from 'react-native'
-import { Text } from 'native-base';
+
+import Text from '../dumbs/text';
 
 import styles from './styles';
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config';
-import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Text, Item } from 'native-base';
+import { Container, View, Header, Left, Body, Right, Button, Icon, Title, Item } from 'native-base';
 import shortid from 'shortid';
 import _ from 'lodash';
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, View } from 'react-native';
-import { Text } from 'native-base';
+
+import Text from '../dumbs/text';
 
 import styles from './styles';
 

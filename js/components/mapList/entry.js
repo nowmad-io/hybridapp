@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated } from 'react-native';
-import { View, Card, CardItem, Text, Button, Icon } from 'native-base';
+import { View, Card, CardItem, Button, Icon } from 'native-base';
 import _ from 'lodash';
 import shortid from 'shortid';
 
+import Text from '../dumbs/text';
 import { Showcase, Review } from '../review';
 import BasicButton from '../basicButton';
 

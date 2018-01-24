@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native';
-import { View, CardItem, Text, Icon } from 'native-base';
+import { View, CardItem, Icon } from 'native-base';
 import shortid from 'shortid';
 
+import Text from '../dumbs/text';
 import Tag from '../tag';
 import ReviewHeader from './reviewHeader';
 import { reviewStyle, showcaseStyles } from './styles';

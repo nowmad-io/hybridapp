@@ -2,6 +2,25 @@ import React, { StatusBar, Dimensions } from 'react-native';
 
 import material from '../native-base-theme/variables/material';
 
+export const font = {
+  fontFamily: 'Roboto',
+  fontWeight: {
+    thin: '100',
+    light: '300',
+    regular: '400',
+    medium: '500',
+    bold: '700',
+    black: '900'
+  },
+  fontSize: {
+    text: 16
+  },
+  fontStyle: {
+    normal: 'normal',
+    italic: 'italic'
+  }
+}
+
 export const colors = {
   green: '#00C69F',
   greenShadow: 'rgba(0, 198, 159, 0.3)',

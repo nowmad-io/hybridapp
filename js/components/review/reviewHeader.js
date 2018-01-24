@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, CardItem, Thumbnail, Text, Icon, Left, Body } from 'native-base';
+import { View, CardItem, Thumbnail, Icon, Left, Body } from 'native-base';
 import shortid from 'shortid';
+
+import Text from '../dumbs/text';
 
 import { headerStyles } from './styles';
 

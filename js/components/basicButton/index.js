@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'native-base';
+import { View, Button } from 'native-base';
+
+import Text from '../dumbs/text';
 
 import styles from './styles';
 

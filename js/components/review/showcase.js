@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { Image } from 'react-native';
-import { View, CardItem, Thumbnail, Text } from 'native-base';
+import { View, CardItem, Thumbnail } from 'native-base';
 import _ from 'lodash';
 
 import Tag from '../tag'
