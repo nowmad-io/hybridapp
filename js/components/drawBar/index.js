@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, Icon, List, ListItem, Right, Left, Body } from 'native-base';
+import { Button, List, ListItem, Right, Left, Body } from 'native-base';
 
+import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
 
 import { runSagas, stopSagas } from '../../actions/utils';
@@ -133,7 +134,7 @@ class DrawBar extends React.Component {
             onPress={() => this.onLogoutPress()}
             transparent
           >
-            <Icon name='md-log-out' style={styles.actionIcon} />
+            <Icon name='exit-to-app' style={styles.actionIcon} />
             <Text style={styles.actionLabel}>Logout</Text>
           </Button>
         </View>

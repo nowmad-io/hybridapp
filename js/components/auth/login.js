@@ -6,13 +6,13 @@ import {
   Content,
   Item,
   Input,
-  Button,
-  Icon
+  Button
 } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
+import Icon from '../dumbs/icon';
 import Container from '../dumbs/container';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
@@ -67,7 +67,7 @@ class Login extends Component {
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>
             <Item style={styles.inputItem}>
-              <Icon active name="person" style={styles.inputIcon} />
+              <Icon name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -85,7 +85,7 @@ class Login extends Component {
                 : <Text />}
             </Item>
             <Item style={styles.inputItem}>
-              <Icon active name="unlock" style={styles.inputIcon} />
+              <Icon name="lock-open" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}

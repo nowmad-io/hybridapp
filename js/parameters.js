@@ -15,7 +15,8 @@ export const font = {
     black: '900'
   },
   fontSize: {
-    text: 16
+    text: 16,
+    icon: (Platform.OS === 'ios') ? 30 : 28
   },
   fontStyle: {
     normal: 'normal',

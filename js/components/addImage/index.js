@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
-import { Left, Right, Button, Content, Icon } from 'native-base';
+import { Left, Right, Button, Content } from 'native-base';
 
 import Header from '../dumbs/header';
 import Text from '../dumbs/text';
 import Container from '../dumbs/container';
+import Icon from '../dumbs/icon';
 
 import Label from '../label';
 import FormInput from '../formInput';
@@ -105,7 +106,7 @@ class AddImage extends Component {
             style={styles.actionsWrapper}>
             <Icon
               style={styles.icon}
-              name='md-trash'
+              name='delete'
               onPress={this.onDeletePress}/>
           </View>
         </Content>

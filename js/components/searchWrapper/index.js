@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, BackHandler, Keyboard } from 'react-native';
-import { Button, Icon, View } from 'native-base';
+import { Button, View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -11,6 +11,7 @@ import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
+import Icon from '../dumbs/icon';
 import Header from '../dumbs/header';
 import Container from '../dumbs/container';
 import ResultList from '../resultList';
@@ -254,11 +255,11 @@ class SearchWrapper extends Component {
               onPress={() => this.onActionPress()}
             >
               {state.focused ? (
-                <Icon name='md-arrow-back' style={styles.headerIcon}/>
+                <Icon name='arrow-back' style={styles.headerIcon}/>
               ) : state.text.length ? (
-                <Icon name='md-close' style={styles.headerIcon}/>
+                <Icon name='close' style={styles.headerIcon}/>
               ) : (
-                <Icon name='md-search' style={styles.headerIcon}/>
+                <Icon name='search' style={styles.headerIcon}/>
               )}
             </Button>
 
@@ -281,7 +282,7 @@ class SearchWrapper extends Component {
               onPress={props.onMenuPress}
               transparent
             >
-              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />
+              <Icon name='menu' style={[styles.headerIcon, styles.menuIcon]} />
             </Button>
           </View>
         </Header>

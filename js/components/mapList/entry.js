@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated, View } from 'react-native';
-import { Card, CardItem, Button, Icon } from 'native-base';
+import { Card, CardItem, Button } from 'native-base';
 import _ from 'lodash';
 import shortid from 'shortid';
 
+import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
 import { Showcase, Review } from '../review';
 import BasicButton from '../basicButton';
@@ -117,7 +118,7 @@ class Entry extends Component {
           >
             <View style={entryStyles.addressWrapper}>
               <Text style={entryStyles.address}>
-                <Icon style={entryStyles.addressIcon} name="md-pin" /> {address}
+                <Icon style={entryStyles.addressIcon} name="location-on" /> {address}
               </Text>
             </View>
             {orderedReviews && orderedReviews.map((review) => (

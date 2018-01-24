@@ -3,9 +3,10 @@ import { Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard, View } from 'react-native';
-import { CardItem, Content, Left, Body, Right, Button, Icon, Radio } from 'native-base';
+import { CardItem, Content, Left, Body, Right, Button, Radio } from 'native-base';
 import _ from 'lodash';
 
+import Icon from '../dumbs/icon';
 import Header from '../dumbs/header';
 import Container from '../dumbs/container';
 import Text from '../dumbs/text';

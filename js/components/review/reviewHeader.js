@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { CardItem, Thumbnail, Icon, Left, Body } from 'native-base';
+import { CardItem, Thumbnail, Left, Body } from 'native-base';
 import shortid from 'shortid';
 
+import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
 
 import { headerStyles } from './styles';
@@ -24,7 +25,7 @@ const ReviewHeader = props => (
         <Text note>- { props.reviews[0].short_description } -</Text>
         { props.showcase && (
           <Text style={headerStyles.address}>
-            <Icon style={headerStyles.addressIcon} name="md-pin" /> {props.placeAddress}
+            <Icon style={headerStyles.addressIcon} name="location-on" /> {props.placeAddress}
           </Text>
         )}
       </Body>

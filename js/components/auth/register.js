@@ -6,13 +6,13 @@ import {
   Content,
   Item,
   Input,
-  Button,
-  Icon
+  Button
 } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
 
+import Icon from '../dumbs/icon';
 import Container from '../dumbs/container';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
@@ -63,7 +63,7 @@ class Register extends Component {
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>
             <Item style={styles.inputItem}>
-              <Icon active name="md-mail" style={styles.inputIcon} />
+              <Icon active name="mail" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -81,7 +81,7 @@ class Register extends Component {
                 : <Text />}
             </Item>
             <Item style={styles.inputItem}>
-              <Icon active name="md-person" style={styles.inputIcon} />
+              <Icon active name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -99,7 +99,7 @@ class Register extends Component {
                 : <Text />}
             </Item>
             <Item style={styles.inputItem}>
-              <Icon active name="md-person" style={styles.inputIcon} />
+              <Icon active name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -117,7 +117,7 @@ class Register extends Component {
                 : <Text />}
             </Item>
             <Item style={styles.inputItem}>
-              <Icon active name="md-unlock" style={styles.inputIcon} />
+              <Icon active name="lock-open" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}

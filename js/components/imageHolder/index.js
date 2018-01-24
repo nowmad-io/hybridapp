@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, View } from 'react-native';
-import { Icon } from 'native-base';
+
+import Icon from '../dumbs/icon';
 
 import styles from './styles';
 
@@ -14,7 +15,7 @@ const ImageHolder = (props) => (
           resizeMethod="resize"
           source={{uri: props.source}} />
       ) : (
-        <Icon name='md-camera' style={styles.icon}/>
+        <Icon name='add-a-photo' style={styles.icon}/>
       )}
     </View>
   </TouchableOpacity>

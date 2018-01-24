@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
-import { CardItem, Icon } from 'native-base';
+import { CardItem } from 'native-base';
 import shortid from 'shortid';
 
 import Text from '../dumbs/text';
