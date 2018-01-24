@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Animated } from 'react-native';
-import { View, Card, CardItem, Button, Icon } from 'native-base';
+import { ScrollView, Animated, View } from 'react-native';
+import { Card, CardItem, Button, Icon } from 'native-base';
 import _ from 'lodash';
 import shortid from 'shortid';
 

@@ -55,7 +55,7 @@ class MainRouter extends Component {
   render() {
     const { dispatch, nav } = this.props;
 
-    return <MainNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+    return <MainNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />;
   }
 }
 

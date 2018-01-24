@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Content,
   Item,
   Input,
   Button,
-  Icon,
-  View
+  Icon
 } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 

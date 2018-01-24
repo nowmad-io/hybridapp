@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Animated,
-  PanResponder,
-} from 'react-native';
+import { View, Animated, PanResponder } from 'react-native';
 
 const ModePropType = PropTypes.oneOf(['decay', 'snap', 'spring-origin']);
 const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);

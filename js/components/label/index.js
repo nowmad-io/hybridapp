@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 import Text from '../dumbs/text';
 

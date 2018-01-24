@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  Animated,
-} from 'react-native';
+import { StyleSheet, View, Dimensions, Animated } from 'react-native';
 import { Icon } from 'native-base';
 
 import PanController from './panController';

@@ -1,6 +1,8 @@
-import React, { Platform, StatusBar, Dimensions } from 'react-native';
+import React, { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
 
-import material from '../native-base-theme/variables/material';
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
+const isIphoneX = Platform.OS === "ios" && deviceHeight === 812 && deviceWidth === 375;
 
 export const font = {
   fontFamily: 'Roboto',
@@ -43,13 +45,15 @@ export const colors = {
   transparent: 'rgba(0, 0, 0, 0)'
 };
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
-
 export const sizes = {
   height: Platform.OS === "ios" ? deviceHeight : deviceHeight - 20,
   width: deviceWidth,
-  toolbarHeight: material.toolbarHeight,
+  header: {
+    height: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
+    paddingTop: Platform.OS === "ios" ? (isIphoneX ? 39 : 15) : 0,
+    borderBottomWidth: Platform.OS === "ios" ? 1 / PixelRatio.getPixelSizeForLayoutSize(1) : 0
+  },
+  toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
   statusBar: StatusBar.currentHeight,
   ITEM_LEVEL1: 80,
   ITEM_LEVEL2: 232,

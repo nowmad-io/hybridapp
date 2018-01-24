@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView } from 'react-native';
-import { View, Button } from 'native-base';
+import { ScrollView, View } from 'react-native';
+import { Button } from 'native-base';
 
 import Text from '../dumbs/text';
 import ListCluster from './listCluster';

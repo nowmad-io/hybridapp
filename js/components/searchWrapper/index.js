@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, BackHandler, Keyboard } from 'react-native';
-import { Header, Button, Icon, View } from 'native-base';
+import { Button, Icon, View } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -11,6 +11,7 @@ import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
+import Header from '../dumbs/header';
 import Container from '../dumbs/container';
 import ResultList from '../resultList';
 
