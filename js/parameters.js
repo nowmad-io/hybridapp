@@ -43,7 +43,9 @@ export const colors = {
   greyTransparent: 'rgba(188, 185, 185, 0.2)',
   whiteTransparent: 'rgba(255, 255, 255, 0.6)',
   whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
-  transparent: 'rgba(0, 0, 0, 0)'
+  transparent: 'rgba(0, 0, 0, 0)',
+  ripple: 'rgba(256, 256, 256, 0.3)',
+  rippleDark: 'rgba(0, 0, 0, 0.15)'
 };
 
 export const sizes = {

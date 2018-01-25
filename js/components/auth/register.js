@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Item, Input, Button } from 'native-base';
+import { Item, Input } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
@@ -11,6 +11,7 @@ import Icon from '../dumbs/icon';
 import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
+import Button from '../dumbs/button';
 import Spinner from '../loaders/spinner';
 
 import styles, { colors } from './styles';
@@ -135,10 +136,10 @@ class Register extends Component {
               rounded light
               style={styles.button}
               onPress={() => this._register()}>
-              <Text style={styles.text}>register</Text>
+              <Text>register</Text>
             </Button>
             <Button
-              transparent light
+              transparent
               style={styles.button}
               onPress={() => this._backToLogin()}>
               <Text>Login</Text>

@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, List, ListItem, Body } from 'native-base';
+import { List, ListItem } from 'native-base';
 
 import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
+import Button from '../dumbs/button';
 import LayoutView from '../dumbs/layoutView';
 
 import { runSagas, stopSagas } from '../../actions/utils';
@@ -89,9 +90,9 @@ class DrawBar extends React.Component {
                   <ListItem
                     style={styles.listItem(true)}
                   >
-                    <Body>
+                    <View>
                       <Text style={styles.empty}>No outgoing request</Text>
-                    </Body>
+                    </View>
                   </ListItem>
                 )}
               </View>
@@ -120,9 +121,9 @@ class DrawBar extends React.Component {
                   </ListItem>
                 )) : (
                   <ListItem style={styles.listItem(true)}>
-                    <Body>
+                    <View>
                       <Text style={styles.empty}>No incoming request</Text>
-                    </Body>
+                    </View>
                   </ListItem>
                 )}
               </View>
@@ -131,9 +132,9 @@ class DrawBar extends React.Component {
         </View>
         <View style={styles.actionsWrapper}>
           <Button
+            transparent
             style={styles.logoutButton}
             onPress={() => this.onLogoutPress()}
-            transparent
           >
             <Icon name='exit-to-app' style={styles.actionIcon} />
             <Text style={styles.actionLabel}>Logout</Text>

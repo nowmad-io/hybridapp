@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated, View } from 'react-native';
-import { Card, CardItem, Button } from 'native-base';
+import { Card, CardItem } from 'native-base';
 import _ from 'lodash';
 import shortid from 'shortid';
 
 import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
+import Button from '../dumbs/button';
 import { Showcase, Review } from '../review';
-import BasicButton from '../basicButton';
 
 import { entryStyles, BREAKPOINT1, BREAKPOINT2, ITEM_LEVEL1, ITEM_LEVEL2, TOOLBARHEIGHT, STATUSBARHEIGHT, SCREEN_PADDING_TOP } from './styles';
 
@@ -20,7 +20,7 @@ class Entry extends Component {
     scrollY: PropTypes.object
   };
 
-  onPressAddReview = () => {
+  onPressAddReview() {
     this.props.navigation.navigate('AddReview', { place: this.props.place })
   }
 
@@ -97,17 +97,12 @@ class Entry extends Component {
             ]
           }}
           >
-            { myReview ? (
-              <BasicButton
-                text='MY REVIEW'
-                onPress={() => this.onPressEditReview(myReview)}>
-              </BasicButton>
-            ) : (
-              <BasicButton
-                text='ADD REVIEW'
-                onPress={this.onPressAddReview}>
-              </BasicButton>
-            )}
+            <Button
+              wrapped
+              onPress={() => myReview ? this.onPressEditReview(myReview) : this.onPressAddReview()}
+            >
+              <Text>{myReview ? 'My review' : 'Add review'}</Text>
+            </Button>
           </Animated.View>
           <Animated.View
             style={{

@@ -17,11 +17,6 @@ export default class Text extends Component {
     ])
   };
 
-  static defaultProps = {
-  	uppercase: false,
-  	capitalize: false
-  };
-
   render() {
     const { uppercase, capitalize, style, children } = this.props;
 
@@ -37,7 +32,7 @@ export default class Text extends Component {
     } else {
       text = children;
     }
-
+    
     return (
       <RNText { ...this.props } style={[styles.text, style]}>
         { text }

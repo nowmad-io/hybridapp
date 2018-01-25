@@ -3,16 +3,16 @@ import { Animated, PanResponder, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
-import { CardItem, Button, Radio } from 'native-base';
 import _ from 'lodash';
+
+import Config from 'react-native-config';
+import ImagePicker from 'react-native-image-picker';
 
 import Icon from '../dumbs/icon';
 import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
-
-import Config from 'react-native-config';
-import ImagePicker from 'react-native-image-picker';
+import Button from '../dumbs/button';
 
 import { categoriesList, statusList } from '../../lists';
 import Map from '../map';
@@ -20,7 +20,6 @@ import Marker from '../marker';
 import Tag from '../tag';
 import Label from '../label';
 import FormInput from '../formInput';
-import BasicButton from '../basicButton';
 import RadioButtons from '../radioButtons';
 import ImageHolder from '../imageHolder';
 import Spinner from '../loaders/spinner';
@@ -298,9 +297,12 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <BasicButton
-          text='PUBLISH'
-          onPress={this.onPublish} />
+        <Button
+          wrapped
+          onPress={this.onPublish}
+        >
+          <Text>Publish</Text>
+        </Button>
 
         <Spinner overlay={true} visible={this.props.reviewLoading}/>
       </LayoutView>

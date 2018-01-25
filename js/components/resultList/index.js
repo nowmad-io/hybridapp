@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, View } from 'react-native';
-import { Button } from 'native-base';
 
 import Text from '../dumbs/text';
+import Button from '../dumbs/button';
 import ListCluster from './listCluster';
 import ListItem from './listItem';
 import Spinner from '../loaders/spinner';

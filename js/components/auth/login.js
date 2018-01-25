@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Item, Input, Button } from 'native-base';
+import { Item, Input } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
 
 import Icon from '../dumbs/icon';
+import Button from '../dumbs/button';
 import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
@@ -100,13 +101,15 @@ class Login extends Component {
                 : <Text />}
             </Item>
             <Button
-              rounded light
+              light
+              rounded
               style={styles.button}
               onPress={() => this._login()}>
-              <Text style={styles.text}>Login</Text>
+              <Text>Login</Text>
             </Button>
             <Button
-              transparent light
+              rounded
+              transparent
               style={styles.button}
               onPress={() => this._register()}>
               <Text>Register</Text>

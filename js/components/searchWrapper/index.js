@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput, BackHandler, Keyboard, View } from 'react-native';
-import { Button } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -11,6 +10,7 @@ import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
+import Button from '../dumbs/button';
 import LayoutView from '../dumbs/layoutView';
 import Icon from '../dumbs/icon';
 import ResultList from '../resultList';
@@ -277,9 +277,9 @@ class SearchWrapper extends Component {
               withRef />
 
             <Button
+              transparent
               style={styles.headerButton}
               onPress={props.onMenuPress}
-              transparent
             >
               <Icon name='menu' style={[styles.headerIcon, styles.menuIcon]} />
             </Button>

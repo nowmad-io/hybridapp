@@ -10,12 +10,13 @@ export default {
     right: 0,
     bottom: 100,
     zIndex: 999999999,
+    alignItems: 'center'
   },
   headerView: {
     width: '100%',
     height: '100%',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   headerInput: {

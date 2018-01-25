@@ -40,12 +40,7 @@ export default {
     color: colors.white,
   },
   button: {
-    marginTop: 20,
     width: '100%',
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    color: colors.green
+    marginTop: 20
   }
 };

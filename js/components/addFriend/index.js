@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
-import { Button } from 'native-base';
 
 import Icon from '../dumbs/icon';
+import Button from '../dumbs/button';
 import Content from '../dumbs/content';
 import LayoutView from '../dumbs/layoutView';
 import Text from '../dumbs/text';
