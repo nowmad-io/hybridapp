@@ -2,18 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
-import {
-  Content,
-  Item,
-  Input,
-  Button
-} from 'native-base';
+import { Item, Input, Button } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
 
 import Icon from '../dumbs/icon';
 import LayoutView from '../dumbs/layoutView';
+import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 import Spinner from '../loaders/spinner';
 

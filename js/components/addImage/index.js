@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
-import { Button, Content } from 'native-base';
+import { Button } from 'native-base';
 
+import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 import LayoutView from '../dumbs/layoutView';
 import Icon from '../dumbs/icon';

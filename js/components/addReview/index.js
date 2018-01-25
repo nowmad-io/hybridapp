@@ -3,11 +3,12 @@ import { Animated, PanResponder, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
-import { CardItem, Content, Button, Radio } from 'native-base';
+import { CardItem, Button, Radio } from 'native-base';
 import _ from 'lodash';
 
 import Icon from '../dumbs/icon';
 import LayoutView from '../dumbs/layoutView';
+import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 
 import Config from 'react-native-config';
