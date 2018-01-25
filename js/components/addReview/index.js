@@ -3,7 +3,7 @@ import { Animated, PanResponder, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
-import { CardItem, Content, Left, Body, Right, Button, Radio } from 'native-base';
+import { CardItem, Content, Button, Radio } from 'native-base';
 import _ from 'lodash';
 
 import Icon from '../dumbs/icon';
@@ -213,12 +213,12 @@ class AddReview extends Component {
     return (
       <LayoutView type='container'>
         <LayoutView type='header'>
-          <Left>
+          <LayoutView type='left'>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name='arrow-back' />
             </Button>
-          </Left>
-          <Right></Right>
+          </LayoutView>
+          <LayoutView type='right'></LayoutView>
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>

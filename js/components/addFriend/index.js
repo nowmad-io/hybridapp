@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
-import { Left, Right, Button, Content } from 'native-base';
+import { Button, Content } from 'native-base';
 
 import Icon from '../dumbs/icon';
 import LayoutView from '../dumbs/layoutView';
@@ -91,12 +91,12 @@ class AddFriend extends Component {
     return (
       <LayoutView type='container'>
         <LayoutView type='header'>
-          <Left>
+          <LayoutView type='left'>
             <Button transparent onPress={this.onBackPress}>
               <Icon name='arrow-back' />
             </Button>
-          </Left>
-          <Right></Right>
+          </LayoutView>
+          <LayoutView type='right'></LayoutView>
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.profileWrapper}>

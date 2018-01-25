@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
-import { Left, Right, Button, Content } from 'native-base';
+import { Button, Content } from 'native-base';
 
 import Text from '../dumbs/text';
 import LayoutView from '../dumbs/layoutView';
@@ -74,16 +74,16 @@ class AddImage extends Component {
     return (
       <LayoutView type='container'>
         <LayoutView type='header'>
-          <Left>
+          <LayoutView type='left'>
             <Button transparent onPress={this.onBackPress}>
               <Icon name='arrow-back' />
             </Button>
-          </Left>
-          <Right>
+          </LayoutView>
+          <LayoutView type='right'>
             <Button transparent onPress={this.onSavePress}>
               <Text>SAVE</Text>
             </Button>
-          </Right>
+          </LayoutView>
         </LayoutView>
         <Content style={styles.content}>
           <View>

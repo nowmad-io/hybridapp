@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { Button, List, ListItem, Right, Left, Body } from 'native-base';
+import { Button, List, ListItem, Body } from 'native-base';
 
 import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
+import LayoutView from '../dumbs/layoutView';
 
 import { runSagas, stopSagas } from '../../actions/utils';
 import { logoutRequest } from '../../actions/auth';
@@ -73,16 +74,16 @@ class DrawBar extends React.Component {
                     style={styles.listItem(props.outgoings.length - 1 === index)}
                     key={request.id}
                   >
-                    <Left>
+                    <LayoutView type='left'>
                       <Image resizeMethod="resize" source={{uri: request.to_user.picture}} style={styles.userPicture} />
                       <Text style={styles.itemText}>{request.to_user.first_name}</Text>
-                    </Left>
-                    <Right style={styles.right}>
+                    </LayoutView>
+                    <LayoutView type='right' style={styles.right}>
                       <TouchableOpacity
                         onPress={() => this._onCancel(request.id)}>
                         <Text style={styles.actionLabel}>Cancel</Text>
                       </TouchableOpacity>
-                    </Right>
+                    </LayoutView>
                   </ListItem>
                 )) : (
                   <ListItem
@@ -101,11 +102,11 @@ class DrawBar extends React.Component {
                     style={styles.listItem(props.incomings.length - 1 === index)}
                     key={request.id}
                   >
-                    <Left>
+                    <LayoutView type='left'>
                       <Image resizeMethod="resize" source={{uri: request.from_user.picture}} style={styles.userPicture} />
                       <Text style={styles.itemText}>{request.from_user.first_name}</Text>
-                    </Left>
-                    <Right style={styles.right}>
+                    </LayoutView>
+                    <LayoutView type='right' style={styles.right}>
                       <TouchableOpacity
                         onPress={() => this._onReject(request.id)}>
                         <Text style={styles.actionLabel}>Reject</Text>
@@ -115,7 +116,7 @@ class DrawBar extends React.Component {
                         onPress={() => this._onAccept(request.id)}>
                         <Text style={styles.acceptLabel}>Accept</Text>
                       </TouchableOpacity>
-                    </Right>
+                    </LayoutView>
                   </ListItem>
                 )) : (
                   <ListItem style={styles.listItem(true)}>
