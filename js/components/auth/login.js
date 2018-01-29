@@ -116,7 +116,7 @@ class Login extends Component {
             </Button>
           </View>
         </Content>
-        <Spinner overlay={true} visible={true}/>
+        <Spinner overlay={true} visible={this.props.loginLoading}/>
       </LayoutView>
     );
   }
