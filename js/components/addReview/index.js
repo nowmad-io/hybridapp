@@ -14,6 +14,7 @@ import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 import Button from '../dumbs/button';
 import Spinner from '../dumbs/spinner';
+import RadioButton from '../dumbs/radioButton';
 
 import { categoriesList, statusList } from '../../lists';
 import Map from '../map';
@@ -21,7 +22,6 @@ import Marker from '../marker';
 import Tag from '../tag';
 import Label from '../label';
 import FormInput from '../formInput';
-import RadioButtons from '../radioButtons';
 import ImageHolder from '../imageHolder';
 
 import { addReview, updateReview } from '../../api/reviews';
@@ -206,7 +206,7 @@ class AddReview extends Component {
   }
 
   render() {
-    const { categories, pictures } = this.state;
+    const { categories, pictures, status } = this.state;
 
     const full = this.state.pictures && this.state.pictures.length >= MAX_LENGTH_PICTURES;
 
@@ -247,12 +247,13 @@ class AddReview extends Component {
             </View>
             <View>
               <Label text="You were..." required={true}/>
-              <RadioButtons
-                defaultValue={this.state.status}
-                list={statusList}
-                onSelect={(status) => this.setState({ status })}
-              >
-              </RadioButtons>
+              {statusList.map((stat, index) => (
+                <RadioButton
+                  key={index}
+                  selected={status === stat}
+                  text={stat}
+                  onPress={() => this.setState({ status: stat })} />
+              ))}
             </View>
             <View>
               <Label text="Was it..." />
