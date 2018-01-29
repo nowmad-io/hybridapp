@@ -4,7 +4,7 @@ import CodePush from 'react-native-code-push';
 
 import Modal from 'react-native-modalbox';
 import MainRouter from './Routers/MainRouter';
-import ProgressBar from './components/loaders/ProgressBar';
+import ProgressBar from './components/dumbs/progressBar';
 import Text from './components/dumbs/text';
 import LayoutView from './components/dumbs/layoutView';
 
