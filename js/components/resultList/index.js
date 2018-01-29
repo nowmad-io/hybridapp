@@ -5,12 +5,11 @@ import { ScrollView, View } from 'react-native';
 
 import Text from '../dumbs/text';
 import Button from '../dumbs/button';
-import ListCluster from './listCluster';
-import ListItem from './listItem';
+import List from '../dumbs/list';
+import ListItem from '../dumbs/listItem';
 import Spinner from '../dumbs/spinner';
 
 import styles from './styles';
-
 
 const MAX_FRIENDS = 5
 const MAX_REVIEWS = 5
@@ -73,7 +72,7 @@ class ResultList extends Component {
       <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
         <View style={styles.resultView}>
           {(searchType === 'nearby') && (
-            <ListCluster label="MAYBE YOU WERE LOOKING FOR">
+            <List label="Maybe you were looking for">
               <View>
                 <Spinner
                   style={styles.spinner}
@@ -92,11 +91,11 @@ class ResultList extends Component {
                   <Text>Add a new place</Text>
                 </Button>
               </View>
-            </ListCluster>
+            </List>
           )}
           {(searchType === 'places') && (
             <View>
-              <ListCluster label="RESULTS BY FRIENDS">
+              <List label="Résults by friends">
                 <View>
                   <Spinner
                     style={styles.spinner}
@@ -112,8 +111,8 @@ class ResultList extends Component {
                       onPress={() => onFriendPress(result)} />
                   ))}
                 </View>
-              </ListCluster>
-              <ListCluster label="RESULTS BY REVIEWS">
+              </List>
+              <List label="Résults by reviews">
                 <View>
                   <Spinner
                     style={styles.spinner}
@@ -129,8 +128,8 @@ class ResultList extends Component {
                     ))
                   ))}
                 </View>
-              </ListCluster>
-              <ListCluster label="RESULTS BY GOOGLE PLACES">
+              </List>
+              <List label="Résults by Google places">
                   <Spinner
                     style={styles.spinner}
                     visible={placesLoading} />
@@ -141,7 +140,7 @@ class ResultList extends Component {
                       text={result.description}
                       onPress={() => onPlaceSelected(result)} />
                   ))}
-              </ListCluster>
+              </List>
             </View>
           )}
         </View>
