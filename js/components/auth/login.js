@@ -12,7 +12,7 @@ import Button from '../dumbs/button';
 import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
-import Spinner from '../loaders/spinner';
+import Spinner from '../dumbs/spinner';
 
 import styles, { colors } from './styles';
 const logo = require('../../../assets/images/logos/full_logo_horizontal.png');
@@ -116,7 +116,7 @@ class Login extends Component {
             </Button>
           </View>
         </Content>
-        <Spinner overlay={true} visible={this.props.loginLoading}/>
+        <Spinner overlay={true} visible={true}/>
       </LayoutView>
     );
   }

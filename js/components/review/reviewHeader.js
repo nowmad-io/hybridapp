@@ -6,6 +6,7 @@ import shortid from 'shortid';
 
 import Icon from '../dumbs/icon';
 import Text from '../dumbs/text';
+import LayoutView from '../dumbs/layoutView';
 
 import { headerStyles } from './styles';
 

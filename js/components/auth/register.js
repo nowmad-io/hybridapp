@@ -12,7 +12,7 @@ import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 import Button from '../dumbs/button';
-import Spinner from '../loaders/spinner';
+import Spinner from '../dumbs/spinner';
 
 import styles, { colors } from './styles';
 const logo = require('../../../assets/images/logos/full_logo_horizontal.png');

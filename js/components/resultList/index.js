@@ -7,7 +7,7 @@ import Text from '../dumbs/text';
 import Button from '../dumbs/button';
 import ListCluster from './listCluster';
 import ListItem from './listItem';
-import Spinner from '../loaders/spinner';
+import Spinner from '../dumbs/spinner';
 
 import styles from './styles';
 

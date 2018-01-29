@@ -13,6 +13,7 @@ import LayoutView from '../dumbs/layoutView';
 import Content from '../dumbs/content';
 import Text from '../dumbs/text';
 import Button from '../dumbs/button';
+import Spinner from '../dumbs/spinner';
 
 import { categoriesList, statusList } from '../../lists';
 import Map from '../map';
@@ -22,7 +23,6 @@ import Label from '../label';
 import FormInput from '../formInput';
 import RadioButtons from '../radioButtons';
 import ImageHolder from '../imageHolder';
-import Spinner from '../loaders/spinner';
 
 import { addReview, updateReview } from '../../api/reviews';
 import { reviewLoading } from '../../actions/reviews';
