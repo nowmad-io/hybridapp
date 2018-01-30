@@ -24,6 +24,7 @@ export const STATUSBARHEIGHT = sizes.statusBar;
 
 export const entryStyles = {
   card: (selected = true, level = 0) => ({
+    backgroundColor: colors.white,
     position: 'relative',
     minHeight: screen.height - 40,
     height: '100%',

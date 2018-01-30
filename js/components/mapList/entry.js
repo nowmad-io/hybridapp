@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated, View } from 'react-native';
-import { Card, CardItem } from 'native-base';
 import _ from 'lodash';
 import shortid from 'shortid';
 
@@ -75,7 +74,7 @@ class Entry extends Component {
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
       >
-        <Card style={entryStyles.card(selected)}>
+        <View style={entryStyles.card(selected)}>
           <Animated.View
             style={{
               transform: [
@@ -122,7 +121,7 @@ class Entry extends Component {
                 review={review} />
             ))}
           </Animated.View>
-        </Card>
+        </View>
       </ScrollView>
     );
   }

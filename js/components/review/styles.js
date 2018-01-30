@@ -3,14 +3,23 @@ import  {StyleSheet } from 'react-native';
 import { colors } from '../../parameters';
 
 export const headerStyles = {
-  infoWrapper: {
-    paddingTop: 8,
-    paddingRight: 8,
-    paddingLeft: 12,
-    paddingBottom: 8,
+  wrapper: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+		alignItems: 'flex-start',
+		borderRadius: 2,
+		backgroundColor: colors.white,
+  },
+  item: {
+    flexDirection: 'row',
+    flex: 1
   },
   thumbnail: {
     alignSelf: 'flex-start'
+  },
+  textWrapper: {
+    marginLeft: 8
   },
   address: {
     paddingTop: 4,
@@ -23,8 +32,8 @@ export const headerStyles = {
   },
   thumbnailFriends: (index) => ({
     position: 'absolute',
-    top: 0,
-    right: index * 8,
+    top: 8,
+    right: index * 8 + 8,
     borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.white,
@@ -33,12 +42,6 @@ export const headerStyles = {
 }
 
 export const showcaseStyles = {
-  picturesWrapper: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
   mainPicture: (showcase = false) => ({
     height: 102,
     width: '100%',
@@ -60,6 +63,11 @@ export const showcaseStyles = {
     right: 16,
     alignItems: 'flex-start',
     flexDirection: 'row',
+  },
+  tags: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    paddingHorizontal: 16
   },
   wrapperRight: {
     flex: 1,

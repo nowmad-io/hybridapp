@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { Image, View } from 'react-native';
-import { CardItem, Thumbnail } from 'native-base';
 import _ from 'lodash';
 
 import Tag from '../tag'
 import ReviewHeader from './reviewHeader';
 
-import { showcaseStyles } from './styles';
+import { showcaseStyles, headerStyles } from './styles';
 const pictureHolder = require('../../../assets/images/picture_holder.jpg');
 
 const Showcase = (props) => {
@@ -30,7 +29,7 @@ const Showcase = (props) => {
         showcase={true}
         thumbnails={thumbnails}
       />
-      <CardItem style={showcaseStyles.picturesWrapper}>
+      <View style={headerStyles.item}>
         <Image
           source={pictures.length ? {uri: pictures[0].source} : pictureHolder}
           style={showcaseStyles.mainPicture(pictures.length > 1)} />
@@ -50,7 +49,7 @@ const Showcase = (props) => {
             />
           ))}
         </View>
-      </CardItem>
+      </View>
     </View>
   )
 }
