@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
     shadowRadius: 1.2,
     top: 0,
     left: 0,
-    right: 0
+    right: 0,
+    zIndex: 9
   },
   container: {
     flex: 1,

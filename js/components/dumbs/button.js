@@ -20,7 +20,7 @@ export default class Button extends Component {
   };
 
   render() {
-    const { style, rounded, transparent, light, wrapped } = this.props;
+    const { onPress, style, rounded, transparent, light, wrapped } = this.props;
 
     const children = React.Children.map(
 			this.props.children,
@@ -36,26 +36,27 @@ export default class Button extends Component {
 		);
 
 		return (
-      <TouchableNativeFeedback
-				onPress={this.props.onPress}
-				background={TouchableNativeFeedback.Ripple(colors.ripple)}
-			>
-				<View style={wrapped && styles.wrapped}>
-  				<View
-            style={[
-              styles.button,
-              rounded && styles.rounded_button,
-              (light || transparent || wrapped) && styles.flat_button,
-              light && styles.light_button,
-              transparent && styles.transparent_button,
-              wrapped && styles.wrapped_button,
-              style
-            ]}
-          >
-  					{children}
-  				</View>
-				</View>
-			</TouchableNativeFeedback>
+      <View style={style && style}>
+        <TouchableNativeFeedback
+    			onPress={onPress}
+    			background={TouchableNativeFeedback.Ripple(colors.ripple)}
+    		>
+    			<View style={wrapped && styles.wrapped}>
+    				<View
+              style={[
+                styles.button,
+                rounded && styles.rounded_button,
+                (light || transparent || wrapped) && styles.flat_button,
+                light && styles.light_button,
+                transparent && styles.transparent_button,
+                wrapped && styles.wrapped_button
+              ]}
+            >
+    					{children}
+    				</View>
+    			</View>
+    		</TouchableNativeFeedback>
+      </View>
     )
 	}
 }
@@ -68,7 +69,6 @@ const styles = StyleSheet.create({
     borderColor: colors.green,
     borderWidth: null,
     height: 45,
-    alignSelf: 'flex-start',
     flexDirection: 'row',
     elevation: 2,
     shadowColor: colors.black,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.2,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   text: {
     color: colors.white,

@@ -47,7 +47,6 @@ export default {
     flex: 1
   },
   button: {
-    width: '100%',
     marginTop: 20
   }
 };

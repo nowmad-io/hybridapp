@@ -3,22 +3,6 @@ import React, { StyleSheet } from 'react-native';
 import { colors, sizes } from '../../parameters';
 
 export default {
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 100,
-    zIndex: 999999999,
-    alignItems: 'center'
-  },
-  headerView: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
   headerInput: {
     flex: 1
   },
