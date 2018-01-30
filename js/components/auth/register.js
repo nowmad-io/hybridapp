@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Item, Input } from 'native-base';
+import { Input } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { registerRequest } from '../../actions/auth';
@@ -59,7 +59,7 @@ class Register extends Component {
         </View>
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>
-            <Item style={styles.inputItem}>
+            <View style={styles.item}>
               <Icon active name="mail" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -70,14 +70,8 @@ class Register extends Component {
                 placeholder="Email"
                 onChangeText={email => this.setState({ email })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
-            <Item style={styles.inputItem}>
+            </View>
+            <View style={styles.item}>
               <Icon active name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -88,14 +82,8 @@ class Register extends Component {
                 placeholder="First Name"
                 onChangeText={first_name => this.setState({ first_name })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.state.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
-            <Item style={styles.inputItem}>
+            </View>
+            <View style={styles.item}>
               <Icon active name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -106,14 +94,8 @@ class Register extends Component {
                 placeholder="Last Name"
                 onChangeText={last_name => this.setState({ last_name })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
-            <Item style={styles.inputItem}>
+            </View>
+            <View style={styles.item}>
               <Icon active name="lock-open" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -125,13 +107,7 @@ class Register extends Component {
                 secureTextEntry
                 onChangeText={password => this.setState({ password })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
+            </View>
             <Button
               rounded light
               style={styles.button}

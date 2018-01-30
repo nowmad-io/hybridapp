@@ -30,14 +30,19 @@ export default {
     paddingTop: 20,
     paddingHorizontal: 20,
   },
-  inputItem: {
+  item: {
     marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: colors.white
   },
   inputIcon: {
     color: colors.white,
   },
   input: {
     color: colors.white,
+    marginLeft: 12
   },
   button: {
     width: '100%',

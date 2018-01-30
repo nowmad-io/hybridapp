@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Item, Input } from 'native-base';
+import { Input } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
@@ -63,7 +63,7 @@ class Login extends Component {
         </View>
         <Content padder style={styles.content}>
           <View style={styles.itemsWrapper}>
-            <Item style={styles.inputItem}>
+            <View style={styles.item}>
               <Icon name="person" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -74,14 +74,8 @@ class Login extends Component {
                 placeholder="EMAIL"
                 onChangeText={email => this.setState({ email })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
-            <Item style={styles.inputItem}>
+            </View>
+            <View style={styles.item}>
               <Icon name="lock-open" style={styles.inputIcon} />
               <Input
                 selectionColor={colors.whiteTransparent}
@@ -93,13 +87,7 @@ class Login extends Component {
                 secureTextEntry
                 onChangeText={password => this.setState({ password })}
               />
-              {this.state.error
-                ? <Item style={{ borderColor: 'transparent' }}>
-                  <Icon active style={{ color: 'red', marginTop: 5 }} name="bug" />
-                  <Text style={{ fontSize: 15, color: 'red' }}>{ this.props.error }</Text>
-                </Item>
-                : <Text />}
-            </Item>
+            </View>
             <Button
               light
               rounded
