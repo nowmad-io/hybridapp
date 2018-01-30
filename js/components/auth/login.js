@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image, View } from 'react-native';
+import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { Input } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 
 import { loginRequest } from '../../actions/auth';
@@ -65,7 +64,8 @@ class Login extends Component {
           <View style={styles.itemsWrapper}>
             <View style={styles.item}>
               <Icon name="person" style={styles.inputIcon} />
-              <Input
+              <TextInput
+                underlineColorAndroid={'transparent'}
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -77,7 +77,8 @@ class Login extends Component {
             </View>
             <View style={styles.item}>
               <Icon name="lock-open" style={styles.inputIcon} />
-              <Input
+              <TextInput
+                underlineColorAndroid={'transparent'}
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}

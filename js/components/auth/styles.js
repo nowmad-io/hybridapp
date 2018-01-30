@@ -42,7 +42,9 @@ export default {
   },
   input: {
     color: colors.white,
-    marginLeft: 12
+    marginLeft: 12,
+    fontSize: 16,
+    flex: 1
   },
   button: {
     width: '100%',
