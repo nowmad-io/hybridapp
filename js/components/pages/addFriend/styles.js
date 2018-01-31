@@ -1,6 +1,6 @@
 import React, { StyleSheet } from 'react-native';
 
-import { colors } from '../../parameters';
+import { colors } from '../../../parameters';
 
 export default {
   content: {

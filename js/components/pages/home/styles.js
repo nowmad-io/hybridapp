@@ -1,6 +1,6 @@
 import React, { StyleSheet } from 'react-native';
 
-import { colors, sizes } from '../../parameters';
+import { colors, sizes } from '../../../parameters';
 
 export { sizes }
 

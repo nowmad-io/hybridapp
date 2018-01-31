@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
 
-import Icon from '../dumbs/icon';
-import Button from '../dumbs/button';
-import Content from '../dumbs/content';
-import LayoutView from '../dumbs/layoutView';
-import Text from '../dumbs/text';
+import Icon from '../../dumbs/icon';
+import Button from '../../dumbs/button';
+import Content from '../../dumbs/content';
+import LayoutView from '../../dumbs/layoutView';
+import Text from '../../dumbs/text';
+import Label from '../../dumbs/label';
+import FormInput from '../../dumbs/formInput';
 
-import { acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship } from '../../api/friends';
-import { reviewsSearchByUser } from '../../api/reviews';
+import { acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
+import { reviewsSearchByUser } from '../../../api/reviews';
 
-import Label from '../label';
-import FormInput from '../formInput';
 
 import styles from './styles';
 

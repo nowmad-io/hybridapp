@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, StyleSheet } from 'react-native';
 
-import Text from '../dumbs/text';
+import Text from './text';
 
-import styles from './styles';
+import { colors } from '../../parameters';
 
-class FormInput extends Component {
+export default class FormInput extends Component {
   static propTypes = {
     onChangeText: PropTypes.func,
     placeholder: PropTypes.string,
@@ -55,4 +55,24 @@ class FormInput extends Component {
     )
   }
 }
-export default FormInput;
+
+const styles = StyleSheet.create({
+  inputWrapper: {
+    marginTop: 6,
+    paddingBottom: 6,
+  },
+  input: {
+    fontSize: 14,
+    lineHeight: 16,
+    paddingTop: 0,
+    paddingBottom: 10
+  },
+  length: {
+    position: 'absolute',
+    bottom: 0,
+    right: 4,
+    fontSize: 10,
+    fontWeight: '500',
+    color: colors.greyDark
+  }
+});

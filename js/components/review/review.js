@@ -4,7 +4,7 @@ import { Image, View } from 'react-native';
 import shortid from 'shortid';
 
 import Text from '../dumbs/text';
-import Tag from '../tag';
+import Tag from '../dumbs/tag';
 import ReviewHeader from './reviewHeader';
 import { reviewStyle, showcaseStyles } from './styles';
 const pictureHolder = require('../../../assets/images/picture_holder.jpg');

@@ -1,6 +1,6 @@
 import React, { Dimensions } from 'react-native';
 
-import { colors } from '../../parameters';
+import { colors } from '../../../parameters';
 
 export { colors };
 

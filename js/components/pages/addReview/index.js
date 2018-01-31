@@ -8,24 +8,24 @@ import _ from 'lodash';
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 
-import Icon from '../dumbs/icon';
-import LayoutView from '../dumbs/layoutView';
-import Content from '../dumbs/content';
-import Text from '../dumbs/text';
-import Button from '../dumbs/button';
-import Spinner from '../dumbs/spinner';
-import RadioButton from '../dumbs/radioButton';
+import Icon from '../../dumbs/icon';
+import LayoutView from '../../dumbs/layoutView';
+import Content from '../../dumbs/content';
+import Text from '../../dumbs/text';
+import Button from '../../dumbs/button';
+import Spinner from '../../dumbs/spinner';
+import RadioButton from '../../dumbs/radioButton';
+import Tag from '../../dumbs/tag';
+import Label from '../../dumbs/label';
+import FormInput from '../../dumbs/formInput';
+import ImageHolder from '../../dumbs/imageHolder';
 
-import { categoriesList, statusList } from '../../lists';
-import Map from '../map';
-import Marker from '../marker';
-import Tag from '../tag';
-import Label from '../label';
-import FormInput from '../formInput';
-import ImageHolder from '../imageHolder';
+import Map from '../../map';
+import Marker from '../../marker';
 
-import { addReview, updateReview } from '../../api/reviews';
-import { reviewLoading } from '../../actions/reviews';
+import { categoriesList, statusList } from '../../../lists';
+import { addReview, updateReview } from '../../../api/reviews';
+import { reviewLoading } from '../../../actions/reviews';
 
 import styles from './styles';
 

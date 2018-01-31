@@ -4,7 +4,7 @@ import shortid from 'shortid';
 import { Image, View } from 'react-native';
 import _ from 'lodash';
 
-import Tag from '../tag'
+import Tag from '../dumbs/tag'
 import ReviewHeader from './reviewHeader';
 
 import { showcaseStyles, headerStyles } from './styles';

@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
 
-import Icon from '../dumbs/icon';
-import Text from '../dumbs/text';
-import Button from '../dumbs/button';
-import List from '../dumbs/list';
-import ListItem from '../dumbs/listItem';
-import LayoutView from '../dumbs/layoutView';
+import Icon from '../../dumbs/icon';
+import Text from '../../dumbs/text';
+import Button from '../../dumbs/button';
+import List from '../../dumbs/list';
+import ListItem from '../../dumbs/listItem';
+import LayoutView from '../../dumbs/layoutView';
 
-import { runSagas, stopSagas } from '../../actions/utils';
-import { logoutRequest } from '../../actions/auth';
-import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../api/friends';
+import { runSagas, stopSagas } from '../../../actions/utils';
+import { logoutRequest } from '../../../actions/auth';
+import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
 
 import styles from './styles';
 

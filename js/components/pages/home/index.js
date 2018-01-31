@@ -7,13 +7,13 @@ import Config from 'react-native-config';
 import shortid from 'shortid';
 import _ from 'lodash';
 
-import Map from '../map';
-import Marker from '../marker';
-import MapList from '../mapList';
-import SearchWrapper from '../searchWrapper';
+import Map from '../../map';
+import Marker from '../../marker';
+import MapList from '../../mapList';
+import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../actions/home'
+  currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
 
 import styles, { sizes } from './styles';
 

@@ -4,17 +4,17 @@ import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
-import { loginRequest } from '../../actions/auth';
+import { loginRequest } from '../../../actions/auth';
 
-import Icon from '../dumbs/icon';
-import Button from '../dumbs/button';
-import LayoutView from '../dumbs/layoutView';
-import Content from '../dumbs/content';
-import Text from '../dumbs/text';
-import Spinner from '../dumbs/spinner';
+import Icon from '../../dumbs/icon';
+import Button from '../../dumbs/button';
+import LayoutView from '../../dumbs/layoutView';
+import Content from '../../dumbs/content';
+import Text from '../../dumbs/text';
+import Spinner from '../../dumbs/spinner';
 
 import styles, { colors } from './styles';
-const logo = require('../../../assets/images/logos/full_logo_horizontal.png');
+const logo = require('../../../../assets/images/logos/full_logo_horizontal.png');
 
 class Login extends Component {
   static navigationOptions = {

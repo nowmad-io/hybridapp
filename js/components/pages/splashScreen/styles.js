@@ -1,6 +1,6 @@
 import React from 'react-native';
 
-import { colors } from '../../parameters';
+import { colors } from '../../../parameters';
 const { StyleSheet } = React;
 
 export default {
