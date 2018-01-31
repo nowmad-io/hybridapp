@@ -51,14 +51,10 @@ export const colors = {
 export const sizes = {
   height: Platform.OS === "ios" ? deviceHeight : deviceHeight - 20,
   width: deviceWidth,
-  header: {
-    height: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
-    paddingTop: Platform.OS === "ios" ? (isIphoneX ? 39 : 15) : 0,
-    borderBottomWidth: Platform.OS === "ios" ? 1 / PixelRatio.getPixelSizeForLayoutSize(1) : 0
-  },
-  toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
-  statusBar: StatusBar.currentHeight,
+  headerHeight: 56,
   ITEM_LEVEL1: 80,
   ITEM_LEVEL2: 232,
+  toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
+  statusBar: StatusBar.currentHeight,
   drawerWidth: 0.625 * Dimensions.get('window').width
 }
