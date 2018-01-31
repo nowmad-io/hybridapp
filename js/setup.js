@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { StyleProvider } from 'native-base';
 
 import App from './App';
 import SplashScreen from './components/splashScreen';
@@ -31,11 +30,9 @@ function setup(): React.Component {
       }
 
       return (
-        <StyleProvider style={getTheme(platform)}>
-          <Provider store={this.state.store}>
-            <App />
-          </Provider>
-        </StyleProvider>
+        <Provider store={this.state.store}>
+          <App />
+        </Provider>
       );
     }
   }

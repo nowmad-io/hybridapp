@@ -22,7 +22,6 @@ export default class LayoutView extends Component {
 
   render() {
     const { style, type } = this.props;
-
 		return (
 			<View {...this.props} style={[styles[type], style]}>
 				{this.props.children}
