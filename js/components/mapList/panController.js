@@ -33,7 +33,6 @@ class PanController extends Component {
     overshootReductionFactor: PropTypes.number,
 
       // Events
-    onDirectionChange: PropTypes.func,
     onReleaseX: PropTypes.func,
     onReleaseY: PropTypes.func,
     onRelease: PropTypes.func,
@@ -53,7 +52,7 @@ class PanController extends Component {
     yBounds: [-Infinity, null, Infinity],
     yMode: 'decay',
     xMode: 'decay',
-    overshootSpringConfig: { friction: 7, tension: 40 },
+    overshootSpringConfig: { friction: 9, tension: 40 },
     momentumDecayConfig: { deceleration: 0.993 },
     springOriginConfig: { friction: 7, tension: 40 },
     overshootReductionFactor: 3,
@@ -103,9 +102,6 @@ class PanController extends Component {
           const dy2 = dy * dy;
           if (dx2 + dy2 > directionLockDistance) {
             this._direction = dx2 > dy2 ? 'x' : 'y';
-            if (this.props.onDirectionChange) {
-              this.props.onDirectionChange(this._direction, { dx, dy, x0, y0 });
-            }
           }
         }
 
@@ -208,7 +204,7 @@ class PanController extends Component {
       switch (overshoot) {
         case 'spring':
           Animated.spring(anim, {
-            ...this.props.overshootSpringConfig,
+            // ...this.props.overshootSpringConfig,
             toValue: min,
             velocity,
           }).start(() => this.props.onLevelChange(min));
@@ -221,7 +217,7 @@ class PanController extends Component {
       switch (overshoot) {
         case 'spring':
           Animated.spring(anim, {
-            ...this.props.overshootSpringConfig,
+            // ...this.props.overshootSpringConfig,
             toValue: max,
             velocity,
           }).start(() => this.props.onLevelChange(max));
