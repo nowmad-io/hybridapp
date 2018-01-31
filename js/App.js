@@ -8,7 +8,7 @@ import ProgressBar from './components/dumbs/progressBar';
 import Text from './components/dumbs/text';
 import LayoutView from './components/dumbs/layoutView';
 
-import theme from './themes/base-theme';
+import { colors } from './parameters';
 
 const styles = StyleSheet.create({
   modal: {
@@ -79,7 +79,7 @@ class App extends Component {
               {this.state.showInstalling
                 ? <Text
                   style={{
-                    color: theme.brandPrimary,
+                    color: colors.green,
                     textAlign: 'center',
                     marginBottom: 15,
                     fontSize: 15,
@@ -97,7 +97,7 @@ class App extends Component {
                 >
                   <Text
                     style={{
-                      color: theme.brandPrimary,
+                      color: colors.green,
                       textAlign: 'center',
                       marginBottom: 15,
                       fontSize: 15,
@@ -108,7 +108,7 @@ class App extends Component {
                     {`${parseInt(this.state.downloadProgress, 10)} %`}
                   </Text>
                   <ProgressBar
-                    color="theme.brandPrimary"
+                    color={colors.green}
                     progress={parseInt(this.state.downloadProgress, 10)}
                   />
                 </View>}
