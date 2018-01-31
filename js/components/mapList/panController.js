@@ -72,9 +72,6 @@ class PanController extends Component {
       onStartShouldSetPanResponder: this.props.onStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this.props.onMoveShouldSetPanResponder,
       onPanResponderGrant: (...args) => {
-        if (this.props.onPanResponderGrant) {
-          this.props.onPanResponderGrant(...args);
-        }
         let { panX, panY, horizontal, vertical, xMode, yMode } = this.props;
 
         this.handleResponderGrant(panX, xMode);
@@ -106,10 +103,6 @@ class PanController extends Component {
         }
 
         const dir = this._direction;
-
-        if (this.props.onPanResponderMove) {
-          this.props.onPanResponderMove(_, { dx, dy, x0, y0 });
-        }
 
         if (horizontal && (!lockDirection || dir === 'x')) {
           let [xMin, xStep, xMax] = xBounds;
@@ -145,23 +138,13 @@ class PanController extends Component {
 
         const dir = this._direction;
 
-        if (this.props.onRelease) {
-          cancel = false === this.props.onRelease({ vx, vy, dx, dy });
-        }
-
         if (!cancel && horizontal && (!lockDirection || dir === 'x')) {
           let [xMin, xStep, xMax] = xBounds;
-          if (this.props.onReleaseX) {
-            cancel = false === this.props.onReleaseX({ vx, vy, dx, dy });
-          }
           !cancel && this.handleResponderRelease(panX, xMin, xStep, xMax, vx, overshootX, xMode, snapSpacingX);
         }
 
         if (!cancel && vertical && (!lockDirection || dir === 'y')) {
           let [yMin, yStep, yMax] = yBounds;
-          if (this.props.onReleaseY) {
-            cancel = false === this.props.onReleaseY({ vx, vy, dx, dy });
-          }
           !cancel && this.handleResponderRelease(panY, yMin, yStep, yMax, vy, overshootY, yMode, snapSpacingY);
         }
 
