@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Dimensions, Animated } from 'react-native';
+import _ from 'lodash';
 
 import PanController from './panController';
 import Entry from './entry';
@@ -39,7 +40,7 @@ function getMarkerState(panX, panY, scrollY, i) {
   };
 }
 
-class MapList extends Component {
+export default class MapList extends Component {
   static propTypes = {
     places: PropTypes.array,
     navigation: PropTypes.object,
@@ -226,5 +227,3 @@ class MapList extends Component {
     );
   }
 }
-
-module.exports = MapList;
