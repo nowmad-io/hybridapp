@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import App from './App';
 import SplashScreen from './components/splashScreen';
 import configureStore from './configureStore';
-import getTheme from '../native-base-theme/components';
-import platform from '../native-base-theme/variables/platform';
 
 console.ignoredYellowBox = [
   'Setting a timer',
