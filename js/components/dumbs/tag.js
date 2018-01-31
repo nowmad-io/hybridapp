@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 28,
     backgroundColor: colors.white,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingBottom: 6,
+    paddingHorizontal: 9,
     marginRight: 8
   },
   selected: {
