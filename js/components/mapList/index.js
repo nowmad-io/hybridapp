@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View, Dimensions, Animated } from 'react-native';
 import _ from 'lodash';
 
-import PanController from './panController';
+import PanController from '../dumbs/panController';
 import Entry from './entry';
 
 import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, BREAKPOINT2, TOOLBARHEIGHT, screen } from './styles';
@@ -11,34 +11,6 @@ import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, BREAKPOINT2, TOOL
 const LEVEL1 = 0,
       LEVEL2 = -BREAKPOINT2,
       LEVEL3 = -1 * screen.height;
-
-function getMarkerState(panX, panY, scrollY, i) {
-  const xLeft = (-SNAP_WIDTH * i) + (SNAP_WIDTH / 2);
-  const xRight = (-SNAP_WIDTH * i) - (SNAP_WIDTH / 2);
-  const xPos = -SNAP_WIDTH * i;
-
-  const isIndex = panX.interpolate({
-    inputRange: [xRight - 1, xRight, xLeft, xLeft + 1],
-    outputRange: [0, 1, 1, 0],
-    extrapolate: 'clamp',
-  });
-
-  const translateY = Animated.multiply(isIndex, panY);
-
-  const translateX = panX;
-
-  const anim = Animated.multiply(isIndex, scrollY.interpolate({
-    inputRange: [0, BREAKPOINT1],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  }));
-
-  return {
-    translateY,
-    translateX,
-    anim
-  };
-}
 
 export default class MapList extends Component {
   static propTypes = {
@@ -61,50 +33,22 @@ export default class MapList extends Component {
     const panX = new Animated.Value(0);
     const panY = new Animated.Value(0);
 
-    const scrollY = panY.interpolate({
-      inputRange: [-1, 1],
-      outputRange: [1, -1],
-    });
-
-    const scrollX = panX.interpolate({
-      inputRange: [-1, 1],
-      outputRange: [1, -1],
-    });
-
-    const translateY = scrollY.interpolate({
-      inputRange: [0, BREAKPOINT1],
-      outputRange: [0, -BREAKPOINT1],
+    const translateY = panY.interpolate({
+      outputRange: [0, BREAKPOINT1],
       extrapolate: 'clamp',
     });
 
     this.state = {
-      animations: [],
       panX,
       panY,
-      scrollY,
-      scrollX,
       translateY
     };
   }
 
-  setUpAnimations(places) {
-    const { panX, panY, scrollY } = this.state;
-    const animations = places.map((m, i) =>
-      getMarkerState(panX, panY, scrollY, i));
-
-    this.setState({ animations });
-  }
-
-  componentDidMount() {
-    const { panX, panY, scrollX } = this.state;
-    const { places } = this.props;
-
-    this.setUpAnimations(places);
-  }
+  componentDidMount() {}
 
   componentWillReceiveProps({ places }) {
     if (places && this.props.places && !_.isEqual(places, this.props.places)) {
-      this.setUpAnimations(places);
       this.goToIndex(0);
     }
   }
@@ -175,7 +119,7 @@ export default class MapList extends Component {
 
 
   render() {
-    const { panX, panY, animations, translateY, scrollY } = this.state;
+    const { panX, panY, translateY } = this.state;
     const { places, navigation } = this.props;
 
     return (
@@ -184,7 +128,7 @@ export default class MapList extends Component {
           ref='panController'
           style={styles.container}
           vertical
-          horizontal={true}
+          horizontal
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
           yBounds={[LEVEL3, LEVEL2 , LEVEL1]}
@@ -202,20 +146,18 @@ export default class MapList extends Component {
             ],
           }]}>
             {places.map((place, i) => {
-              const translateX = animations && animations[i] ? animations[i].translateX : 0;
-
               return (
                 <Animated.View
                   key={place.id}
                   style={[styles.item, {
                     transform: [
-                      { translateX },
+                      { translateX: panX },
                     ],
                   }]}
                 >
                   <Entry
                     place={place}
-                    scrollY={scrollY}
+                    scrollY={translateY}
                     navigation={navigation}
                   />
                 </Animated.View>

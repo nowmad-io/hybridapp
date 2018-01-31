@@ -6,7 +6,7 @@ const ModePropType = PropTypes.oneOf(['decay', 'snap', 'spring-origin']);
 const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);
 const AnimatedPropType = PropTypes.any;
 
-class PanController extends Component {
+export default class PanController extends Component {
   static propTypes = {
       // Component Config
     lockDirection: PropTypes.bool,
@@ -362,5 +362,3 @@ class PanController extends Component {
     return <View {...this.props} {...this._responder.panHandlers} />;
   }
 }
-
-module.exports = PanController;
