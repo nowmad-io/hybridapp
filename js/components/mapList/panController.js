@@ -33,7 +33,6 @@ class PanController extends Component {
     overshootReductionFactor: PropTypes.number,
 
       // Events
-    onOvershoot: PropTypes.func,
     onDirectionChange: PropTypes.func,
     onReleaseX: PropTypes.func,
     onReleaseY: PropTypes.func,
@@ -206,9 +205,6 @@ class PanController extends Component {
     anim.flattenOffset();
 
     if (anim._value < min) {
-      if (this.props.onOvershoot) {
-        this.props.onOvershoot(); // TODO: what args should we pass to this
-      }
       switch (overshoot) {
         case 'spring':
           Animated.spring(anim, {
@@ -222,9 +218,6 @@ class PanController extends Component {
           break;
       }
     } else if (anim._value > max) {
-      if (this.props.onOvershoot) {
-        this.props.onOvershoot(); // TODO: what args should we pass to this
-      }
       switch (overshoot) {
         case 'spring':
           Animated.spring(anim, {
