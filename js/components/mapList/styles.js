@@ -2,43 +2,36 @@ import { StyleSheet, Platform, StatusBar } from 'react-native';
 
 import { colors, sizes } from '../../parameters';
 
-export const screen = {
-  height: sizes.height,
-  width: sizes.width
-}
+const HELPER = sizes.toolbarHeight + sizes.headerHeight + sizes.statusBar;
 
-export const SCREEN_PADDING_TOP = 12;
+// Variables for X scroll
 const ITEM_SPACING = 8;
 const ITEM_PREVIEW = 8;
-const ITEM_BORDER = 4;
-const ITEM_WIDTH = screen.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
-export const ITEM_LEVEL1 = sizes.ITEM_LEVEL1;
-export const ITEM_LEVEL2 = sizes.ITEM_LEVEL2;
-export const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
-export const ITEM_PREVIEW_HEIGHT = ITEM_LEVEL1 - sizes.statusBar - ITEM_BORDER;
-const BREAKPOINT_HELPER = sizes.statusBar + sizes.toolbarHeight + ITEM_BORDER + SCREEN_PADDING_TOP
-export const BREAKPOINT1 = (screen.height - ITEM_LEVEL1 - BREAKPOINT_HELPER);
-export const BREAKPOINT2 = (ITEM_LEVEL2 - ITEM_LEVEL1);
-export const TOOLBARHEIGHT = sizes.toolbarHeight;
-export const STATUSBARHEIGHT = sizes.statusBar;
+const ITEM_WIDTH = sizes.width - (2 * ITEM_SPACING) - (2 * ITEM_PREVIEW);
+const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
+
+// Variables for Y scroll
+const PADDING_TOP = 16;
+const BORDER = 4;
+const LEVEL1 = - 80 - BORDER;
+const LEVEL2 = - 232 - BORDER;
+const LEVEL3 = LEVEL1 + HELPER + PADDING_TOP - sizes.height + BORDER;
+
+export {
+  SNAP_WIDTH,
+  LEVEL1,
+  LEVEL2,
+  LEVEL3
+};
 
 export const entryStyles = {
-  card: (selected = true, level = 0) => ({
+  card: {
     backgroundColor: colors.white,
     position: 'relative',
-    minHeight: screen.height - 40,
-    height: '100%',
-    width: '100%',
-    flex: 0,
-    borderRadius: 0,
-    borderTopWidth: selected && level < 2 ? 4 : 0,
-    paddingTop: selected || level === 2 ? 0 : 4,
+    minHeight: sizes.height,
+    paddingBottom: sizes.toolbarHeight,
     borderColor: colors.green,
-    paddingBottom: 50
-  }),
-  showcase: {
-    marginBottom: 50,
-    zIndex: 1
+    borderTopWidth: BORDER
   },
   addressWrapper: {
     borderColor: colors.green,
@@ -69,11 +62,11 @@ export default {
     flexDirection: 'row',
     paddingHorizontal: (ITEM_SPACING / 2) + ITEM_PREVIEW,
     position: 'absolute',
-    marginTop: screen.height - ITEM_PREVIEW_HEIGHT - sizes.toolbarHeight
+    top: sizes.height
   },
   item: {
     width: ITEM_WIDTH,
-    height: BREAKPOINT1 + ITEM_LEVEL1 + ITEM_BORDER,
+    height: '100%',
     marginHorizontal: ITEM_SPACING / 2,
   }
 }

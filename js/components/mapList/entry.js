@@ -9,7 +9,7 @@ import Text from '../dumbs/text';
 import Button from '../dumbs/button';
 import { Showcase, Review } from '../review';
 
-import { entryStyles, BREAKPOINT1, BREAKPOINT2, ITEM_LEVEL1, ITEM_LEVEL2, TOOLBARHEIGHT, STATUSBARHEIGHT, SCREEN_PADDING_TOP } from './styles';
+import { entryStyles } from './styles';
 
 class Entry extends Component {
 
@@ -32,28 +32,10 @@ class Entry extends Component {
 
   constructor(props) {
     super(props);
-
-    const level1Y = props.scrollY.interpolate({
-      inputRange: [BREAKPOINT2, BREAKPOINT1],
-      outputRange: [0, -ITEM_LEVEL2],
-      extrapolate: 'clamp',
-    });
-
-    let buttonY = props.scrollY.interpolate({
-      inputRange: [BREAKPOINT2, BREAKPOINT1],
-      outputRange: [0, BREAKPOINT1 - 50 - 80 + 2 - STATUSBARHEIGHT],
-      extrapolate: 'clamp',
-    });
-
-    this.state = {
-      level1Y,
-      buttonY
-    }
   }
 
   render () {
-    const { level1Y, buttonY } = this.state;
-    const { place: { name, types, scope, address, reviews, all_reviews }, selected } = this.props;
+    const { place: { name, types, scope, address, reviews, all_reviews } } = this.props;
 
     const reviewsToOrder = all_reviews || reviews;
 
@@ -74,28 +56,14 @@ class Entry extends Component {
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
       >
-        <View style={entryStyles.card(selected)}>
-          <Animated.View
-            style={{
-              transform: [
-                { translateY: level1Y }
-              ]
-            }}
-          >
+        <View style={entryStyles.card}>
+          <Animated.View>
             <Showcase
-              style={entryStyles.showcase}
               reviews={all_reviews ? reviews : orderedReviews}
               placeAddress={address}
             />
           </Animated.View>
-          <Animated.View
-          style={{
-            zIndex: 99999,
-            transform: [
-              { translateY: buttonY }
-            ]
-          }}
-          >
+          <Animated.View style={{ zIndex: 99999 }}>
             <Button
               wrapped
               onPress={() => myReview ? this.onPressEditReview(myReview) : this.onPressAddReview()}
@@ -103,13 +71,7 @@ class Entry extends Component {
               <Text>{myReview ? 'My review' : 'Add review'}</Text>
             </Button>
           </Animated.View>
-          <Animated.View
-            style={{
-              transform: [
-                { translateY: level1Y }
-              ]
-            }}
-          >
+          <Animated.View>
             <View style={entryStyles.addressWrapper}>
               <Text style={entryStyles.address}>
                 <Icon style={entryStyles.addressIcon} name="location-on" /> {address}

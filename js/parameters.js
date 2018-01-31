@@ -49,7 +49,7 @@ export const colors = {
 };
 
 export const sizes = {
-  height: Platform.OS === "ios" ? deviceHeight : deviceHeight - 20,
+  height: Platform.OS === "ios" ? deviceHeight : deviceHeight - StatusBar.currentHeight,
   width: deviceWidth,
   headerHeight: 56,
   ITEM_LEVEL1: 80,

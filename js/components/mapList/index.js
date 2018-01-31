@@ -6,11 +6,8 @@ import _ from 'lodash';
 import PanController from '../dumbs/panController';
 import Entry from './entry';
 
-import styles, { SNAP_WIDTH, ITEM_PREVIEW_HEIGHT, BREAKPOINT1, BREAKPOINT2, TOOLBARHEIGHT, screen } from './styles';
-
-const LEVEL1 = 0,
-      LEVEL2 = -BREAKPOINT2,
-      LEVEL3 = -1 * screen.height;
+import styles, { SNAP_WIDTH, LEVEL1, LEVEL2, LEVEL3 } from './styles';
+import { sizes } from '../../parameters';
 
 export default class MapList extends Component {
   static propTypes = {
@@ -31,47 +28,23 @@ export default class MapList extends Component {
     super(props);
 
     const panX = new Animated.Value(0);
-    const panY = new Animated.Value(0);
-
-    const translateY = panY.interpolate({
-      outputRange: [0, BREAKPOINT1],
-      extrapolate: 'clamp',
-    });
+    const panY = new Animated.Value(LEVEL1);
 
     this.state = {
       panX,
-      panY,
-      translateY
+      panY
     };
   }
 
   componentDidMount() {}
 
   componentWillReceiveProps({ places }) {
-    if (places && this.props.places && !_.isEqual(places, this.props.places)) {
-      this.goToIndex(0);
-    }
+    if (places && this.props.places && !_.isEqual(places, this.props.places)) {}
   }
 
-  onStartShouldSetPanResponder = (e) => {
-    // we only want to move the view if they are starting the gesture on top
-    // of the view, so this calculates that and returns true if so. If we return
-    // false, the gesture should get passed to the map view appropriately.
-    const { panY } = this.state;
-    const { pageY } = e.nativeEvent;
-    const topOfMainWindow = ITEM_PREVIEW_HEIGHT - panY.__getValue();
-    const topOfTap = screen.height - pageY - TOOLBARHEIGHT;
-
-    return topOfTap < topOfMainWindow;
-  }
-
-  onMoveShouldSetPanResponder = (e) => {
-    const { panY } = this.state;
-    const { pageY } = e.nativeEvent;
-    const topOfMainWindow = ITEM_PREVIEW_HEIGHT - panY.__getValue();
-    const topOfTap = screen.height - pageY - TOOLBARHEIGHT;
-
-    return topOfTap < topOfMainWindow;
+  onShouldSetPanResponder = (e) => {
+    // set to false when scrolling on 3 level
+    return true;
   }
 
   onIndexChange = (endX) => {
@@ -119,7 +92,7 @@ export default class MapList extends Component {
 
 
   render() {
-    const { panX, panY, translateY } = this.state;
+    const { panX, panY, animations } = this.state;
     const { places, navigation } = this.props;
 
     return (
@@ -128,21 +101,21 @@ export default class MapList extends Component {
           ref='panController'
           style={styles.container}
           vertical
-          horizontal
+          horizontal={true}
           xMode="snap"
           snapSpacingX={SNAP_WIDTH}
           yBounds={[LEVEL3, LEVEL2 , LEVEL1]}
-          xBounds={[-screen.width * (places.length - 1), null, 0]}
+          xBounds={[-sizes.width * (places.length - 1), null, 0]}
           panY={panY}
           panX={panX}
-          onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
-          onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
+          onStartShouldSetPanResponder={this.onShouldSetPanResponder}
+          onMoveShouldSetPanResponder={this.onShouldSetPanResponder}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
         >
           <Animated.View style={[styles.itemContainer, {
             transform: [
-              { translateY },
+              { translateY: panY },
             ],
           }]}>
             {places.map((place, i) => {
@@ -157,7 +130,7 @@ export default class MapList extends Component {
                 >
                   <Entry
                     place={place}
-                    scrollY={translateY}
+                    scrollY={panY}
                     navigation={navigation}
                   />
                 </Animated.View>
