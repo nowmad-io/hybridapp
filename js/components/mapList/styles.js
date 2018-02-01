@@ -31,7 +31,8 @@ export const entryStyles = {
     minHeight: sizes.height,
     paddingBottom: sizes.toolbarHeight,
     borderColor: colors.green,
-    borderTopWidth: BORDER
+    borderTopWidth: BORDER,
+    borderRadius: 2
   },
   addressWrapper: {
     borderColor: colors.green,
