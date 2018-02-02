@@ -14,11 +14,12 @@ export default class Text extends Component {
       PropTypes.object,
       PropTypes.number,
       PropTypes.array
-    ])
+    ]),
+    note: PropTypes.bool
   };
 
   render() {
-    const { uppercase, capitalize, style, children } = this.props;
+    const { uppercase, capitalize, style, children, note } = this.props;
 
     let text;
     if (uppercase || capitalize) {
@@ -32,9 +33,9 @@ export default class Text extends Component {
     } else {
       text = children;
     }
-    
+
     return (
-      <RNText { ...this.props } style={[styles.text, style]}>
+      <RNText { ...this.props } style={[styles.text, note && styles.note, style]}>
         { text }
       </RNText>
     );
@@ -44,9 +45,14 @@ export default class Text extends Component {
 const styles = StyleSheet.create({
   text: {
     fontFamily: font.fontFamily,
-    fontSize: font.fontSize.text,
+    fontSize: 16,
     fontWeight: font.fontWeight.regular,
     fontStyle: font.fontStyle.normal,
-    color: colors.black
+    color: colors.black,
+    lineHeight: 16
+  },
+  note: {
+    color: colors.greyDark,
+    marginTop: 8
   }
 });

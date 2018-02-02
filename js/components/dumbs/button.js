@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   rounded_button: {
-    borderRadius: font.fontSize.text * 3.8
+    borderRadius: 40
   },
   flat_button: {
     elevation: 0,

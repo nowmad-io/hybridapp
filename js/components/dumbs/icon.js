@@ -23,7 +23,7 @@ export default class Icon extends Component {
 
 const styles = StyleSheet.create({
   icon: {
-    fontSize: font.fontSize.icon,
+    fontSize: 28,
     color: colors.black
   }
 });

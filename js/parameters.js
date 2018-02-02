@@ -14,10 +14,6 @@ export const font = {
     bold: '700',
     black: '900'
   },
-  fontSize: {
-    text: 16,
-    icon: 28
-  },
   fontStyle: {
     normal: 'normal',
     italic: 'italic'

@@ -22,8 +22,9 @@ export const headerStyles = {
     marginLeft: 8
   },
   address: {
-    paddingTop: 4,
+    marginTop: 8,
     fontSize: 12,
+    lineHeight: 12,
     color: colors.grey,
   },
   addressIcon: {
