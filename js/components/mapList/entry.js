@@ -14,6 +14,11 @@ import { entryStyles } from './styles';
 class Entry extends Component {
 
   static propTypes = {
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array
+    ]),
     navigation: PropTypes.object,
     place: PropTypes.object.isRequired,
     scrollY: PropTypes.object
@@ -35,7 +40,7 @@ class Entry extends Component {
   }
 
   render () {
-    const { place: { name, types, scope, address, reviews, all_reviews } } = this.props;
+    const { place: { name, types, scope, address, reviews, all_reviews }, style } = this.props;
 
     const reviewsToOrder = all_reviews || reviews;
 
@@ -56,7 +61,7 @@ class Entry extends Component {
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
       >
-        <View style={entryStyles.card}>
+        <View style={[entryStyles.card, style]}>
           <Animated.View>
             <Showcase
               reviews={all_reviews ? reviews : orderedReviews}

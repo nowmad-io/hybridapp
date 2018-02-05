@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import { Animated, PanResponder } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config';
 import shortid from 'shortid';
 import _ from 'lodash';
+import Carousel from 'react-native-snap-carousel';
 
 import Map from '../../map';
 import Marker from '../../marker';
 import MapList from '../../mapList';
+import Entry from '../../mapList/entry';
 import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
 
-import styles, { sizes } from './styles';
+import styles, { sizes, SLIDER_WIDTH, ITEM_WIDTH } from './styles';
 
 class Home extends Component {
   static propTypes = {
@@ -54,8 +56,6 @@ class Home extends Component {
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
 
-      this.refs.mapList.goToEntry(selectedPlace);
-
       if (this.props.level === 2) {
         this.refs.map.animateToCoordinate(selectedPlace);
       }
@@ -81,8 +81,8 @@ class Home extends Component {
     }
   }
 
-  onIndexChange = (place) => {
-    this.props.dispatch(selectedPlace(place));
+  onIndexChange = (index) => {
+    this.props.dispatch(selectedPlace(this.props.searchedPlaces.length ? this.props.searchedPlaces[index] : this.props.currentPlaces[index]));
   }
 
   onLevelChange = (level) => {
@@ -182,10 +182,23 @@ class Home extends Component {
     }
   }
 
+  _renderItem({item, index}) {
+    return (
+      <View style={styles.entryWrapper}>
+        <Entry
+          place={item}
+          style={styles.entry}
+        />
+      </View>
+    );
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, googlePlace, searchedPlaces } = this.props;
 
+      console.log('ITEM_WIDTH', ITEM_WIDTH);
+      console.log('SLIDER_WIDTH', SLIDER_WIDTH);
     return (
       <SearchWrapper
         ref='searchWrapper'
@@ -232,13 +245,18 @@ class Home extends Component {
             />
           )}
         </Map>
-        <MapList
-          ref='mapList'
-          places={searchedPlaces.length ? searchedPlaces : currentPlaces}
-          navigation={navigation}
-          onIndexChange={this.onIndexChange}
-          onLevelChange={this.onLevelChange}
-        />
+        <View style={styles.carousel}>
+          <Carousel
+            ref={(c) => { this._carousel = c; }}
+            data={searchedPlaces.length ? searchedPlaces : currentPlaces}
+            renderItem={this._renderItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            inactiveSlideOpacity={1}
+            inactiveSlideScale={1}
+            onSnapToItem={this.onIndexChange}
+          />
+        </View>
       </SearchWrapper>
     );
   }
