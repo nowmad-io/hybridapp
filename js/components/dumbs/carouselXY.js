@@ -107,10 +107,9 @@ export default class carouselXY extends Component {
   _renderItem = ({item, index}) => {
     return (
       <View style={styles.entryWrapper}>
-
         <Entry
           place={item}
-          style={styles.entry}
+          styles={styles.entry}
           onHeaderPress={this.props.onHeaderPress}
           navigation={this.props.navigation}
           panY={this.state.panY}

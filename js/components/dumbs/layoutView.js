@@ -16,7 +16,8 @@ export default class LayoutView extends Component {
       'header',
       'container',
       'left',
-      'right'
+      'right',
+      'wrapper'
     ])
   };
 
@@ -61,5 +62,9 @@ const styles = StyleSheet.create({
     flex: 1,
 		alignSelf: 'center',
 		alignItems: 'flex-end',
+  },
+  wrapper: {
+    flexDirection: 'row',
+    flex: 1
   }
 });
