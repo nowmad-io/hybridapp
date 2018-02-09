@@ -10,12 +10,4 @@ const LEVEL3 = HELPER + PADDING_TOP - sizes.height;
 
 export { sizes, LEVEL1, LEVEL2, LEVEL3 }
 
-export default {
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: "100%",
-    width: "100%",
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  }
-};
+export default {};

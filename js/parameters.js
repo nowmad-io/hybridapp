@@ -48,8 +48,6 @@ export const sizes = {
   height: Platform.OS === "ios" ? deviceHeight : deviceHeight - StatusBar.currentHeight,
   width: deviceWidth,
   headerHeight: 56,
-  ITEM_LEVEL1: 80,
-  ITEM_LEVEL2: 232,
   toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
   statusBar: StatusBar.currentHeight,
   drawerWidth: 0.625 * Dimensions.get('window').width
