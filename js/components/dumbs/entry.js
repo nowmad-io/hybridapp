@@ -21,8 +21,28 @@ export default class Entry extends Component {
     ]),
     navigation: PropTypes.object,
     place: PropTypes.object.isRequired,
-    scrollY: PropTypes.object
+    panY: PropTypes.object
   };
+
+  constructor(props) {
+    super(props);
+    const level1Y = props.panY.interpolate({
+      inputRange: [props.max, props.step],
+      outputRange: [props.min + props.step, 0],
+      extrapolate: 'clamp',
+    });
+
+    let buttonY = props.panY.interpolate({
+      inputRange: [props.max, props.step],
+      outputRange: [ props.step - props.max, 0],
+      extrapolate: 'clamp',
+    });
+
+    this.state = {
+      level1Y,
+      buttonY
+    }
+  }
 
   onPressAddReview() {
     this.props.navigation.navigate('AddReview', { place: this.props.place })
@@ -37,6 +57,7 @@ export default class Entry extends Component {
 
   render () {
     const { place: { name, types, scope, address, reviews, all_reviews }, style } = this.props;
+    const { level1Y, buttonY } = this.state;
 
     const reviewsToOrder = all_reviews || reviews;
 
@@ -58,13 +79,26 @@ export default class Entry extends Component {
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.card, style]}>
-          <Animated.View>
+          <Animated.View
+            style={{
+                transform: [
+                  { translateY: level1Y }
+                ]
+              }}
+          >
             <Showcase
               reviews={all_reviews ? reviews : orderedReviews}
               placeAddress={address}
             />
           </Animated.View>
-          <Animated.View style={{ zIndex: 99999 }}>
+          <Animated.View
+            style={{
+              zIndex: 99999,
+              transform: [
+                { translateY: buttonY }
+              ]
+            }}
+          >
             <Button
               wrapped
               onPress={() => myReview ? this.onPressEditReview(myReview) : this.onPressAddReview()}
@@ -72,7 +106,13 @@ export default class Entry extends Component {
               <Text>{myReview ? 'My review' : 'Add review'}</Text>
             </Button>
           </Animated.View>
-          <Animated.View>
+          <Animated.View
+            style={{
+              transform: [
+                { translateY: level1Y }
+              ]
+            }}
+          >
             <View style={styles.addressWrapper}>
               <Text style={styles.address}>
                 <Icon style={styles.addressIcon} name="location-on" /> {address}

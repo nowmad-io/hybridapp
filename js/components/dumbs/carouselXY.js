@@ -113,6 +113,10 @@ export default class carouselXY extends Component {
           style={styles.entry}
           onHeaderPress={this.props.onHeaderPress}
           navigation={this.props.navigation}
+          panY={this.state.panY}
+          min={this.props.min}
+          step={this.props.step}
+          max={this.props.max}
         />
       </View>
     );
