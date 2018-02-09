@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Animated, View } from 'react-native';
+import { ScrollView, Animated, View, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import shortid from 'shortid';
 
-import Icon from '../dumbs/icon';
-import Text from '../dumbs/text';
-import Button from '../dumbs/button';
+import Icon from './icon';
+import Text from './text';
+import Button from './button';
 import { Showcase, Review } from '../review';
 
-import { entryStyles } from './styles';
+import { colors, sizes } from '../../parameters';
 
-class Entry extends Component {
+export default class Entry extends Component {
 
   static propTypes = {
     style: PropTypes.oneOfType([
@@ -33,10 +33,6 @@ class Entry extends Component {
       place: this.props.place,
       review
     })
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render () {
@@ -61,7 +57,7 @@ class Entry extends Component {
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
       >
-        <View style={[entryStyles.card, style]}>
+        <View style={[styles.card, style]}>
           <Animated.View>
             <Showcase
               reviews={all_reviews ? reviews : orderedReviews}
@@ -77,9 +73,9 @@ class Entry extends Component {
             </Button>
           </Animated.View>
           <Animated.View>
-            <View style={entryStyles.addressWrapper}>
-              <Text style={entryStyles.address}>
-                <Icon style={entryStyles.addressIcon} name="location-on" /> {address}
+            <View style={styles.addressWrapper}>
+              <Text style={styles.address}>
+                <Icon style={styles.addressIcon} name="location-on" /> {address}
               </Text>
             </View>
             {orderedReviews && orderedReviews.map((review) => (
@@ -92,6 +88,34 @@ class Entry extends Component {
       </ScrollView>
     );
   }
-}
+};
 
-export default Entry
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: colors.white,
+    position: 'relative',
+    minHeight: sizes.height,
+    paddingBottom: sizes.toolbarHeight,
+    borderColor: colors.green,
+    borderTopWidth: 4,
+    borderRadius: 2
+  },
+  addressWrapper: {
+    borderColor: colors.green,
+    borderBottomWidth: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: 1,
+    paddingBottom: 4
+  },
+  address: {
+    paddingTop: 4,
+    fontSize: 12,
+    alignSelf: 'center',
+    color: colors.grey,
+  },
+  addressIcon: {
+    fontSize: 10,
+    color: colors.grey
+  }
+});

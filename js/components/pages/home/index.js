@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
-import { View, Animated, PanResponder } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Config from 'react-native-config';
 import shortid from 'shortid';
 import _ from 'lodash';
-import Carousel from 'react-native-snap-carousel';
 
+import CarouselXY from '../../dumbs/carouselXY';
 import Map from '../../map';
 import Marker from '../../marker';
-import MapList from '../../mapList';
-import Entry from '../../mapList/entry';
 import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
 
-import styles, { sizes, SLIDER_WIDTH, ITEM_WIDTH, LEVEL1, LEVEL2, LEVEL3} from './styles';
+import styles, { sizes, LEVEL1, LEVEL2, LEVEL3} from './styles';
 
 class Home extends Component {
   static propTypes = {
@@ -31,73 +28,6 @@ class Home extends Component {
     region: PropTypes.object,
     newPlace: PropTypes.object,
     searchFocus: PropTypes.bool
-  }
-
-  _listener: null;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      panY: new Animated.Value(0)
-    };
-  }
-
-  componentWillMount() {
-    this._responder = PanResponder.create({
-      onMoveShouldSetPanResponderCapture: (_, { dx, dy }) => {
-        const dx2 = dx * dx;
-        const dy2 = dy * dy;
-        return dx2 > dy2 ? false : true;
-      },
-      onPanResponderGrant: (e, gestureState) => {
-        this.state.panY.setOffset(this.state.panY._value + this.state.panY._offset);
-        this.state.panY.setValue(0);
-      },
-      onPanResponderMove: (_, { dx, dy, x0, y0 }) => {
-        let panY = this.state.panY,
-            val = panY._offset + dy;
-
-        if (val < LEVEL3) {
-          val = LEVEL3;
-        }
-        if (val > 0) {
-          val = 0;
-        }
-
-        val = val - panY._offset;
-        panY.setValue(val);
-      },
-      onPanResponderRelease: (e, {dy, vx, vy}) => {
-        let panY = this.state.panY,
-            level = 1;
-        const value = panY._offset + dy,
-              min = 0,
-              step = LEVEL2,
-              max = LEVEL3;
-
-        panY.flattenOffset();
-
-        let toValue = min;
-
-        if ((value > min) || (value > step && value > min + (step - min) / 2)) {
-          toValue = min;
-          level = 1;
-        } else if ((value < max) || (value < step && value < step + (max - step) / 2 ) ) {
-          toValue = max;
-          level = 2;
-        } else if ((value < step && value > step + (max - step) / 2)
-          || (value > step && value < min + (step - min) / 2)) {
-          toValue = step;
-          level = 3;
-        }
-
-        Animated.timing(panY, {
-          duration: 200,
-          toValue
-        }).start(() => this.onLevelChange(level));
-      }
-    });
   }
 
   componentDidMount() {
@@ -249,21 +179,9 @@ class Home extends Component {
     }
   }
 
-  _renderItem({item, index}) {
-    return (
-      <View style={styles.entryWrapper}>
-        <Entry
-          place={item}
-          style={styles.entry}
-        />
-      </View>
-    );
-  }
-
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, googlePlace, searchedPlaces } = this.props;
-    const { panY } = this.state;
 
     return (
       <SearchWrapper
@@ -311,26 +229,14 @@ class Home extends Component {
             />
           )}
         </Map>
-        <Animated.View
-          {...this._responder.panHandlers}
-          style={[
-            styles.carousel,
-            {
-              transform: [{ translateY: panY }]
-            }
-          ]}
-        >
-          <Carousel
-            ref={(c) => { this._carousel = c; }}
-            data={searchedPlaces.length ? searchedPlaces : currentPlaces}
-            renderItem={this._renderItem}
-            sliderWidth={SLIDER_WIDTH}
-            itemWidth={ITEM_WIDTH}
-            inactiveSlideOpacity={1}
-            inactiveSlideScale={1}
-            onSnapToItem={this.onIndexChange}
-          />
-        </Animated.View>
+        <CarouselXY
+          data={searchedPlaces.length ? searchedPlaces : currentPlaces}
+          onIndexChange={this.onIndexChange}
+          onLevelChange={this.onLevelChange}
+          min={LEVEL1}
+          step={LEVEL2}
+          max={LEVEL3}
+        />
       </SearchWrapper>
     );
   }
