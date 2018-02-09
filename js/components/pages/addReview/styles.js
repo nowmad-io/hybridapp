@@ -15,7 +15,8 @@ export default {
     paddingBottom: 50
   },
   title: {
-    fontSize: 24
+    fontSize: 24,
+    lineHeight: 26
   },
   tagWrapper: {
     marginTop: 12,

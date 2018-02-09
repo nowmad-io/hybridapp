@@ -179,6 +179,13 @@ class Home extends Component {
     }
   }
 
+  onHeaderPress = () => {
+    if (this.props.level === 1) {
+      this.onLevelChange(2);
+      this.refs.carouselXY.goToLevel(2);
+    }
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, googlePlace, searchedPlaces } = this.props;
@@ -230,12 +237,15 @@ class Home extends Component {
           )}
         </Map>
         <CarouselXY
+          ref='carouselXY'
           data={searchedPlaces.length ? searchedPlaces : currentPlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           min={LEVEL1}
           step={LEVEL2}
           max={LEVEL3}
+          onHeaderPress={this.onHeaderPress}
+          navigation={this.props.navigation}
         />
       </SearchWrapper>
     );

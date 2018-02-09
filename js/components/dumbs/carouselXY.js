@@ -56,8 +56,7 @@ export default class carouselXY extends Component {
         panY.setValue(val);
       },
       onPanResponderRelease: (e, {dy, vx, vy}) => {
-        let panY = this.state.panY,
-            level = 1;
+        let panY = this.state.panY;
         const value = panY._offset + dy,
               min = 0,
               step = this.props.step,
@@ -69,30 +68,51 @@ export default class carouselXY extends Component {
 
         if ((value > min) || (value > step && value > min + (step - min) / 2)) {
           toValue = min;
-          level = 1;
         } else if ((value < max) || (value < step && value < step + (max - step) / 2 ) ) {
           toValue = max;
-          level = 2;
         } else if ((value < step && value > step + (max - step) / 2)
           || (value > step && value < min + (step - min) / 2)) {
           toValue = step;
-          level = 3;
         }
 
         Animated.timing(panY, {
           duration: 200,
           toValue
-        }).start(() => this.props.onLevelChange(level));
+        }).start(() => this.props.onLevelChange(this.valueToLevel(toValue)));
       }
     });
   }
 
-  _renderItem({item, index}) {
+  valueToLevel(value) {
+    const { step, max } = this.props;
+    return value === 0 ? 1 : value === step ? 2 : 3;
+  }
+
+  levelToValue(level) {
+    const { step, max } = this.props;
+    return level === 1 ? 0 : level === 2 ? step : max;
+  }
+
+  goToLevel(level) {
+    Animated.timing(panY, {
+      duration: 200,
+      toValue: this.levelToValue(level)
+    }).start();
+  }
+
+  goToIndex() {
+
+  }
+
+  _renderItem = ({item, index}) => {
     return (
       <View style={styles.entryWrapper}>
+
         <Entry
           place={item}
           style={styles.entry}
+          onHeaderPress={this.props.onHeaderPress}
+          navigation={this.props.navigation}
         />
       </View>
     );
