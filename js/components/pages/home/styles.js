@@ -8,12 +8,11 @@ const ITEM_WIDTH = sizes.width - ITEM_SPACING * 2;
 
 const HELPER = sizes.toolbarHeight + sizes.headerHeight + sizes.statusBar;
 const PADDING_TOP = 16;
-const BORDER = 4;
-const LEVEL1 = - 80 - BORDER;
-const LEVEL2 = - 232 - BORDER;
-const LEVEL3 = LEVEL1 + HELPER + PADDING_TOP - sizes.height + BORDER;
+const LEVEL1 = - 80;
+const LEVEL2 = 80 - 232;
+const LEVEL3 = HELPER + PADDING_TOP - sizes.height;
 
-export { sizes, ITEM_WIDTH, SLIDER_WIDTH }
+export { sizes, ITEM_WIDTH, SLIDER_WIDTH, LEVEL1, LEVEL2, LEVEL3 }
 
 export default {
   container: {
@@ -25,7 +24,7 @@ export default {
   },
   carousel: {
     position: 'absolute',
-    top: sizes.height - 80
+    top: sizes.height + LEVEL1
   },
   entryWrapper: {
     paddingHorizontal: ITEM_SPACING / 2,
