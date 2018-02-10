@@ -17,8 +17,6 @@ function * nearbyFlow(actions) {
   }
 }
 
-export default function _root(socket) {
-  return function * root() {
-    yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
-  }
+export default function * root() {
+  yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
 }

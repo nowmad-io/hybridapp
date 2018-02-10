@@ -5,8 +5,8 @@ import { BackHandler } from "react-native";
 import { addNavigationHelpers, StackNavigator, NavigationActions } from 'react-navigation';
 import _ from "lodash";
 
-import Login from '../components/auth/login';
-import Register from '../components/auth/register';
+import Login from '../components/pages/auth/login';
+import Register from '../components/pages/auth/register';
 import AppRouter from './AppRouter';
 
 export const MainNavigator = StackNavigator({
@@ -55,7 +55,7 @@ class MainRouter extends Component {
   render() {
     const { dispatch, nav } = this.props;
 
-    return <MainNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+    return <MainNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />;
   }
 }
 

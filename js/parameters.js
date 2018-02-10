@@ -1,6 +1,24 @@
-import React, { StatusBar, Dimensions } from 'react-native';
+import React, { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
 
-import material from '../native-base-theme/variables/material';
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
+const isIphoneX = Platform.OS === "ios" && deviceHeight === 812 && deviceWidth === 375;
+
+export const font = {
+  fontFamily: 'Roboto',
+  fontWeight: {
+    thin: '100',
+    light: '300',
+    regular: '400',
+    medium: '500',
+    bold: '700',
+    black: '900'
+  },
+  fontStyle: {
+    normal: 'normal',
+    italic: 'italic'
+  }
+}
 
 export const colors = {
   green: '#00C69F',
@@ -21,14 +39,31 @@ export const colors = {
   greyTransparent: 'rgba(188, 185, 185, 0.2)',
   whiteTransparent: 'rgba(255, 255, 255, 0.6)',
   whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
-  transparent: 'rgba(0, 0, 0, 0)'
+  transparent: 'rgba(0, 0, 0, 0)',
+  ripple: 'rgba(256, 256, 256, 0.3)',
+  rippleDark: 'rgba(0, 0, 0, 0.15)'
 };
 
 export const sizes = {
-  toolbarHeight: material.toolbarHeight,
+  height: Platform.OS === "ios" ? deviceHeight : deviceHeight - StatusBar.currentHeight,
+  width: deviceWidth,
+  headerHeight: 56,
+  toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
   statusBar: StatusBar.currentHeight,
-  ITEM_LEVEL1: 80,
-  ITEM_LEVEL2: 232,
-  screen: Dimensions.get('window'),
   drawerWidth: 0.625 * Dimensions.get('window').width
+}
+
+const HELPER = sizes.toolbarHeight + sizes.headerHeight + sizes.statusBar;
+const PADDING_TOP = 16;
+const ITEM_SPACING = 8;
+const LEVEL1 = 80;
+
+export const carousel = {
+  sliderWidth: sizes.width,
+  itemSpacing: ITEM_SPACING,
+  itemWidth: sizes.width - ITEM_SPACING * 2,
+  level1: - LEVEL1,
+  level2: LEVEL1 - 232,
+  level3: HELPER + PADDING_TOP - sizes.height,
+  border: 4
 }

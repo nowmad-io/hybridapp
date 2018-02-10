@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, BackHandler, Keyboard } from 'react-native';
-import { Container, Header, Text, Button, Icon, View } from 'native-base';
+import { TextInput, BackHandler, Keyboard, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -11,6 +10,9 @@ import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
+import Button from '../dumbs/button';
+import LayoutView from '../dumbs/layoutView';
+import Icon from '../dumbs/icon';
 import ResultList from '../resultList';
 
 import { colors } from '../../parameters';
@@ -243,46 +245,44 @@ class SearchWrapper extends Component {
     const { props, state } = this;
 
     return (
-      <Container>
-        <Header style={styles.header} searchBar={true}>
-          <View style={styles.headerView}>
-            <Button
-              transparent
-              style={styles.headerButton}
-              onPress={() => this.onActionPress()}
-            >
-              {state.focused ? (
-                <Icon name='md-arrow-back' style={styles.headerIcon}/>
-              ) : state.text.length ? (
-                <Icon name='md-close' style={styles.headerIcon}/>
-              ) : (
-                <Icon name='md-search' style={styles.headerIcon}/>
-              )}
-            </Button>
+      <LayoutView type='container'>
+        <LayoutView type='header'>
+          <Button
+            transparent
+            style={styles.headerButton}
+            onPress={() => this.onActionPress()}
+          >
+            {state.focused ? (
+              <Icon name='arrow-back' style={styles.headerIcon}/>
+            ) : state.text.length ? (
+              <Icon name='close' style={styles.headerIcon}/>
+            ) : (
+              <Icon name='search' style={styles.headerIcon}/>
+            )}
+          </Button>
 
-            <TextInput
-              ref='textInput'
-              underlineColorAndroid={state.focused ? colors.white : colors.transparent}
-              autoCorrect={false}
-              placeholder={'Search friends, reviews & places'}
-              selectionColor={colors.whiteTransparent}
-              placeholderTextColor={colors.white}
-              style={styles.searchInput}
-              value={state.text}
-              onSubmitEditing={() => this.onSubmitEditing()}
-              onFocus={() => this.onFocus()}
-              onChangeText={(text) => this.onChangeText(text)}
-              withRef />
+          <TextInput
+            ref='textInput'
+            underlineColorAndroid={state.focused ? colors.white : colors.transparent}
+            autoCorrect={false}
+            placeholder={'Search friends, reviews & places'}
+            selectionColor={colors.whiteTransparent}
+            placeholderTextColor={colors.white}
+            style={styles.searchInput}
+            value={state.text}
+            onSubmitEditing={() => this.onSubmitEditing()}
+            onFocus={() => this.onFocus()}
+            onChangeText={(text) => this.onChangeText(text)}
+            withRef />
 
-            <Button
-              style={styles.headerButton}
-              onPress={props.onMenuPress}
-              transparent
-            >
-              <Icon name='md-menu' style={[styles.headerIcon, styles.menuIcon]} />
-            </Button>
-          </View>
-        </Header>
+          <Button
+            transparent
+            style={styles.headerButton}
+            onPress={props.onMenuPress}
+          >
+            <Icon name='menu' style={[styles.headerIcon, styles.menuIcon]} />
+          </Button>
+        </LayoutView>
 
         {this.props.children}
 
@@ -305,7 +305,7 @@ class SearchWrapper extends Component {
             onNearbyPlaceSelected={this.onNearbyPlaceSelected}
             />
         )}
-      </Container>
+      </LayoutView>
     )
   }
 }

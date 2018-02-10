@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { Text } from 'native-base';
 import MapView from 'react-native-maps';
-import { Thumbnail } from 'native-base';
 import _ from 'lodash';
+
+import Text from '../dumbs/text';
+import Thumbnail from '../dumbs/thumbnail';
 
 import styles from './styles';
 

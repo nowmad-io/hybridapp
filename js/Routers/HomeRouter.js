@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DrawerNavigator } from 'react-navigation';
 
-import Home from '../components/home/';
-import DrawBar from '../components/drawBar';
+import Home from '../components/pages/home';
+import DrawBar from '../components/pages/drawBar';
 
 import { sizes } from '../parameters/';
 

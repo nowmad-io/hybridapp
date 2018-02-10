@@ -6,8 +6,7 @@ export default {
   resultWrapper: {
     height: "100%",
     width: "100%",
-    backgroundColor: colors.white,
-    paddingHorizontal: 16,
+    backgroundColor: colors.white
   },
   resultView: {
     paddingBottom: sizes.toolbarHeight + 24,

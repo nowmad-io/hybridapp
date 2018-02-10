@@ -123,10 +123,8 @@ export function * logoutFlow() {
 }
 
 // Bootstrap sagas
-export default function _root(socket) {
-  return function* root() {
-    yield takeLatest(LOGIN_REQUEST, loginFlow);
-    yield takeLatest(REGISTER_REQUEST, registerFlow);
-    yield takeLatest(LOGOUT_REQUEST, logoutFlow);
-  }
+export default function * root() {
+  yield takeLatest(LOGIN_REQUEST, loginFlow);
+  yield takeLatest(REGISTER_REQUEST, registerFlow);
+  yield takeLatest(LOGOUT_REQUEST, logoutFlow);
 }

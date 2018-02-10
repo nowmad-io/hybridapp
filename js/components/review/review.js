@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'react-native';
-import { View, CardItem, Text, Icon } from 'native-base';
+import { Image, View } from 'react-native';
 import shortid from 'shortid';
 
-import Tag from '../tag';
+import Text from '../dumbs/text';
+import Tag from '../dumbs/tag';
 import ReviewHeader from './reviewHeader';
 import { reviewStyle, showcaseStyles } from './styles';
-const pictureHolder = require('../../../images/picture_holder.jpg');
+const pictureHolder = require('../../../assets/images/picture_holder.jpg');
 
 const Review = props => {
   const categories = props.review.categories.map((categorie) => {
@@ -19,7 +19,7 @@ const Review = props => {
   return (
     <View style={reviewStyle.reviewWrapper}>
       <ReviewHeader reviews={[props.review]} />
-      <CardItem style={showcaseStyles.picturesWrapper}>
+      <View style={showcaseStyles.picturesWrapper}>
         <Image
           source={pictures.length ? {uri: pictures[0].source} : pictureHolder}
           style={showcaseStyles.mainPicture()}
@@ -29,14 +29,14 @@ const Review = props => {
             {pictures[0].caption}
           </Text>
         ) : null}
-      </CardItem>
-      <CardItem>
+      </View>
+      <View style={showcaseStyles.tags}>
         {props.review.categories.map((categorie) => (
           <Tag
             key={shortid.generate()}
             text={categorie.name} />
         ))}
-      </CardItem>
+      </View>
     </View>
   )
 };

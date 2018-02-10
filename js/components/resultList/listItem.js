@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, Image } from 'react-native';
-import { Text, View } from 'native-base';
+import { TouchableOpacity, Image, View } from 'react-native';
+
+import Text from '../dumbs/text';
 
 import styles from './styles';
 
@@ -9,10 +10,10 @@ const ListItem = (props) => (
   <TouchableOpacity onPress={props.onPress}>
     <View style={styles.itemWrapper(props.other)}>
       { props.image === 'google' && (
-        <Image source={require('../../../images/icons/google.png')} style={styles.imageItem} />
+        <Image source={require('../../../assets/images/icons/google.png')} style={styles.imageItem} />
       )}
       { props.image === 'place' && (
-        <Image source={require('../../../images/icons/place.png')} style={styles.imageItem} />
+        <Image source={require('../../../assets/images/icons/place.png')} style={styles.imageItem} />
       )}
       { props.image === 'friend' && (
         <View>

@@ -4,9 +4,9 @@ import { StackNavigator } from 'react-navigation';
 
 import HomeRouter from './HomeRouter';
 
-import AddReview from '../components/addReview';
-import AddImage from '../components/addImage';
-import AddFriend from '../components/addFriend';
+import AddReview from '../components/pages/addReview';
+import AddImage from '../components/pages/addImage';
+import AddFriend from '../components/pages/addFriend';
 
 const AppRouter = StackNavigator({
   Home: { screen: HomeRouter },

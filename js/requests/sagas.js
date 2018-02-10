@@ -18,8 +18,10 @@ function* _apiGeneric(action) {
   }
   try {
     const response = yield call(api[method], path, { params, data, options});
+    console.log('response', response);
     yield put({ type: success, payload: response });
   } catch (error) {
+    console.log('error', error)
     yield put({ type: failure, payload: error, error: true });
   }
 }
