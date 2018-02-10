@@ -42,8 +42,8 @@ export default class carouselXY extends Component {
         let panY = this.state.panY,
             val = panY._offset + dy;
 
-        if (val < this.props.max) {
-          val = this.props.max;
+        if (val < carousel.level3) {
+          val = carousel.level3;
         }
         if (val > 0) {
           val = 0;
