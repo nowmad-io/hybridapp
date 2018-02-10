@@ -7,7 +7,7 @@ import Icon from '../icon';
 import Text from '../text';
 import Thumbnail from '../thumbnail';
 
-import { colors } from '../../../parameters';
+import { colors, carousel } from '../../../parameters';
 const googleImg = require('../../../../assets/images/icons/google.png');
 
 export default class ReviewHeader extends Component {
@@ -71,12 +71,17 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		borderRadius: 2,
 		backgroundColor: colors.white,
+    height: - carousel.level1
   },
   thumbnail: {
     alignSelf: 'flex-start'
   },
   textWrapper: {
-    marginLeft: 8
+    marginLeft: 8,
+    flexDirection: 'column',
+    flex: 1,
+    alignSelf: 'stretch',
+    justifyContent: 'space-between'
   },
   address: {
     marginTop: 8,

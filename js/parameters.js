@@ -52,3 +52,18 @@ export const sizes = {
   statusBar: StatusBar.currentHeight,
   drawerWidth: 0.625 * Dimensions.get('window').width
 }
+
+const HELPER = sizes.toolbarHeight + sizes.headerHeight + sizes.statusBar;
+const PADDING_TOP = 16;
+const ITEM_SPACING = 8;
+const LEVEL1 = 80;
+
+export const carousel = {
+  sliderWidth: sizes.width,
+  itemSpacing: ITEM_SPACING,
+  itemWidth: sizes.width - ITEM_SPACING * 2,
+  level1: - LEVEL1,
+  level2: LEVEL1 - 232,
+  level3: HELPER + PADDING_TOP - sizes.height,
+  border: 4
+}

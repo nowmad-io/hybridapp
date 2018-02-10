@@ -14,7 +14,7 @@ import SearchWrapper from '../../searchWrapper';
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
 
-import { sizes, LEVEL1, LEVEL2, LEVEL3 } from './styles';
+import { sizes, carousel } from '../../../parameters';
 
 class Home extends Component {
   static propTypes = {
@@ -61,7 +61,7 @@ class Home extends Component {
     if (level && level !== this.props.level) {
       this.refs.map.updatePadding({
         top: sizes.toolbarHeight,
-        bottom: level === 1 ? - LEVEL1 : - LEVEL1 - LEVEL2
+        bottom: level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2
       });
 
       if (level < 3 && this.props.selectedPlace) {
@@ -93,7 +93,7 @@ class Home extends Component {
     this.props.dispatch(regionChanged(region));
 
     const southWest = {
-      latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? - LEVEL1 : - LEVEL1 - LEVEL2) / scale),
+      latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2) / scale),
       longitude: region.longitude - region.longitudeDelta / 2
     };
 
@@ -210,7 +210,7 @@ class Home extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           mapPadding={{
             top: sizes.toolbarHeight,
-            bottom: - LEVEL1
+            bottom: - carousel.level1
           }}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (
@@ -241,9 +241,6 @@ class Home extends Component {
           data={searchedPlaces.length ? searchedPlaces : currentPlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
-          min={LEVEL1}
-          step={LEVEL2}
-          max={LEVEL3}
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
         />

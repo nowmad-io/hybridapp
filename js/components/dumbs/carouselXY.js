@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 
 import Entry from './entry';
 
-import { sizes } from '../../parameters';
+import { sizes, carousel } from '../../parameters';
 
 export default class carouselXY extends Component {
   static propTypes = {
@@ -14,10 +14,7 @@ export default class carouselXY extends Component {
       PropTypes.number,
       PropTypes.array
     ]),
-    data: PropTypes.array,
-    min: PropTypes.number,
-    step: PropTypes.number,
-    max: PropTypes.number
+    data: PropTypes.array
   };
 
   _listener: null;
@@ -59,8 +56,8 @@ export default class carouselXY extends Component {
         let panY = this.state.panY;
         const value = panY._offset + dy,
               min = 0,
-              step = this.props.step,
-              max = this.props.max;
+              step = carousel.level2,
+              max = carousel.level3;
 
         panY.flattenOffset();
 
@@ -113,16 +110,16 @@ export default class carouselXY extends Component {
           onHeaderPress={this.props.onHeaderPress}
           navigation={this.props.navigation}
           panY={this.state.panY}
-          min={this.props.min}
-          step={this.props.step}
-          max={this.props.max}
+          min={carousel.level1}
+          step={carousel.level2}
+          max={carousel.level3}
         />
       </View>
     );
   }
 
   render() {
-    const { data, onIndexChange, min, sliderWidth, itemWidth } = this.props;
+    const { data, onIndexChange, sliderWidth, itemWidth } = this.props;
     const { panY } = this.state;
 
     return (
@@ -130,15 +127,15 @@ export default class carouselXY extends Component {
         {...this._responder.panHandlers}
         style={[
           styles.carousel,
-          {top: sizes.height + min},
+          {top: sizes.height + carousel.level1 - carousel.border},
           {transform: [{ translateY: panY }]}
         ]}
       >
         <Carousel
           data={data}
           renderItem={this._renderItem}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
+          sliderWidth={carousel.sliderWidth}
+          itemWidth={carousel.itemWidth}
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
           onSnapToItem={onIndexChange}
@@ -148,19 +145,15 @@ export default class carouselXY extends Component {
   }
 };
 
-const SLIDER_WIDTH = sizes.width;
-const ITEM_SPACING = 8;
-const ITEM_WIDTH = sizes.width - ITEM_SPACING * 2;
-
 const styles = StyleSheet.create({
   carousel: {
     position: 'absolute'
   },
   entryWrapper: {
-    paddingHorizontal: ITEM_SPACING / 2,
-    width: ITEM_WIDTH
+    paddingHorizontal: carousel.itemSpacing / 2,
+    width: carousel.itemWidth
   },
   entry: {
-    width: ITEM_WIDTH - ITEM_SPACING
+    width: carousel.itemWidth - carousel.itemSpacing
   }
 });

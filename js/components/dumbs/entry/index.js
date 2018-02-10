@@ -13,7 +13,7 @@ import Pictures from '../pictures';
 import Tag from '../tag';
 import { Review } from '../../review';
 
-import { colors, sizes } from '../../../parameters';
+import { colors, sizes, carousel } from '../../../parameters';
 
 export default class Entry extends Component {
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     minHeight: sizes.height,
     paddingBottom: sizes.toolbarHeight,
     borderColor: colors.green,
-    borderTopWidth: 4,
+    borderTopWidth: carousel.border,
     borderRadius: 2
   },
   addressWrapper: {
