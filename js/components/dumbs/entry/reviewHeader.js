@@ -31,15 +31,15 @@ export default class ReviewHeader extends Component {
       <View style={styles.wrapper}>
         <Thumbnail style={styles.thumbnail} source={reviews[0].created_by.picture ? {uri: reviews[0].created_by.picture} : googleImg} />
         <View style={styles.textWrapper}>
-          <Text>
+          <Text numberOfLines={1}>
             <Text>
               {reviews[0].created_by === 'me' ? 'You' : reviews[0].created_by.first_name }
             </Text>
             {reviews.length > 1 ? ` and ${reviews.length - 1} more friend${reviews.length > 2 ? 's' : ''}` : ''}
           </Text>
-          <Text note>- { reviews[0].short_description } -</Text>
+          <Text numberOfLines={1} note>- { reviews[0].short_description } -</Text>
           { showcase && (
-            <Text style={styles.address}>
+            <Text numberOfLines={1} style={styles.address}>
               <Icon style={styles.addressIcon} name="location-on" /> {placeAddress}
             </Text>
           )}
