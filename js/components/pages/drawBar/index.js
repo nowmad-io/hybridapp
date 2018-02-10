@@ -78,7 +78,7 @@ class DrawBar extends React.Component {
                   >
                     <LayoutView type='left'>
                       <Image resizeMethod="resize" source={{uri: request.to_user.picture}} style={styles.userPicture} />
-                      <Text style={styles.itemText}>{request.to_user.first_name}</Text>
+                      <Text>{request.to_user.first_name}</Text>
                     </LayoutView>
                     <LayoutView type='right' style={styles.right}>
                       <TouchableOpacity

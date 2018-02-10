@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: font.fontWeight.regular,
     fontStyle: font.fontStyle.normal,
     color: colors.black,
-    lineHeight: 16
+    lineHeight: 18
   },
   note: {
     color: colors.greyDark,

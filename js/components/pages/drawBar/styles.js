@@ -21,10 +21,12 @@ export default {
     flex: 1
   },
   title: {
-    fontSize: 24
+    fontSize: 24,
+    lineHeight: 26
   },
   subtitle: {
     fontSize: 14,
+    lineHeight: 16,
     color: colors.grey
   },
   thumbnail: {
@@ -44,6 +46,7 @@ export default {
   },
   label: {
     fontSize: 12,
+    lineHeight: 14,
     color: colors.greyDark,
     paddingHorizontal: 8,
     paddingBottom: 8
@@ -68,9 +71,6 @@ export default {
     backgroundColor: colors.transparent,
     height: 42
   }),
-  itemText: {
-    fontSize: 16
-  },
   userPicture: {
     alignSelf: 'center',
     width: 22,
@@ -111,6 +111,7 @@ export default {
   actionLabel: {
     color: colors.blueDark,
     fontSize: 12,
+    lineHeight: 14,
     paddingRight: 4
   }
 };
