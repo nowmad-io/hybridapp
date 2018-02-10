@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   text: {
     color: colors.white,
     fontWeight: font.fontWeight.medium,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   rounded_button: {
     borderRadius: 40

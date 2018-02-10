@@ -76,7 +76,7 @@ class AddImage extends Component {
         <LayoutView type='header'>
           <LayoutView type='left'>
             <Button transparent onPress={this.onBackPress}>
-              <Icon name='arrow-back' />
+              <Icon style={styles.iconHeader} name='arrow-back' />
             </Button>
           </LayoutView>
           <LayoutView type='right'>

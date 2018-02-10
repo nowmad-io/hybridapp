@@ -21,6 +21,9 @@ export default {
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+  iconHeader: {
+    color: colors.white
+  },
   icon: {
     color: colors.grey
   }

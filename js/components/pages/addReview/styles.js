@@ -36,5 +36,8 @@ export default {
     paddingBottom: 4,
     borderBottomWidth: 1,
     borderColor: colors.greyDark,
+  },
+  icon: {
+    color: colors.white
   }
 };

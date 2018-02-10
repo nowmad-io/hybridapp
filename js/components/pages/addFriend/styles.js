@@ -21,19 +21,18 @@ export default {
     marginRight: 16
   },
   title: {
-    fontSize: 24
-  },
-  subtitle: {
-    fontSize: 16
+    fontSize: 24,
+    lineHeight: 26
   },
   requestButton: {
-    alignSelf: 'flex-end',
-    height: 32,
-    marginTop: 16
+    alignSelf: 'flex-end'
   },
   buttonWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end'
+  },
+  icon: {
+    color: colors.white
   }
 };

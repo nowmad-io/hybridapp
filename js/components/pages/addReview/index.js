@@ -215,7 +215,7 @@ class AddReview extends Component {
         <LayoutView type='header'>
           <LayoutView type='left'>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name='arrow-back' />
+              <Icon style={styles.icon} name='arrow-back' />
             </Button>
           </LayoutView>
           <LayoutView type='right'></LayoutView>

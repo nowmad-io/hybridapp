@@ -94,7 +94,7 @@ class AddFriend extends Component {
         <LayoutView type='header'>
           <LayoutView type='left'>
             <Button transparent onPress={this.onBackPress}>
-              <Icon name='arrow-back' />
+              <Icon style={styles.icon} name='arrow-back' />
             </Button>
           </LayoutView>
           <LayoutView type='right'></LayoutView>
@@ -109,7 +109,7 @@ class AddFriend extends Component {
             </View>
             <View>
               <Text style={styles.title}>{state.user.first_name}</Text>
-              <Text style={styles.subtitle}>{state.user.last_name}</Text>
+              <Text>{state.user.last_name}</Text>
             </View>
           </View>
           <View>
