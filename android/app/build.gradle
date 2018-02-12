@@ -86,16 +86,16 @@ def pass = getPassword("nowmad","android_keystore")
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 23
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.nowmad"
         minSdkVersion 16
         targetSdkVersion 22
         multiDexEnabled true
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
