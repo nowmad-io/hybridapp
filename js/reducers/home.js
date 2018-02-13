@@ -145,7 +145,7 @@ function HomeReducer(state = initialState, action) {
       return {
         ...state,
         currentPlaces: action.places,
-        selectedPlace: (action.places.length > 0 && !state.selectedPlace) ? action.places[0] : state.selectedPlace
+        selectedPlace: action.places.length ? action.places[0] : {}
       };
     case LOGOUT:
       return initialState;

@@ -30,8 +30,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: 'j@j.com',
-      password: 'j',
+      email: '',
+      password: '',
     };
 
     // Check if logged in and redirect to App if so

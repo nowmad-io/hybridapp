@@ -32,17 +32,17 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.newPlace) {
-      this.refs.searchWrapper.getWrappedInstance().searchCoordinates(this.props.newPlace, true);
+      this._searchWrapper.getWrappedInstance().searchCoordinates(this.props.newPlace, true);
     }
     if (this.props.googlePlace) {
-      this.refs.searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
+      this._searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
     }
   }
 
   componentWillReceiveProps({ fromReview }) {
     if (fromReview) {
-      this.refs.searchWrapper.getWrappedInstance().clear();
-      this.refs.searchWrapper.getWrappedInstance().blurInput();
+      this._searchWrapper.getWrappedInstance().clear();
+      this._searchWrapper.getWrappedInstance().blurInput();
       this.onRegionChangeComplete(this.props.region);
       this.props.dispatch(setFromReview(false));
     }
@@ -54,27 +54,31 @@ class Home extends Component {
         && selectedPlace.id !== this.props.selectedPlace.id) {
 
       if (this.props.level === 2) {
-        this.refs.map.animateToCoordinate(selectedPlace);
+        this._map.animateToCoordinate(selectedPlace);
       }
     }
 
     if (level && level !== this.props.level) {
-      this.refs.map.updatePadding({
+      this._map.updatePadding({
         top: sizes.toolbarHeight,
         bottom: level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2
       });
 
       if (level < 3 && this.props.selectedPlace) {
-        this.refs.map.animateToCoordinate(this.props.selectedPlace);
+        this._map.animateToCoordinate(this.props.selectedPlace);
       }
     }
   }
 
   onMarkerPress = (e, place) => {
+    const { searchedPlaces, currentPlaces } = this.props,
+          index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, (p) => (p.id == place.id));
+
     this.props.dispatch(selectedPlace(place));
+    this._carouselXY.goToIndex(index);
 
     if (this.props.level === 2) {
-      this.refs.map.animateToCoordinate(place);
+      this._map.animateToCoordinate(place);
     }
   }
 
@@ -112,18 +116,14 @@ class Home extends Component {
     this.props.dispatch(currentPlacesChange(newPlaces));
   }
 
-  onRef = (ref) => {
-    this._map = ref;
-  }
-
   onMapReady = () => {
     if (this._map && this.props.newPlace) {
-      this.refs.map.animateToCoordinate(this.props.newPlace);
+      this._map.animateToCoordinate(this.props.newPlace);
     }
   }
 
   onMapLongPress = ({coordinate}) => {
-    this.refs.searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
+    this._searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
     this.props.dispatch(selectNewPlace(coordinate));
   }
 
@@ -138,7 +138,7 @@ class Home extends Component {
   }
 
   onNewMarkerPress = () => {
-    this.refs.searchWrapper.getWrappedInstance().focusInput();
+    this._searchWrapper.getWrappedInstance().focusInput();
   }
 
   onNearbySelected = (place) => {
@@ -148,41 +148,45 @@ class Home extends Component {
 
   onNearbyPlaceSelected = (place) => {
     this.props.dispatch(googlePlace(place));
-    this.refs.searchWrapper.getWrappedInstance().blurInput();
-    this.refs.searchWrapper.getWrappedInstance().setValue(place.name);
+    this._searchWrapper.getWrappedInstance().blurInput();
+    this._searchWrapper.getWrappedInstance().setValue(place.name);
   }
 
   onPlaceSelected = (place) => {
     this.props.dispatch(searchedPlaces([place]));
-    this.refs.searchWrapper.getWrappedInstance().blurInput();
-    this.refs.map.animateToCoordinate(place);
+    this._searchWrapper.getWrappedInstance().blurInput();
+    this._map.animateToCoordinate(place);
   }
 
   onPlacesSelected = (place, places) => {
     this.props.dispatch(searchedPlaces(_.compact([place, ...places])));
-    this.refs.searchWrapper.getWrappedInstance().blurInput();
+    this._searchWrapper.getWrappedInstance().blurInput();
     if (place) {
-      this.refs.map.animateToCoordinate(place);
+      this._map.animateToCoordinate(place);
     }
   }
 
-  onReviewPress = (place) => {
+  onReviewPress = (place, review) => {
+    this._searchWrapper.getWrappedInstance().blurInput();
+    this._searchWrapper.getWrappedInstance().setValue(review.short_description);
     this.props.dispatch(selectedPlace(place));
+    this._map.animateToCoordinate(place);
   }
 
   onFriendPress = (user) => {
     if (user.type === 'other') {
       this.props.navigation.navigate('AddFriend', { user });
     } else {
-      this.refs.searchWrapper.getWrappedInstance().blurInput();
-      this.refs.searchWrapper.getWrappedInstance().setValue(user.first_name);
+      this._searchWrapper.getWrappedInstance().blurInput();
+      this._searchWrapper.getWrappedInstance().setValue(user.first_name);
     }
   }
 
   onHeaderPress = () => {
-    if (this.props.level === 1) {
-      this.onLevelChange(2);
-      this.refs.carouselXY.goToLevel(2);
+    const toLevel = this.props.level <= 2 ? this.props.level === 1 ? 2 : 1 : null;
+    if (toLevel) {
+      this.onLevelChange(toLevel);
+      this._carouselXY.goToLevel(toLevel);
     }
   }
 
@@ -193,15 +197,18 @@ class Home extends Component {
     return (
       <SearchWrapper
         ref='searchWrapper'
+        ref={(sw) => { this._searchWrapper = sw; }}
         onClear={() => this.onSearchClear()}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
         onPlaceSelected={this.onPlaceSelected}
         onPlacesSelected={this.onPlacesSelected}
         onFriendPress={this.onFriendPress}
-        onMenuPress={() => navigation.navigate('DrawerOpen')}>
+        onMenuPress={() => navigation.navigate('DrawerOpen')}
+        onReviewPress={this.onReviewPress}
+      >
         <Map
-          ref='map'
+          ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
@@ -237,12 +244,13 @@ class Home extends Component {
           )}
         </Map>
         <CarouselXY
-          ref='carouselXY'
+          ref={(c) => { this._carouselXY = c; }}
           data={searchedPlaces.length ? searchedPlaces : currentPlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
+          onHeaderPress={this.onHeaderPress}
         />
       </SearchWrapper>
     );

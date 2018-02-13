@@ -81,24 +81,22 @@ export default class carouselXY extends Component {
   }
 
   valueToLevel(value) {
-    const { step, max } = this.props;
-    return value === 0 ? 1 : value === step ? 2 : 3;
+    return value === 0 ? 1 : value === carousel.level2 ? 2 : 3;
   }
 
   levelToValue(level) {
-    const { step, max } = this.props;
-    return level === 1 ? 0 : level === 2 ? step : max;
+    return level === 1 ? 0 : level === 2 ? carousel.level2 : carousel.level3;
   }
 
-  goToLevel(level) {
-    Animated.timing(panY, {
+  goToLevel = (level) => {
+    Animated.timing(this.state.panY, {
       duration: 200,
       toValue: this.levelToValue(level)
     }).start();
   }
 
-  goToIndex() {
-
+  goToIndex(index) {
+    this._carousel.snapToItem(index);
   }
 
   _renderItem = ({item, index}) => {
@@ -132,6 +130,7 @@ export default class carouselXY extends Component {
         ]}
       >
         <Carousel
+          ref={(c) => { this._carousel = c; }}
           data={data}
           renderItem={this._renderItem}
           sliderWidth={carousel.sliderWidth}
