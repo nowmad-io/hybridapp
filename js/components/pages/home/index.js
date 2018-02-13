@@ -183,9 +183,10 @@ class Home extends Component {
   }
 
   onHeaderPress = () => {
-    if (this.props.level === 1) {
-      this.onLevelChange(2);
-      this._carouselXY.goToLevel(2);
+    const toLevel = this.props.level <= 2 ? this.props.level === 1 ? 2 : 1 : null;
+    if (toLevel) {
+      this.onLevelChange(toLevel);
+      this._carouselXY.goToLevel(toLevel);
     }
   }
 
