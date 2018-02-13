@@ -43,14 +43,10 @@ class ResultList extends Component {
     super(props);
   }
 
-  onReviewPress(place) {
-    this.props.onReviewPress(place);
-  }
-
   render() {
     const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
-      friendsSearch, onPlaceSelected, onFriendPress } = this.props;
+      friendsSearch, onPlaceSelected, onFriendPress, onReviewPress } = this.props;
 
     let friendsSearchList = [];
 
@@ -124,7 +120,7 @@ class ResultList extends Component {
                         image='place'
                         text={review.short_description}
                         secondaryText={review.created_by.first_name}
-                        onPress={() => this.onReviewPress(place)} />
+                        onPress={() => onReviewPress(place, review)} />
                     ))
                   ))}
                 </View>

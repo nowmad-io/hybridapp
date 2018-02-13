@@ -71,7 +71,11 @@ class Home extends Component {
   }
 
   onMarkerPress = (e, place) => {
+    const { searchedPlaces, currentPlaces } = this.props,
+          index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, (p) => (p.id == place.id));
+
     this.props.dispatch(selectedPlace(place));
+    this._carouselXY.goToIndex(index);
 
     if (this.props.level === 2) {
       this._map.animateToCoordinate(place);
@@ -162,8 +166,11 @@ class Home extends Component {
     }
   }
 
-  onReviewPress = (place) => {
+  onReviewPress = (place, review) => {
+    this._searchWrapper.getWrappedInstance().blurInput();
+    this._searchWrapper.getWrappedInstance().setValue(review.short_description);
     this.props.dispatch(selectedPlace(place));
+    this._map.animateToCoordinate(place);
   }
 
   onFriendPress = (user) => {
@@ -196,7 +203,9 @@ class Home extends Component {
         onPlaceSelected={this.onPlaceSelected}
         onPlacesSelected={this.onPlacesSelected}
         onFriendPress={this.onFriendPress}
-        onMenuPress={() => navigation.navigate('DrawerOpen')}>
+        onMenuPress={() => navigation.navigate('DrawerOpen')}
+        onReviewPress={this.onReviewPress}
+      >
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}

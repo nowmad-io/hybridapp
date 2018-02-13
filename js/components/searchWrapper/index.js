@@ -299,7 +299,7 @@ class SearchWrapper extends Component {
             reviewsLoading={props.reviewsLoading}
             placesLoading={props.placesLoading}
             onFriendPress={this.onFriendPress}
-            onReviewPress={this.onReviewPress}
+            onReviewPress={props.onReviewPress}
             onPlaceSelected={this.onPlaceSelected}
             onNearbySelected={this.onNearbySelected}
             onNearbyPlaceSelected={this.onNearbyPlaceSelected}
