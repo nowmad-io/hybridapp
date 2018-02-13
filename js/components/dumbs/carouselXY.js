@@ -95,8 +95,8 @@ export default class carouselXY extends Component {
     }).start();
   }
 
-  goToIndex() {
-
+  goToIndex(index) {
+    this._carousel.snapToItem(index);
   }
 
   _renderItem = ({item, index}) => {
@@ -130,6 +130,7 @@ export default class carouselXY extends Component {
         ]}
       >
         <Carousel
+          ref={(c) => { this._carousel = c; }}
           data={data}
           renderItem={this._renderItem}
           sliderWidth={carousel.sliderWidth}

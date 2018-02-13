@@ -110,7 +110,6 @@ class Home extends Component {
     })
 
     this.props.dispatch(currentPlacesChange(newPlaces));
-    this.onReviewPress(newPlaces.length && newPlaces[0] || {});
   }
 
   onMapReady = () => {
@@ -179,7 +178,7 @@ class Home extends Component {
   onHeaderPress = () => {
     if (this.props.level === 1) {
       this.onLevelChange(2);
-      this.refs.carouselXY.goToLevel(2);
+      this._carouselXY.goToLevel(2);
     }
   }
 
@@ -235,7 +234,7 @@ class Home extends Component {
           )}
         </Map>
         <CarouselXY
-          ref='carouselXY'
+          ref={(c) => { this._carouselXY = c; }}
           data={searchedPlaces.length ? searchedPlaces : currentPlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
