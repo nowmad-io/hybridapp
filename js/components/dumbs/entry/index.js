@@ -90,6 +90,7 @@ export default class Entry extends Component {
             placeAddress={address}
             showcase={true}
             thumbnails={thumbnails}
+            onPress={this.props.onHeaderPress}
           />
           <View style={styles.item}>
             <Pictures pictures={pictures} />

@@ -243,6 +243,7 @@ class Home extends Component {
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
+          onHeaderPress={this.onHeaderPress}
         />
       </SearchWrapper>
     );
