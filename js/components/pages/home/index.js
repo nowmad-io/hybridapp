@@ -110,6 +110,7 @@ class Home extends Component {
     })
 
     this.props.dispatch(currentPlacesChange(newPlaces));
+    this.onReviewPress(newPlaces.length && newPlaces[0] || {});
   }
 
   onRef = (ref) => {
