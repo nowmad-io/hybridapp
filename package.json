@@ -7,12 +7,12 @@
     "url": "https://github.com/travelNetwork/hybridapp.git"
   },
   "scripts": {
-    "postinstall": "react-native link && npm run updateBuildTool",
+    "postinstall": "react-native link && npm run workarounds",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint js",
     "avd": "~/Library/Android/sdk/tools/emulator -avd nowmad_avd &",
     "bumpVersion": "node scripts/release.js",
-    "updateBuildTool": "node scripts/sdkBuildTool.js",
+    "workarounds": "node scripts/workarounds.js",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
     "android:prod": "ENVFILE=.env.release react-native run-android  -- --reset-cache",
     "android:release": "cd android && ENVFILE=.env.release ./gradlew assembleRelease",
@@ -59,7 +59,8 @@
     "generator-rn-toolbox": "3.2.1",
     "react-native-rename": "2.2.2",
     "remote-redux-devtools": "0.5.12",
-    "remotedev-server": "0.2.4"
+    "remotedev-server": "0.2.4",
+    "rimraf": "^2.6.2"
   },
   "rnpm": {
     "assets": [
