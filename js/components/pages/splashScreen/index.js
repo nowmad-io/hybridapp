@@ -8,7 +8,7 @@ const logo = require('../../../../assets/images/logos/logo_white.png');
 
 const SplashScreen = props => (
   <LayoutView type='container' style={styles.container}>
-    <Image source={logo} style={styles.logo} />
+    <Image source={logo} style={styles.logo} resizeMode="contain" />
   </LayoutView>
 );
 

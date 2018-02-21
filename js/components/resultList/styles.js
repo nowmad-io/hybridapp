@@ -42,6 +42,7 @@ export default {
     color: colors.grey
   },
   button: {
+    marginHorizontal: 16,
     marginTop: 28,
     alignSelf: 'flex-end'
   },
