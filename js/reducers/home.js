@@ -142,7 +142,7 @@ function HomeReducer(state = initialState, action) {
     case REGION_CHANGE:
       return { ...state, region: action.region};
     case CURRENT_PLACES:
-      let selectedPlace = action.places.length ? action.places[0] : {};
+      let selectedPlace = action.places.length ? action.places[0] : null;
 
       if (state.selectedPlace && _.find(action.places, (place) => place.id === state.selectedPlace.id)) {
         selectedPlace = state.selectedPlace;
