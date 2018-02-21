@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, PanResponder, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import _ from 'lodash';
 
 import Entry from './entry';
 
@@ -14,6 +15,7 @@ export default class carouselXY extends Component {
       PropTypes.number,
       PropTypes.array
     ]),
+    selectedPlace: PropTypes.object,
     data: PropTypes.array
   };
 
@@ -80,6 +82,13 @@ export default class carouselXY extends Component {
     });
   }
 
+  componentWillUpdate({ data, selectedPlace }) {
+    if (data && selectedPlace) {
+      const index = _.findIndex(data, (place) => place.id === selectedPlace.id)
+      this.goToIndex(index, false);
+    }
+  }
+
   valueToLevel(value) {
     return value === 0 ? 1 : value === carousel.level2 ? 2 : 3;
   }
@@ -95,8 +104,8 @@ export default class carouselXY extends Component {
     }).start();
   }
 
-  goToIndex(index) {
-    this._carousel.snapToItem(index);
+  goToIndex(index, animated = true) {
+    this._carousel.snapToItem(index, animated);
   }
 
   _renderItem = ({item, index}) => {

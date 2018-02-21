@@ -244,6 +244,7 @@ class Home extends Component {
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
           onHeaderPress={this.onHeaderPress}
+          selectedPlace={selectedPlace}
         />
       </SearchWrapper>
     );
