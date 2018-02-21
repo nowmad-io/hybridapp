@@ -192,7 +192,7 @@ class Home extends Component {
 
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
-      searchFocus, googlePlace, searchedPlaces } = this.props;
+      searchFocus, searchedPlaces } = this.props;
 
     return (
       <SearchWrapper

@@ -21,4 +21,8 @@ updateBuildTool(reactNativeConfig);
 
 // workaround for the error: "However the module `MaterialIcons` could not be found within the package"
 const reactNativeFixtures = path.join(root, './node_modules/react-native/local-cli/core/__fixtures__/files/package.json');
-rimraf(reactNativeFixtures, {}, (err) => console.log('Error while deleting', err));
+rimraf(reactNativeFixtures, {}, (err) => {
+  if (err) {
+    console.log('Error while deleting', err);
+  }
+});
