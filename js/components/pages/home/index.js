@@ -235,13 +235,6 @@ class Home extends Component {
               onMarkerPress={this.onNewMarkerPress}
             />
           )}
-          { googlePlace && (
-            <Marker
-              key={shortid.generate()}
-              place={googlePlace}
-              onMarkerPress={this.onMarkerPress}
-            />
-          )}
         </Map>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
