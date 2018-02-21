@@ -68,8 +68,6 @@ function commit(newVer) {
   simpleGit.add('.')
     .commit(`Bump version to ${newVer}`)
     .checkout('master', () => {
-      exec('git merge develop', () => {
-        simpleGit.checkout('develop');
-      });
+      exec('git merge develop');
     })
 }
