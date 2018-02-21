@@ -39,26 +39,26 @@ function bumpVersion() {
       fs.writeFileSync(packageLockJson, JSON.stringify(data2, null, 2));
 
       // Update android/app/src/main/AndroidManifest.xml
-      fs.readFileSync(androidManifest, 'utf8', function(err, contents) {
+      fs.readFile(androidManifest, 'utf8', function(err, contents) {
         newContents = contents.replace(/(android:versionName=")(.*)(")/g, `$1${newVersion}$3`);
         newContents = newContents.replace(/(android:versionCode=")(.*)(")/g, (match, p1, p2, p3) => (
           p1 + (+p2 + 1) + p3
         ));
 
         fs.writeFileSync(androidManifest, newContents);
+
+        // Update android/app/build.gradle
+        fs.readFile(buildGradle, 'utf8', function(err, contents2) {
+          newContents2 = contents2.replace(/(versionName ")(.*)(")/g, `$1${newVersion}$3`);
+          newContents2 = newContents2.replace(/(versionCode )(.*)/g, (match, p1, p2) => (
+            p1 + (+p2 + 1)
+          ));
+
+          fs.writeFileSync(buildGradle, newContents2);
+
+          commit(newVersion);
+        });
       });
-
-      // Update android/app/build.gradle
-      fs.readFileSync(buildGradle, 'utf8', function(err, contents2) {
-        newContents2 = contents2.replace(/(versionName ")(.*)(")/g, `$1${newVersion}$3`);
-        newContents2 = newContents2.replace(/(versionCode )(.*)/g, (match, p1, p2) => (
-          p1 + (+p2 + 1)
-        ));
-
-        fs.writeFileSync(buildGradle, newContents2);
-      });
-
-      commit(newVersion);
     });
   });
 }
