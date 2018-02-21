@@ -7,7 +7,7 @@ const packageJson = path.join(root, './package.json');
 const packageLockJson = path.join(root, './package-lock.json');
 const androidManifest = path.join(root, './android/app/src/main/AndroidManifest.xml');
 const buildGradle = path.join(root, './android/app/build.gradle');
-const simpleGit = require('simple-git')(path.join(root, ".git"));
+const simpleGit = require('simple-git')(root);
 
 // Bump version
 readJson(packageJson, (err, data) => {
@@ -18,49 +18,43 @@ readJson(packageJson, (err, data) => {
   data.version = newVersion;
 
   // Update package.json
-  updateFile(packageJson, JSON.stringify(data, null, 2));
+  fs.writeFileSync(packageJson, JSON.stringify(data, null, 2));
 
   // Update package-lock.json
   readJson(packageLockJson, (err, data2) => {
     data2.version = newVersion;
 
-    updateFile(packageLockJson, JSON.stringify(data2, null, 2));
-  });
+    fs.writeFileSync(packageLockJson, JSON.stringify(data2, null, 2));
 
-  // Update android/app/src/main/AndroidManifest.xml
-  fs.readFile(androidManifest, 'utf8', function(err, contents) {
-    newContents = contents.replace(/(android:versionName=")(.*)(")/g, `$1${newVersion}$3`);
-    newContents = newContents.replace(/(android:versionCode=")(.*)(")/g, (match, p1, p2, p3) => (
-      p1 + (+p2 + 1) + p3
-    ));
+    // Update android/app/src/main/AndroidManifest.xml
+    fs.readFileSync(androidManifest, 'utf8', function(err, contents) {
+      newContents = contents.replace(/(android:versionName=")(.*)(")/g, `$1${newVersion}$3`);
+      newContents = newContents.replace(/(android:versionCode=")(.*)(")/g, (match, p1, p2, p3) => (
+        p1 + (+p2 + 1) + p3
+      ));
 
-    updateFile(androidManifest, newContents);
-  });
+      fs.writeFileSync(androidManifest, newContents);
+    });
 
-  // Update android/app/build.gradle
-  fs.readFile(buildGradle, 'utf8', function(err, contents2) {
-    newContents2 = contents2.replace(/(versionName ")(.*)(")/g, `$1${newVersion}$3`);
-    newContents2 = newContents2.replace(/(versionCode )(.*)/g, (match, p1, p2) => (
-      p1 + (+p2 + 1)
-    ));
+    // Update android/app/build.gradle
+    fs.readFileSync(buildGradle, 'utf8', function(err, contents2) {
+      newContents2 = contents2.replace(/(versionName ")(.*)(")/g, `$1${newVersion}$3`);
+      newContents2 = newContents2.replace(/(versionCode )(.*)/g, (match, p1, p2) => (
+        p1 + (+p2 + 1)
+      ));
 
-    updateFile(buildGradle, newContents2);
+      fs.writeFileSync(buildGradle, newContents2);
+    });
+
+    commit();
   });
 });
 
 // commit
+function commit() {
+  simpleGit.checkout('master');
+}
 
 // checkout master
 
 // merge develop to master
-
-
-function updateFile(path, data, cb) {
-  fs.writeFile(path, data, (err) => {
-    if (err) {
-      throw err;
-    }
-
-    return cb;
-  });
-}
