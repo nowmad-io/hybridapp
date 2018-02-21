@@ -29,7 +29,12 @@ const initialState = {
   googlePlace: null,
   level: 1,
   position: null,
-  region: null,
+  region: {
+    longitudeDelta: 126.56254928559065,
+    latitudeDelta: 114.96000427333595,
+    longitude: 5.266113225370649,
+    latitude: 20.476854784243514
+  },
   reviewLoading: false,
   fromReview: false,
 };

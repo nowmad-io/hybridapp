@@ -37,6 +37,8 @@ class Home extends Component {
     if (this.props.googlePlace) {
       this._searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
     }
+
+    this.onRegionChangeComplete(this.props.region);
   }
 
   componentWillReceiveProps({ fromReview }) {
