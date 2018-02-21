@@ -7,11 +7,12 @@
     "url": "https://github.com/travelNetwork/hybridapp.git"
   },
   "scripts": {
-    "postinstall": "react-native link",
+    "postinstall": "react-native link && npm run workarounds",
     "start": "node_modules/react-native/packager/packager.sh",
     "eslint": "eslint js",
     "avd": "~/Library/Android/sdk/tools/emulator -avd nowmad_avd &",
     "bumpVersion": "node scripts/release.js",
+    "workarounds": "node scripts/workarounds.js",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
     "android:prod": "ENVFILE=.env.release react-native run-android  -- --reset-cache",
     "android:release": "cd android && ENVFILE=.env.release ./gradlew assembleRelease",
@@ -38,8 +39,7 @@
     "react-native-modalbox": "1.4.2",
     "react-native-snap-carousel": "3.6.0",
     "react-native-vector-icons": "4.5.0",
-    "react-navigation": "^1.0.0-beta.27",
-    "react-navigation-redux-helpers": "^1.0.1",
+    "react-navigation": "1.0.0-beta.27",
     "react-redux": "5.0.6",
     "redux": "3.7.2",
     "redux-persist": "4.10.1",
@@ -58,7 +58,8 @@
     "generator-rn-toolbox": "3.2.1",
     "react-native-rename": "2.2.2",
     "remote-redux-devtools": "0.5.12",
-    "remotedev-server": "0.2.4"
+    "remotedev-server": "0.2.4",
+    "rimraf": "^2.6.2"
   },
   "rnpm": {
     "assets": [
