@@ -82,13 +82,6 @@ export default class carouselXY extends Component {
     });
   }
 
-  componentWillUpdate({ data, selectedPlace }) {
-    if (data && selectedPlace) {
-      const index = _.findIndex(data, (place) => place.id === selectedPlace.id)
-      this.goToIndex(index, false);
-    }
-  }
-
   valueToLevel(value) {
     return value === 0 ? 1 : value === carousel.level2 ? 2 : 3;
   }
