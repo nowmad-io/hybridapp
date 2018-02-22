@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, "..");
 
 const reactNativeCodePush = path.join(root, './node_modules/react-native-code-push/android/app/build.gradle');
 const reactNativeConfig = path.join(root, './node_modules/react-native-config/android/build.gradle');
+const reactNativeFetchBlob = path.join(root, './node_modules/react-native-fetch-blob/android/build.gradle');
 const buildVersion = '25.0.0';
 
 // Update Build Tool of projects with a too low version
@@ -18,6 +19,7 @@ function updateBuildTool(path) {
 
 updateBuildTool(reactNativeCodePush);
 updateBuildTool(reactNativeConfig);
+updateBuildTool(reactNativeFetchBlob);
 
 // workaround for the error: "However the module `MaterialIcons` could not be found within the package"
 const reactNativeFixtures = path.join(root, './node_modules/react-native/local-cli/core/__fixtures__/files/package.json');

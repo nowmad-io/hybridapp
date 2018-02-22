@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { CachedImage } from 'react-native-cached-image';
 
 import LayoutView from './layoutView';
 
@@ -19,7 +20,7 @@ export default class Pictures extends Component {
 
     return (
       <LayoutView type='wrapper'>
-        <Image
+        <CachedImage
           source={pictures.length ? {uri: pictures[0].source} : pictureHolder}
           style={[
             styles.mainPicture,
@@ -27,7 +28,7 @@ export default class Pictures extends Component {
           ]} />
         {pictures.length > 1 && (
           <View style={styles.wrapperRight}>
-              <Image source={{uri: pictures[1].source}} style={[
+              <CachedImage source={{uri: pictures[1].source}} style={[
                 styles.pictures,
                 {
                   marginLeft: pictures.length > 1 ? 1 : 0,
@@ -36,7 +37,7 @@ export default class Pictures extends Component {
                 }
               ]} />
             {pictures.length > 2 && (
-              <Image source={{uri: pictures[2].source}} style={[
+              <CachedImage source={{uri: pictures[2].source}} style={[
                 styles.pictures,
                 {
                   marginLeft: pictures.length > 1 ? 1 : 0,
