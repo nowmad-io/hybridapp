@@ -29,7 +29,12 @@ const initialState = {
   googlePlace: null,
   level: 1,
   position: null,
-  region: null,
+  region: {
+    longitudeDelta: 126.56254928559065,
+    latitudeDelta: 114.96000427333595,
+    longitude: 5.266113225370649,
+    latitude: 20.476854784243514
+  },
   reviewLoading: false,
   fromReview: false,
 };
@@ -142,7 +147,7 @@ function HomeReducer(state = initialState, action) {
     case REGION_CHANGE:
       return { ...state, region: action.region};
     case CURRENT_PLACES:
-      let selectedPlace = action.places.length ? action.places[0] : {};
+      let selectedPlace = action.places.length ? action.places[0] : null;
 
       if (state.selectedPlace && _.find(action.places, (place) => place.id === state.selectedPlace.id)) {
         selectedPlace = state.selectedPlace;
