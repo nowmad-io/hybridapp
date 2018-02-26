@@ -17,7 +17,9 @@ export default class Tag extends Component {
   render() {
     const { onPress, text, selected } =  this.props;
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={onPress ? 0.2 : 1}>
         <View style={[
           styles.tags,
           selected && styles.selected

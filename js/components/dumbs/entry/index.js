@@ -45,18 +45,24 @@ export default class Entry extends Component {
     this.state = {
       level1Y,
       buttonY
-    }
+    };
   }
 
   onPressAddReview() {
-    this.props.navigation.navigate('AddReview', { place: this.props.place })
+    this.props.navigation.navigate('AddReview', { place: this.props.place });
   }
 
   onPressEditReview(review) {
     this.props.navigation.navigate('AddReview', {
       place: this.props.place,
       review
-    })
+    });
+  }
+
+  onPressReview(review) {
+    this.props.navigation.navigate('ReviewDetail', {
+      review: review
+    });
   }
 
   render () {
@@ -134,7 +140,8 @@ export default class Entry extends Component {
           {orderedReviews && orderedReviews.map((review) => (
             <Review
               key={shortid.generate()}
-              review={review} />
+              review={review}
+              onPress={() => this.onPressReview(review)}/>
           ))}
         </Animated.View>
       </View>
