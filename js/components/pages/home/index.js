@@ -204,7 +204,7 @@ class Home extends Component {
     placeDetails(poi.placeId)
       .then((response) => response.json())
       .then(({result}) => {
-        this.onPlaceSelected(gPlaceToPlace(result));
+        this.onNearbyPlaceSelected(gPlaceToPlace(result));
       })
       .catch((error) => {
         console.error(error);
