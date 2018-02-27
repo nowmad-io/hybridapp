@@ -114,8 +114,10 @@ function HomeReducer(state = initialState, action) {
         ...extras
       };
     case GOOGLE_PLACE:
-      let newPlaces = _.compact([action.place, ...state.places]),
-          newCurrentPlaces = _.compact([action.place, ...state.currentPlaces])
+      let places = state.googlePlace ? state.places.slice(1) : state.places,
+          newPlaces = _.compact([action.place, ...places]),
+          currentPlaces = state.googlePlace ? state.currentPlaces.slice(1) : state.currentPlaces,
+          newCurrentPlaces = _.compact([action.place, ...currentPlaces])
 
       if (!action.place) {
         newPlaces = _.filter(state.places, (place) => state.googlePlace.id !== place.id);

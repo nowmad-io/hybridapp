@@ -13,6 +13,7 @@ import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
+import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
 
@@ -50,7 +51,7 @@ class Home extends Component {
     }
   }
 
-  componentWillUpdate({ selectedPlace, level, fromReview }) {
+  componentWillUpdate({ selectedPlace, level, fromReview, position }) {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
@@ -58,6 +59,13 @@ class Home extends Component {
       if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
+    }
+
+    if (position
+      && this.props.position
+      && position.latitude !== this.props.position.latitude
+      && position.longitude !== this.props.position.longitude) {
+        this._map.fitToCoordinates([position]);
     }
 
     if (level && level !== this.props.level) {
@@ -192,6 +200,17 @@ class Home extends Component {
     }
   }
 
+  onPoiClick = (poi) => {
+    placeDetails(poi.placeId)
+      .then((response) => response.json())
+      .then(({result}) => {
+        this.onNearbyPlaceSelected(gPlaceToPlace(result));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, searchedPlaces } = this.props;
@@ -221,6 +240,7 @@ class Home extends Component {
             top: sizes.toolbarHeight,
             bottom: - carousel.level1
           }}
+          onPoiClick={this.onPoiClick}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker

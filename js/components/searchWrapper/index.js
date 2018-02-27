@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { nearby, nearbyLoading, placesLoading,
   friendsLoading, reviewsLoading } from '../../actions/search';
-import { getNearbyPlaces, placesSearch, placeDetails } from '../../api/search';
+import { getNearbyPlaces, placesSearch, placeDetails, gPlaceToPlace } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
@@ -167,24 +167,6 @@ class SearchWrapper extends Component {
     this.props.onClear();
   }
 
-  gPlaceToPlace(gPlace) {
-    return gPlace ? {
-      ...gPlace,
-      id: gPlace.place_id,
-      address: gPlace.vicinity,
-      latitude: gPlace.geometry.location.lat,
-      longitude: gPlace.geometry.location.lng,
-      reviews: [{
-        created_by: {
-          first_name: gPlace.name
-        },
-        short_description: gPlace.types ? gPlace.types.join(', ') : '',
-        categories: [],
-        pictures: []
-      }]
-    } : null;
-  }
-
   onActionPress() {
     if (this.state.focused) {
       this.onBackPress();
@@ -208,7 +190,7 @@ class SearchWrapper extends Component {
     return placeDetails(gPlace.place_id)
       .then((response) => response.json())
       .then(({result}) => {
-        this.props.onPlaceSelected(this.gPlaceToPlace(result));
+        this.props.onPlaceSelected(gPlaceToPlace(result));
       })
       .catch((error) => {
         console.error(error);
@@ -216,7 +198,7 @@ class SearchWrapper extends Component {
   }
 
   onNearbyPlaceSelected = (gPlace) => {
-    this.props.onNearbyPlaceSelected(this.gPlaceToPlace(gPlace));
+    this.props.onNearbyPlaceSelected(gPlaceToPlace(gPlace));
   }
 
   onSubmitEditing() {
@@ -224,7 +206,7 @@ class SearchWrapper extends Component {
       return placeDetails(this.props.placesSearch[0].place_id)
         .then((response) => response.json())
         .then(({result}) => {
-          this.props.onPlacesSelected(this.gPlaceToPlace(result), this.props.reviewsSearch);
+          this.props.onPlacesSelected(gPlaceToPlace(result), this.props.reviewsSearch);
           this.blurInput();
         })
         .catch((error) => {
