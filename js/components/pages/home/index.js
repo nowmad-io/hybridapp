@@ -50,7 +50,7 @@ class Home extends Component {
     }
   }
 
-  componentWillUpdate({ selectedPlace, level, fromReview }) {
+  componentWillUpdate({ selectedPlace, level, fromReview, position }) {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
@@ -58,6 +58,12 @@ class Home extends Component {
       if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
+    }
+
+    if (position
+      && position.latitude !== this.props.position.latitude
+      && position.longitude !== this.props.position.longitude) {
+        this._map.fitToCoordinates([position]);
     }
 
     if (level && level !== this.props.level) {

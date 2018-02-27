@@ -50,11 +50,16 @@ class Map extends Component {
     this._ref.animateToCoordinate(place);
   }
 
+  fitToCoordinates(coordinates) {
+    this._ref.fitToCoordinates(coordinates);
+  }
+
   render() {
     const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding,
       moveOnMarkerPress } = this.props;
     return (
       <MapView
+        {...this.props}
         ref={(ref) => this.onRef(ref)}
         onMapReady={() => this.onMapReady()}
         onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
