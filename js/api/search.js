@@ -33,3 +33,21 @@ export function placeDetails(place_id) {
 
   return fetch(`${url}?${key}&${placeid}`);
 }
+
+export function gPlaceToPlace(gPlace) {
+  return gPlace ? {
+    ...gPlace,
+    id: gPlace.place_id,
+    address: gPlace.vicinity,
+    latitude: gPlace.geometry.location.lat,
+    longitude: gPlace.geometry.location.lng,
+    reviews: [{
+      created_by: {
+        first_name: gPlace.name
+      },
+      short_description: gPlace.types ? gPlace.types.join(', ') : '',
+      categories: [],
+      pictures: []
+    }]
+  } : null;
+}

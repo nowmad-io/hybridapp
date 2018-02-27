@@ -13,6 +13,7 @@ import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
   currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
+import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
 
@@ -61,6 +62,7 @@ class Home extends Component {
     }
 
     if (position
+      && this.props.position
       && position.latitude !== this.props.position.latitude
       && position.longitude !== this.props.position.longitude) {
         this._map.fitToCoordinates([position]);
@@ -198,6 +200,17 @@ class Home extends Component {
     }
   }
 
+  onPoiClick = (poi) => {
+    placeDetails(poi.placeId)
+      .then((response) => response.json())
+      .then(({result}) => {
+        this.onPlaceSelected(gPlaceToPlace(result));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, searchedPlaces } = this.props;
@@ -227,6 +240,7 @@ class Home extends Component {
             top: sizes.toolbarHeight,
             bottom: - carousel.level1
           }}
+          onPoiClick={this.onPoiClick}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker

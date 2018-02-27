@@ -12,6 +12,7 @@ class Map extends Component {
     ]),
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
+    onPoiClick: PropTypes.func,
     region: PropTypes.object,
     onLongPress: PropTypes.func,
     zoomEnabled: PropTypes.bool,
@@ -55,15 +56,14 @@ class Map extends Component {
   }
 
   render() {
-    const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding,
-      moveOnMarkerPress } = this.props;
+    const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
+      onRegionChangeComplete, moveOnMarkerPress, onPoiClick } = this.props;
     return (
       <MapView
-        {...this.props}
         ref={(ref) => this.onRef(ref)}
         onMapReady={() => this.onMapReady()}
-        onRegionChangeComplete={(region) => this.props.onRegionChangeComplete(region)}
-        onLongPress={(event) => this.props.onLongPress(event.nativeEvent)}
+        onRegionChangeComplete={(region) => onRegionChangeComplete(region)}
+        onLongPress={(event) => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
         style={{...styles.map, marginBottom: 1}}
         showsUserLocation={true}
@@ -73,6 +73,7 @@ class Map extends Component {
         scrollEnabled={scrollEnabled}
         mapPadding={mapPadding}
         moveOnMarkerPress={moveOnMarkerPress}
+        onPoiClick={(event) => onPoiClick(event.nativeEvent)}
       >
         {this.props.children}
       </MapView>
