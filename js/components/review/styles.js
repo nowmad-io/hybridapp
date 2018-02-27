@@ -46,7 +46,6 @@ export const showcaseStyles = {
   mainPicture: (showcase = false) => ({
     height: 102,
     width: '100%',
-    flex: 1,
     marginRight: showcase ? 1 : 0
   }),
   pictures: (length = 1, first = true) => ({

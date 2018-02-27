@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, View } from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import shortid from 'shortid';
 
 import Text from '../dumbs/text';
@@ -17,10 +17,14 @@ const Review = props => {
   const pictures = props.review.pictures;
 
   return (
-    <View style={reviewStyle.reviewWrapper}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      activeOpacity={props.onPress ? 0.2 : 1}
+      style={reviewStyle.reviewWrapper}>
       <ReviewHeader reviews={[props.review]} />
-      <View style={showcaseStyles.picturesWrapper}>
+      <View>
         <Image
+          resizeMode='cover'
           source={pictures.length ? {uri: pictures[0].source} : pictureHolder}
           style={showcaseStyles.mainPicture()}
         />
@@ -37,7 +41,7 @@ const Review = props => {
             text={categorie.name} />
         ))}
       </View>
-    </View>
+    </TouchableOpacity>
   )
 };
 
