@@ -8,7 +8,6 @@ import com.airbnb.android.react.maps.MapsPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import com.microsoft.codepush.react.CodePush;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -39,8 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MapsPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
-            new ReactNativeConfigPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG)
+            new ReactNativeConfigPackage()
       );
     }
   };
