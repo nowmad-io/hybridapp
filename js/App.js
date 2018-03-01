@@ -12,7 +12,7 @@ console.ignoredYellowBox = [
   'Remote debugger'
 ];
 
-const { persistor, store } = configureStore();
+const { persistor, store, addListener } = configureStore();
 
 function App(): Component {
   class Root extends Component {
@@ -20,7 +20,7 @@ function App(): Component {
       return (
         <Provider store={store}>
           <PersistGate loading={<SplashScreen />} persistor={persistor}>
-            <MainRouter />
+            <MainRouter addListener={addListener} />
           </PersistGate>
         </Provider>
       );

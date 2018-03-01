@@ -4,6 +4,10 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
+import {
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware
+} from 'react-navigation-redux-helpers';
 import createSagaMiddleware from 'redux-saga';
 import Config from 'react-native-config';
 
@@ -12,9 +16,14 @@ import sagas from './sagas';
 import reducers from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
+const navigationMiddleware = createReactNavigationReduxMiddleware(
+  "root",
+  state => state.nav,
+);
 
 const middlewares = [
   sagaMiddleware,
+  navigationMiddleware
 ];
 
 const enhancers = [
@@ -33,6 +42,8 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({ ...reducers })
 
 export default () => {
+  const addListener = createReduxBoundAddListener("root");
+
   let store = createStore(
     persistReducer(rootPersistConfig, rootReducer),
     compose(...enhancers)
@@ -48,5 +59,5 @@ export default () => {
     }
   });
 
-  return { store, persistor }
+  return { store, persistor, addListener }
 }

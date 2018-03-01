@@ -19,6 +19,7 @@ class MainRouter extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     nav: PropTypes.object.isRequired,
+    addListener: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -53,18 +54,20 @@ class MainRouter extends Component {
   }
 
   render() {
-    const { dispatch, nav } = this.props;
+    const { dispatch, nav, addListener } = this.props;
 
-    return <MainNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />;
+    return (
+      <MainNavigator navigation={addNavigationHelpers({
+          dispatch,
+          state: nav,
+          addListener
+        })} />
+    );
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
 const mapStateToProps = state => ({
-  nav: state.nav,
+  nav: state.nav
 });
 
-export default connect(mapStateToProps, bindActions)(MainRouter);
+export default connect(mapStateToProps)(MainRouter);
