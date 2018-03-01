@@ -42,30 +42,21 @@ class Home extends Component {
     this.onRegionChangeComplete(this.props.region);
   }
 
-  componentWillReceiveProps({ fromReview }) {
+  componentWillReceiveProps({ selectedPlace, level, fromReview }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
       this._searchWrapper.getWrappedInstance().blurInput();
       this.onRegionChangeComplete(this.props.region);
       this.props.dispatch(setFromReview(false));
     }
-  }
 
-  componentWillUpdate({ selectedPlace, level, fromReview, position }) {
     if (selectedPlace
-        && this.props.selectedPlace
-        && selectedPlace.id !== this.props.selectedPlace.id) {
+      && this.props.selectedPlace
+      && selectedPlace.id !== this.props.selectedPlace.id) {
 
       if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
-    }
-
-    if (position
-      && this.props.position
-      && position.latitude !== this.props.position.latitude
-      && position.longitude !== this.props.position.longitude) {
-        this._map.fitToCoordinates([position]);
     }
 
     if (level && level !== this.props.level) {
@@ -211,6 +202,10 @@ class Home extends Component {
       });
   }
 
+  onLayout = () => {
+
+  }
+
   render() {
     const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
       searchFocus, searchedPlaces } = this.props;
@@ -240,6 +235,7 @@ class Home extends Component {
             top: sizes.toolbarHeight,
             bottom: - carousel.level1
           }}
+          onLayout={this.onLayout}
           onPoiClick={this.onPoiClick}
         >
           { (searchedPlaces.length ? searchedPlaces : places).map(place => (
