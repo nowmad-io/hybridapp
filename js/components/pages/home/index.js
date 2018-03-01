@@ -42,7 +42,7 @@ class Home extends Component {
     this.onRegionChangeComplete(this.props.region);
   }
 
-  componentWillReceiveProps({ selectedPlace, level, fromReview }) {
+  componentWillUpdate({ selectedPlace, level, fromReview, position }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
       this._searchWrapper.getWrappedInstance().blurInput();
@@ -51,12 +51,19 @@ class Home extends Component {
     }
 
     if (selectedPlace
-      && this.props.selectedPlace
-      && selectedPlace.id !== this.props.selectedPlace.id) {
+        && this.props.selectedPlace
+        && selectedPlace.id !== this.props.selectedPlace.id) {
 
       if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
+    }
+
+    if (position
+      && this.props.position
+      && position.latitude !== this.props.position.latitude
+      && position.longitude !== this.props.position.longitude) {
+        this._map.fitToCoordinates([position]);
     }
 
     if (level && level !== this.props.level) {
