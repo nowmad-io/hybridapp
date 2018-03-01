@@ -1,3 +1,5 @@
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 import _ from 'lodash';
 
 import {
@@ -167,4 +169,10 @@ function HomeReducer(state = initialState, action) {
   }
 }
 
-export default HomeReducer;
+const homePersistConfig = {
+  key: 'home',
+  storage: storage,
+  blacklist: ['position']
+}
+
+export default persistReducer(homePersistConfig, HomeReducer);

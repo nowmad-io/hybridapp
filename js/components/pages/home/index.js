@@ -42,7 +42,7 @@ class Home extends Component {
     this.onRegionChangeComplete(this.props.region);
   }
 
-  componentWillUpdate({ selectedPlace, level, fromReview, position }) {
+  componentWillReceiveProps({ selectedPlace, level, fromReview, position }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
       this._searchWrapper.getWrappedInstance().blurInput();
@@ -63,7 +63,14 @@ class Home extends Component {
       && this.props.position
       && position.latitude !== this.props.position.latitude
       && position.longitude !== this.props.position.longitude) {
-        this._map.fitToCoordinates([position]);
+      setTimeout(() => this._map.fitToCoordinates([position], {
+        edgePadding: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
+        }
+      }), 500);
     }
 
     if (level && level !== this.props.level) {

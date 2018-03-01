@@ -2,17 +2,14 @@ import { AsyncStorage } from 'react-native';
 import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
+import storage from 'redux-persist/lib/storage';
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
 import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware
 } from 'react-navigation-redux-helpers';
 import createSagaMiddleware from 'redux-saga';
-import Config from 'react-native-config';
 
-import { requestsSaga, Api } from './requests';
-import sagas from './sagas';
 import reducers from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -29,14 +26,14 @@ const middlewares = [
 const enhancers = [
   applyMiddleware(...middlewares),
   devTools({
-    name: 'nowmad', realtime: true,
+    name: 'nowmad',
+    realtime: true
   }),
 ];
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  stateReconciler: autoMergeLevel2,
   blacklist: ['nav', 'search']
 }
 const rootReducer = combineReducers({ ...reducers })
@@ -49,15 +46,7 @@ export default () => {
     compose(...enhancers)
   );
 
-  let persistor = persistStore(store, null, () => {
-    sagaMiddleware.run(requestsSaga(new Api({
-      basePath: Config.API_URL
-    })));
+  let persistor = persistStore(store);
 
-    for (const saga of sagas) {
-      sagaMiddleware.run(saga);
-    }
-  });
-
-  return { store, persistor, addListener }
+  return { store, persistor, addListener, sagaMiddleware }
 }
