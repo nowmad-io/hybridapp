@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import setup from './js/setup';
+import App from './js/setup';
 
-AppRegistry.registerComponent('Nowmad', setup);
+AppRegistry.registerComponent('Nowmad', App);
