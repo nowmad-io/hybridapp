@@ -26,7 +26,7 @@ function getCurrentPosition() {
         emit(setGeolocation(position.coords))
       },
       (error) => {console.log('error', error)},
-      { timeout: 5000, maximumAge: (60 * 24 * 1000) },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: (60 * 24 * 1000) },
     );
     return () => {};
   });

@@ -15,6 +15,7 @@ class Map extends Component {
     onPoiClick: PropTypes.func,
     region: PropTypes.object,
     onLongPress: PropTypes.func,
+    onLayout: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
@@ -57,7 +58,7 @@ class Map extends Component {
 
   render() {
     const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
-      onRegionChangeComplete, moveOnMarkerPress, onPoiClick } = this.props;
+      onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout } = this.props;
     return (
       <MapView
         ref={(ref) => this.onRef(ref)}
@@ -73,6 +74,7 @@ class Map extends Component {
         scrollEnabled={scrollEnabled}
         mapPadding={mapPadding}
         moveOnMarkerPress={moveOnMarkerPress}
+        onLayout={onLayout}
         onPoiClick={(event) => onPoiClick(event.nativeEvent)}
       >
         {this.props.children}

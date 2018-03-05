@@ -3,7 +3,6 @@ const path = require('path');
 const rimraf = require('rimraf');
 const root = path.resolve(__dirname, "..");
 
-const reactNativeCodePush = path.join(root, './node_modules/react-native-code-push/android/app/build.gradle');
 const reactNativeConfig = path.join(root, './node_modules/react-native-config/android/build.gradle');
 const reactNativeFetchBlob = path.join(root, './node_modules/react-native-fetch-blob/android/build.gradle');
 const buildVersion = '25.0.0';
@@ -17,7 +16,6 @@ function updateBuildTool(path) {
   });
 }
 
-updateBuildTool(reactNativeCodePush);
 updateBuildTool(reactNativeConfig);
 updateBuildTool(reactNativeFetchBlob);
 

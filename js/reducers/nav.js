@@ -7,15 +7,15 @@ const initialState = MainNavigator.router.getStateForAction(MainNavigator.router
 
 function nav(state = initialState, action) {
   let nextState;
+
   switch (action.type) {
     case LOGOUT:
-      return initialState;
+      nextState = initialState;
     default:
-      nextState = MainNavigator.router.getStateForAction(action, state);
+      nextState = MainNavigator.router.getStateForAction(action, state) || state;
       break;
   }
 
-  // Simply return the original `state` if `nextState` is null or undefined.
   return nextState || state;
 }
 
