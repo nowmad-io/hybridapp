@@ -102,6 +102,7 @@ class AddReview extends Component {
   onPublish = () => {
     const review = {
       ...this.state,
+      public: this.props.public_default,
       place: {
         latitude: this.state.place.latitude,
         longitude: this.state.place.longitude
@@ -317,7 +318,8 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = (state) => ({
   region: state.home.region,
-  reviewLoading: state.home.reviewLoading
+  reviewLoading: state.home.reviewLoading,
+  public_default: state.auth.me.public_default,
 });
 
 export default connect(mapStateToProps, bindActions)(AddReview);

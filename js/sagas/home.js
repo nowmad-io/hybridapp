@@ -8,6 +8,8 @@ import {
   NEARBY
 } from '../constants/home';
 
+import { apiMe } from '../api/auth';
+
 import { setGeolocation, nearby } from '../actions/home';
 
 
@@ -34,6 +36,8 @@ function getCurrentPosition() {
 
 export function * homeFlow() {
   const channel = yield call(getCurrentPosition);
+
+  yield put(apiMe());
 
   let action = yield take(channel);
   yield put(action);
