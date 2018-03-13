@@ -20,7 +20,6 @@ import {
   LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR,
-  ME_SUCCESS,
   LOGIN_LOADING,
   REGISTER_LOADING
 } from '../constants/auth';
@@ -67,8 +66,6 @@ function* loginFlow(action) {
   // If `auth` was the winner...
   if (winner.loginSuccess) {
     yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
-
-    yield take(ME_SUCCESS);
 
     yield put(NavigationActions.reset({
       index: 0,

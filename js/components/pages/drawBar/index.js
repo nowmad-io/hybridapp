@@ -56,14 +56,14 @@ class DrawBar extends React.Component {
       <View style={styles.container}>
         <View style={styles.profileWrapper}>
           <View style={styles.info}>
-            <Text style={styles.title}>{props.me.first_name}</Text>
+            <Text style={styles.title}>{props.me && props.me.first_name}</Text>
             <Text style={styles.subtitle}>See and edit profile</Text>
           </View>
           <View>
             <Image
               resizeMethod="resize"
               style={styles.thumbnail}
-              source={{ uri: props.me.picture }} />
+              source={{ uri: props.me && props.me.picture }} />
           </View>
         </View>
         <View style={styles.contentWrapper}>
