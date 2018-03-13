@@ -33,7 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MapsPackage(),
           new ImagePickerPackage(),
           new ReactNativeConfigPackage(),
-          new RNFetchBlobPackage(),
+          new RNFetchBlobPackage()
       );
     }
   };
