@@ -107,13 +107,7 @@ export function * registerFlow(action) {
 
 export function * logoutFlow() {
   yield put({ type: STOP_SAGAS });
-
   yield put({ type: LOGOUT });
-  yield put(NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: 'Login' })],
-  }));
-
   yield put(apiLogout());
 }
 

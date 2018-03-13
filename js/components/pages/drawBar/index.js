@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
 import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
@@ -47,6 +47,8 @@ class DrawBar extends React.Component {
 
   onLogoutPress() {
     this.props.dispatch(logoutRequest());
+
+    this.props.navigation.navigate({ routeName: 'Login' });
   }
 
   render() {

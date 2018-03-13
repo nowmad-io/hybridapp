@@ -8,8 +8,8 @@ import DrawBar from '../components/pages/drawBar';
 import { sizes } from '../parameters/';
 
 const HomeRouter = DrawerNavigator({
-  Home: { screen: Home },
-  DrawBar: { screen: DrawBar }
+  Home,
+  DrawBar
 },
 {
   drawerPosition: 'right',

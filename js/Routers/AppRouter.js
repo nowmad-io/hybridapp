@@ -10,11 +10,11 @@ import AddImage from '../components/pages/addImage';
 import AddFriend from '../components/pages/addFriend';
 
 const AppRouter = StackNavigator({
-  Home: { screen: HomeRouter },
-  AddReview: { screen: AddReview },
-  ReviewDetail: { screen: ReviewDetail },
-  AddImage: { screen: AddImage },
-  AddFriend: { screen: AddFriend }
+  Home: HomeRouter,
+  AddReview,
+  ReviewDetail,
+  AddImage,
+  AddFriend
 }, {
   navigationOptions: {
     header: null,

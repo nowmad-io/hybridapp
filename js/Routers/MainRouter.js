@@ -10,9 +10,9 @@ import Register from '../components/pages/auth/register';
 import AppRouter from './AppRouter';
 
 export const MainNavigator = StackNavigator({
-  Login: { screen: Login },
-  Register: { screen: Register },
-  App: { screen: AppRouter },
+  Login,
+  Register,
+  App: AppRouter
 });
 
 class MainRouter extends Component {
