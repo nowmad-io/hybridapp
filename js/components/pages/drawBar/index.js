@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
 import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
@@ -47,6 +47,8 @@ class DrawBar extends React.Component {
 
   onLogoutPress() {
     this.props.dispatch(logoutRequest());
+
+    this.props.navigation.navigate({ routeName: 'Login' });
   }
 
   render() {
@@ -56,14 +58,14 @@ class DrawBar extends React.Component {
       <View style={styles.container}>
         <View style={styles.profileWrapper}>
           <View style={styles.info}>
-            <Text style={styles.title}>{props.me.first_name}</Text>
+            <Text style={styles.title}>{props.me && props.me.first_name}</Text>
             <Text style={styles.subtitle}>See and edit profile</Text>
           </View>
           <View>
             <Image
               resizeMethod="resize"
               style={styles.thumbnail}
-              source={{ uri: props.me.picture }} />
+              source={{ uri: props.me && props.me.picture }} />
           </View>
         </View>
         <View style={styles.contentWrapper}>

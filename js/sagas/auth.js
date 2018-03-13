@@ -20,7 +20,6 @@ import {
   LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR,
-  ME_SUCCESS,
   LOGIN_LOADING,
   REGISTER_LOADING
 } from '../constants/auth';
@@ -68,8 +67,6 @@ function* loginFlow(action) {
   if (winner.loginSuccess) {
     yield put({ type: TOKEN, token: winner.loginSuccess.payload.auth_token });
 
-    yield take(ME_SUCCESS);
-
     yield put(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'App' })],
@@ -110,13 +107,7 @@ export function * registerFlow(action) {
 
 export function * logoutFlow() {
   yield put({ type: STOP_SAGAS });
-
   yield put({ type: LOGOUT });
-  yield put(NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: 'Login' })],
-  }));
-
   yield put(apiLogout());
 }
 

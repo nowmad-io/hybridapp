@@ -1,6 +1,6 @@
 {
   "name": "Nowmad",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Share your travel experiences with your friends",
   "repository": {
     "type": "git",
@@ -35,12 +35,12 @@
     "react-native-config": "0.11.5",
     "react-native-image-picker": "0.26.7",
     "react-native-keyboard-aware-scroll-view": "0.4.4",
-    "react-native-maps": "github:nowmad-io/react-native-maps#on-poi-click",
+    "react-native-maps": "github:react-community/react-native-maps",
     "react-native-modalbox": "1.4.2",
     "react-native-snap-carousel": "3.6.0",
     "react-native-vector-icons": "4.5.0",
-    "react-navigation": "1.2.1",
-    "react-navigation-redux-helpers": "1.0.1",
+    "react-navigation": "1.5.2",
+    "react-navigation-redux-helpers": "1.0.3",
     "react-redux": "5.0.7",
     "redux": "3.7.2",
     "redux-persist": "5.9.1",
