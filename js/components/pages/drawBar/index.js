@@ -47,8 +47,6 @@ class DrawBar extends React.Component {
 
   onLogoutPress() {
     this.props.dispatch(logoutRequest());
-
-    this.props.navigation.navigate({ routeName: 'Login' });
   }
 
   render() {
