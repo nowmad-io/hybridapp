@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
@@ -9,7 +9,7 @@ import Thumbnail from '../dumbs/thumbnail';
 
 import { colors } from '../../parameters';
 
-export default class Marker extends Component {
+export default class Marker extends PureComponent {
   static propTypes = {
     selected: PropTypes.bool,
     place: PropTypes.object,
@@ -23,10 +23,6 @@ export default class Marker extends Component {
       type: this.getPlaceType(props.place),
       friendsCount: props.place.reviews && props.place.reviews.length || 0
     };
-  }
-
-  componentWillReceiveProps({ selected }) {
-    console.log('selected', selected);
   }
 
   getPlaceType(place) {
@@ -49,7 +45,7 @@ export default class Marker extends Component {
       <MapView.Marker
         coordinate={{latitude: place.latitude, longitude: place.longitude}}
         onPress={(e) => this.props.onMarkerPress(e, place)}
-        anchor={selected ? { x: 0.5, y: 0.9 } : { x: 0.5, y: 1 }}
+        anchor={selected ? {x: 0.5, y: 0.91} : {x: 0.5, y: 1}}
       >
 
         <View style={[
