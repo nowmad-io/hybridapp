@@ -5,11 +5,9 @@ import Api from './api';
 
 export { requestsSaga, actions, Api, constants };
 
-export {
-  apiCall
-} from './actions';
+export { apiCall } from './actions';
 
 export {
   API_CALL,
-  TOKEN
+  TOKEN,
 } from './constants';

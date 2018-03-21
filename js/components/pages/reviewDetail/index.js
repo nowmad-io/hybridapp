@@ -24,7 +24,7 @@ export default class ReviewDetail extends Component {
     const review = props.navigation.state.params.review;
 
     this.state = {
-      review
+      review,
     };
   }
 
@@ -32,15 +32,15 @@ export default class ReviewDetail extends Component {
     const { review } = this.state;
 
     return (
-      <LayoutView type='container'>
-        <LayoutView type='header'>
-          <LayoutView type='left'>
+      <LayoutView type="container">
+        <LayoutView type="header">
+          <LayoutView type="left">
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon style={styles.icon} name='arrow-back' />
+              <Icon style={styles.icon} name="arrow-back" />
               <Text>Return to map</Text>
             </Button>
           </LayoutView>
-          <LayoutView type='right'></LayoutView>
+          <LayoutView type="right" />
         </LayoutView>
         <View style={styles.content}>
           <Review review={review} />

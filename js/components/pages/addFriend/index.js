@@ -27,16 +27,16 @@ class AddFriend extends Component {
 
     this.state = {
       user: props.navigation.state.params.user,
-      email: ''
-    }
+      email: '',
+    };
   }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress = () => {
@@ -50,10 +50,10 @@ class AddFriend extends Component {
     if (this.state.email === this.state.user.email) {
       this.props.dispatch(sendFriendship({
         from_user_id: this.props.me.id,
-        to_user_id: this.state.user.id
+        to_user_id: this.state.user.id,
       }));
     } else {
-      console.log('The email does not match the user')
+      console.log('The email does not match the user');
     }
   }
 
@@ -74,30 +74,30 @@ class AddFriend extends Component {
   render() {
     let request = null;
     const { props, state } = this,
-          incoming = props.incomings.some(req => {
-            if (req.from_user.email === state.user.email) {
-              request = req;
-              return true;
-            }
-            return false
-          }),
-          outgoing = props.outgoings.some(req => {
-            if (req.to_user.email === state.user.email) {
-              request = req;
-              return true;
-            }
-            return false
-          });
+      incoming = props.incomings.some((req) => {
+        if (req.from_user.email === state.user.email) {
+          request = req;
+          return true;
+        }
+        return false;
+      }),
+      outgoing = props.outgoings.some((req) => {
+        if (req.to_user.email === state.user.email) {
+          request = req;
+          return true;
+        }
+        return false;
+      });
 
     return (
-      <LayoutView type='container'>
-        <LayoutView type='header'>
-          <LayoutView type='left'>
+      <LayoutView type="container">
+        <LayoutView type="header">
+          <LayoutView type="left">
             <Button transparent onPress={this.onBackPress}>
-              <Icon style={styles.icon} name='arrow-back' />
+              <Icon style={styles.icon} name="arrow-back" />
             </Button>
           </LayoutView>
-          <LayoutView type='right'></LayoutView>
+          <LayoutView type="right" />
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.profileWrapper}>
@@ -105,7 +105,8 @@ class AddFriend extends Component {
               <Image
                 resizeMethod="resize"
                 style={styles.thumbnail}
-                source={{ uri: state.user.picture }} />
+                source={{ uri: state.user.picture }}
+              />
             </View>
             <View>
               <Text style={styles.title}>{state.user.first_name}</Text>
@@ -113,23 +114,26 @@ class AddFriend extends Component {
             </View>
           </View>
           <View>
-            <Label text={`To add ${state.user.first_name} as a Friend, enter his email address`} required={true}/>
+            <Label text={`To add ${state.user.first_name} as a Friend, enter his email address`} required />
             <FormInput
               defaultValue={incoming || outgoing ? this.state.user.email : ''}
               onChangeText={email => this.setState({ email })}
-              placeholder="Email address" />
+              placeholder="Email address"
+            />
 
             {incoming && (
               <View style={styles.buttonWrapper}>
                 <Button
                   transparent
                   style={styles.requestButton}
-                  onPress={() => this.onRejectRequest(request)}>
+                  onPress={() => this.onRejectRequest(request)}
+                >
                   <Text>Reject</Text>
                 </Button>
                 <Button
                   style={styles.requestButton}
-                  onPress={() => this.onAcceptRequest(request)}>
+                  onPress={() => this.onAcceptRequest(request)}
+                >
                   <Text>Accept request</Text>
                 </Button>
               </View>
@@ -137,14 +141,16 @@ class AddFriend extends Component {
             {outgoing && (
               <Button
                 style={styles.requestButton}
-                onPress={() => this.onCancelRequest(request)}>
+                onPress={() => this.onCancelRequest(request)}
+              >
                 <Text>Cancel request</Text>
               </Button>
             )}
             {!incoming && !outgoing && (
               <Button
                 style={styles.requestButton}
-                onPress={() => this.onSendRequest()}>
+                onPress={() => this.onSendRequest()}
+              >
                 <Text>Send request</Text>
               </Button>
             )}
@@ -159,10 +165,10 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   me: state.auth.me,
   incomings: state.friends.incomings,
   outgoings: state.friends.outgoings,
-})
+});
 
 export default connect(mapStateToProps, bindActions)(AddFriend);

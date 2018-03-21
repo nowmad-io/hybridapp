@@ -10,7 +10,7 @@ export default class List extends Component {
   static propTypes = {
     children: PropTypes.any,
     style: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
   };
 
   render() {
@@ -29,7 +29,7 @@ export default class List extends Component {
         {children}
       </View>
     );
-	}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
   },
   label: {
     paddingHorizontal: 16,
-    color: colors.grey
-  }
+    color: colors.grey,
+  },
 });

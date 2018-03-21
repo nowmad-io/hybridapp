@@ -8,7 +8,7 @@ import {
   CURRENT_PLACES,
   GOOGLE_PLACE,
   SEARCHED_PLACES,
-  FROM_REVIEW
+  FROM_REVIEW,
 } from '../constants/home';
 
 export function setGeolocation(position) {

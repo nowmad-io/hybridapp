@@ -11,7 +11,7 @@ export default class RadioButton extends Component {
   static propTypes = {
     onPress: PropTypes.func,
     selected: PropTypes.bool,
-    text: PropTypes.string
+    text: PropTypes.string,
   }
 
   render() {
@@ -22,11 +22,12 @@ export default class RadioButton extends Component {
         <View style={styles.wrapper}>
           <Icon
             style={styles.icon}
-            name={selected ? "radio-button-checked" : "radio-button-unchecked"} />
+            name={selected ? 'radio-button-checked' : 'radio-button-unchecked'}
+          />
           <Text style={styles.text}>{text}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   }
 }
 
@@ -35,15 +36,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   icon: {
     marginRight: 12,
     color: colors.green,
     lineHeight: 24,
-    fontSize: 24
+    fontSize: 24,
   },
   text: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });

@@ -7,7 +7,7 @@ import {
   PLACES_ERROR,
   UPDATE_REVIEW_SUCCESS,
   ADD_REVIEW_SUCCESS,
-  REVIEW_ERROR
+  REVIEW_ERROR,
 } from '../constants/reviews';
 import { REVIEWS_SEARCH, REVIEWS_SEARCH_ERROR } from '../constants/search';
 import { SEARCHED_PLACES } from '../constants/home';

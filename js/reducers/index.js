@@ -9,5 +9,5 @@ export default {
   auth,
   home,
   search,
-  friends
+  friends,
 };

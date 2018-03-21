@@ -7,28 +7,28 @@ export default {
     height: 150,
   },
   content: {
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   reviewWrapper: {
     paddingTop: 16,
     paddingHorizontal: 16,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   title: {
     fontSize: 24,
-    lineHeight: 26
+    lineHeight: 26,
   },
   tagWrapper: {
     marginTop: 12,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imagesWrapper: {
     marginVertical: 8,
     flexDirection: 'row',
   },
   image: (full = false, index) => ({
-    marginLeft: !full || index !== 0 ? 8 : 0
+    marginLeft: !full || index !== 0 ? 8 : 0,
   }),
   imagesCaption: {
     fontSize: 14,
@@ -38,6 +38,6 @@ export default {
     borderColor: colors.greyDark,
   },
   icon: {
-    color: colors.white
-  }
+    color: colors.white,
+  },
 };

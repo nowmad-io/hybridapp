@@ -63,7 +63,8 @@ class DrawBar extends React.Component {
             <Image
               resizeMethod="resize"
               style={styles.thumbnail}
-              source={{ uri: props.me && props.me.picture }} />
+              source={{ uri: props.me && props.me.picture }}
+            />
           </View>
         </View>
         <View style={styles.contentWrapper}>
@@ -76,13 +77,14 @@ class DrawBar extends React.Component {
                     style={styles.listItem(props.outgoings.length - 1 === index)}
                     key={request.id}
                   >
-                    <LayoutView type='left'>
-                      <Image resizeMethod="resize" source={{uri: request.to_user.picture}} style={styles.userPicture} />
+                    <LayoutView type="left">
+                      <Image resizeMethod="resize" source={{ uri: request.to_user.picture }} style={styles.userPicture} />
                       <Text>{request.to_user.first_name}</Text>
                     </LayoutView>
-                    <LayoutView type='right' style={styles.right}>
+                    <LayoutView type="right" style={styles.right}>
                       <TouchableOpacity
-                        onPress={() => this._onCancel(request.id)}>
+                        onPress={() => this._onCancel(request.id)}
+                      >
                         <Text style={styles.actionLabel}>Cancel</Text>
                       </TouchableOpacity>
                     </LayoutView>
@@ -102,18 +104,20 @@ class DrawBar extends React.Component {
                     style={styles.listItem(props.incomings.length - 1 === index)}
                     key={request.id}
                   >
-                    <LayoutView type='left'>
-                      <Image resizeMethod="resize" source={{uri: request.from_user.picture}} style={styles.userPicture} />
+                    <LayoutView type="left">
+                      <Image resizeMethod="resize" source={{ uri: request.from_user.picture }} style={styles.userPicture} />
                       <Text style={styles.itemText}>{request.from_user.first_name}</Text>
                     </LayoutView>
-                    <LayoutView type='right' style={styles.right}>
+                    <LayoutView type="right" style={styles.right}>
                       <TouchableOpacity
-                        onPress={() => this._onReject(request.id)}>
+                        onPress={() => this._onReject(request.id)}
+                      >
                         <Text style={styles.actionLabel}>Reject</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={styles.acceptButton}
-                        onPress={() => this._onAccept(request.id)}>
+                        onPress={() => this._onAccept(request.id)}
+                      >
                         <Text style={styles.acceptLabel}>Accept</Text>
                       </TouchableOpacity>
                     </LayoutView>
@@ -133,7 +137,7 @@ class DrawBar extends React.Component {
             style={styles.logoutButton}
             onPress={() => this.onLogoutPress()}
           >
-            <Icon name='exit-to-app' style={styles.actionIcon} />
+            <Icon name="exit-to-app" style={styles.actionIcon} />
             <Text style={styles.actionLabel}>Logout</Text>
           </Button>
         </View>
@@ -146,10 +150,10 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   me: state.auth.me,
   incomings: state.friends.incomings,
   outgoings: state.friends.outgoings,
-})
+});
 
 export default connect(mapStateToProps, bindActions)(DrawBar);

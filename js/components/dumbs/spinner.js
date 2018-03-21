@@ -16,24 +16,26 @@ export default class Spinner extends Component {
   static defaultProps = {
     color: colors.green,
     visible: false,
-    overlay: false
+    overlay: false,
   }
 
   render() {
-    const { visible, style, overlay, color, size } = this.props;
+    const {
+      visible, style, overlay, color, size,
+    } = this.props;
 
-		return (
+    return (
       <View style={[visible && style, overlay && visible ? styles.overlay : {}]}>
         { visible && (
-          <ActivityIndicator
-    				{...this.props}
-    				color={color}
-    				size={this.size ? this.size : "large"}
-    			/>
+        <ActivityIndicator
+          {...this.props}
+          color={color}
+          size={this.size ? this.size : 'large'}
+        />
         )}
       </View>
     );
-	}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.whiteTransparentLight,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

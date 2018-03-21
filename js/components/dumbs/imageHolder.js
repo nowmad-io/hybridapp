@@ -13,32 +13,34 @@ export default class ImageHolder extends Component {
     style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
-      PropTypes.array
-    ])
+      PropTypes.array,
+    ]),
   };
 
   render() {
-    const { onPress, style, source } =  this.props;
+    const { onPress, style, source } = this.props;
 
     return (
       <TouchableOpacity onPress={onPress} style={style}>
         <View style={[
           styles.wrapper,
-          !source && styles.empty
-        ]}>
+          !source && styles.empty,
+        ]}
+        >
           {source ? (
             <Image
               style={styles.image}
               resizeMethod="resize"
-              source={{uri: source}} />
+              source={{ uri: source }}
+            />
           ) : (
-            <Icon name='add-a-photo' style={styles.icon}/>
+            <Icon name="add-a-photo" style={styles.icon} />
           )}
         </View>
       </TouchableOpacity>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -46,18 +48,18 @@ const styles = StyleSheet.create({
     width: 58,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   empty: {
     borderColor: colors.green,
-    borderWidth: 1
+    borderWidth: 1,
   },
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   icon: {
     fontSize: 24,
-    color: colors.green
-  }
+    color: colors.green,
+  },
 });

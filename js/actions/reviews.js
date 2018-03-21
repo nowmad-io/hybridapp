@@ -1,7 +1,7 @@
 import {
   ADD_REVIEW,
   UPDATE_REVIEW,
-  REVIEW_LOADING
+  REVIEW_LOADING,
 } from '../constants/reviews';
 
 export function addReview(review) {

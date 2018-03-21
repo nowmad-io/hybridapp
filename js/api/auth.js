@@ -6,7 +6,7 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
   ME_SUCCESS,
-  ME_ERROR
+  ME_ERROR,
 } from '../constants/auth';
 
 import { REQUEST_ERROR } from '../constants/utils';

@@ -4,8 +4,10 @@ import { TextInput, BackHandler, Keyboard, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { nearby, nearbyLoading, placesLoading,
-  friendsLoading, reviewsLoading } from '../../actions/search';
+import {
+  nearby, nearbyLoading, placesLoading,
+  friendsLoading, reviewsLoading,
+} from '../../actions/search';
 import { getNearbyPlaces, placesSearch, placeDetails, gPlaceToPlace } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
@@ -45,8 +47,8 @@ class SearchWrapper extends Component {
       text: '',
       previousValue: '',
       focused: false,
-      searchType: 'places'
-    }
+      searchType: 'places',
+    };
   }
 
   componentDidMount() {
@@ -59,7 +61,7 @@ class SearchWrapper extends Component {
 
   coordinatesToString(coordinates) {
     if (coordinates && coordinates.latitude && coordinates.longitude) {
-      return `${coordinates.latitude},${coordinates.longitude}`
+      return `${coordinates.latitude},${coordinates.longitude}`;
     }
 
     return '';
@@ -71,8 +73,8 @@ class SearchWrapper extends Component {
     const parsedCoords = this.coordinatesToString(coords);
 
     this.setState({
-      text : parsedCoords,
-      previousValue: parsedCoords
+      text: parsedCoords,
+      previousValue: parsedCoords,
     });
 
     if (!init) {
@@ -83,7 +85,7 @@ class SearchWrapper extends Component {
   setValue(text) {
     this.setState({
       text,
-      previousValue: text
+      previousValue: text,
     });
   }
 
@@ -110,7 +112,7 @@ class SearchWrapper extends Component {
 
   onBackPress = () => {
     if (this.state.focused) {
-      this.setState({text: this.state.previousValue})
+      this.setState({ text: this.state.previousValue });
       this.blurInput();
       return true;
     }
@@ -125,19 +127,19 @@ class SearchWrapper extends Component {
   getAutocompleteDebounce = _.debounce(this.getAutocomplete, 300)
 
   onChangeText(text, preventFocus) {
-    this.setState({text});
+    this.setState({ text });
 
     if (!this.props.focused && !preventFocus) {
       this.focusInput();
     }
 
-    this.search(text)
+    this.search(text);
   }
 
   search(query) {
     const text = query === null ? this.state.text : query;
 
-    const coord = COORD_REGEX.exec(text)
+    const coord = COORD_REGEX.exec(text);
     if (coord && coord.length >= 3) {
       Keyboard.dismiss();
 
@@ -148,7 +150,7 @@ class SearchWrapper extends Component {
       this.props.dispatch(nearbyLoading(true));
       this.props.dispatch(getNearbyPlaces({
         latitude: coord[1],
-        longitude: coord[2]
+        longitude: coord[2],
       }));
     } else {
       if (this.state.searchType !== 'places') {
@@ -162,7 +164,7 @@ class SearchWrapper extends Component {
   clear() {
     this.setState({
       text: '',
-      previousValue: ''
+      previousValue: '',
     });
     this.props.onClear();
   }
@@ -182,20 +184,18 @@ class SearchWrapper extends Component {
 
     this.props.onNearbySelected({
       latitude: +coord[1],
-      longitude: +coord[2]
+      longitude: +coord[2],
     });
   }
 
-  onPlaceSelected = (gPlace) => {
-    return placeDetails(gPlace.place_id)
-      .then((response) => response.json())
-      .then(({result}) => {
-        this.props.onPlaceSelected(gPlaceToPlace(result));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  onPlaceSelected = gPlace => placeDetails(gPlace.place_id)
+    .then(response => response.json())
+    .then(({ result }) => {
+      this.props.onPlaceSelected(gPlaceToPlace(result));
+    })
+    .catch((error) => {
+      console.error(error);
+    })
 
   onNearbyPlaceSelected = (gPlace) => {
     this.props.onNearbyPlaceSelected(gPlaceToPlace(gPlace));
@@ -204,8 +204,8 @@ class SearchWrapper extends Component {
   onSubmitEditing() {
     if (this.props.placesSearch.length) {
       return placeDetails(this.props.placesSearch[0].place_id)
-        .then((response) => response.json())
-        .then(({result}) => {
+        .then(response => response.json())
+        .then(({ result }) => {
           this.props.onPlacesSelected(gPlaceToPlace(result), this.props.reviewsSearch);
           this.blurInput();
         })
@@ -214,7 +214,7 @@ class SearchWrapper extends Component {
         });
     }
 
-    this.props.onPlacesSelected(null, this.props.reviewsSearch)
+    this.props.onPlacesSelected(null, this.props.reviewsSearch);
     this.blurInput();
   }
 
@@ -227,42 +227,43 @@ class SearchWrapper extends Component {
     const { props, state } = this;
 
     return (
-      <LayoutView type='container'>
-        <LayoutView type='header'>
+      <LayoutView type="container">
+        <LayoutView type="header">
           <Button
             transparent
             style={styles.headerButton}
             onPress={() => this.onActionPress()}
           >
             {state.focused ? (
-              <Icon name='arrow-back' style={styles.headerIcon}/>
+              <Icon name="arrow-back" style={styles.headerIcon} />
             ) : state.text.length ? (
-              <Icon name='close' style={styles.headerIcon}/>
+              <Icon name="close" style={styles.headerIcon} />
             ) : (
-              <Icon name='search' style={styles.headerIcon}/>
+              <Icon name="search" style={styles.headerIcon} />
             )}
           </Button>
 
           <TextInput
-            ref='textInput'
+            ref="textInput"
             underlineColorAndroid={state.focused ? colors.white : colors.transparent}
             autoCorrect={false}
-            placeholder={'Search friends, reviews & places'}
+            placeholder="Search friends, reviews & places"
             selectionColor={colors.whiteTransparent}
             placeholderTextColor={colors.white}
             style={styles.searchInput}
             value={state.text}
             onSubmitEditing={() => this.onSubmitEditing()}
             onFocus={() => this.onFocus()}
-            onChangeText={(text) => this.onChangeText(text)}
-            withRef />
+            onChangeText={text => this.onChangeText(text)}
+            withRef
+          />
 
           <Button
             transparent
             style={styles.headerButton}
             onPress={props.onMenuPress}
           >
-            <Icon name='menu' style={[styles.headerIcon, styles.menuIcon]} />
+            <Icon name="menu" style={[styles.headerIcon, styles.menuIcon]} />
           </Button>
         </LayoutView>
 
@@ -285,10 +286,10 @@ class SearchWrapper extends Component {
             onPlaceSelected={this.onPlaceSelected}
             onNearbySelected={this.onNearbySelected}
             onNearbyPlaceSelected={this.onNearbyPlaceSelected}
-            />
+          />
         )}
       </LayoutView>
-    )
+    );
   }
 }
 

@@ -23,16 +23,16 @@ class AddImage extends Component {
 
     this.state = {
       image: props.navigation.state.params.image,
-      caption: props.navigation.state.params.image.caption || ''
-    }
+      caption: props.navigation.state.params.image.caption || '',
+    };
   }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress = () => {
@@ -41,8 +41,8 @@ class AddImage extends Component {
     navigation.state.params.onImageEditBack({
       image: {
         ...this.state.image,
-        caption: navigation.state.params.image.caption || ''
-      }
+        caption: navigation.state.params.image.caption || '',
+      },
     });
 
     return true;
@@ -51,35 +51,35 @@ class AddImage extends Component {
   onSavePress = () => {
     const { navigation } = this.props;
 
-    navigation.goBack()
+    navigation.goBack();
     navigation.state.params.onImageEditBack({
       image: {
         ...this.state.image,
-        caption: this.state.caption
-      }
+        caption: this.state.caption,
+      },
     });
   }
 
   onDeletePress = () => {
     const { navigation } = this.props;
 
-    navigation.goBack()
+    navigation.goBack();
     navigation.state.params.onImageEditBack({
       image: this.state.image,
-      remove: true
+      remove: true,
     });
   }
 
   render() {
     return (
-      <LayoutView type='container'>
-        <LayoutView type='header'>
-          <LayoutView type='left'>
+      <LayoutView type="container">
+        <LayoutView type="header">
+          <LayoutView type="left">
             <Button transparent onPress={this.onBackPress}>
-              <Icon style={styles.iconHeader} name='arrow-back' />
+              <Icon style={styles.iconHeader} name="arrow-back" />
             </Button>
           </LayoutView>
-          <LayoutView type='right'>
+          <LayoutView type="right">
             <Button transparent onPress={this.onSavePress}>
               <Text>SAVE</Text>
             </Button>
@@ -87,26 +87,31 @@ class AddImage extends Component {
         </LayoutView>
         <Content style={styles.content}>
           <View>
-            <Label text="What is happening in this picture ?" required={true}/>
+            <Label text="What is happening in this picture ?" required />
             <FormInput
               placeholder="E.g: The water mirror of Bordeaux"
               defaultValue={this.state.caption}
               onChangeText={caption => this.setState({ caption })}
-              maxLength={30} />
+              maxLength={30}
+            />
           </View>
           <View
-            style={styles.imageWrapper}>
+            style={styles.imageWrapper}
+          >
             <Image
               style={styles.image}
               resizeMethod="resize"
-              source={{uri: this.state.image.source || this.state.image.uri}} />
+              source={{ uri: this.state.image.source || this.state.image.uri }}
+            />
           </View>
           <View
-            style={styles.actionsWrapper}>
+            style={styles.actionsWrapper}
+          >
             <Icon
               style={styles.icon}
-              name='delete'
-              onPress={this.onDeletePress}/>
+              name="delete"
+              onPress={this.onDeletePress}
+            />
           </View>
         </Content>
       </LayoutView>

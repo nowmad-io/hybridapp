@@ -7,7 +7,7 @@ export default {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   profileWrapper: {
     width: '100%',
@@ -18,38 +18,38 @@ export default {
     alignItems: 'center',
   },
   info: {
-    flex: 1
+    flex: 1,
   },
   title: {
     fontSize: 24,
-    lineHeight: 26
+    lineHeight: 26,
   },
   subtitle: {
     fontSize: 14,
     lineHeight: 16,
-    color: colors.grey
+    color: colors.grey,
   },
   thumbnail: {
     width: 50,
     height: 50,
-    borderRadius: 50
+    borderRadius: 50,
   },
   contentWrapper: {
     flex: 1,
-    width: '100%'
+    width: '100%',
   },
   right: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   label: {
     fontSize: 12,
     lineHeight: 14,
     color: colors.greyDark,
     paddingHorizontal: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   listItemWrapper: {
     marginLeft: 0,
@@ -57,9 +57,9 @@ export default {
     borderTopWidth: 0.5,
     borderBottomWidth: 0,
     borderColor: colors.greyDark,
-    backgroundColor: colors.greyTransparent
+    backgroundColor: colors.greyTransparent,
   },
-  listItem: (last) => ({
+  listItem: last => ({
     marginRight: 16,
     marginLeft: 16,
     paddingRight: 0,
@@ -69,7 +69,7 @@ export default {
     borderBottomWidth: last ? 0 : 0.5,
     borderColor: colors.grey,
     backgroundColor: colors.transparent,
-    height: 42
+    height: 42,
   }),
   userPicture: {
     alignSelf: 'center',
@@ -78,17 +78,17 @@ export default {
     borderRadius: 50,
   },
   empty: {
-    color: colors.grey
+    color: colors.grey,
   },
   acceptButton: {
     marginLeft: 8,
     padding: 5,
     backgroundColor: colors.blueDark,
-    borderRadius: 2
+    borderRadius: 2,
   },
   acceptLabel: {
     fontSize: 12,
-    color: colors.white
+    color: colors.white,
   },
   actionsWrapper: {
     width: '100%',
@@ -106,12 +106,12 @@ export default {
   },
   actionIcon: {
     marginRight: 0,
-    color: colors.blueDark
+    color: colors.blueDark,
   },
   actionLabel: {
     color: colors.blueDark,
     fontSize: 12,
     lineHeight: 14,
-    paddingRight: 4
-  }
+    paddingRight: 4,
+  },
 };

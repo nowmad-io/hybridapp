@@ -6,7 +6,7 @@ import Text from '../dumbs/text';
 
 import styles from './styles';
 
-const ListItem = (props) => (
+const ListItem = props => (
   <TouchableOpacity onPress={props.onPress}>
     <View style={styles.itemWrapper(props.other)}>
       { props.image === 'google' && (
@@ -17,7 +17,7 @@ const ListItem = (props) => (
       )}
       { props.image === 'friend' && (
         <View>
-          <Image source={{uri: props.thumbnail}} style={[styles.imageItem, styles.thumbnail]} />
+          <Image source={{ uri: props.thumbnail }} style={[styles.imageItem, styles.thumbnail]} />
         </View>
       )}
       <View style={styles.textWrapperItem}>
@@ -28,11 +28,11 @@ const ListItem = (props) => (
       </View>
     </View>
   </TouchableOpacity>
-)
+);
 
 ListItem.defaultProps = {
-  onPress: () => true
-}
+  onPress: () => true,
+};
 
 ListItem.propTypes = {
   image: PropTypes.string,
@@ -41,6 +41,6 @@ ListItem.propTypes = {
   other: PropTypes.bool,
   children: PropTypes.array,
   onPress: PropTypes.func,
-}
+};
 
 export default ListItem;

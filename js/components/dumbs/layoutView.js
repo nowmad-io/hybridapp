@@ -10,56 +10,56 @@ export default class LayoutView extends Component {
   	style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
-      PropTypes.array
+      PropTypes.array,
     ]),
     type: PropTypes.oneOf([
       'header',
       'container',
       'left',
       'right',
-      'wrapper'
-    ])
+      'wrapper',
+    ]),
   };
 
   render() {
     const { style, type } = this.props;
-		return (
-			<View {...this.props} style={[styles[type], style]}>
-				{this.props.children}
-			</View>
-		);
-	}
+    return (
+      <View {...this.props} style={[styles[type], style]}>
+        {this.props.children}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.green,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 10,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderBottomColor: colors.green,
     height: sizes.headerHeight,
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 9
+    zIndex: 9,
   },
   container: {
     flex: 1,
-    height: sizes.height
+    height: sizes.height,
   },
   left: {
     flex: 1,
-		alignSelf: 'center',
-		alignItems: 'flex-start',
+    alignSelf: 'center',
+    alignItems: 'flex-start',
   },
   right: {
     flex: 1,
-		alignSelf: 'center',
-		alignItems: 'flex-end',
+    alignSelf: 'center',
+    alignItems: 'flex-end',
   },
   wrapper: {
     flexDirection: 'row',
-    flex: 1
-  }
+    flex: 1,
+  },
 });

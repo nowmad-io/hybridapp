@@ -12,11 +12,13 @@ export default class List extends Component {
     text: PropTypes.string,
     secondaryText: PropTypes.string,
     thumbnail: PropTypes.string,
-    image: PropTypes.string
+    image: PropTypes.string,
   };
 
   render() {
-    const { children, onPress, image, text, secondaryText, thumbnail } = this.props;
+    const {
+      children, onPress, image, text, secondaryText, thumbnail,
+    } = this.props;
 
     return (
       <TouchableOpacity onPress={onPress}>
@@ -28,7 +30,7 @@ export default class List extends Component {
             <Image source={require('../../../assets/images/icons/place.png')} style={styles.image} />
           )}
           { image === 'friend' && (
-            <Image source={{uri: thumbnail}} style={styles.image} />
+            <Image source={{ uri: thumbnail }} style={styles.image} />
           )}
 
           <View style={styles.textWrapper}>
@@ -41,7 +43,7 @@ export default class List extends Component {
         </View>
       </TouchableOpacity>
     );
-	}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -49,23 +51,23 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     height: 24,
     width: 24,
     marginRight: 12,
-    borderRadius: 50
+    borderRadius: 50,
   },
   textWrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
     paddingRight: 16,
     borderBottomWidth: 0.5,
     borderColor: colors.grey,
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   secondaryText: {
-    color: colors.grey
-  }
+    color: colors.grey,
+  },
 });

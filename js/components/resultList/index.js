@@ -11,8 +11,8 @@ import Spinner from '../dumbs/spinner';
 
 import styles from './styles';
 
-const MAX_FRIENDS = 5
-const MAX_REVIEWS = 5
+const MAX_FRIENDS = 5;
+const MAX_REVIEWS = 5;
 
 class ResultList extends Component {
   static defaultProps = {
@@ -20,7 +20,7 @@ class ResultList extends Component {
     onNearbySelected: () => true,
     onNearbyPlaceSelected: () => true,
     onReviewPress: () => true,
-    onPlaceSelected: () => true
+    onPlaceSelected: () => true,
   }
 
   static propTypes = {
@@ -44,9 +44,11 @@ class ResultList extends Component {
   }
 
   render() {
-    const { style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
+    const {
+      style, nearbyPlaces, onNearbySelected, searchType, nearbyLoading,
       friendsLoading, placesLoading, reviewsLoading, placesSearch, reviewsSearch,
-      friendsSearch, onPlaceSelected, onFriendPress, onReviewPress } = this.props;
+      friendsSearch, onPlaceSelected, onFriendPress, onReviewPress,
+    } = this.props;
 
     let friendsSearchList = [];
 
@@ -55,30 +57,32 @@ class ResultList extends Component {
         ...friendsSearch.friends,
         ...friendsSearch.friends_friends.map(friend => ({
           ...friend,
-          type: 'friends_friends'
+          type: 'friends_friends',
         })),
         ...friendsSearch.others.map(other => ({
           ...other,
-          type: 'other'
-        }))
-      ]
+          type: 'other',
+        })),
+      ];
     }
 
     return (
-      <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps={'always'}>
+      <ScrollView style={[styles.resultWrapper, style]} keyboardShouldPersistTaps="always">
         <View style={styles.resultView}>
           {(searchType === 'nearby') && (
             <List label="Maybe you were looking for">
               <View>
                 <Spinner
                   style={styles.spinner}
-                  visible={nearbyLoading} />
+                  visible={nearbyLoading}
+                />
                 {!nearbyLoading && nearbyPlaces.map((result, index) => (
                   <ListItem
                     key={index}
-                    image='google'
+                    image="google"
                     text={result.name}
-                    onPress={() => this.props.onNearbyPlaceSelected(result)} />
+                    onPress={() => this.props.onNearbyPlaceSelected(result)}
+                  />
                 ))}
                 <Button
                   style={styles.button}
@@ -95,16 +99,18 @@ class ResultList extends Component {
                 <View>
                   <Spinner
                     style={styles.spinner}
-                    visible={friendsLoading} />
+                    visible={friendsLoading}
+                  />
                   {!friendsLoading && friendsSearchList.slice(0, MAX_FRIENDS).map((result, index) => (
                     <ListItem
                       key={index}
-                      image='friend'
+                      image="friend"
                       thumbnail={result.picture}
                       text={`${result.first_name} ${result.last_name}`}
                       secondaryText={result.type === 'friends_friends' ? '2nd' : null}
                       other={result.type === 'other'}
-                      onPress={() => onFriendPress(result)} />
+                      onPress={() => onFriendPress(result)}
+                    />
                   ))}
                 </View>
               </List>
@@ -112,36 +118,40 @@ class ResultList extends Component {
                 <View>
                   <Spinner
                     style={styles.spinner}
-                    visible={reviewsLoading} />
-                  {!reviewsLoading && reviewsSearch.slice(0, MAX_REVIEWS).map((place) => (
-                    place.reviews.map((review, index) =>(
+                    visible={reviewsLoading}
+                  />
+                  {!reviewsLoading && reviewsSearch.slice(0, MAX_REVIEWS).map(place => (
+                    place.reviews.map((review, index) => (
                       <ListItem
                         key={index}
-                        image='place'
+                        image="place"
                         text={review.short_description}
                         secondaryText={review.created_by.first_name}
-                        onPress={() => onReviewPress(place, review)} />
+                        onPress={() => onReviewPress(place, review)}
+                      />
                     ))
                   ))}
                 </View>
               </List>
               <List label="Résults by Google places">
-                  <Spinner
-                    style={styles.spinner}
-                    visible={placesLoading} />
-                  {!placesLoading && placesSearch.map((result, index) => (
-                    <ListItem
-                      key={index}
-                      image='google'
-                      text={result.description}
-                      onPress={() => onPlaceSelected(result)} />
+                <Spinner
+                  style={styles.spinner}
+                  visible={placesLoading}
+                />
+                {!placesLoading && placesSearch.map((result, index) => (
+                  <ListItem
+                    key={index}
+                    image="google"
+                    text={result.description}
+                    onPress={() => onPlaceSelected(result)}
+                  />
                   ))}
               </List>
             </View>
           )}
         </View>
       </ScrollView>
-    )
+    );
   }
 }
 

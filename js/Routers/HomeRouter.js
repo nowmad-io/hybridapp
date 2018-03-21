@@ -7,15 +7,17 @@ import DrawBar from '../components/pages/drawBar';
 
 import { sizes } from '../parameters/';
 
-const HomeRouter = DrawerNavigator({
-  Home,
-  DrawBar
-},
-{
-  drawerPosition: 'right',
-  contentComponent: props => <DrawBar {...props} />,
-  drawerWidth: sizes.drawerWidth
-});
+const HomeRouter = DrawerNavigator(
+  {
+    Home,
+    DrawBar,
+  },
+  {
+    drawerPosition: 'right',
+    contentComponent: props => <DrawBar {...props} />,
+    drawerWidth: sizes.drawerWidth,
+  },
+);
 
 HomeRouter.navigationOptions = () => ({
   header: null,

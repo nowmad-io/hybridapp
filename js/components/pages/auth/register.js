@@ -14,6 +14,7 @@ import Button from '../../dumbs/button';
 import Spinner from '../../dumbs/spinner';
 
 import styles, { colors } from './styles';
+
 const logo = require('../../../../assets/images/logos/full_logo_horizontal.png');
 
 class Register extends Component {
@@ -42,7 +43,7 @@ class Register extends Component {
       email: this.state.email,
       password: this.state.password,
       first_name: this.state.first_name,
-      last_name: this.state.last_name
+      last_name: this.state.last_name,
     });
   }
 
@@ -52,7 +53,7 @@ class Register extends Component {
 
   render() {
     return (
-      <LayoutView type='container' style={styles.container}>
+      <LayoutView type="container" style={styles.container}>
         <View style={[styles.logoWrapper, styles.logoWrapperRegister]}>
           <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
@@ -61,7 +62,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="mail" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -74,7 +75,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="person" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -87,7 +88,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="person" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -100,7 +101,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="lock-open" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -112,20 +113,23 @@ class Register extends Component {
               />
             </View>
             <Button
-              rounded light
+              rounded
+              light
               style={styles.button}
-              onPress={() => this._register()}>
+              onPress={() => this._register()}
+            >
               <Text>register</Text>
             </Button>
             <Button
               transparent
               style={styles.button}
-              onPress={() => this._backToLogin()}>
+              onPress={() => this._backToLogin()}
+            >
               <Text>Login</Text>
             </Button>
           </View>
         </Content>
-        <Spinner overlay={true} visible={this.props.registerLoading}/>
+        <Spinner overlay visible={this.props.registerLoading} />
       </LayoutView>
     );
   }
@@ -133,7 +137,7 @@ class Register extends Component {
 
 const bindActions = dispatch => ({
   dispatch,
-  register: (credentials) => dispatch(registerRequest(credentials)),
+  register: credentials => dispatch(registerRequest(credentials)),
 });
 
 const mapStateToProps = state => ({

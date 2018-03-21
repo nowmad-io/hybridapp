@@ -11,7 +11,7 @@ import {
   SEND_FRIENDSHIP_ERROR,
   ACCEPT_FRIENDSHIP_SUCCESS,
   CANCEL_FRIENDSHIP_SUCCESS,
-  REJECT_FRIENDSHIP_SUCCESS
+  REJECT_FRIENDSHIP_SUCCESS,
 } from '../constants/friends';
 import { FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR } from '../constants/search';
 
@@ -37,7 +37,7 @@ export function fetchOutgoingRequests() {
 }
 
 export function sendFriendship(friendship) {
-  return apiCall(SEND_FRIENDSHIP_SUCCESS, SEND_FRIENDSHIP_ERROR, 'post', `${FRIENSHIPS_PATH}`, {...friendship});
+  return apiCall(SEND_FRIENDSHIP_SUCCESS, SEND_FRIENDSHIP_ERROR, 'post', `${FRIENSHIPS_PATH}`, { ...friendship });
 }
 
 export function acceptFriendship(id) {

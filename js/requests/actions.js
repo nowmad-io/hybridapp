@@ -1,30 +1,30 @@
 import {
   API_CALL,
-  TOKEN
+  TOKEN,
 } from './constants';
 
-export function apiCall(success, failure, method, path, params = {}, data = {}, options = {}){
+export function apiCall(success, failure, method, path, params = {}, data = {}, options = {}) {
   return {
     type: API_CALL,
     meta: {
       success,
-      failure
+      failure,
     },
     payload: {
       method,
       path,
       params,
       data,
-      options
-    }
-  }
+      options,
+    },
+  };
 }
 
-export function setToken(token){
+export function setToken(token) {
   return {
     type: TOKEN,
     payload: {
-      token
-    }
-  }
+      token,
+    },
+  };
 }

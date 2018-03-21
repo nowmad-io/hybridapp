@@ -14,11 +14,11 @@ const AppRouter = StackNavigator({
   AddReview,
   ReviewDetail,
   AddImage,
-  AddFriend
+  AddFriend,
 }, {
   navigationOptions: {
     header: null,
-  }
+  },
 });
 
 export default AppRouter;

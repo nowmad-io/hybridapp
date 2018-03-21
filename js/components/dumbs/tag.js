@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import Text from '../dumbs/text';
 
@@ -15,29 +15,32 @@ export default class Tag extends Component {
   };
 
   render() {
-    const { onPress, text, selected } =  this.props;
+    const { onPress, text, selected } = this.props;
     return (
       <TouchableOpacity
         onPress={onPress}
-        activeOpacity={onPress ? 0.2 : 1}>
+        activeOpacity={onPress ? 0.2 : 1}
+      >
         <View style={[
           styles.tags,
-          selected && styles.selected
-        ]}>
-            {text ? (
-              <Text style={[
+          selected && styles.selected,
+        ]}
+        >
+          {text ? (
+            <Text style={[
                 styles.text,
-                selected && styles.textSelected
-              ]}>
-                {text}
-              </Text>
+                selected && styles.textSelected,
+              ]}
+            >
+              {text}
+            </Text>
             ) : null}
-            {this.props.children}
+          {this.props.children}
         </View>
       </TouchableOpacity>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   tags: {
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 6,
     paddingHorizontal: 9,
-    marginRight: 8
+    marginRight: 8,
   },
   selected: {
     backgroundColor: colors.green,
@@ -56,9 +59,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     color: colors.black,
-    lineHeight: 12
+    lineHeight: 12,
   },
   textSelected: {
-    color: colors.white
-  }
+    color: colors.white,
+  },
 });

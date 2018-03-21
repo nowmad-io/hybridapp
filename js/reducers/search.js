@@ -9,7 +9,7 @@ import {
   REVIEWS_LOADING,
   FRIENDS_SEARCH,
   FRIENDS_SEARCH_ERROR,
-  FRIENDS_LOADING
+  FRIENDS_LOADING,
 } from '../constants/search';
 
 import { LOGOUT } from '../constants/auth';
@@ -23,7 +23,7 @@ const initialState = {
   reviewsLoading: false,
   friendsLoading: false,
   placesLoading: false,
-  searchType: null
+  searchType: null,
 };
 
 export default function SearchReducer(state = initialState, action) {
@@ -32,49 +32,49 @@ export default function SearchReducer(state = initialState, action) {
       return {
         ...state,
         nearbyPlaces: action.places ? action.places.results : initialState.nearbyPlaces,
-        nearbyLoading: false
+        nearbyLoading: false,
       };
     case PLACES_SEARCH_ERROR:
     case PLACES_SEARCH:
       return {
         ...state,
         placesSearch: action.error ? initialState.placesSearch : action.payload.predictions,
-        placesLoading: false
+        placesLoading: false,
       };
     case REVIEWS_SEARCH_ERROR:
     case REVIEWS_SEARCH:
       return {
         ...state,
         reviewsSearch: action.error ? initialState.reviewsSearch : action.payload,
-        reviewsLoading: false
+        reviewsLoading: false,
       };
     case FRIENDS_SEARCH_ERROR:
     case FRIENDS_SEARCH:
       return {
         ...state,
         friendsSearch: action.error ? initialState.friendsSearch : action.payload,
-        friendsLoading: false
+        friendsLoading: false,
       };
     case NEARBY_LOADING:
       return {
         ...state,
-        nearbyLoading: action.loading
-      }
+        nearbyLoading: action.loading,
+      };
     case FRIENDS_LOADING:
       return {
         ...state,
-        friendsLoading: action.loading
-      }
+        friendsLoading: action.loading,
+      };
     case REVIEWS_LOADING:
       return {
         ...state,
-        reviewsLoading: action.loading
-      }
+        reviewsLoading: action.loading,
+      };
     case PLACES_LOADING:
       return {
         ...state,
-        placesLoading: action.loading
-      }
+        placesLoading: action.loading,
+      };
     case LOGOUT:
       return initialState;
     default:

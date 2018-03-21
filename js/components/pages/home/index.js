@@ -11,8 +11,10 @@ import Map from '../../map';
 import Marker from '../../dumbs/marker';
 import SearchWrapper from '../../searchWrapper';
 
-import { selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
+import {
+  selectedPlace, regionChanged, levelChange, selectNewPlace,
+  currentPlacesChange, searchedPlaces, googlePlace, setFromReview,
+} from '../../../actions/home';
 import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
@@ -28,7 +30,7 @@ class Home extends Component {
     selectedPlace: PropTypes.object,
     region: PropTypes.object,
     newPlace: PropTypes.object,
-    searchFocus: PropTypes.bool
+    searchFocus: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -42,7 +44,9 @@ class Home extends Component {
     this.onRegionChangeComplete(this.props.region);
   }
 
-  componentWillReceiveProps({ selectedPlace, level, fromReview, position }) {
+  componentWillReceiveProps({
+    selectedPlace, level, fromReview, position,
+  }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
       this._searchWrapper.getWrappedInstance().blurInput();
@@ -53,7 +57,6 @@ class Home extends Component {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
-
       if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
@@ -68,15 +71,15 @@ class Home extends Component {
           top: 20,
           right: 20,
           bottom: 20,
-          left: 20
-        }
+          left: 20,
+        },
       }), 500);
     }
 
     if (level && level !== this.props.level) {
       this._map.updatePadding({
         top: sizes.toolbarHeight,
-        bottom: level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2
+        bottom: level === 1 ? -carousel.level1 : -carousel.level1 - carousel.level2,
       });
 
       if (level < 3 && this.props.selectedPlace) {
@@ -87,7 +90,7 @@ class Home extends Component {
 
   onMarkerPress = (e, place) => {
     const { searchedPlaces, currentPlaces } = this.props,
-          index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, (p) => (p.id == place.id));
+      index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, p => (p.id == place.id));
 
     this.props.dispatch(selectedPlace(place));
     this._carouselXY.goToIndex(index);
@@ -106,17 +109,17 @@ class Home extends Component {
   }
 
   onRegionChangeComplete = (region) => {
-    const scale = Math.pow(2, Math.log2(360 * ((sizes.width/256) / region.longitudeDelta)) + 1) + 1,
-          { level } = this.props;
+    const scale = Math.pow(2, Math.log2(360 * ((sizes.width / 256) / region.longitudeDelta)) + 1) + 1,
+      { level } = this.props;
 
     const southWest = {
-      latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2) / scale),
-      longitude: region.longitude - region.longitudeDelta / 2
+      latitude: (region.latitude - region.latitudeDelta / 2) - ((level === 1 ? -carousel.level1 : -carousel.level1 - carousel.level2) / scale),
+      longitude: region.longitude - region.longitudeDelta / 2,
     };
 
     const northEast = {
       latitude: (region.latitude + region.latitudeDelta / 2) - (sizes.toolbarHeight / scale),
-      longitude: region.longitude + region.longitudeDelta / 2
+      longitude: region.longitude + region.longitudeDelta / 2,
     };
 
     const newPlaces = _.filter(this.props.places, (place) => {
@@ -124,7 +127,7 @@ class Home extends Component {
           && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
         return true;
       }
-    })
+    });
 
     this.props.dispatch(regionChanged(region));
 
@@ -139,7 +142,7 @@ class Home extends Component {
     }
   }
 
-  onMapLongPress = ({coordinate}) => {
+  onMapLongPress = ({ coordinate }) => {
     this._searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
     this.props.dispatch(selectNewPlace(coordinate));
   }
@@ -209,8 +212,8 @@ class Home extends Component {
 
   onPoiClick = (poi) => {
     placeDetails(poi.placeId)
-      .then((response) => response.json())
-      .then(({result}) => {
+      .then(response => response.json())
+      .then(({ result }) => {
         this.onNearbyPlaceSelected(gPlaceToPlace(result));
       })
       .catch((error) => {
@@ -223,12 +226,14 @@ class Home extends Component {
   }
 
   render() {
-    const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
-      searchFocus, searchedPlaces } = this.props;
+    const {
+      places, currentPlaces, selectedPlace, region, navigation, newPlace,
+      searchFocus, searchedPlaces,
+    } = this.props;
 
     return (
       <SearchWrapper
-        ref='searchWrapper'
+        ref="searchWrapper"
         ref={(sw) => { this._searchWrapper = sw; }}
         onClear={() => this.onSearchClear()}
         onNearbySelected={this.onNearbySelected}
@@ -249,7 +254,7 @@ class Home extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           mapPadding={{
             top: sizes.toolbarHeight,
-            bottom: - carousel.level1
+            bottom: -carousel.level1,
           }}
           onLayout={this.onLayout}
           onPoiClick={this.onPoiClick}

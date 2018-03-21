@@ -10,38 +10,40 @@ export default class Label extends Component {
   static propTypes = {
     text: PropTypes.string,
     required: PropTypes.bool,
-    subtitle: PropTypes.bool
+    subtitle: PropTypes.bool,
   };
 
   render() {
-    const { text, subtitle, required } =  this.props;
+    const { text, subtitle, required } = this.props;
 
     return (
       <View style={[
         styles.labelWrapper,
-        subtitle && styles.labelWrapperSubtitle
-      ]}>
-          <Text style={[
+        subtitle && styles.labelWrapperSubtitle,
+      ]}
+      >
+        <Text style={[
             styles.label,
-            subtitle && styles.labelSubtitle
-          ]}>
-            {text}
-          </Text>
-          { required && (
-            <View style={styles.requiredWrapper}>
-              <View style={styles.required} />
-            </View>
+            subtitle && styles.labelSubtitle,
+          ]}
+        >
+          {text}
+        </Text>
+        { required && (
+        <View style={styles.requiredWrapper}>
+          <View style={styles.required} />
+        </View>
           )}
       </View>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   labelWrapper: {
     marginTop: 16,
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   labelWrapperSubtitle: {
     marginTop: 8,
@@ -50,16 +52,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     color: colors.black,
-    fontWeight: '500'
+    fontWeight: '500',
   },
   labelSubtitle: {
     fontSize: 10,
     lineHeight: 12,
-    color: colors.greyDark
+    color: colors.greyDark,
   },
   requiredWrapper: {
     height: '100%',
-    marginLeft: 2
+    marginLeft: 2,
   },
   required: {
     position: 'absolute',
@@ -67,6 +69,6 @@ const styles = StyleSheet.create({
     height: 4,
     width: 4,
     backgroundColor: colors.red,
-    borderRadius: 100
-  }
+    borderRadius: 100,
+  },
 });

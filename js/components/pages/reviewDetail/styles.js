@@ -7,13 +7,13 @@ export default {
     backgroundColor: colors.white,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    flex: 1
+    flex: 1,
   },
   icon: {
-    color: colors.white
+    color: colors.white,
   },
   information: {
     marginTop: 8,
-    lineHeight: 20
-  }
+    lineHeight: 20,
+  },
 };

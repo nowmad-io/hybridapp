@@ -48,12 +48,12 @@ class AddReview extends Component {
       information: '',
       status: statusList[0],
       categories: [],
-      pictures: []
-    }
+      pictures: [],
+    };
 
     this.state = {
       place,
-      ...defaultReview
+      ...defaultReview,
     };
 
     if (review) {
@@ -64,8 +64,8 @@ class AddReview extends Component {
         information: review.information || defaultReview.information,
         status: review.status || defaultReview.status,
         categories: review.categories ? review.categories.map(cat => (cat.name)) : defaultReview.categories,
-        pictures: review.pictures || defaultReview.pictures
-      }
+        pictures: review.pictures || defaultReview.pictures,
+      };
     }
   }
 
@@ -105,19 +105,19 @@ class AddReview extends Component {
       public: this.props.public_default,
       place: {
         latitude: this.state.place.latitude,
-        longitude: this.state.place.longitude
+        longitude: this.state.place.longitude,
       },
-      categories: this.state.categories.map((categorie) => ({
-        name: categorie
+      categories: this.state.categories.map(categorie => ({
+        name: categorie,
       })),
       pictures: this.state.pictures.map((image) => {
-        const picture = image.id ? { pictureId: image.id } : { source: image.data }
+        const picture = image.id ? { pictureId: image.id } : { source: image.data };
 
         return {
           ...picture,
-          caption: image.caption
-        }
-      })
+          caption: image.caption,
+        };
+      }),
     };
 
     Keyboard.dismiss();
@@ -150,8 +150,8 @@ class AddReview extends Component {
       quality: 1.0,
       storageOptions: {
         skipBackup: true,
-        path: Config.IMAGES_FOLDER
-      }
+        path: Config.IMAGES_FOLDER,
+      },
     };
     this.props.dispatch(reviewLoading(true));
 
@@ -167,7 +167,7 @@ class AddReview extends Component {
   navigateToImage(image) {
     this.props.navigation.navigate('AddImage', {
       onImageEditBack: this.onImageEditBack,
-      image
+      image,
     });
   }
 
@@ -181,7 +181,7 @@ class AddReview extends Component {
     }
 
     if (image && remove) {
-      this.setState({ pictures: _.filter(pictures, (img) => (img.uri !== image.uri)) });
+      this.setState({ pictures: _.filter(pictures, img => (img.uri !== image.uri)) });
       return;
     }
 
@@ -192,10 +192,10 @@ class AddReview extends Component {
         return true;
       }
 
-      return false
-    })
+      return false;
+    });
 
-    let newPictures = [...pictures];
+    const newPictures = [...pictures];
 
     if (exist) {
       newPictures[index] = image;
@@ -212,26 +212,26 @@ class AddReview extends Component {
     const full = this.state.pictures && this.state.pictures.length >= MAX_LENGTH_PICTURES;
 
     return (
-      <LayoutView type='container'>
-        <LayoutView type='header'>
-          <LayoutView type='left'>
+      <LayoutView type="container">
+        <LayoutView type="header">
+          <LayoutView type="left">
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon style={styles.icon} name='arrow-back' />
+              <Icon style={styles.icon} name="arrow-back" />
             </Button>
           </LayoutView>
-          <LayoutView type='right'></LayoutView>
+          <LayoutView type="right" />
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
-              ref='map'
+              ref="map"
               onMapReady={this.onMapReady}
-              zoomEnabled={true}
+              zoomEnabled
               rotateEnabled={false}
-              scrollEnabled={true}
+              scrollEnabled
               region={this.props.region}
             >
-             <Marker place={this.state.place} />
+              <Marker place={this.state.place} />
             </Map>
           </View>
           <View style={styles.reviewWrapper}>
@@ -239,21 +239,24 @@ class AddReview extends Component {
             <View>
               <Label
                 text="Add a short description about this place"
-                required={true} />
+                required
+              />
               <FormInput
                 defaultValue={this.state.short_description}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={short_description => this.setState({ short_description })}
-                maxLength={50} />
+                maxLength={50}
+              />
             </View>
             <View>
-              <Label text="You were..." required={true}/>
+              <Label text="You were..." required />
               {statusList.map((stat, index) => (
                 <RadioButton
                   key={index}
                   selected={status === stat}
                   text={stat}
-                  onPress={() => this.setState({ status: stat })} />
+                  onPress={() => this.setState({ status: stat })}
+                />
               ))}
             </View>
             <View>
@@ -273,10 +276,11 @@ class AddReview extends Component {
               <Label text="Tell your friends about your experience" />
               <FormInput
                 defaultValue={this.state.information}
-                multiline={true}
+                multiline
                 placeholder="What made that experience mad awesome ?"
                 onChangeText={information => this.setState({ information })}
-                maxLength={300} />
+                maxLength={300}
+              />
             </View>
             <View>
               <Label text="Add some pictures with a caption" />
@@ -290,10 +294,11 @@ class AddReview extends Component {
                     key={index}
                     style={styles.image(full, index)}
                     onPress={() => this.navigateToImage(image)}
-                    source={image.source || image.uri} />
+                    source={image.source || image.uri}
+                  />
                 )) }
               </View>
-              <Text  style={styles.imagesCaption}>
+              <Text style={styles.imagesCaption}>
                 E.g: A water mirror in Bordeaux !
               </Text>
             </View>
@@ -306,7 +311,7 @@ class AddReview extends Component {
           <Text>Publish</Text>
         </Button>
 
-        <Spinner overlay={true} visible={this.props.reviewLoading}/>
+        <Spinner overlay visible={this.props.reviewLoading} />
       </LayoutView>
     );
   }
@@ -316,7 +321,7 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   region: state.home.region,
   reviewLoading: state.home.reviewLoading,
   public_default: state.auth.me.public_default,

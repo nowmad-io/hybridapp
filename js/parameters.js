@@ -1,8 +1,8 @@
 import React, { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
-const isIphoneX = Platform.OS === "ios" && deviceHeight === 812 && deviceWidth === 375;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+const isIphoneX = Platform.OS === 'ios' && deviceHeight === 812 && deviceWidth === 375;
 
 export const font = {
   fontFamily: 'Roboto',
@@ -12,13 +12,13 @@ export const font = {
     regular: '400',
     medium: '500',
     bold: '700',
-    black: '900'
+    black: '900',
   },
   fontStyle: {
     normal: 'normal',
-    italic: 'italic'
-  }
-}
+    italic: 'italic',
+  },
+};
 
 export const colors = {
   green: '#00C69F',
@@ -31,27 +31,27 @@ export const colors = {
   blue: '#0076FF',
   blueDark: '#101172',
   blackShadow: {
-    shadowColor: "#000000",
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
-    shadowRadius: 4
+    shadowRadius: 4,
   },
   greyTransparent: 'rgba(188, 185, 185, 0.2)',
   whiteTransparent: 'rgba(255, 255, 255, 0.6)',
   whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
   transparent: 'rgba(0, 0, 0, 0)',
   ripple: 'rgba(256, 256, 256, 0.3)',
-  rippleDark: 'rgba(0, 0, 0, 0.15)'
+  rippleDark: 'rgba(0, 0, 0, 0.15)',
 };
 
 export const sizes = {
-  height: Platform.OS === "ios" ? deviceHeight : deviceHeight - StatusBar.currentHeight,
+  height: Platform.OS === 'ios' ? deviceHeight : deviceHeight - StatusBar.currentHeight,
   width: deviceWidth,
   headerHeight: 56,
-  toolbarHeight: Platform.OS === "ios" ? (isIphoneX ? 88 : 64) : 56,
+  toolbarHeight: Platform.OS === 'ios' ? (isIphoneX ? 88 : 64) : 56,
   statusBar: StatusBar.currentHeight,
-  drawerWidth: 0.625 * Dimensions.get('window').width
-}
+  drawerWidth: 0.625 * Dimensions.get('window').width,
+};
 
 const HELPER = sizes.toolbarHeight + sizes.headerHeight + sizes.statusBar;
 const PADDING_TOP = 16;
@@ -62,8 +62,8 @@ export const carousel = {
   sliderWidth: sizes.width,
   itemSpacing: ITEM_SPACING,
   itemWidth: sizes.width - ITEM_SPACING * 2,
-  level1: - LEVEL1,
+  level1: -LEVEL1,
   level2: LEVEL1 - 232,
   level3: HELPER + PADDING_TOP - sizes.height,
-  border: 4
-}
+  border: 4,
+};

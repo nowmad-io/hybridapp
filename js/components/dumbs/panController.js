@@ -8,7 +8,7 @@ const AnimatedPropType = PropTypes.any;
 
 export default class PanController extends Component {
   static propTypes = {
-      // Component Config
+    // Component Config
     lockDirection: PropTypes.bool,
     horizontal: PropTypes.bool,
     vertical: PropTypes.bool,
@@ -21,18 +21,18 @@ export default class PanController extends Component {
     snapSpacingX: PropTypes.number, // TODO: also allow an array of values?
     snapSpacingY: PropTypes.number,
 
-      // Animated Values
+    // Animated Values
     panX: AnimatedPropType,
     panY: AnimatedPropType,
 
-      // Animation Config
+    // Animation Config
     overshootSpringConfig: PropTypes.any,
     momentumDecayConfig: PropTypes.any,
     springOriginConfig: PropTypes.any,
     directionLockDistance: PropTypes.number,
     overshootReductionFactor: PropTypes.number,
 
-      // Events
+    // Events
     onReleaseX: PropTypes.func,
     onReleaseY: PropTypes.func,
     onRelease: PropTypes.func,
@@ -72,7 +72,9 @@ export default class PanController extends Component {
       onStartShouldSetPanResponder: this.props.onStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this.props.onMoveShouldSetPanResponder,
       onPanResponderGrant: (...args) => {
-        let { panX, panY, horizontal, vertical, xMode, yMode } = this.props;
+        const {
+          panX, panY, horizontal, vertical, xMode, yMode,
+        } = this.props;
 
         this.handleResponderGrant(panX, xMode);
         this.handleResponderGrant(panY, yMode);
@@ -80,19 +82,21 @@ export default class PanController extends Component {
         this._direction = horizontal && !vertical ? 'x' : (vertical && !horizontal ? 'y' : null);
       },
 
-      onPanResponderMove: (_, { dx, dy, x0, y0 }) => {
-        let {
-            panX,
-            panY,
-            xBounds,
-            yBounds,
-            overshootX,
-            overshootY,
-            horizontal,
-            vertical,
-            lockDirection,
-            directionLockDistance,
-            } = this.props;
+      onPanResponderMove: (_, {
+        dx, dy, x0, y0,
+      }) => {
+        const {
+          panX,
+          panY,
+          xBounds,
+          yBounds,
+          overshootX,
+          overshootY,
+          horizontal,
+          vertical,
+          lockDirection,
+          directionLockDistance,
+        } = this.props;
 
         if (!this._direction) {
           const dx2 = dx * dx;
@@ -105,51 +109,53 @@ export default class PanController extends Component {
         const dir = this._direction;
 
         if (horizontal && (!lockDirection || dir === 'x')) {
-          let [xMin, xStep, xMax] = xBounds;
+          const [xMin, xStep, xMax] = xBounds;
 
           this.handleResponderMove(panX, dx, xMin, xMax, overshootX);
         }
 
         if (vertical && (!lockDirection || dir === 'y')) {
-          let [yMin, yStep, yMax] = yBounds;
+          const [yMin, yStep, yMax] = yBounds;
 
           this.handleResponderMove(panY, dy, yMin, yMax, overshootY);
         }
       },
 
-      onPanResponderRelease: (_, { vx, vy, dx, dy }) => {
-        let {
-            panX,
-            panY,
-            xBounds,
-            yBounds,
-            overshootX,
-            overshootY,
-            horizontal,
-            vertical,
-            lockDirection,
-            xMode,
-            yMode,
-            snapSpacingX,
-            snapSpacingY,
-            } = this.props;
+      onPanResponderRelease: (_, {
+        vx, vy, dx, dy,
+      }) => {
+        const {
+          panX,
+          panY,
+          xBounds,
+          yBounds,
+          overshootX,
+          overshootY,
+          horizontal,
+          vertical,
+          lockDirection,
+          xMode,
+          yMode,
+          snapSpacingX,
+          snapSpacingY,
+        } = this.props;
 
-        let cancel = false;
+        const cancel = false;
 
         const dir = this._direction;
 
         if (!cancel && horizontal && (!lockDirection || dir === 'x')) {
-          let [xMin, xStep, xMax] = xBounds;
+          const [xMin, xStep, xMax] = xBounds;
           !cancel && this.handleResponderRelease(panX, xMin, xStep, xMax, vx, overshootX, xMode, snapSpacingX);
         }
 
         if (!cancel && vertical && (!lockDirection || dir === 'y')) {
-          let [yMin, yStep, yMax] = yBounds;
+          const [yMin, yStep, yMax] = yBounds;
           !cancel && this.handleResponderRelease(panY, yMin, yStep, yMax, vy, overshootY, yMode, snapSpacingY);
         }
 
         this._direction = horizontal && !vertical ? 'x' : (vertical && !horizontal ? 'y' : null);
-      }
+      },
     });
   }
 
@@ -176,7 +182,7 @@ export default class PanController extends Component {
           break;
       }
     }
-    val = val - anim._offset;
+    val -= anim._offset;
     anim.setValue(val);
   }
 
@@ -258,7 +264,7 @@ export default class PanController extends Component {
 
       if ((value < min) || (value < step && value < min + (step - min) / 2)) {
         toValue = min;
-      } else if ((value > max) || (value > step && value > step + (max - step) / 2 ) ) {
+      } else if ((value > max) || (value > step && value > step + (max - step) / 2)) {
         toValue = max;
       } else if ((value > step && value < step + (max - step) / 2)
         || (value < step && value > min + (step - min) / 2)) {
@@ -354,7 +360,7 @@ export default class PanController extends Component {
     const { panX } = this.props;
 
     Animated.spring(panX, {
-      toValue
+      toValue,
     }).start();
   }
 

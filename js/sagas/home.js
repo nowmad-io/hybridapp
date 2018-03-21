@@ -5,7 +5,7 @@ import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 import {
   NEARBY_SUCCESS,
   NEARBY_ERROR,
-  NEARBY
+  NEARBY,
 } from '../constants/home';
 
 import { apiMe } from '../api/auth';
@@ -13,7 +13,7 @@ import { apiMe } from '../api/auth';
 import { setGeolocation, nearby } from '../actions/home';
 
 
-function * nearbyFlow(actions) {
+function* nearbyFlow(actions) {
   const { error, payload } = actions;
 
   if (!error) {
@@ -22,28 +22,28 @@ function * nearbyFlow(actions) {
 }
 
 function getCurrentPosition() {
-  return eventChannel(emit => {
+  return eventChannel((emit) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        emit(setGeolocation(position.coords))
+        emit(setGeolocation(position.coords));
       },
-      (error) => {console.log('error', error)},
+      (error) => { console.log('error', error); },
       { enableHighAccuracy: true, timeout: 5000, maximumAge: (60 * 24 * 1000) },
     );
     return () => {};
   });
 }
 
-export function * homeFlow() {
+export function* homeFlow() {
   const channel = yield call(getCurrentPosition);
 
   yield put(apiMe());
 
-  let action = yield take(channel);
+  const action = yield take(channel);
   yield put(action);
 }
 
-export default function * root() {
+export default function* root() {
   yield takeLatest(RUN_SAGAS, homeFlow);
   yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
 }
