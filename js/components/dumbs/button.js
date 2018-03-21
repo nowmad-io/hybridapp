@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableNativeFeedback, StyleSheet, PixelRatio, View } from "react-native";
+import { TouchableNativeFeedback, StyleSheet, PixelRatio, View } from 'react-native';
 
 import Text from './text';
+import Icon from './icon';
 import { font, colors } from '../../parameters';
 
 export default class Button extends Component {
@@ -11,54 +12,56 @@ export default class Button extends Component {
   	style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
-      PropTypes.array
+      PropTypes.array,
     ]),
   	transparent: PropTypes.bool,
   	light: PropTypes.bool,
   	rounded: PropTypes.bool,
-  	wrapped: PropTypes.bool
+  	wrapped: PropTypes.bool,
   };
 
   render() {
-    const { onPress, style, rounded, transparent, light, wrapped } = this.props;
+    const {
+      onPress, style, rounded, transparent, light, wrapped, fab,
+    } = this.props;
 
     const children = React.Children.map(
-			this.props.children,
-			(child) => child && child.type === Text ?
+      this.props.children,
+      child => (child && child.type === Text ?
         React.cloneElement(child, {
           style: [
             styles.text,
-            (light && !transparent) && styles.light_text
+            (light && !transparent) && styles.light_text,
           ],
           uppercase: true,
-          ...child.props
-        }) : child
-		);
+          ...child.props,
+        }) : child),
+    );
 
-		return (
+    return (
       <View style={style && style}>
         <TouchableNativeFeedback
-    			onPress={onPress}
-    			background={TouchableNativeFeedback.Ripple(colors.ripple)}
-    		>
-    			<View style={wrapped && styles.wrapped}>
-    				<View
+          onPress={onPress}
+          background={TouchableNativeFeedback.Ripple(colors.ripple)}
+        >
+          <View style={wrapped && styles.wrapped}>
+            <View
               style={[
                 styles.button,
                 rounded && styles.rounded_button,
                 (light || transparent || wrapped) && styles.flat_button,
                 light && styles.light_button,
                 transparent && styles.transparent_button,
-                wrapped && styles.wrapped_button
+                wrapped && styles.wrapped_button,
               ]}
             >
-    					{children}
-    				</View>
-    			</View>
-    		</TouchableNativeFeedback>
+              {children}
+            </View>
+          </View>
+        </TouchableNativeFeedback>
       </View>
-    )
-	}
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.2,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   text: {
     color: colors.white,
@@ -84,14 +87,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   rounded_button: {
-    borderRadius: 40
+    borderRadius: 40,
   },
   flat_button: {
     elevation: 0,
     shadowColor: null,
     shadowOffset: null,
     shadowRadius: null,
-    shadowOpacity: null
+    shadowOpacity: null,
   },
   light_button: {
     backgroundColor: colors.white,
@@ -99,12 +102,12 @@ const styles = StyleSheet.create({
     borderWidth: 2 / PixelRatio.getPixelSizeForLayoutSize(1),
   },
   light_text: {
-    color: colors.green
+    color: colors.green,
   },
   transparent_button: {
     backgroundColor: 'transparent',
     borderColor: 'transparent',
-    borderWidth: null
+    borderWidth: null,
   },
   wrapped: {
     paddingVertical: 8,
@@ -116,6 +119,6 @@ const styles = StyleSheet.create({
   },
   wrapped_button: {
     height: 34,
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
