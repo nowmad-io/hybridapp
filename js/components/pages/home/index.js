@@ -145,8 +145,12 @@ class Home extends Component {
   }
 
   onSearchClear = () => {
-    this.props.dispatch(selectNewPlace(null));
-    this.props.dispatch(googlePlace(null));
+    if (this.props.newPlace) {
+      this.props.dispatch(selectNewPlace(null));
+    }
+    if (this.props.googlePlace) {
+      this.props.dispatch(googlePlace(null));
+    }
     this.props.dispatch(searchedPlaces(null));
   }
 
