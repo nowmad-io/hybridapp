@@ -140,6 +140,12 @@ export default class carouselXY extends Component {
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
           onSnapToItem={onIndexChange}
+          activeSlideOffset={1}
+          swipeThreshold={1}
+          lockScrollWhileSnapping={true}
+          decelerationRate={'fast'}
+          activeAnimationType={'decay'}
+          callbackOffsetMargin={10}
         />
       </Animated.View>
     );
