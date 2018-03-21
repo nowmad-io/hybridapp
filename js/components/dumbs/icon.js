@@ -7,7 +7,7 @@ import { font, colors } from '../../parameters';
 
 export default class Icon extends Component {
   static propTypes = {
-  	style: PropTypes.oneOfType([
+    style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array,

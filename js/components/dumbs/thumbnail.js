@@ -4,15 +4,15 @@ import { Image, StyleSheet } from 'react-native';
 
 export default class Thumbnail extends Component {
   static propTypes = {
-  	...Image.propTypes,
-  	style: PropTypes.oneOfType([
+    ...Image.propTypes,
+    style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array]),
-  	square: PropTypes.bool,
-  	xsmall: PropTypes.bool,
-  	small: PropTypes.bool,
-  	large: PropTypes.bool,
+    square: PropTypes.bool,
+    xsmall: PropTypes.bool,
+    small: PropTypes.bool,
+    large: PropTypes.bool,
   }
 
   render() {

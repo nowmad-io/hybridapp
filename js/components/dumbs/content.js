@@ -8,9 +8,9 @@ import { colors, sizes } from '../../parameters';
 export default class Content extends Component {
   static propTypes = {
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  	disableKBDismissScroll: PropTypes.bool,
-  	enableResetScrollToCoords: PropTypes.bool,
-  	keyboardShouldPersistTaps: PropTypes.string,
+    disableKBDismissScroll: PropTypes.bool,
+    enableResetScrollToCoords: PropTypes.bool,
+    keyboardShouldPersistTaps: PropTypes.string,
   };
 
   render() {

@@ -101,9 +101,9 @@ class ResultList extends Component {
                     style={styles.spinner}
                     visible={friendsLoading}
                   />
-                  {!friendsLoading && friendsSearchList.slice(0, MAX_FRIENDS).map((result, index) => (
+                  {!friendsLoading && friendsSearchList.slice(0, MAX_FRIENDS).map(result => (
                     <ListItem
-                      key={index}
+                      key={result.id}
                       image="friend"
                       thumbnail={result.picture}
                       text={`${result.first_name} ${result.last_name}`}
@@ -121,9 +121,9 @@ class ResultList extends Component {
                     visible={reviewsLoading}
                   />
                   {!reviewsLoading && reviewsSearch.slice(0, MAX_REVIEWS).map(place => (
-                    place.reviews.map((review, index) => (
+                    place.reviews.map(review => (
                       <ListItem
-                        key={index}
+                        key={review.id}
                         image="place"
                         text={review.short_description}
                         secondaryText={review.created_by.first_name}
@@ -138,9 +138,9 @@ class ResultList extends Component {
                   style={styles.spinner}
                   visible={placesLoading}
                 />
-                {!placesLoading && placesSearch.map((result, index) => (
+                {!placesLoading && placesSearch.map(result => (
                   <ListItem
-                    key={index}
+                    key={result.id}
                     image="google"
                     text={result.description}
                     onPress={() => onPlaceSelected(result)}

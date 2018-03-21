@@ -6,6 +6,9 @@ import Text from './text';
 
 import { colors } from '../../parameters';
 
+const googleImage = require('../../../assets/images/icons/google.png');
+const placeImage = require('../../../assets/images/icons/place.png');
+
 export default class List extends Component {
   static propTypes = {
     onPress: PropTypes.func,
@@ -24,10 +27,10 @@ export default class List extends Component {
       <TouchableOpacity onPress={onPress}>
         <View style={styles.wrapper}>
           { image === 'google' && (
-            <Image source={require('../../../assets/images/icons/google.png')} style={styles.image} />
+            <Image source={googleImage} style={styles.image} />
           )}
           { image === 'place' && (
-            <Image source={require('../../../assets/images/icons/place.png')} style={styles.image} />
+            <Image source={placeImage} style={styles.image} />
           )}
           { image === 'friend' && (
             <Image source={{ uri: thumbnail }} style={styles.image} />

@@ -6,8 +6,8 @@ import { colors, sizes } from '../../parameters';
 
 export default class LayoutView extends Component {
   static propTypes = {
-  	...ViewPropTypes,
-  	style: PropTypes.oneOfType([
+    ...ViewPropTypes,
+    style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array,

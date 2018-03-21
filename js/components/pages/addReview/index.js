@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
 import _ from 'lodash';
+import shortid from 'shortid';
 
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
@@ -250,9 +251,9 @@ class AddReview extends Component {
             </View>
             <View>
               <Label text="You were..." required />
-              {statusList.map((stat, index) => (
+              {statusList.map(stat => (
                 <RadioButton
-                  key={index}
+                  key={shortid.generate()}
                   selected={status === stat}
                   text={stat}
                   onPress={() => this.setState({ status: stat })}
@@ -262,9 +263,9 @@ class AddReview extends Component {
             <View>
               <Label text="Was it..." />
               <View style={styles.tagWrapper}>
-                {categoriesList.map((categorie, index) => (
+                {categoriesList.map(categorie => (
                   <Tag
-                    key={index}
+                    key={categorie.id}
                     text={categorie}
                     selected={_.indexOf(categories, categorie) !== -1}
                     onPress={() => this.toggleCategorie(categorie)}
@@ -291,7 +292,7 @@ class AddReview extends Component {
                 )}
                 { this.state.pictures && this.state.pictures.map((image, index) => (
                   <ImageHolder
-                    key={index}
+                    key={shortid.generate()}
                     style={styles.image(full, index)}
                     onPress={() => this.navigateToImage(image)}
                     source={image.source || image.uri}

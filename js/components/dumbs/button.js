@@ -9,15 +9,15 @@ import { font, colors } from '../../parameters';
 export default class Button extends Component {
   static propTypes = {
     onPress: PropTypes.func,
-  	style: PropTypes.oneOfType([
+    style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array,
     ]),
-  	transparent: PropTypes.bool,
-  	light: PropTypes.bool,
-  	rounded: PropTypes.bool,
-  	wrapped: PropTypes.bool,
+    transparent: PropTypes.bool,
+    light: PropTypes.bool,
+    rounded: PropTypes.bool,
+    wrapped: PropTypes.bool,
   };
 
   render() {
