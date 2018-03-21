@@ -20,7 +20,7 @@ const initialState = {
   outgoings: [],
   error: ''
 };
-SEND_FRIENDSHIP_SUCCESS
+
 export default function friendsReducer(state = initialState, action) {
   switch (action.type) {
     case SEARCH_FRIENDS_SUCCESS:
