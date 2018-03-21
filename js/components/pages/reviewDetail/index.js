@@ -8,8 +8,7 @@ import LayoutView from '../../dumbs/layoutView';
 import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 import Icon from '../../dumbs/icon';
-
-import { Review } from '../../review';
+import Review from '../../dumbs/entry/review';
 
 import styles from './styles';
 

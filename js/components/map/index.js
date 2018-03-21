@@ -67,7 +67,7 @@ class Map extends Component {
         onLongPress={(event) => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
         style={{...styles.map, marginBottom: 1}}
-        showsUserLocation={true}
+        showsMyLocationButton={false}
         initialRegion={region}
         zoomEnabled={zoomEnabled}
         rotateEnabled={rotateEnabled}

@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView, Animated, View, StyleSheet } from 'react-native';
 import _ from 'lodash';
-import shortid from 'shortid';
 
 import ReviewHeader from './reviewHeader';
+import Review from './review';
 
 import Icon from '../icon';
 import Text from '../text';
 import Button from '../button';
 import Pictures from '../pictures';
 import Tag from '../tag';
-import { Review } from '../../review';
 
 import { colors, sizes, carousel } from '../../../parameters';
 
@@ -103,7 +102,7 @@ export default class Entry extends Component {
             <View style={styles.tagsWrapper}>
               {_.slice(categories, 0, 3).map((categorie) => (
                 <Tag
-                  key={shortid.generate()}
+                  key={categorie.id}
                   text={categorie.name}
                 />
               ))}
@@ -139,7 +138,7 @@ export default class Entry extends Component {
           </View>
           {orderedReviews && orderedReviews.map((review) => (
             <Review
-              key={shortid.generate()}
+              key={review.id}
               review={review}
               onPress={() => this.onPressReview(review)}/>
           ))}
