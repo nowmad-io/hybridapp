@@ -26,7 +26,7 @@ const initialState = {
   searchType: null
 };
 
-function SearchReducer(state = initialState, action) {
+export default function SearchReducer(state = initialState, action) {
   switch (action.type) {
     case NEARBY:
       return {
@@ -81,5 +81,3 @@ function SearchReducer(state = initialState, action) {
       return state;
   }
 }
-
-export default SearchReducer;
