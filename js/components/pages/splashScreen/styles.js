@@ -1,5 +1,3 @@
-import React from 'react-native';
-
 import { colors } from '../../../parameters';
 
 const { StyleSheet } = React;

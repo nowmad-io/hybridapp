@@ -1,9 +1,8 @@
-import { put, fork, takeLatest, call, take } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 
 import {
   NEARBY_SUCCESS,
   NEARBY_ERROR,
-  NEARBY,
 } from '../constants/search';
 
 import { nearby } from '../actions/search';

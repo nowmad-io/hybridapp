@@ -11,12 +11,8 @@ export function delay(millis) {
 // Fetch data every 5 seconds
 export const fetchSaga = api =>
   function* _fetchSagas() {
-    try {
-      yield call(delay, 5000);
-      yield put(api());
-    } catch (error) {
-
-    }
+    yield call(delay, 5000);
+    yield put(api());
   };
 
 // Wait for successful response, then fire another request

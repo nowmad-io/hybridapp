@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     marginTop: 6,
     paddingBottom: 6,
   },
-  input: {
+  input: {
     fontSize: 14,
     lineHeight: 16,
     paddingTop: 0,
     paddingBottom: 10,
   },
-  length: {
+  length: {
     position: 'absolute',
     bottom: 0,
     right: 4,

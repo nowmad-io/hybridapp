@@ -1,5 +1,3 @@
-import { NavigationActions } from 'react-navigation';
-
 import { LOGOUT } from '../constants/auth';
 import { MainNavigator } from '../Routers/MainRouter';
 

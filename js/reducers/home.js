@@ -41,12 +41,13 @@ const initialState = {
   fromReview: false,
 };
 
-function updateReview(currentPlaces, place, updatedReview) {
+function updateReview(currentPlaces, place, updatedReview) {
   return currentPlaces.map((currentPlace) => {
     if (currentPlace.id === place.id) {
       return {
         ...place,
-        reviews: currentPlace.reviews.map(review => ((review.id === updatedReview.id) ? updatedReview : review)),
+        reviews: currentPlace.reviews.map(review => (
+          (review.id === updatedReview.id) ? updatedReview : review)),
       };
     }
     return currentPlace;
@@ -73,10 +74,10 @@ function HomeReducer(state = initialState, action) {
         places: _.compact([state.googlePlace, ...action.payload]),
         selectedPlace: action.payload.length ? action.payload[0] : null,
       };
-    case ADD_REVIEW:
+    case ADD_REVIEW: {
       let exist = false;
 
-      const newPlaces_addreview = state.places.map((statePlace) => {
+      const newPlacesAddReview = state.places.map((statePlace) => {
         if (statePlace.id === place.id) {
           exist = true;
           return {
@@ -94,15 +95,16 @@ function HomeReducer(state = initialState, action) {
         newPlace: initialState.newPlace,
         searchedPlaces: initialState.searchedPlaces,
         selectedPlace: { ...place, reviews: [review] },
-        places: exist ? newPlaces_addreview : [{ ...place, reviews: [review] }, ...state.places],
+        places: exist ? newPlacesAddReview : [{ ...place, reviews: [review] }, ...state.places],
       };
+    }
     case UPDATE_REVIEW:
       return {
         ...state,
         places: updateReview(state.places, place, review),
         currentPlaces: updateReview(state.currentPlaces, place, review),
       };
-    case NEW_PLACE:
+    case NEW_PLACE: {
       const extras = {};
       if (!action.place) {
         extras.nearbyPlaces = [];
@@ -113,15 +115,19 @@ function HomeReducer(state = initialState, action) {
         selectedPlace: action.place,
         ...extras,
       };
-    case GOOGLE_PLACE:
-      let places = state.googlePlace ? state.places.slice(1) : state.places,
-        newPlaces = _.compact([action.place, ...places]),
-        currentPlaces = state.googlePlace ? state.currentPlaces.slice(1) : state.currentPlaces,
-        newCurrentPlaces = _.compact([action.place, ...currentPlaces]);
+    }
+    case GOOGLE_PLACE: {
+      const places = state.googlePlace ? state.places.slice(1) : state.places;
+      let newPlaces = _.compact([action.place, ...places]);
+      const currentPlaces = state.googlePlace ? state.currentPlaces.slice(1) : state.currentPlaces;
+      let newCurrentPlaces = _.compact([action.place, ...currentPlaces]);
 
       if (!action.place) {
-        newPlaces = _.filter(state.places, place => state.googlePlace.id !== place.id);
-        newCurrentPlaces = _.filter(state.currentPlaces, currentPlace => state.googlePlace.id !== currentPlace.id);
+        newPlaces = _.filter(state.places, pl => state.googlePlace.id !== pl.id);
+        newCurrentPlaces = _.filter(
+          state.currentPlaces,
+          currentPlace => state.googlePlace.id !== currentPlace.id,
+        );
       }
 
       return {
@@ -133,10 +139,11 @@ function HomeReducer(state = initialState, action) {
         currentPlaces: newCurrentPlaces,
         selectedPlace: action.place,
       };
+    }
     case SEARCHED_PLACES:
       return {
         ...state,
-        searchedPlaces: action.places || action.payload || initialState.searchedPlaces,
+        searchedPlaces: action.places || action.payload || initialState.searchedPlaces,
       };
     case NEARBY:
       return { ...state, nearbyPlaces: action.places.results };
@@ -148,11 +155,14 @@ function HomeReducer(state = initialState, action) {
       return { ...state, level: action.level };
     case REGION_CHANGE:
       return { ...state, region: action.region };
-    case CURRENT_PLACES:
+    case CURRENT_PLACES: {
       let selectedPlace = action.places.length ? action.places[0] : null;
 
-      if (state.selectedPlace && _.find(action.places, place => place.id === state.selectedPlace.id)) {
-        selectedPlace = state.selectedPlace;
+      if (state.selectedPlace && _.find(
+        action.places,
+        plc => plc.id === state.selectedPlace.id,
+      )) {
+        ({ selectedPlace } = state.selectedPlace);
       }
 
       return {
@@ -160,6 +170,7 @@ function HomeReducer(state = initialState, action) {
         selectedPlace,
         currentPlaces: action.places,
       };
+    }
     case LOGOUT:
       return initialState;
     default:

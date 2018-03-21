@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import devTools from 'remote-redux-devtools';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -34,6 +33,7 @@ const enhancers = [
 const rootPersistConfig = {
   key: 'root',
   storage,
+  stateReconciler: hardSet,
   blacklist: ['nav', 'search'],
 };
 const rootReducer = combineReducers({ ...reducers });

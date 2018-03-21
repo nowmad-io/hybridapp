@@ -57,7 +57,7 @@ class Home extends Component {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
-      if (this.props.level === 2) {
+      if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
     }
@@ -90,12 +90,12 @@ class Home extends Component {
 
   onMarkerPress = (e, place) => {
     const { searchedPlaces, currentPlaces } = this.props,
-      index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, p => (p.id == place.id));
+      index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, p => (p.id === place.id));
 
     this.props.dispatch(selectedPlace(place));
     this._carouselXY.goToIndex(index);
 
-    if (this.props.level === 2) {
+    if (this.props.level === 2) {
       this._map.animateToCoordinate(place);
     }
   }

@@ -6,12 +6,11 @@ import {
   ADD_REVIEW_SUCCESS,
   REVIEW_ERROR,
 } from '../constants/reviews';
-import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
+import { RUN_SAGAS } from '../constants/utils';
 
 import { setFromReview } from '../actions/home';
 import { addReview, updateReview, reviewLoading } from '../actions/reviews';
 import { fetchReviews } from '../api/reviews';
-import { pollSaga } from './utils';
 
 export function* reviewsFlow() {
   yield put(fetchReviews());

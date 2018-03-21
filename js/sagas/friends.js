@@ -1,7 +1,6 @@
-import { all, fork, takeLatest, put, call, take, select } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { takeLatest, put } from 'redux-saga/effects';
 
-import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
+import { RUN_SAGAS } from '../constants/utils';
 
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
 

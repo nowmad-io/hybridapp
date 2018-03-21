@@ -58,14 +58,14 @@ class Api {
   }
 
   // thanks http://stackoverflow.com/a/12040639/5332286
-  queryString(params) {
+  static queryString(params) {
     const s = Object.keys(params).map(key => (
       [key, params[key]].map(encodeURIComponent).join('=')
     )).join('&');
     return s ? `?${s}` : '';
   }
 
-  handleErrors({ response, format }) {
+  static handleErrors({ response, format }) {
     if (!response.ok) {
       return response[format]()
         // if response parsing failed send back the entire response object

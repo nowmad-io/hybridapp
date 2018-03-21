@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Text from './text';
 
-import { colors } from '../../parameters';
+import { colors } from '../../parameters';
 
 export default class List extends Component {
   static propTypes = {

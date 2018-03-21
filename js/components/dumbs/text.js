@@ -7,10 +7,10 @@ import { font, colors } from '../../parameters';
 
 export default class Text extends Component {
   static propTypes = {
-  	...RNText.propTypes,
-  	uppercase: PropTypes.bool,
-  	capitalize: PropTypes.bool,
-  	style: PropTypes.oneOfType([
+    ...RNText.propTypes,
+    uppercase: PropTypes.bool,
+    capitalize: PropTypes.bool,
+    style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array,

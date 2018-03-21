@@ -22,7 +22,7 @@ class DrawBar extends React.Component {
   };
 
   static propTypes = {
-    navigation: PropTypes.object,
+    dispatch: PropTypes.func,
   };
 
   componentWillMount() {

@@ -1,11 +1,10 @@
-import { put, fork, takeLatest, call, take } from 'redux-saga/effects';
+import { put, takeLatest, call, take } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
-import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
+import { RUN_SAGAS } from '../constants/utils';
 import {
   NEARBY_SUCCESS,
   NEARBY_ERROR,
-  NEARBY,
 } from '../constants/home';
 
 import { apiMe } from '../api/auth';
@@ -27,7 +26,7 @@ function getCurrentPosition() {
       (position) => {
         emit(setGeolocation(position.coords));
       },
-      (error) => { console.log('error', error); },
+      () => {},
       { enableHighAccuracy: true, timeout: 5000, maximumAge: (60 * 24 * 1000) },
     );
     return () => {};

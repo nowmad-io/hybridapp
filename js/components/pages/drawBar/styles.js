@@ -1,5 +1,3 @@
-import React, { StyleSheet } from 'react-native';
-
 import { colors, sizes } from '../../../parameters';
 
 export default {
@@ -29,7 +27,7 @@ export default {
     lineHeight: 16,
     color: colors.grey,
   },
-  thumbnail: {
+  thumbnail: {
     width: 50,
     height: 50,
     borderRadius: 50,
@@ -108,7 +106,7 @@ export default {
     marginRight: 0,
     color: colors.blueDark,
   },
-  actionLabel: {
+  actionLabel: {
     color: colors.blueDark,
     fontSize: 12,
     lineHeight: 14,

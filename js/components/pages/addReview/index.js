@@ -72,7 +72,7 @@ class AddReview extends Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
 
-    if (this.props.reviewLoading) {
+    if (this.props.reviewLoading) {
       this.props.dispatch(reviewLoading(false));
     }
   }
@@ -94,7 +94,7 @@ class AddReview extends Component {
   }
 
   onMapReady = () => {
-    if (this._map) {
+    if (this._map) {
       this.refs.map.animateToCoordinate(this.state.place);
     }
   }

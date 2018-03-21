@@ -1,4 +1,4 @@
-import React, { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
+import { Platform, StatusBar, Dimensions } from 'react-native';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -44,11 +44,12 @@ export const colors = {
   rippleDark: 'rgba(0, 0, 0, 0.15)',
 };
 
+const toolbarHelper = (isIphoneX ? 88 : 64);
 export const sizes = {
   height: Platform.OS === 'ios' ? deviceHeight : deviceHeight - StatusBar.currentHeight,
   width: deviceWidth,
   headerHeight: 56,
-  toolbarHeight: Platform.OS === 'ios' ? (isIphoneX ? 88 : 64) : 56,
+  toolbarHeight: Platform.OS === 'ios' ? toolbarHelper : 56,
   statusBar: StatusBar.currentHeight,
   drawerWidth: 0.625 * Dimensions.get('window').width,
 };
@@ -61,9 +62,9 @@ const LEVEL1 = 80;
 export const carousel = {
   sliderWidth: sizes.width,
   itemSpacing: ITEM_SPACING,
-  itemWidth: sizes.width - ITEM_SPACING * 2,
+  itemWidth: sizes.width - (ITEM_SPACING * 2),
   level1: -LEVEL1,
   level2: LEVEL1 - 232,
-  level3: HELPER + PADDING_TOP - sizes.height,
+  level3: (HELPER + PADDING_TOP) - sizes.height,
   border: 4,
 };

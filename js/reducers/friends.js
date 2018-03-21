@@ -5,13 +5,28 @@ import {
   FETCH_FRIENDS_SUCCESS,
   FETCH_FRIENDSINCOMING_SUCCESS,
   FETCH_FRIENDSOUTGOING_SUCCESS,
-  ADD_NEW_FRIEND,
   SEND_FRIENDSHIP_SUCCESS,
   ACCEPT_FRIENDSHIP_SUCCESS,
   CANCEL_FRIENDSHIP_SUCCESS,
   REJECT_FRIENDSHIP_SUCCESS,
 } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
+
+function addNewFriend(state, action) {
+  const all = state.all.concat([action.payload]);
+  const outgoings = _.filter(
+    state.outgoings,
+    outgoing => (outgoing.to_user.id !== action.payload.id),
+  );
+  const incomings = _.filter(
+    state.incomings,
+    incoming => (incoming.from_user.id !== action.payload.id),
+  );
+
+  return {
+    ...state, all, incomings, outgoings,
+  };
+}
 
 const initialState = {
   search: [],
@@ -32,26 +47,28 @@ export default function friendsReducer(state = initialState, action) {
     case FETCH_FRIENDSOUTGOING_SUCCESS:
       return { ...state, outgoings: action.payload };
     case ACCEPT_FRIENDSHIP_SUCCESS:
-      return add_new_friend(state, action);
+      return addNewFriend(state, action);
     case SEND_FRIENDSHIP_SUCCESS:
       return { ...state, outgoings: state.outgoings.concat([action.payload]) };
     case CANCEL_FRIENDSHIP_SUCCESS:
-      return { ...state, outgoings: _.filter(state.outgoings, outgoing => (outgoing.id !== action.payload.id)) };
+      return {
+        ...state,
+        outgoings: _.filter(
+          state.outgoings,
+          outgoing => (outgoing.id !== action.payload.id),
+        ),
+      };
     case REJECT_FRIENDSHIP_SUCCESS:
-      return { ...state, incomings: _.filter(state.incomings, incoming => (incoming.id !== action.payload.id)) };
+      return {
+        ...state,
+        incomings: _.filter(
+          state.incomings,
+          incoming => (incoming.id !== action.payload.id),
+        ),
+      };
     case LOGOUT:
       return initialState;
     default:
       return state;
   }
-}
-
-function add_new_friend(state, action) {
-  const all = state.all.concat([action.payload]);
-  const outgoings = _.filter(state.outgoings, outgoing => (outgoing.to_user.id !== action.payload.id));
-  const incomings = _.filter(state.incomings, incoming => (incoming.from_user.id !== action.payload.id));
-
-  return {
-    ...state, all, incomings, outgoings,
-  };
 }

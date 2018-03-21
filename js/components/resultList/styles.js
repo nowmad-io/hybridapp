@@ -1,5 +1,3 @@
-import React, { StyleSheet } from 'react-native';
-
 import { colors, sizes } from '../../parameters';
 
 export default {
@@ -28,7 +26,7 @@ export default {
     width: 24,
     marginRight: 10,
   },
-  thumbnail: {
+  thumbnail: {
     borderRadius: 50,
   },
   textWrapperItem: {

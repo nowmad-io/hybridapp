@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 
 import Text from './text';
 
-import { colors } from '../../parameters';
+import { colors } from '../../parameters';
 
 export default class List extends Component {
   static propTypes = {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  image: {
+  image: {
     height: 24,
     width: 24,
     marginRight: 12,

@@ -10,14 +10,11 @@ import {
 import { loginRequest } from '../actions/auth';
 
 import {
-  LOGIN,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   LOGOUT,
-  LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR,
   LOGIN_LOADING,

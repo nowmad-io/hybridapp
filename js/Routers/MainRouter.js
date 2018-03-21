@@ -43,12 +43,14 @@ class MainRouter extends Component {
   };
 
   navIndex(nav) {
-    if (nav.hasOwnProperty('routes')) {
+    if (Object.prototype.hasOwnProperty.call(nav, 'routes')) {
       return [
         nav.index,
         nav.routes.map(route => this.navIndex(route)),
       ];
     }
+
+    return null;
   }
 
   render() {
