@@ -157,7 +157,8 @@ const styles = StyleSheet.create({
     paddingBottom: sizes.toolbarHeight,
     borderColor: colors.green,
     borderTopWidth: carousel.border,
-    borderRadius: 2
+    borderRadius: 2,
+    elevation: 3
   },
   addressWrapper: {
     borderColor: colors.green,
