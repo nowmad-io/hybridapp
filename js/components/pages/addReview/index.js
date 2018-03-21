@@ -21,7 +21,7 @@ import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
 
 import Map from '../../map';
-import Marker from '../../marker';
+import Marker from '../../dumbs/marker';
 
 import { categoriesList, statusList } from '../../../lists';
 import { addReview, updateReview } from '../../../api/reviews';

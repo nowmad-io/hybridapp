@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 import CarouselXY from '../../dumbs/carouselXY';
 import Map from '../../map';
-import Marker from '../../marker';
+import Marker from '../../dumbs/marker';
 import SearchWrapper from '../../searchWrapper';
 
 import { selectedPlace, regionChanged, levelChange, selectNewPlace,
@@ -109,8 +109,6 @@ class Home extends Component {
     const scale = Math.pow(2, Math.log2(360 * ((sizes.width/256) / region.longitudeDelta)) + 1) + 1,
           { level } = this.props;
 
-    this.props.dispatch(regionChanged(region));
-
     const southWest = {
       latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2) / scale),
       longitude: region.longitude - region.longitudeDelta / 2
@@ -128,7 +126,11 @@ class Home extends Component {
       }
     })
 
-    this.props.dispatch(currentPlacesChange(newPlaces));
+    this.props.dispatch(regionChanged(region));
+
+    if (!_.isEqual(this.props.currentPlaces, newPlaces)) {
+      this.props.dispatch(currentPlacesChange(newPlaces));
+    }
   }
 
   onMapReady = () => {
@@ -143,12 +145,8 @@ class Home extends Component {
   }
 
   onSearchClear = () => {
-    if (this.props.newPlace) {
-      this.props.dispatch(selectNewPlace(null));
-    }
-    if (this.props.googlePlace) {
-      this.props.dispatch(googlePlace(null));
-    }
+    this.props.dispatch(selectNewPlace(null));
+    this.props.dispatch(googlePlace(null));
     this.props.dispatch(searchedPlaces(null));
   }
 
@@ -252,7 +250,7 @@ class Home extends Component {
           onLayout={this.onLayout}
           onPoiClick={this.onPoiClick}
         >
-          { (searchedPlaces.length ? searchedPlaces : places).map(place => (
+          {(searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker
               key={shortid.generate()}
               selected={selectedPlace && selectedPlace.id === place.id}
@@ -260,7 +258,7 @@ class Home extends Component {
               onMarkerPress={this.onMarkerPress}
             />
           ))}
-          { newPlace && (
+          {newPlace && (
             <Marker
               key={shortid.generate()}
               place={newPlace}
