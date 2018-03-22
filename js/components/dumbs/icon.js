@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { StyleSheet } from 'react-native';
 
-import { font, colors } from '../../parameters';
+import { colors } from '../../parameters';
 
-export default class Icon extends Component {
+export default class Icon extends PureComponent {
   static propTypes = {
     style: PropTypes.oneOfType([
       PropTypes.object,

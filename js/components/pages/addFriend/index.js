@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
+import { Image, BackHandler, View } from 'react-native';
 
 import Icon from '../../dumbs/icon';
 import Button from '../../dumbs/button';
@@ -20,6 +20,10 @@ import styles from './styles';
 class AddFriend extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    dispatch: PropTypes.func,
+    me: PropTypes.object,
+    incomings: PropTypes.array,
+    outgoings: PropTypes.array,
   }
 
   constructor(props) {
@@ -40,8 +44,7 @@ class AddFriend extends Component {
   }
 
   onBackPress = () => {
-    const { navigation } = this.props;
-    navigation.goBack();
+    this.props.navigation.goBack();
 
     return true;
   }
@@ -52,15 +55,13 @@ class AddFriend extends Component {
         from_user_id: this.props.me.id,
         to_user_id: this.state.user.id,
       }));
-    } else {
-      console.log('The email does not match the user');
     }
   }
 
   onAcceptRequest(request) {
     this.props.dispatch(acceptFriendship(request.id));
     this.props.dispatch(reviewsSearchByUser(this.state.user.email));
-    navigation.goBack();
+    this.props.navigation.goBack();
   }
 
   onCancelRequest(request) {
@@ -73,21 +74,20 @@ class AddFriend extends Component {
 
   render() {
     let request = null;
-    const { props, state } = this,
-      incoming = props.incomings.some((req) => {
-        if (req.from_user.email === state.user.email) {
-          request = req;
-          return true;
-        }
-        return false;
-      }),
-      outgoing = props.outgoings.some((req) => {
-        if (req.to_user.email === state.user.email) {
-          request = req;
-          return true;
-        }
-        return false;
-      });
+    const incoming = this.props.incomings.some((req) => {
+      if (req.from_user.email === this.state.user.email) {
+        request = req;
+        return true;
+      }
+      return false;
+    });
+    const outgoing = this.props.outgoings.some((req) => {
+      if (req.to_user.email === this.state.user.email) {
+        request = req;
+        return true;
+      }
+      return false;
+    });
 
     return (
       <LayoutView type="container">
@@ -105,18 +105,18 @@ class AddFriend extends Component {
               <Image
                 resizeMethod="resize"
                 style={styles.thumbnail}
-                source={{ uri: state.user.picture }}
+                source={{ uri: this.state.user.picture }}
               />
             </View>
             <View>
-              <Text style={styles.title}>{state.user.first_name}</Text>
-              <Text>{state.user.last_name}</Text>
+              <Text style={styles.title}>{this.state.user.first_name}</Text>
+              <Text>{this.state.user.last_name}</Text>
             </View>
           </View>
           <View>
-            <Label text={`To add ${state.user.first_name} as a Friend, enter his email address`} required />
+            <Label text={`To add ${this.state.user.first_name} as a Friend, enter his email address`} required />
             <FormInput
-              defaultValue={incoming || outgoing ? this.state.user.email : ''}
+              defaultValue={incoming || outgoing ? this.this.state.user.email : ''}
               onChangeText={email => this.setState({ email })}
               placeholder="Email address"
             />

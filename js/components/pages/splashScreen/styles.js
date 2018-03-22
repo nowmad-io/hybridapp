@@ -1,6 +1,6 @@
-import { colors } from '../../../parameters';
+import { StyleSheet } from 'react-native';
 
-const { StyleSheet } = React;
+import { colors } from '../../../parameters';
 
 export default {
   container: {

@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { CachedImage } from 'react-native-cached-image';
 
 import LayoutView from './layoutView';
 
-import { colors } from '../../parameters';
-
-const googleImg = require('../../../assets/images/icons/google.png');
 const pictureHolder = require('../../../assets/images/picture_holder.jpg');
 
-export default class Pictures extends Component {
+export default class Pictures extends PureComponent {
   static propTypes = {
     pictures: PropTypes.array,
   };

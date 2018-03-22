@@ -15,7 +15,7 @@ import {
 } from '../constants/friends';
 import { FRIENDS_SEARCH, FRIENDS_SEARCH_ERROR } from '../constants/search';
 
-import { REQUEST_SUCCESS, REQUEST_ERROR } from '../constants/utils';
+import { REQUEST_ERROR } from '../constants/utils';
 
 const PATH = 'friends/';
 const FRIENSHIPS_PATH = 'friendships/';

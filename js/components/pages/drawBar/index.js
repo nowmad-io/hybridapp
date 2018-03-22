@@ -33,6 +33,10 @@ class DrawBar extends React.Component {
     this.props.dispatch(stopSagas());
   }
 
+  onLogoutPress() {
+    this.props.dispatch(logoutRequest());
+  }
+
   _onAccept(id) {
     this.props.dispatch(acceptFriendship(id));
   }
@@ -43,10 +47,6 @@ class DrawBar extends React.Component {
 
   _onCancel(id) {
     this.props.dispatch(cancelFriendship(id));
-  }
-
-  onLogoutPress() {
-    this.props.dispatch(logoutRequest());
   }
 
   render() {

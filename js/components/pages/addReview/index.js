@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Animated, PanResponder, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler, Keyboard } from 'react-native';
+import { TouchableOpacity, Image, BackHandler, Keyboard, Animated, PanResponder, View } from 'react-native';
 import _ from 'lodash';
 import shortid from 'shortid';
 

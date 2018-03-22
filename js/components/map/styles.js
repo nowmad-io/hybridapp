@@ -1,4 +1,4 @@
-const { StyleSheet } = React;
+import { StyleSheet } from 'react-native';
 
 export default{
   map: {

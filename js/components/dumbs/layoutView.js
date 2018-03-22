@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ViewPropTypes, StyleSheet, View } from 'react-native';
 
 import { colors, sizes } from '../../parameters';
 
-export default class LayoutView extends Component {
+export default class LayoutView extends PureComponent {
   static propTypes = {
     ...ViewPropTypes,
     style: PropTypes.oneOfType([

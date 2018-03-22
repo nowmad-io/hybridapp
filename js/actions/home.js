@@ -3,7 +3,6 @@ import {
   SELECTED_PLACE,
   LEVEL_CHANGE,
   REGION_CHANGE,
-  NEARBY,
   NEW_PLACE,
   CURRENT_PLACES,
   GOOGLE_PLACE,
@@ -18,7 +17,7 @@ export function setGeolocation(position) {
   };
 }
 
-export function selectedPlace(selectedPlace) {
+export function _selectedPlace(selectedPlace) {
   return {
     type: SELECTED_PLACE,
     selectedPlace,
@@ -60,7 +59,7 @@ export function googlePlace(place) {
   };
 }
 
-export function searchedPlaces(places) {
+export function _searchedPlaces(places) {
   return {
     type: SEARCHED_PLACES,
     places,

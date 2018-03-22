@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Image, View, StyleSheet } from 'react-native';
 
@@ -6,7 +6,7 @@ import Icon from './icon';
 
 import { colors } from '../../parameters';
 
-export default class ImageHolder extends Component {
+export default class ImageHolder extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     source: PropTypes.string,

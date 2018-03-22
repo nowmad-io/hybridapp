@@ -24,12 +24,13 @@ class SearchWrapper extends Component {
     children: PropTypes.array,
     dispatch: PropTypes.func,
     onClear: PropTypes.func,
+    onMenuPress: PropTypes.func,
+    onReviewPress: PropTypes.func,
     onNearbySelected: PropTypes.func,
     onPlaceSelected: PropTypes.func,
     onNearbyPlaceSelected: PropTypes.func,
     onPlacesSelected: PropTypes.func,
     onFriendPress: PropTypes.func,
-    searchType: PropTypes.string,
     nearbyPlaces: PropTypes.array,
     placesSearch: PropTypes.array,
     reviewsSearch: PropTypes.array,
@@ -215,8 +216,6 @@ class SearchWrapper extends Component {
   }
 
   render() {
-    const { props, state } = this;
-
     return (
       <LayoutView type="container">
         <LayoutView type="header">
@@ -225,9 +224,9 @@ class SearchWrapper extends Component {
             style={styles.headerButton}
             onPress={() => this.onActionPress()}
           >
-            {state.focused ? (
+            {this.state.focused ? (
               <Icon name="arrow-back" style={styles.headerIcon} />
-            ) : state.text.length ? (
+            ) : this.state.text.length ? (
               <Icon name="close" style={styles.headerIcon} />
             ) : (
               <Icon name="search" style={styles.headerIcon} />
@@ -236,13 +235,13 @@ class SearchWrapper extends Component {
 
           <TextInput
             ref={(c) => { this.textInput = c; }}
-            underlineColorAndroid={state.focused ? colors.white : colors.transparent}
+            underlineColorAndroid={this.state.focused ? colors.white : colors.transparent}
             autoCorrect={false}
             placeholder="Search friends, reviews & places"
             selectionColor={colors.whiteTransparent}
             placeholderTextColor={colors.white}
             style={styles.searchInput}
-            value={state.text}
+            value={this.state.text}
             onSubmitEditing={() => this.onSubmitEditing()}
             onFocus={() => this.onFocus()}
             onChangeText={text => this.onChangeText(text)}
@@ -252,7 +251,7 @@ class SearchWrapper extends Component {
           <Button
             transparent
             style={styles.headerButton}
-            onPress={props.onMenuPress}
+            onPress={this.props.onMenuPress}
           >
             <Icon name="menu" style={[styles.headerIcon, styles.menuIcon]} />
           </Button>
@@ -260,20 +259,20 @@ class SearchWrapper extends Component {
 
         {this.props.children}
 
-        { state.focused && (
+        { this.state.focused && (
           <ResultList
             style={styles.resultList}
-            searchType={state.searchType}
-            nearbyPlaces={props.nearbyPlaces}
-            placesSearch={props.placesSearch}
-            reviewsSearch={props.reviewsSearch}
-            friendsSearch={props.friendsSearch}
-            nearbyLoading={props.nearbyLoading}
-            friendsLoading={props.friendsLoading}
-            reviewsLoading={props.reviewsLoading}
-            placesLoading={props.placesLoading}
+            searchType={this.state.searchType}
+            nearbyPlaces={this.props.nearbyPlaces}
+            placesSearch={this.props.placesSearch}
+            reviewsSearch={this.props.reviewsSearch}
+            friendsSearch={this.props.friendsSearch}
+            nearbyLoading={this.props.nearbyLoading}
+            friendsLoading={this.props.friendsLoading}
+            reviewsLoading={this.props.reviewsLoading}
+            placesLoading={this.props.placesLoading}
             onFriendPress={this.onFriendPress}
-            onReviewPress={props.onReviewPress}
+            onReviewPress={this.props.onReviewPress}
             onPlaceSelected={this.onPlaceSelected}
             onNearbySelected={this.onNearbySelected}
             onNearbyPlaceSelected={this.onNearbyPlaceSelected}
@@ -293,7 +292,6 @@ const mapStateToProps = state => ({
   placesSearch: state.search.placesSearch,
   reviewsSearch: state.search.reviewsSearch,
   friendsSearch: state.search.friendsSearch,
-  searchType: state.search.searchType,
   nearbyLoading: state.search.nearbyLoading,
   friendsLoading: state.search.friendsLoading,
   reviewsLoading: state.search.reviewsLoading,

@@ -25,6 +25,8 @@ class Login extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     login: PropTypes.func,
+    loggedIn: PropTypes.bool,
+    loginLoading: PropTypes.bool,
   };
 
   constructor(props) {

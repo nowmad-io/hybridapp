@@ -16,15 +16,12 @@ class Map extends Component {
     region: PropTypes.object,
     onLongPress: PropTypes.func,
     onLayout: PropTypes.func,
+    onMapReady: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     moveOnMarkerPress: PropTypes.bool,
     mapPadding: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   onRef(ref) {
@@ -65,7 +62,7 @@ class Map extends Component {
       <MapView
         ref={ref => this.onRef(ref)}
         onMapReady={() => this.onMapReady()}
-        onRegionChangeComplete={region => onRegionChangeComplete(region)}
+        onRegionChangeComplete={newRegion => onRegionChangeComplete(newRegion)}
         onLongPress={event => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
         style={{ ...styles.map, marginBottom: 1 }}

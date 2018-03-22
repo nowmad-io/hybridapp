@@ -16,6 +16,16 @@ export default class Marker extends PureComponent {
     onMarkerPress: PropTypes.func,
   };
 
+  static getPlaceType(place) {
+    if (!place.reviews) {
+      return 'new';
+    }
+
+    const types = _.uniq(place.reviews.map(review => review.user_type));
+
+    return (types.length === 1) ? types[0] : null;
+  }
+
   constructor(props) {
     super(props);
 
@@ -23,16 +33,6 @@ export default class Marker extends PureComponent {
       type: this.getPlaceType(props.place),
       friendsCount: props.place.reviews && props.place.reviews.length || 0,
     };
-  }
-
-  getPlaceType(place) {
-    if (!place.reviews) {
-      return 'new';
-    }
-
-    const types = _.uniq(place.reviews.map((review, index) => review.user_type));
-
-    return (types.length === 1) ? types[0] : null;
   }
 
   render() {

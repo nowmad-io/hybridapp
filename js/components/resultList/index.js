@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { ScrollView, View } from 'react-native';
 
 import Text from '../dumbs/text';
@@ -14,7 +13,7 @@ import styles from './styles';
 const MAX_FRIENDS = 5;
 const MAX_REVIEWS = 5;
 
-class ResultList extends Component {
+class ResultList extends PureComponent {
   static defaultProps = {
     style: {},
     onNearbySelected: () => true,
@@ -35,12 +34,10 @@ class ResultList extends Component {
     reviewsLoading: PropTypes.bool,
     placesLoading: PropTypes.bool,
     onNearbySelected: PropTypes.func,
+    onNearbyPlaceSelected: PropTypes.func,
     onReviewPress: PropTypes.func,
     onPlaceSelected: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props);
+    onFriendPress: PropTypes.func,
   }
 
   render() {
@@ -76,9 +73,9 @@ class ResultList extends Component {
                   style={styles.spinner}
                   visible={nearbyLoading}
                 />
-                {!nearbyLoading && nearbyPlaces.map((result, index) => (
+                {!nearbyLoading && nearbyPlaces.map(result => (
                   <ListItem
-                    key={index}
+                    key={result.placeId}
                     image="google"
                     text={result.name}
                     onPress={() => this.props.onNearbyPlaceSelected(result)}
@@ -95,7 +92,7 @@ class ResultList extends Component {
           )}
           {(searchType === 'places') && (
             <View>
-              <List label="Résults by friends">
+              <List label="Results by friends">
                 <View>
                   <Spinner
                     style={styles.spinner}

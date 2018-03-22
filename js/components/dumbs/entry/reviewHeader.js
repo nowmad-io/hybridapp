@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import shortid from 'shortid';
@@ -11,7 +11,7 @@ import { colors, carousel } from '../../../parameters';
 
 const googleImg = require('../../../../assets/images/icons/google.png');
 
-export default class ReviewHeader extends Component {
+export default class ReviewHeader extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     reviews: PropTypes.array,
@@ -34,7 +34,12 @@ export default class ReviewHeader extends Component {
     return (
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.wrapper}>
-          <Thumbnail style={styles.thumbnail} source={reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg} />
+          <Thumbnail
+            style={styles.thumbnail}
+            source={
+            reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg
+          }
+          />
           <View style={styles.textWrapper}>
             <Text numberOfLines={1}>
               <Text>

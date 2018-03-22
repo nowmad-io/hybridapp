@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, Image, BackHandler, View } from 'react-native';
+import { Image, BackHandler, View } from 'react-native';
 
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -9,7 +9,6 @@ import Icon from '../../dumbs/icon';
 import Button from '../../dumbs/button';
 import Label from '../../dumbs/label';
 import FormInput from '../../dumbs/formInput';
-import ImageHolder from '../../dumbs/imageHolder';
 
 import styles from './styles';
 

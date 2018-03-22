@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableNativeFeedback, StyleSheet, PixelRatio, View } from 'react-native';
 
 import Text from './text';
-import Icon from './icon';
 import { font, colors } from '../../parameters';
 
-export default class Button extends Component {
+export default class Button extends PureComponent {
   static propTypes = {
+    children: PropTypes.any,
     onPress: PropTypes.func,
     style: PropTypes.oneOfType([
       PropTypes.object,
@@ -22,7 +22,7 @@ export default class Button extends Component {
 
   render() {
     const {
-      onPress, style, rounded, transparent, light, wrapped, fab,
+      onPress, style, rounded, transparent, light, wrapped,
     } = this.props;
 
     const children = React.Children.map(

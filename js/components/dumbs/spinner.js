@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import { colors } from '../../parameters';
 
-export default class Spinner extends Component {
+export default class Spinner extends PureComponent {
   static propTypes = {
     ...ActivityIndicator.propTypes,
     color: PropTypes.string,
@@ -30,7 +30,7 @@ export default class Spinner extends Component {
         <ActivityIndicator
           {...this.props}
           color={color}
-          size={this.size ? this.size : 'large'}
+          size={size || 'large'}
         />
         )}
       </View>

@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { colors, sizes } from '../../parameters';
-
-export default class Content extends Component {
+export default class Content extends PureComponent {
   static propTypes = {
+    children: PropTypes.any,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     disableKBDismissScroll: PropTypes.bool,
     enableResetScrollToCoords: PropTypes.bool,

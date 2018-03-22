@@ -1,4 +1,4 @@
-import { colors, sizes } from '../../../parameters';
+import { colors } from '../../../parameters';
 
 export default {
   container: {

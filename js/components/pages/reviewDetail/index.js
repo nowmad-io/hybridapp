@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import LayoutView from '../../dumbs/layoutView';
 import Button from '../../dumbs/button';
@@ -15,13 +13,12 @@ import styles from './styles';
 export default class ReviewDetail extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    review: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
-    const review = props.navigation.state.params.review;
+    const { review } = props.navigation.state.params;
 
     this.state = {
       review,

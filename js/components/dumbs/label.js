@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 
@@ -6,7 +6,7 @@ import Text from './text';
 
 import { colors } from '../../parameters';
 
-export default class Label extends Component {
+export default class Label extends PureComponent {
   static propTypes = {
     text: PropTypes.string,
     required: PropTypes.bool,

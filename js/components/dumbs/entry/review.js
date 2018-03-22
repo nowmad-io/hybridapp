@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -10,17 +10,15 @@ import { colors } from '../../../parameters';
 
 const pictureHolder = require('../../../../assets/images/picture_holder.jpg');
 
-export default class Review extends Component {
+export default class Review extends PureComponent {
   static propTypes = {
     review: PropTypes.object,
+    onPress: PropTypes.func,
   }
 
   render() {
     const { onPress, review } = this.props;
-
-    const categories = review.categories.map(categorie => categorie.name);
-
-    const pictures = review.pictures;
+    const { pictures } = review;
 
     return (
       <TouchableOpacity

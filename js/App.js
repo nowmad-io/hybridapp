@@ -10,25 +10,18 @@ import configureStore from './configureStore';
 import { requestsSaga, Api } from './requests';
 import sagas from './sagas';
 
-console.ignoredYellowBox = [
-  'Setting a timer',
-  'Remote debugger',
-];
-
 const {
   persistor, store, addListener, sagaMiddleware,
 } = configureStore();
 
 function App(): Component {
   class Root extends Component {
-    onBeforeLift() {
+    static onBeforeLift() {
       sagaMiddleware.run(requestsSaga(new Api({
         basePath: Config.API_URL,
       })));
 
-      for (const saga of sagas) {
-        sagaMiddleware.run(saga);
-      }
+      sagas.map(saga => sagaMiddleware.run(saga));
     }
 
     render() {

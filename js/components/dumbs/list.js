@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
@@ -6,7 +6,7 @@ import Text from './text';
 
 import { colors } from '../../parameters';
 
-export default class List extends Component {
+export default class List extends PureComponent {
   static propTypes = {
     children: PropTypes.any,
     style: PropTypes.string,

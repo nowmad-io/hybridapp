@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -6,7 +6,7 @@ import Text from '../dumbs/text';
 
 import { colors } from '../../parameters';
 
-export default class Tag extends Component {
+export default class Tag extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     text: PropTypes.string,

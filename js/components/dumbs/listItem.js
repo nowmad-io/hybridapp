@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 
@@ -9,8 +9,9 @@ import { colors } from '../../parameters';
 const googleImage = require('../../../assets/images/icons/google.png');
 const placeImage = require('../../../assets/images/icons/place.png');
 
-export default class List extends Component {
+export default class List extends PureComponent {
   static propTypes = {
+    children: PropTypes.any,
     onPress: PropTypes.func,
     text: PropTypes.string,
     secondaryText: PropTypes.string,

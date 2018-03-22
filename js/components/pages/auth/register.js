@@ -23,8 +23,9 @@ class Register extends Component {
   };
 
   static propTypes = {
-    navigation: PropTypes.object,
-    login: PropTypes.func,
+    dispatch: PropTypes.func,
+    register: PropTypes.func,
+    registerLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -33,8 +34,8 @@ class Register extends Component {
     this.state = {
       email: '',
       password: '',
-      first_name: '',
-      last_name: '',
+      firstName: '',
+      lastName: '',
     };
   }
 
@@ -42,8 +43,8 @@ class Register extends Component {
     this.props.register({
       email: this.state.email,
       password: this.state.password,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
     });
   }
 
@@ -79,10 +80,10 @@ class Register extends Component {
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
-                name="first_name"
-                value={this.state.first_name}
+                name="firstName"
+                value={this.state.firstName}
                 placeholder="First Name"
-                onChangeText={first_name => this.setState({ first_name })}
+                onChangeText={firstName => this.setState({ firstName })}
               />
             </View>
             <View style={styles.item}>
@@ -92,10 +93,10 @@ class Register extends Component {
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
-                name="last_name"
-                value={this.state.last_name}
+                name="lastName"
+                value={this.state.lastName}
                 placeholder="Last Name"
-                onChangeText={last_name => this.setState({ last_name })}
+                onChangeText={lastName => this.setState({ lastName })}
               />
             </View>
             <View style={styles.item}>

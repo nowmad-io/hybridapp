@@ -1,5 +1,3 @@
-import Config from 'react-native-config';
-
 import { apiCall } from '../requests';
 
 import {

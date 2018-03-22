@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 
@@ -7,7 +7,7 @@ import Text from '../dumbs/text';
 
 import { colors } from '../../parameters';
 
-export default class RadioButton extends Component {
+export default class RadioButton extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     selected: PropTypes.bool,
