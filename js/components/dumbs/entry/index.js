@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Animated, View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
 import _ from 'lodash';
 
 import ReviewHeader from './reviewHeader';
@@ -22,8 +22,12 @@ export default class Entry extends Component {
       PropTypes.array,
     ]),
     navigation: PropTypes.object,
+    onHeaderPress: PropTypes.func,
     place: PropTypes.object.isRequired,
     panY: PropTypes.object,
+    min: PropTypes.number,
+    step: PropTypes.number,
+    max: PropTypes.number,
   };
 
   constructor(props) {
@@ -64,25 +68,22 @@ export default class Entry extends Component {
   }
 
   render() {
-    const {
-        place: {
-          name, types, scope, address, reviews, all_reviews,
-        }, style,
-      } = this.props,
-      { level1Y, buttonY } = this.state,
-      reviewsToOrder = all_reviews || reviews,
-      starredReview = _.find(reviewsToOrder, (review) => {
-        if (all_reviews) {
-          return reviews[0].created_by.email === review.created_by.email;
-        }
-        return review.user_type === 'me';
-      }),
-      myReview = !all_reviews ? starredReview : _.find(reviewsToOrder, review => review.user_type === 'me'),
-      friendsReviews = starredReview ? _.filter(reviewsToOrder, review => review.id !== starredReview.id) : reviewsToOrder,
-      orderedReviews = _.compact(_.concat(_.compact([starredReview]), friendsReviews)),
-      thumbnails = _.without(reviews, reviews[0]),
-      pictures = _.flatten(reviews.map(review => review.pictures)),
-      categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)));
+    const { place: { address, reviews, all_reviews: allReviews }, style } = this.props;
+    const { level1Y, buttonY } = this.state;
+    const reviewsToOrder = allReviews || reviews;
+    const starredReview = _.find(reviewsToOrder, (review) => {
+      if (allReviews) {
+        return reviews[0].created_by.email === review.created_by.email;
+      }
+      return review.user_type === 'me';
+    });
+    const myReview = !allReviews ? starredReview : _.find(reviewsToOrder, review => review.user_type === 'me');
+    const friendsReviews = starredReview ?
+      _.filter(reviewsToOrder, review => review.id !== starredReview.id) : reviewsToOrder;
+    const orderedReviews = _.compact(_.concat(_.compact([starredReview]), friendsReviews));
+    const thumbnails = _.without(reviews, reviews[0]);
+    const pictures = _.flatten(reviews.map(review => review.pictures));
+    const categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)));
 
     return (
       <View style={[styles.card, style]}>
@@ -94,7 +95,7 @@ export default class Entry extends Component {
           }}
         >
           <ReviewHeader
-            reviews={all_reviews ? reviews : orderedReviews}
+            reviews={allReviews ? reviews : orderedReviews}
             placeAddress={address}
             showcase
             thumbnails={thumbnails}
