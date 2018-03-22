@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TouchableOpacity, Image, BackHandler, Keyboard, Animated, PanResponder, View } from 'react-native';
+import { BackHandler, Keyboard, View } from 'react-native';
 import _ from 'lodash';
 import shortid from 'shortid';
 
@@ -33,15 +33,17 @@ const MAX_LENGTH_PICTURES = 5;
 
 class AddReview extends Component {
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    review: PropTypes.object,
+    reviewLoading: PropTypes.bool,
+    public_default: PropTypes.bool,
+    region: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
-    const place = props.navigation.state.params.place;
-    const review = props.navigation.state.params.review;
+    const { place, review } = props.navigation.state.params;
 
     const defaultReview = {
       short_description: '',
@@ -63,7 +65,8 @@ class AddReview extends Component {
         short_description: review.short_description || defaultReview.short_description,
         information: review.information || defaultReview.information,
         status: review.status || defaultReview.status,
-        categories: review.categories ? review.categories.map(cat => (cat.name)) : defaultReview.categories,
+        categories: review.categories ?
+          review.categories.map(cat => (cat.name)) : defaultReview.categories,
         pictures: review.pictures || defaultReview.pictures,
       };
     }
@@ -89,14 +92,8 @@ class AddReview extends Component {
     return true;
   }
 
-  onRef = (ref) => {
-    this._map = ref;
-  }
-
   onMapReady = () => {
-    if (this._map) {
-      this.refs.map.animateToCoordinate(this.state.place);
-    }
+    this._map.animateToCoordinate(this.state.place);
   }
 
   onPublish = () => {
@@ -128,6 +125,41 @@ class AddReview extends Component {
     } else {
       this.props.dispatch(addReview(review));
     }
+  }
+
+  onImageEditBack = ({ image, remove }) => {
+    const { pictures } = this.state;
+
+    this.props.dispatch(reviewLoading(false));
+
+    if (!image) {
+      return;
+    }
+
+    if (image && remove) {
+      this.setState({ pictures: _.filter(pictures, img => (img.uri !== image.uri)) });
+      return;
+    }
+
+    let index = 0;
+    const exist = _.some(pictures, (img, i) => {
+      if (img.uri === image.uri) {
+        index = i;
+        return true;
+      }
+
+      return false;
+    });
+
+    const newPictures = [...pictures];
+
+    if (exist) {
+      newPictures[index] = image;
+    } else {
+      newPictures.push(image);
+    }
+
+    this.setState({ pictures: newPictures });
   }
 
   toggleCategorie(categorie) {
@@ -171,45 +203,10 @@ class AddReview extends Component {
     });
   }
 
-  onImageEditBack = ({ image, remove }) => {
-    const pictures = this.state.pictures;
-
-    this.props.dispatch(reviewLoading(false));
-
-    if (!image) {
-      return;
-    }
-
-    if (image && remove) {
-      this.setState({ pictures: _.filter(pictures, img => (img.uri !== image.uri)) });
-      return;
-    }
-
-    let index = 0;
-    const exist = _.some(pictures, (img, i) => {
-      if (img.uri === image.uri) {
-        index = i;
-        return true;
-      }
-
-      return false;
-    });
-
-    const newPictures = [...pictures];
-
-    if (exist) {
-      newPictures[index] = image;
-    } else {
-      newPictures.push(image);
-    }
-
-    this.setState({ pictures: newPictures });
-  }
-
   render() {
     const { categories, pictures, status } = this.state;
 
-    const full = this.state.pictures && this.state.pictures.length >= MAX_LENGTH_PICTURES;
+    const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
 
     return (
       <LayoutView type="container">
@@ -224,7 +221,7 @@ class AddReview extends Component {
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
-              ref="map"
+              ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
               zoomEnabled
               rotateEnabled={false}
@@ -244,7 +241,9 @@ class AddReview extends Component {
               <FormInput
                 defaultValue={this.state.short_description}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
-                onChangeText={short_description => this.setState({ short_description })}
+                onChangeText={
+                  shortDescription => this.setState({ short_description: shortDescription })
+                }
                 maxLength={50}
               />
             </View>
@@ -286,10 +285,10 @@ class AddReview extends Component {
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
               <View style={styles.imagesWrapper}>
-                {(!this.state.pictures || this.state.pictures.length < MAX_LENGTH_PICTURES) && (
+                {(!pictures || pictures.length < MAX_LENGTH_PICTURES) && (
                   <ImageHolder onPress={this.selectPictures} />
                 )}
-                { this.state.pictures && this.state.pictures.map((image, index) => (
+                { pictures && pictures.map((image, index) => (
                   <ImageHolder
                     key={shortid.generate()}
                     style={styles.image(full, index)}
