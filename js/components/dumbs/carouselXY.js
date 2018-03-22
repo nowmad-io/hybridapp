@@ -69,17 +69,17 @@ export default class carouselXY extends Component {
         const min = 0;
         const step = carousel.level2;
         const max = carousel.level3;
+        const ratio = (dy < 0) ? (1 / 8) : (7 / 8);
+        let toValue = min;
 
         panY.flattenOffset();
 
-        let toValue = min;
-
-        if ((value > min) || (value > step && value > min + (step - min) / 2)) {
+        if ((value > min) || (value > step && value > min + (step - min) * ratio)) {
           toValue = min;
-        } else if ((value < max) || (value < step && value < step + (max - step) / 2)) {
+        } else if ((value < max) || (value < step && value < step + (max - step) * ratio)) {
           toValue = max;
-        } else if ((value < step && value > step + (max - step) / 2)
-          || (value > step && value < min + (step - min) / 2)) {
+        } else if ((value < step && value > step + (max - step) * ratio)
+          || (value > step && value < min + (step - min) * ratio)) {
           toValue = step;
         }
 
