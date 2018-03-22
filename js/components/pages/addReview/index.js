@@ -263,7 +263,7 @@ class AddReview extends Component {
               <View style={styles.tagWrapper}>
                 {categoriesList.map(categorie => (
                   <Tag
-                    key={categorie.id}
+                    key={categorie}
                     text={categorie}
                     selected={_.indexOf(categories, categorie) !== -1}
                     onPress={() => this.toggleCategorie(categorie)}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, View, StyleSheet } from 'react-native';
 import _ from 'lodash';
+import shortid from 'shortid';
 
 import ReviewHeader from './reviewHeader';
 import Review from './review';
@@ -106,7 +107,7 @@ export default class Entry extends Component {
             <View style={styles.tagsWrapper}>
               {_.slice(categories, 0, 3).map(categorie => (
                 <Tag
-                  key={categorie.id}
+                  key={shortid.generate()}
                   text={categorie.name}
                 />
               ))}
