@@ -35,7 +35,7 @@ class Api {
           ...otherConfig
         } = config;
 
-        const requestPath = ((path.indexOf('http') === -1) ? basePath : '') + path + this.queryString(data);
+        const requestPath = ((path.indexOf('http') === -1) ? basePath : '') + path + Api.queryString(data);
 
         const body = params ? bodyEncoder(params) : undefined;
 
@@ -51,7 +51,7 @@ class Api {
 
         return fetch(requestPath, fetchOptions)
           .then(response => ({ response, format }))
-          .then(this.handleErrors)
+          .then(Api.handleErrors)
           .then(response => response[format]());
       };
     });

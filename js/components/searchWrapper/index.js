@@ -170,7 +170,7 @@ class SearchWrapper extends Component {
   }
 
   searchCoordinates(coords, init) {
-    const parsedCoords = this.coordinatesToString(coords);
+    const parsedCoords = SearchWrapper.coordinatesToString(coords);
 
     this.setState({
       text: parsedCoords,

@@ -14,6 +14,11 @@ const {
   persistor, store, addListener, sagaMiddleware,
 } = configureStore();
 
+/* eslint-disable-next-line no-console */
+console.ignoredYellowBox = [
+  'Remote debugger',
+];
+
 function App(): Component {
   class Root extends Component {
     static onBeforeLift() {
@@ -30,7 +35,7 @@ function App(): Component {
           <PersistGate
             loading={<SplashScreen />}
             persistor={persistor}
-            onBeforeLift={this.onBeforeLift}
+            onBeforeLift={Root.onBeforeLift}
           >
             <MainRouter addListener={addListener} />
           </PersistGate>

@@ -114,8 +114,8 @@ class Home extends Component {
 
   onRegionChangeComplete = (region) => {
     const { level } = this.props;
-    /* eslint no-restricted-properties: "off" */
     const helper = Math.log2(360 * ((sizes.width / 256) / region.longitudeDelta));
+    /* eslint-disable-next-line no-restricted-properties */
     const scale = Math.pow(2, helper + 1) + 1;
 
     const southWest = {

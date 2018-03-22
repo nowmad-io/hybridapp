@@ -30,7 +30,7 @@ export default class Marker extends PureComponent {
     super(props);
 
     this.state = {
-      type: this.getPlaceType(props.place),
+      type: Marker.getPlaceType(props.place),
       friendsCount: props.place.reviews && props.place.reviews.length || 0,
     };
   }
