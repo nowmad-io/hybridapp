@@ -22,6 +22,8 @@ class SearchWrapper extends Component {
   static propTypes = {
     children: PropTypes.array,
     dispatch: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     onClear: PropTypes.func,
     onMenuPress: PropTypes.func,
     onReviewPress: PropTypes.func,
@@ -61,6 +63,14 @@ class SearchWrapper extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUpdate(nextProps, { focused }) {
+    if (focused && !this.state.focused) {
+      this.props.onFocus();
+    } else if (!focused && this.state.focused) {
+      this.props.onBlur();
+    }
   }
 
   componentWillUnmount() {

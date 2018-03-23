@@ -43,6 +43,8 @@ class Home extends Component {
 
     this.state = {
       panY: new Animated.Value(0),
+      addThisPlace: true,
+      searchVisible: false,
     };
   }
 
@@ -85,6 +87,7 @@ class Home extends Component {
           left: 20,
         },
       });
+      this.setState({ addThisPlace: true });
     }
 
     if (level && level !== this.props.level) {
@@ -237,15 +240,24 @@ class Home extends Component {
       });
   }
 
+  onPanDrag = () => {
+    if (this.state.addThisPlace) {
+      this.setState({ addThisPlace: false });
+    }
+  }
+
   render() {
     const {
       dispatch, places, currentPlaces, selectedPlace, region,
       navigation, newPlace, searchedPlaces, geolocation,
     } = this.props;
+    const { panY, addThisPlace, searchVisible } = this.state;
 
     return (
       <SearchWrapper
         ref={(sw) => { this._searchWrapper = sw; }}
+        onFocus={() => this.setState({ searchVisible: true })}
+        onBlur={() => this.setState({ searchVisible: false })}
         onClear={() => this.onSearchClear()}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
@@ -255,6 +267,15 @@ class Home extends Component {
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
       >
+        {(addThisPlace && !searchVisible) && (
+          <Button
+            style={styles.addPlaceButton}
+            onPress={() => this.onMapLongPress({ coordinate: geolocation.location })}
+            fab
+          >
+            <Text>Add this place</Text>
+          </Button>
+        )}
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
@@ -267,6 +288,7 @@ class Home extends Component {
             bottom: -carousel.level1,
           }}
           onPoiClick={this.onPoiClick}
+          onPanDrag={this.onPanDrag}
         >
           {(searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker
@@ -293,7 +315,7 @@ class Home extends Component {
         <Animated.View
           style={[
             styles.buttonsWrapper,
-            { transform: [{ translateY: this.state.panY }] },
+            { transform: [{ translateY: panY }] },
           ]}
           pointerEvents="box-none"
         >
@@ -318,7 +340,7 @@ class Home extends Component {
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
           selectedPlace={selectedPlace}
-          panY={this.state.panY}
+          panY={panY}
         />
       </SearchWrapper>
     );
@@ -346,6 +368,13 @@ export default connect(mapStateToProps, bindActions)(Home);
 
 
 const styles = StyleSheet.create({
+  addPlaceButton: {
+    marginTop: 28,
+    borderRadius: 2,
+    height: 40,
+    alignSelf: 'center',
+    zIndex: 1,
+  },
   buttonsWrapper: {
     position: 'absolute',
     bottom: -carousel.level1 + carousel.border,
