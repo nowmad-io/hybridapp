@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Image, BackHandler, View } from 'react-native';
 
-import Icon from '../../dumbs/icon';
 import Button from '../../dumbs/button';
 import Content from '../../dumbs/content';
 import LayoutView from '../../dumbs/layoutView';
@@ -93,9 +92,7 @@ class AddFriend extends Component {
       <LayoutView type="container">
         <LayoutView type="header">
           <LayoutView type="left">
-            <Button transparent onPress={this.onBackPress}>
-              <Icon style={styles.icon} name="arrow-back" />
-            </Button>
+            <Button transparent onPress={this.onBackPress} icon="arrow-back" header />
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>

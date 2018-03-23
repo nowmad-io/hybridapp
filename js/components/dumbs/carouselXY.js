@@ -20,7 +20,12 @@ export default class carouselXY extends Component {
     onLevelChange: PropTypes.func,
     onIndexChange: PropTypes.func,
     onHeaderPress: PropTypes.func,
+    panY: PropTypes.any,
   };
+
+  static defaultProps = {
+    panY: new Animated.Value(0),
+  }
 
   static valueToLevel(value) {
     return value === 0 ? 1 : value === carousel.level2 ? 2 : 3;
@@ -28,14 +33,6 @@ export default class carouselXY extends Component {
 
   static levelToValue(level) {
     return level === 1 ? 0 : level === 2 ? carousel.level2 : carousel.level3;
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      panY: new Animated.Value(0),
-    };
   }
 
   componentWillMount() {
@@ -46,11 +43,11 @@ export default class carouselXY extends Component {
         return !(dx2 > dy2);
       },
       onPanResponderGrant: () => {
-        this.state.panY.setOffset(this.state.panY._value + this.state.panY._offset);
-        this.state.panY.setValue(0);
+        this.props.panY.setOffset(this.props.panY._value + this.props.panY._offset);
+        this.props.panY.setValue(0);
       },
       onPanResponderMove: (_, { dy }) => {
-        const { panY } = this.state;
+        const { panY } = this.props;
         let val = panY._offset + dy;
 
         if (val < carousel.level3) {
@@ -64,7 +61,7 @@ export default class carouselXY extends Component {
         panY.setValue(val);
       },
       onPanResponderRelease: (e, { dy }) => {
-        const { panY } = this.state;
+        const { panY } = this.props;
         const value = panY._offset + dy;
         const min = 0;
         const step = carousel.level2;
@@ -94,7 +91,7 @@ export default class carouselXY extends Component {
   _listener: null;
 
   goToLevel = (level) => {
-    Animated.timing(this.state.panY, {
+    Animated.timing(this.props.panY, {
       duration: 200,
       toValue: carouselXY.levelToValue(level),
     }).start();
@@ -111,7 +108,7 @@ export default class carouselXY extends Component {
         styles={styles.entry}
         onHeaderPress={this.props.onHeaderPress}
         navigation={this.props.navigation}
-        panY={this.state.panY}
+        panY={this.props.panY}
         min={carousel.level1}
         step={carousel.level2}
         max={carousel.level3}
@@ -120,15 +117,13 @@ export default class carouselXY extends Component {
   )
 
   render() {
-    const { data, onIndexChange } = this.props;
-    const { panY } = this.state;
+    const { data, onIndexChange, panY } = this.props;
 
     return (
       <Animated.View
         {...this._responder.panHandlers}
         style={[
           styles.carousel,
-          { top: sizes.height + carousel.level1 - carousel.border },
           { transform: [{ translateY: panY }] },
         ]}
       >
@@ -156,6 +151,7 @@ export default class carouselXY extends Component {
 const styles = StyleSheet.create({
   carousel: {
     position: 'absolute',
+    top: sizes.height + carousel.level1 - carousel.border,
   },
   entryWrapper: {
     paddingHorizontal: carousel.itemSpacing / 2,

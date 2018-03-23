@@ -11,10 +11,6 @@ export default {
     justifyContent: 'center',
     alignSelf: 'center',
   },
-  headerIcon: {
-    marginHorizontal: 8,
-    color: colors.white,
-  },
   menuIcon: {
     alignSelf: 'flex-end',
   },

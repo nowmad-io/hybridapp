@@ -31,6 +31,7 @@ export const colors = {
   blue: '#0076FF',
   blueDark: '#101172',
   blackShadow: {
+    elevation: 5,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,

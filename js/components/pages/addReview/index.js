@@ -8,7 +8,6 @@ import shortid from 'shortid';
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 
-import Icon from '../../dumbs/icon';
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -212,9 +211,7 @@ class AddReview extends Component {
       <LayoutView type="container">
         <LayoutView type="header">
           <LayoutView type="left">
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon style={styles.icon} name="arrow-back" />
-            </Button>
+            <Button transparent onPress={() => this.props.navigation.goBack()} icon="arrow-back" header />
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>

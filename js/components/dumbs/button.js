@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableNativeFeedback, StyleSheet, PixelRatio, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, PixelRatio, View } from 'react-native';
 
 import Text from './text';
+import Icon from './icon';
 import { font, colors } from '../../parameters';
 
 export default class Button extends PureComponent {
@@ -18,83 +19,123 @@ export default class Button extends PureComponent {
     light: PropTypes.bool,
     rounded: PropTypes.bool,
     wrapped: PropTypes.bool,
+    header: PropTypes.bool,
+    fab: PropTypes.bool,
+    icon: PropTypes.string,
   };
 
   render() {
     const {
-      onPress, style, rounded, transparent, light, wrapped,
+      onPress, style, rounded, transparent, light, wrapped, fab, icon, header,
     } = this.props;
 
     const children = React.Children.map(
       this.props.children,
-      child => (child && child.type === Text ?
-        React.cloneElement(child, {
-          style: [
-            styles.text,
-            (light && !transparent) && styles.light_text,
-          ],
-          uppercase: true,
-          ...child.props,
-        }) : child),
+      (child) => {
+        if (!child) {
+          return child;
+        }
+
+        let newProps = {};
+
+        switch (child.type) {
+          case Text: {
+            newProps = {
+              style: [(light && !transparent) && styles.light_text],
+              uppercase: true,
+            };
+            break;
+          }
+          case Icon: {
+            newProps.style = [(React.Children.count(this.props.children) > 1) && styles.icon];
+            break;
+          }
+          default:
+            break;
+        }
+
+        newProps.style = [
+          styles.text,
+          ...newProps.style,
+          fab && styles.fab_text,
+        ];
+
+        return React.cloneElement(child, { ...child.props, ...newProps });
+      },
     );
 
     return (
-      <View style={style && style}>
-        <TouchableNativeFeedback
-          onPress={onPress}
-          background={TouchableNativeFeedback.Ripple(colors.ripple)}
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={onPress}
+        style={[
+          styles.wrapper,
+          (fab || rounded) && styles.rounded,
+          fab && styles.fab,
+          (fab && icon) && { width: 56 },
+          wrapped && styles.wrapped,
+          (light || fab) && styles.light_button,
+          transparent && styles.transparent_button,
+          header && { paddingHorizontal: 8 },
+          style && style,
+        ]}
+      >
+        <View
+          style={[
+            styles.button,
+            wrapped && styles.wrapped_button,
+          ]}
         >
-          <View style={wrapped && styles.wrapped}>
-            <View
+          {children}
+          {icon && (
+            <Icon
+              name={icon}
               style={[
-                styles.button,
-                rounded && styles.rounded_button,
-                (light || transparent || wrapped) && styles.flat_button,
-                light && styles.light_button,
-                transparent && styles.transparent_button,
-                wrapped && styles.wrapped_button,
+                styles.text,
+                { fontSize: 22 },
+                fab && styles.fab_text,
               ]}
-            >
-              {children}
-            </View>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
+            />
+          )}
+        </View>
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 6,
+  wrapper: {
+    height: 48,
     backgroundColor: colors.green,
-    borderRadius: 2,
     borderColor: colors.green,
-    borderWidth: null,
-    height: 45,
+    borderRadius: 2,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+  },
+  button: {
     flexDirection: 'row',
-    elevation: 2,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.2,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   text: {
     color: colors.white,
     fontWeight: font.fontWeight.medium,
-    paddingHorizontal: 16,
   },
-  rounded_button: {
+  icon: {
+    color: colors.white,
+    fontSize: 16,
+    marginLeft: 4,
+  },
+  fab: {
+    ...colors.blackShadow,
+    height: 56,
+  },
+  fab_text: {
+    color: colors.black,
+  },
+  rounded: {
     borderRadius: 40,
-  },
-  flat_button: {
-    elevation: 0,
-    shadowColor: null,
-    shadowOffset: null,
-    shadowRadius: null,
-    shadowOpacity: null,
   },
   light_button: {
     backgroundColor: colors.white,
@@ -118,7 +159,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wrapped_button: {
-    height: 34,
+    height: 32,
     width: '100%',
+    backgroundColor: colors.green,
+    borderColor: colors.green,
+    borderRadius: 2,
+    paddingHorizontal: 16,
   },
 });

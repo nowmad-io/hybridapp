@@ -11,7 +11,6 @@ import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
 import Button from '../dumbs/button';
 import LayoutView from '../dumbs/layoutView';
-import Icon from '../dumbs/icon';
 import ResultList from '../resultList';
 
 import { colors } from '../../parameters';
@@ -223,15 +222,9 @@ class SearchWrapper extends Component {
             transparent
             style={styles.headerButton}
             onPress={() => this.onActionPress()}
-          >
-            {this.state.focused ? (
-              <Icon name="arrow-back" style={styles.headerIcon} />
-            ) : this.state.text.length ? (
-              <Icon name="close" style={styles.headerIcon} />
-            ) : (
-              <Icon name="search" style={styles.headerIcon} />
-            )}
-          </Button>
+            icon={this.state.focused ? 'arrow-back' : this.state.text.length ? 'close' : 'search'}
+            header
+          />
 
           <TextInput
             ref={(c) => { this.textInput = c; }}
@@ -252,9 +245,9 @@ class SearchWrapper extends Component {
             transparent
             style={styles.headerButton}
             onPress={this.props.onMenuPress}
-          >
-            <Icon name="menu" style={[styles.headerIcon, styles.menuIcon]} />
-          </Button>
+            icon="menu"
+            header
+          />
         </LayoutView>
 
         {this.props.children}

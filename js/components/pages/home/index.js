@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import { Animated, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 import _ from 'lodash';
 
 import CarouselXY from '../../dumbs/carouselXY';
-import Map from '../../map';
 import Marker from '../../dumbs/marker';
+import Button from '../../dumbs/button';
+import Text from '../../dumbs/text';
+import Icon from '../../dumbs/icon';
+import Map from '../../map';
 import SearchWrapper from '../../searchWrapper';
 
 import {
@@ -31,6 +35,14 @@ class Home extends Component {
     newPlace: PropTypes.object,
     fromReview: PropTypes.bool,
     googlePlace: PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      panY: new Animated.Value(0),
+    };
   }
 
   componentDidMount() {
@@ -273,6 +285,19 @@ class Home extends Component {
             />
           )}
         </Map>
+        <Animated.View
+          style={[
+            styles.buttonsWrapper,
+            { transform: [{ translateY: this.state.panY }] },
+          ]}
+          pointerEvents="box-none"
+        >
+          <Button style={styles.filters} fab>
+            <Text>Filters</Text>
+            <Icon name="equalizer" set="SimpleLineIcons" />
+          </Button>
+          <Button style={styles.location} fab icon="my-location" />
+        </Animated.View>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
           data={searchedPlaces.length ? searchedPlaces : currentPlaces}
@@ -281,6 +306,7 @@ class Home extends Component {
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
           selectedPlace={selectedPlace}
+          panY={this.state.panY}
         />
       </SearchWrapper>
     );
@@ -305,3 +331,22 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
+
+
+const styles = StyleSheet.create({
+  buttonsWrapper: {
+    position: 'absolute',
+    bottom: -carousel.level1 + carousel.border,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    left: 0,
+    right: 0,
+  },
+  filters: {
+    alignSelf: 'center',
+    height: 40,
+  },
+  location: {
+    alignSelf: 'flex-end',
+  },
+});
