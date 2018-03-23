@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
@@ -292,11 +292,18 @@ class Home extends Component {
           ]}
           pointerEvents="box-none"
         >
-          <Button style={styles.filters} fab>
-            <Text>Filters</Text>
-            <Icon name="equalizer" set="SimpleLineIcons" />
-          </Button>
-          <Button style={styles.location} fab icon="my-location" />
+          <Button fab icon="zoom-out-map" style={styles.zoomOut} />
+
+          <View style={styles.bottomButtons}>
+            <View style={styles.helper} />
+
+            <Button style={styles.filters} fab>
+              <Text>Filters</Text>
+              <Icon name="equalizer" set="SimpleLineIcons" />
+            </Button>
+
+            <Button fab icon="my-location" />
+          </View>
         </Animated.View>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
@@ -342,11 +349,21 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  filters: {
+  zoomOut: {
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+  bottomButtons: {
     alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  filters: {
     height: 40,
   },
-  location: {
-    alignSelf: 'flex-end',
+  helper: {
+    width: 56,
   },
 });
