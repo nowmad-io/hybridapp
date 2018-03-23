@@ -3,7 +3,8 @@ import storage from 'redux-persist/lib/storage';
 import _ from 'lodash';
 
 import {
-  GEOLOCATION,
+  GET_GEOLOCATION,
+  SET_GEOLOCATION,
   SELECTED_PLACE,
   LEVEL_CHANGE,
   REGION_CHANGE,
@@ -30,7 +31,10 @@ const initialState = {
   newPlace: null,
   googlePlace: null,
   level: 1,
-  position: null,
+  geolocation: {
+    loading: false,
+    location: null,
+  },
   region: {
     longitudeDelta: 126.56254928559065,
     latitudeDelta: 114.96000427333595,
@@ -149,8 +153,22 @@ function HomeReducer(state = initialState, action) {
       return { ...state, nearbyPlaces: action.places.results };
     case SELECTED_PLACE:
       return { ...state, selectedPlace: action.selectedPlace };
-    case GEOLOCATION:
-      return { ...state, position: action.position };
+    case GET_GEOLOCATION:
+      return {
+        ...state,
+        geolocation: {
+          ...state.geolocation,
+          loading: true,
+        },
+      };
+    case SET_GEOLOCATION:
+      return {
+        ...state,
+        geolocation: {
+          loading: false,
+          location: action.position,
+        },
+      };
     case LEVEL_CHANGE:
       return { ...state, level: action.level };
     case REGION_CHANGE:

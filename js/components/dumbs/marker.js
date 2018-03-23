@@ -42,7 +42,7 @@ export default class Marker extends PureComponent {
     return (
       <MapView.Marker
         coordinate={{ latitude: place.latitude, longitude: place.longitude }}
-        onPress={e => this.props.onMarkerPress(e, place)}
+        onPress={() => this.props.onMarkerPress(place)}
         anchor={selected ? { x: 0.5, y: 0.91 } : { x: 0.5, y: 1 }}
       >
 

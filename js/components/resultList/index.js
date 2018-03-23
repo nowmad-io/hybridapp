@@ -75,7 +75,7 @@ class ResultList extends PureComponent {
                 />
                 {!nearbyLoading && nearbyPlaces.map(result => (
                   <ListItem
-                    key={result.placeId}
+                    key={result.place_id}
                     image="google"
                     text={result.name}
                     onPress={() => this.props.onNearbyPlaceSelected(result)}

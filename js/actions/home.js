@@ -1,5 +1,6 @@
 import {
-  GEOLOCATION,
+  GET_GEOLOCATION,
+  SET_GEOLOCATION,
   SELECTED_PLACE,
   LEVEL_CHANGE,
   REGION_CHANGE,
@@ -10,9 +11,14 @@ import {
   FROM_REVIEW,
 } from '../constants/home';
 
+export function getGeolocation() {
+  return {
+    type: GET_GEOLOCATION,
+  };
+}
 export function setGeolocation(position) {
   return {
-    type: GEOLOCATION,
+    type: SET_GEOLOCATION,
     position,
   };
 }

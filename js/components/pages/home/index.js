@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 import CarouselXY from '../../dumbs/carouselXY';
 import Marker from '../../dumbs/marker';
+import MarkerPosition from '../../dumbs/markerPosition';
 import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 import Icon from '../../dumbs/icon';
@@ -15,7 +16,7 @@ import SearchWrapper from '../../searchWrapper';
 
 import {
   _selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, _searchedPlaces, googlePlace, setFromReview,
+  currentPlacesChange, _searchedPlaces, googlePlace, setFromReview, getGeolocation,
 } from '../../../actions/home';
 import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
@@ -28,7 +29,7 @@ class Home extends Component {
     places: PropTypes.array,
     searchedPlaces: PropTypes.array,
     currentPlaces: PropTypes.array,
-    position: PropTypes.object,
+    geolocation: PropTypes.object,
     level: PropTypes.number,
     selectedPlace: PropTypes.object,
     region: PropTypes.object,
@@ -57,7 +58,7 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({
-    selectedPlace, level, fromReview, position,
+    selectedPlace, level, fromReview, geolocation,
   }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
@@ -74,18 +75,16 @@ class Home extends Component {
       }
     }
 
-    if (position
-      && this.props.position
-      && position.latitude !== this.props.position.latitude
-      && position.longitude !== this.props.position.longitude) {
-      setTimeout(() => this._map.fitToCoordinates([position], {
+    if (geolocation && geolocation.location
+        && !geolocation.loading && this.props.geolocation.loading) {
+      this._map.fitToCoordinates([geolocation.location], {
         edgePadding: {
           top: 20,
           right: 20,
           bottom: 20,
           left: 20,
         },
-      }), 500);
+      });
     }
 
     if (level && level !== this.props.level) {
@@ -100,7 +99,7 @@ class Home extends Component {
     }
   }
 
-  onMarkerPress = (e, place) => {
+  onMarkerPress = (place) => {
     const { searchedPlaces, currentPlaces } = this.props;
     const index = _.findIndex(
       searchedPlaces.length ? searchedPlaces : currentPlaces,
@@ -240,7 +239,8 @@ class Home extends Component {
 
   render() {
     const {
-      places, currentPlaces, selectedPlace, region, navigation, newPlace, searchedPlaces,
+      dispatch, places, currentPlaces, selectedPlace, region,
+      navigation, newPlace, searchedPlaces, geolocation,
     } = this.props;
 
     return (
@@ -261,7 +261,6 @@ class Home extends Component {
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
-          onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
           mapPadding={{
             top: sizes.toolbarHeight,
@@ -284,6 +283,12 @@ class Home extends Component {
               onMarkerPress={this.onNewMarkerPress}
             />
           )}
+          {geolocation && geolocation.location && (
+            <MarkerPosition
+              location={geolocation.location}
+              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
+            />
+          )}
         </Map>
         <Animated.View
           style={[
@@ -302,7 +307,7 @@ class Home extends Component {
               <Icon name="equalizer" set="SimpleLineIcons" />
             </Button>
 
-            <Button fab icon="my-location" />
+            <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
           </View>
         </Animated.View>
         <CarouselXY
@@ -328,7 +333,7 @@ const mapStateToProps = state => ({
   places: state.home.places,
   currentPlaces: state.home.currentPlaces,
   searchedPlaces: state.home.searchedPlaces,
-  position: state.home.position,
+  geolocation: state.home.geolocation,
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,
   region: state.home.region,
