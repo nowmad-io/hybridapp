@@ -143,7 +143,7 @@ export default class Entry extends Component {
           </View>
           {orderedReviews && orderedReviews.map(review => (
             <Review
-              key={review.id}
+              key={shortid.generate()}
               review={review}
               onPress={() => this.onPressReview(review)}
             />
