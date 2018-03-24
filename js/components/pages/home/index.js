@@ -43,7 +43,7 @@ class Home extends Component {
 
     this.state = {
       panY: new Animated.Value(0),
-      addThisPlace: true,
+      addThisPlace: false,
       searchVisible: false,
     };
   }
@@ -246,6 +246,10 @@ class Home extends Component {
     }
   }
 
+  zoomOut = () => {
+    this._map.zoomBy(-4);
+  }
+
   render() {
     const {
       dispatch, places, currentPlaces, selectedPlace, region,
@@ -319,7 +323,12 @@ class Home extends Component {
           ]}
           pointerEvents="box-none"
         >
-          <Button fab icon="zoom-out-map" style={styles.zoomOut} />
+          <Button
+            fab
+            icon="zoom-out-map"
+            style={styles.zoomOut}
+            onPress={this.zoomOut}
+          />
 
           <View style={styles.bottomButtons}>
             <View style={styles.helper} />

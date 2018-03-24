@@ -18,6 +18,7 @@ class Map extends Component {
     onLayout: PropTypes.func,
     onMapReady: PropTypes.func,
     onPanDrag: PropTypes.func,
+    zoomBy: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
@@ -52,6 +53,10 @@ class Map extends Component {
 
   fitToCoordinates(coordinates) {
     this._ref.fitToCoordinates(coordinates);
+  }
+
+  zoomBy(zoom) {
+    this._ref.zoomBy(zoom);
   }
 
   render() {
