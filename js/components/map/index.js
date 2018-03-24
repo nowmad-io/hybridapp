@@ -18,7 +18,6 @@ class Map extends Component {
     onLayout: PropTypes.func,
     onMapReady: PropTypes.func,
     onPanDrag: PropTypes.func,
-    zoomBy: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
