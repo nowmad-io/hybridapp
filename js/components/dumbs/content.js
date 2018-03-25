@@ -5,7 +5,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default class Content extends PureComponent {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
     disableKBDismissScroll: PropTypes.bool,
     enableResetScrollToCoords: PropTypes.bool,

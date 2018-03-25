@@ -10,7 +10,6 @@ export default class Tag extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     text: PropTypes.string,
-    children: PropTypes.object,
     selected: PropTypes.bool,
   };
 
@@ -35,7 +34,6 @@ export default class Tag extends PureComponent {
               {text}
             </Text>
             ) : null}
-          {this.props.children}
         </View>
       </TouchableOpacity>
     );

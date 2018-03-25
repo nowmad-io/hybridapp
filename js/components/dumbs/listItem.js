@@ -11,7 +11,10 @@ const placeImage = require('../../../assets/images/icons/place.png');
 
 export default class List extends PureComponent {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     onPress: PropTypes.func,
     text: PropTypes.string,
     secondaryText: PropTypes.string,

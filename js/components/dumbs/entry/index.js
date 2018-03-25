@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import _ from 'lodash';
 import shortid from 'shortid';
 
@@ -25,31 +25,7 @@ export default class Entry extends Component {
     navigation: PropTypes.object,
     onHeaderPress: PropTypes.func,
     place: PropTypes.object.isRequired,
-    panY: PropTypes.object,
-    min: PropTypes.number,
-    step: PropTypes.number,
-    max: PropTypes.number,
   };
-
-  constructor(props) {
-    super(props);
-    const level1Y = props.panY.interpolate({
-      inputRange: [props.max, props.step],
-      outputRange: [props.min + props.step, 0],
-      extrapolate: 'clamp',
-    });
-
-    const buttonY = props.panY.interpolate({
-      inputRange: [props.max, props.step],
-      outputRange: [props.step - props.max, 0],
-      extrapolate: 'clamp',
-    });
-
-    this.state = {
-      level1Y,
-      buttonY,
-    };
-  }
 
   onPressAddReview() {
     this.props.navigation.navigate('AddReview', { place: this.props.place });
@@ -70,7 +46,6 @@ export default class Entry extends Component {
 
   render() {
     const { place: { address, reviews, all_reviews: allReviews }, style } = this.props;
-    const { level1Y, buttonY } = this.state;
     const reviewsToOrder = allReviews || reviews;
     const starredReview = _.find(reviewsToOrder, (review) => {
       if (allReviews) {
@@ -88,13 +63,7 @@ export default class Entry extends Component {
 
     return (
       <View style={[styles.card, style]}>
-        <Animated.View
-          style={{
-            transform: [
-              { translateY: level1Y },
-            ],
-          }}
-        >
+        <View>
           <ReviewHeader
             reviews={allReviews ? reviews : orderedReviews}
             placeAddress={address}
@@ -113,29 +82,16 @@ export default class Entry extends Component {
               ))}
             </View>
           </View>
-        </Animated.View>
-        <Animated.View
-          style={{
-            zIndex: 99999,
-            transform: [
-              { translateY: buttonY },
-            ],
-          }}
-        >
+        </View>
+        <View>
           <Button
             wrapped
             onPress={() => (myReview ? this.onPressEditReview(myReview) : this.onPressAddReview())}
           >
             <Text>{myReview ? 'My review' : 'Add review'}</Text>
           </Button>
-        </Animated.View>
-        <Animated.View
-          style={{
-            transform: [
-              { translateY: level1Y },
-            ],
-          }}
-        >
+        </View>
+        <View>
           <View style={styles.addressWrapper}>
             <Text style={styles.address}>
               <Icon style={styles.addressIcon} name="location-on" /> {address}
@@ -148,7 +104,7 @@ export default class Entry extends Component {
               onPress={() => this.onPressReview(review)}
             />
           ))}
-        </Animated.View>
+        </View>
       </View>
     );
   }

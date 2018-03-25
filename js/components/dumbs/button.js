@@ -8,7 +8,10 @@ import { font, colors } from '../../parameters';
 
 export default class Button extends PureComponent {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     onPress: PropTypes.func,
     style: PropTypes.oneOfType([
       PropTypes.object,

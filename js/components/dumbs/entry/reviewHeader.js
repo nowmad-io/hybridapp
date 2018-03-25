@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     borderRadius: 2,
     backgroundColor: colors.white,
-    height: -carousel.level1,
+    height: carousel.level1 - carousel.border,
   },
   thumbnail: {
     alignSelf: 'flex-start',

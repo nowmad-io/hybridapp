@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
@@ -42,7 +42,6 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      panY: new Animated.Value(0),
       addThisPlace: false,
       searchVisible: false,
     };
@@ -93,7 +92,7 @@ class Home extends Component {
     if (level && level !== this.props.level) {
       this._map.updatePadding({
         top: sizes.toolbarHeight,
-        bottom: level === 1 ? -carousel.level1 : -carousel.level1 - carousel.level2,
+        bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
 
       if (level < 3 && this.props.selectedPlace) {
@@ -225,7 +224,7 @@ class Home extends Component {
   }
 
   onHeaderPress = () => {
-    const toLevel = this.props.level <= 2 ? this.props.level === 1 ? 2 : 1 : null;
+    const toLevel = (this.props.level <= 2) ? this.props.level === 1 ? 2 : 1 : null;
     if (toLevel) {
       this.onLevelChange(toLevel);
       this._carouselXY.goToLevel(toLevel);
@@ -255,7 +254,7 @@ class Home extends Component {
       dispatch, places, currentPlaces, selectedPlace, region,
       navigation, newPlace, searchedPlaces, geolocation,
     } = this.props;
-    const { panY, addThisPlace, searchVisible } = this.state;
+    const { addThisPlace, searchVisible } = this.state;
 
     return (
       <SearchWrapper
@@ -289,7 +288,7 @@ class Home extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           mapPadding={{
             top: sizes.toolbarHeight,
-            bottom: -carousel.level1,
+            bottom: carousel.level1,
           }}
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
@@ -316,12 +315,14 @@ class Home extends Component {
             />
           )}
         </Map>
-        <Animated.View
-          style={[
-            styles.buttonsWrapper,
-            { transform: [{ translateY: panY }] },
-          ]}
-          pointerEvents="box-none"
+        <CarouselXY
+          ref={(c) => { this._carouselXY = c; }}
+          data={searchedPlaces.length ? searchedPlaces : currentPlaces}
+          onIndexChange={this.onIndexChange}
+          onLevelChange={this.onLevelChange}
+          onHeaderPress={this.onHeaderPress}
+          navigation={this.props.navigation}
+          selectedPlace={selectedPlace}
         >
           <Button
             fab
@@ -340,17 +341,7 @@ class Home extends Component {
 
             <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
           </View>
-        </Animated.View>
-        <CarouselXY
-          ref={(c) => { this._carouselXY = c; }}
-          data={searchedPlaces.length ? searchedPlaces : currentPlaces}
-          onIndexChange={this.onIndexChange}
-          onLevelChange={this.onLevelChange}
-          onHeaderPress={this.onHeaderPress}
-          navigation={this.props.navigation}
-          selectedPlace={selectedPlace}
-          panY={panY}
-        />
+        </CarouselXY>
       </SearchWrapper>
     );
   }
@@ -383,14 +374,6 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: 'center',
     zIndex: 1,
-  },
-  buttonsWrapper: {
-    position: 'absolute',
-    bottom: -carousel.level1 + carousel.border,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    left: 0,
-    right: 0,
   },
   zoomOut: {
     alignSelf: 'flex-end',

@@ -20,7 +20,10 @@ const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 
 class SearchWrapper extends Component {
   static propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     dispatch: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,

@@ -8,7 +8,10 @@ import { colors } from '../../parameters';
 
 export default class List extends PureComponent {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     style: PropTypes.string,
     label: PropTypes.string,
   };
