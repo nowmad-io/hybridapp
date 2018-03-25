@@ -146,6 +146,7 @@ export default class carouselXY extends Component {
           styles.carousel,
           { transform: [{ translateY: panY }] },
         ]}
+        pointerEvents="box-none"
       >
         <View style={styles.buttonWrapper} onLayout={this.onLayout} pointerEvents="box-none">
           { children }
@@ -184,8 +185,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    padding: 16,
-    width: carousel.itemWidth,
+    padding: 14,
+    width: sizes.width,
   },
   entryWrapper: {
     paddingHorizontal: carousel.itemSpacing / 2,
