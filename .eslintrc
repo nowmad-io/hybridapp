@@ -12,7 +12,10 @@
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "jsx-a11y/href-no-hash": "off",
         "react/forbid-prop-types": "off",
-        "react/require-default-props": "off"
+        "react/require-default-props": "off",
+        "no-nested-ternary": "off",
+        "no-use-before-define": ["error", { "variables": false }],
+        "no-mixed-operators": "off"
     },
     "settings": {
         "import/resolver": {
@@ -20,5 +23,9 @@
                 "extensions": [".js", ".android.js", ".ios.js"]
             }
         }
+    },
+    "globals": {
+        "fetch": false,
+        "navigator": false
     }
 }

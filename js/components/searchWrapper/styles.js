@@ -1,36 +1,30 @@
-import React, { StyleSheet } from 'react-native';
-
 import { colors, sizes } from '../../parameters';
 
 export default {
   headerInput: {
-    flex: 1
+    flex: 1,
   },
   headerButton: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center'
-  },
-  headerIcon: {
-    marginHorizontal: 8,
-    color: colors.white
+    alignSelf: 'center',
   },
   menuIcon: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
   },
   searchInput: {
     display: 'flex',
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
     fontSize: 16,
     lineHeight: 16,
-    color: colors.white
+    color: colors.white,
   },
   searchWrapper: {
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   resultList: {
     position: 'absolute',
@@ -38,5 +32,6 @@ export default {
     bottom: 0,
     right: 0,
     left: 0,
-  }
+    zIndex: 9,
+  },
 };

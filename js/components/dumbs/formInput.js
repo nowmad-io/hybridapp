@@ -24,15 +24,15 @@ export default class FormInput extends Component {
   }
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      length: 0
-    }
+      length: 0,
+    };
   }
 
   onChangeText(text) {
-    this.setState({length: text.length});
+    this.setState({ length: text.length });
     this.props.onChangeText(text);
   }
 
@@ -45,14 +45,15 @@ export default class FormInput extends Component {
           maxLength={this.props.maxLength}
           placeholder={this.props.placeholder}
           defaultValue={this.props.defaultValue}
-          onChangeText={(text) => this.onChangeText(text)} />
+          onChangeText={text => this.onChangeText(text)}
+        />
         {this.props.maxLength && (
           <Text style={styles.length}>
             {this.state.length ? `${this.state.length}/` : ''}{this.props.maxLength}
           </Text>
         )}
       </View>
-    )
+    );
   }
 }
 
@@ -61,18 +62,18 @@ const styles = StyleSheet.create({
     marginTop: 6,
     paddingBottom: 6,
   },
-  input: {
+  input: {
     fontSize: 14,
     lineHeight: 16,
     paddingTop: 0,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
-  length: {
+  length: {
     position: 'absolute',
     bottom: 0,
     right: 4,
     fontSize: 10,
     fontWeight: '500',
-    color: colors.greyDark
-  }
+    color: colors.greyDark,
+  },
 });

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { BackHandler } from "react-native";
+import { BackHandler } from 'react-native';
 import { addNavigationHelpers, StackNavigator, NavigationActions } from 'react-navigation';
-import _ from "lodash";
+import _ from 'lodash';
 
 import Login from '../components/pages/auth/login';
 import Register from '../components/pages/auth/register';
@@ -12,29 +12,29 @@ import AppRouter from './AppRouter';
 export const MainNavigator = StackNavigator({
   Login,
   Register,
-  App: AppRouter
+  App: AppRouter,
 });
 
 class MainRouter extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     nav: PropTypes.object.isRequired,
-    addListener: PropTypes.func.isRequired
+    addListener: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
 
   onBackPress = () => {
     const { dispatch, nav } = this.props;
     const indexes = _.flattenDeep(this.navIndex(nav));
 
-    if (!indexes.some((index) => index)) {
+    if (!indexes.some(index => index)) {
       return false;
     }
 
@@ -43,14 +43,14 @@ class MainRouter extends Component {
   };
 
   navIndex(nav) {
-    if (nav.hasOwnProperty('routes')) {
+    if (Object.prototype.hasOwnProperty.call(nav, 'routes')) {
       return [
         nav.index,
-        nav.routes.map((route) => {
-          return this.navIndex(route);
-        })
-      ]
+        nav.routes.map(route => this.navIndex(route)),
+      ];
     }
+
+    return null;
   }
 
   render() {
@@ -60,14 +60,15 @@ class MainRouter extends Component {
       <MainNavigator navigation={addNavigationHelpers({
           dispatch,
           state: nav,
-          addListener
-        })} />
+          addListener,
+        })}
+      />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  nav: state.nav
+  nav: state.nav,
 });
 
 export default connect(mapStateToProps)(MainRouter);

@@ -3,10 +3,10 @@ export const categoriesList = [
   'City',
   'Nature shows',
   'Culture',
-]
+];
 
 export const statusList = [
   'Travelling here',
   'Living here',
   'Local',
-]
+];

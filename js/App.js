@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from 'redux-persist/integration/react';
 import Config from 'react-native-config';
 
 import MainRouter from './Routers/MainRouter';
@@ -10,23 +10,23 @@ import configureStore from './configureStore';
 import { requestsSaga, Api } from './requests';
 import sagas from './sagas';
 
-console.ignoredYellowBox = [
-  'Setting a timer',
-  'Remote debugger'
-];
+const {
+  persistor, store, addListener, sagaMiddleware,
+} = configureStore();
 
-const { persistor, store, addListener, sagaMiddleware } = configureStore();
+/* eslint-disable-next-line no-console */
+console.ignoredYellowBox = [
+  'Remote debugger',
+];
 
 function App(): Component {
   class Root extends Component {
-    onBeforeLift() {
+    static onBeforeLift() {
       sagaMiddleware.run(requestsSaga(new Api({
-        basePath: Config.API_URL
+        basePath: Config.API_URL,
       })));
 
-      for (const saga of sagas) {
-        sagaMiddleware.run(saga);
-      }
+      sagas.map(saga => sagaMiddleware.run(saga));
     }
 
     render() {
@@ -35,8 +35,9 @@ function App(): Component {
           <PersistGate
             loading={<SplashScreen />}
             persistor={persistor}
-            onBeforeLift={this.onBeforeLift}>
-              <MainRouter addListener={addListener} />
+            onBeforeLift={Root.onBeforeLift}
+          >
+            <MainRouter addListener={addListener} />
           </PersistGate>
         </Provider>
       );

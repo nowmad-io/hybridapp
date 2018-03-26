@@ -1,7 +1,7 @@
 import {
   LOGIN_REQUEST,
   REGISTER_REQUEST,
-  LOGOUT_REQUEST
+  LOGOUT_REQUEST,
 } from '../constants/auth';
 
 export function loginRequest(data) {
@@ -20,6 +20,6 @@ export function registerRequest(data) {
 
 export function logoutRequest() {
   return {
-    type: LOGOUT_REQUEST
+    type: LOGOUT_REQUEST,
   };
 }

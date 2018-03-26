@@ -1,10 +1,6 @@
-import React, { Dimensions } from 'react-native';
-
 import { colors } from '../../../parameters';
 
 export { colors };
-
-const deviceHeight = Dimensions.get('window').height;
 
 export default {
   container: {
@@ -17,10 +13,10 @@ export default {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '51%'
+    height: '51%',
   },
   logoWrapperRegister: {
-    height: '30%'
+    height: '30%',
   },
   logo: {
     height: 200,
@@ -35,7 +31,7 @@ export default {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 0.5,
-    borderColor: colors.white
+    borderColor: colors.white,
   },
   inputIcon: {
     color: colors.white,
@@ -44,9 +40,9 @@ export default {
     color: colors.white,
     marginLeft: 12,
     fontSize: 16,
-    flex: 1
+    flex: 1,
   },
   button: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 };

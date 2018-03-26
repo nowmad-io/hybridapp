@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, PanResponder, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import _ from 'lodash';
 
 import Entry from './entry';
 
@@ -10,22 +9,30 @@ import { sizes, carousel } from '../../parameters';
 
 export default class carouselXY extends Component {
   static propTypes = {
+    navigation: PropTypes.object,
     style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
-      PropTypes.array
+      PropTypes.array,
     ]),
     selectedPlace: PropTypes.object,
-    data: PropTypes.array
+    data: PropTypes.array,
+    onLevelChange: PropTypes.func,
+    onIndexChange: PropTypes.func,
+    onHeaderPress: PropTypes.func,
+    panY: PropTypes.object,
   };
 
-  _listener: null;
+  static valueToLevel(value) {
+    return value === carousel.level1 ? 1 : value === carousel.level2 ? 2 : 3;
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      panY: new Animated.Value(0)
+      buttonsHeight: 0,
+      carouselEnabled: true,
     };
   }
 
@@ -34,66 +41,75 @@ export default class carouselXY extends Component {
       onMoveShouldSetPanResponderCapture: (_, { dx, dy }) => {
         const dx2 = dx * dx;
         const dy2 = dy * dy;
-        return dx2 > dy2 ? false : true;
+        return !(dx2 > dy2);
       },
-      onPanResponderGrant: (e, gestureState) => {
-        this.state.panY.setOffset(this.state.panY._value + this.state.panY._offset);
-        this.state.panY.setValue(0);
+      onPanResponderGrant: () => {
+        this.setState({ carouselEnabled: false });
+        const offset = this.props.panY._value + this.props.panY._offset + this.state.buttonsHeight;
+        this.props.panY.setOffset(offset);
+        this.props.panY.setValue(-this.state.buttonsHeight);
       },
-      onPanResponderMove: (_, { dx, dy, x0, y0 }) => {
-        let panY = this.state.panY,
-            val = panY._offset + dy;
+      onPanResponderMove: (_, { dy }) => {
+        const { panY } = this.props;
+        let val = -panY._offset - dy;
 
-        if (val < carousel.level3) {
+        if (val > carousel.level3) {
           val = carousel.level3;
         }
-        if (val > 0) {
-          val = 0;
+        if (val < carousel.level1) {
+          val = carousel.level1;
         }
 
-        val = val - panY._offset;
-        panY.setValue(val);
+        val += panY._offset;
+        panY.setValue(-val - this.state.buttonsHeight);
       },
-      onPanResponderRelease: (e, {dy, vx, vy}) => {
-        let panY = this.state.panY;
-        const value = panY._offset + dy,
-              min = 0,
-              step = carousel.level2,
-              max = carousel.level3;
+      onPanResponderRelease: (e, { dy }) => {
+        const { panY } = this.props;
+        const value = -panY._offset - dy;
+        const min = carousel.level1;
+        const step = carousel.level2;
+        const max = carousel.level3;
+        const ratio = (dy < 0) ? (1 / 8) : (7 / 8);
+        let toValue = min;
 
         panY.flattenOffset();
 
-        let toValue = min;
-
-        if ((value > min) || (value > step && value > min + (step - min) / 2)) {
+        if ((value < step && value < min + (step - min) * ratio)) {
           toValue = min;
-        } else if ((value < max) || (value < step && value < step + (max - step) / 2 ) ) {
+        } else if ((value > step && value > step + (max - step) * ratio)) {
           toValue = max;
-        } else if ((value < step && value > step + (max - step) / 2)
-          || (value > step && value < min + (step - min) / 2)) {
+        } else if ((value > step && value < step + (max - step) * ratio)
+          || (value < step && value > min + (step - min) * ratio)) {
           toValue = step;
         }
 
         Animated.timing(panY, {
           duration: 200,
-          toValue
-        }).start(() => this.props.onLevelChange(this.valueToLevel(toValue)));
-      }
+          toValue: -toValue - this.state.buttonsHeight,
+        }).start(() => {
+          this.setState({ carouselEnabled: true });
+          this.props.onLevelChange(carouselXY.valueToLevel(toValue));
+        });
+      },
     });
   }
 
-  valueToLevel(value) {
-    return value === 0 ? 1 : value === carousel.level2 ? 2 : 3;
+  onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    this.setState({ buttonsHeight: height });
+    this.props.panY.setValue(this.props.panY._value - height);
   }
 
   levelToValue(level) {
-    return level === 1 ? 0 : level === 2 ? carousel.level2 : carousel.level3;
+    const value = level === 1 ?
+      carousel.level1 : level === 2 ? carousel.level2 : carousel.level3;
+    return -(value + this.state.buttonsHeight);
   }
 
   goToLevel = (level) => {
-    Animated.timing(this.state.panY, {
+    Animated.timing(this.props.panY, {
       duration: 200,
-      toValue: this.levelToValue(level)
+      toValue: this.levelToValue(level),
     }).start();
   }
 
@@ -101,34 +117,31 @@ export default class carouselXY extends Component {
     this._carousel.snapToItem(index, animated);
   }
 
-  _renderItem = ({item, index}) => {
-    return (
-      <View style={styles.entryWrapper}>
-        <Entry
-          place={item}
-          styles={styles.entry}
-          onHeaderPress={this.props.onHeaderPress}
-          navigation={this.props.navigation}
-          panY={this.state.panY}
-          min={carousel.level1}
-          step={carousel.level2}
-          max={carousel.level3}
-        />
-      </View>
-    );
-  }
+  _renderItem = ({ item }) => (
+    <View style={styles.entryWrapper}>
+      <Entry
+        place={item}
+        styles={styles.entry}
+        onHeaderPress={this.props.onHeaderPress}
+        navigation={this.props.navigation}
+        panY={this.props.panY}
+        min={carousel.level1}
+        step={carousel.level2}
+        max={carousel.level3}
+      />
+    </View>
+  )
 
   render() {
-    const { data, onIndexChange, sliderWidth, itemWidth } = this.props;
-    const { panY } = this.state;
+    const { data, onIndexChange, panY } = this.props;
+    const { carouselEnabled } = this.state;
 
     return (
       <Animated.View
         {...this._responder.panHandlers}
         style={[
           styles.carousel,
-          {top: sizes.height + carousel.level1 - carousel.border},
-          {transform: [{ translateY: panY }]}
+          { transform: [{ translateY: panY }] },
         ]}
       >
         <Carousel
@@ -140,21 +153,37 @@ export default class carouselXY extends Component {
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
           onSnapToItem={onIndexChange}
+          activeSlideOffset={1}
+          swipeThreshold={1}
+          lockScrollWhileSnapping
+          decelerationRate="fast"
+          activeAnimationType="decay"
+          callbackOffsetMargin={10}
+          scrollEnabled={carouselEnabled}
         />
       </Animated.View>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   carousel: {
-    position: 'absolute'
+    position: 'absolute',
+    top: sizes.height,
+    alignItems: 'center',
+  },
+  buttonWrapper: {
+    position: 'relative',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    padding: 14,
+    width: sizes.width,
   },
   entryWrapper: {
     paddingHorizontal: carousel.itemSpacing / 2,
-    width: carousel.itemWidth
+    width: carousel.itemWidth,
   },
   entry: {
-    width: carousel.itemWidth - carousel.itemSpacing
-  }
+    width: carousel.itemWidth - carousel.itemSpacing,
+  },
 });

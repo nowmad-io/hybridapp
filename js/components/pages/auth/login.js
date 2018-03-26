@@ -14,6 +14,7 @@ import Text from '../../dumbs/text';
 import Spinner from '../../dumbs/spinner';
 
 import styles, { colors } from './styles';
+
 const logo = require('../../../../assets/images/logos/full_logo_horizontal.png');
 
 class Login extends Component {
@@ -24,14 +25,16 @@ class Login extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     login: PropTypes.func,
+    loggedIn: PropTypes.bool,
+    loginLoading: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: 'j@j.com',
+      password: 'j',
     };
 
     // Check if logged in and redirect to App if so
@@ -56,7 +59,7 @@ class Login extends Component {
 
   render() {
     return (
-      <LayoutView type='container' style={styles.container}>
+      <LayoutView type="container" style={styles.container}>
         <View style={styles.logoWrapper}>
           <Image resizeMethod="resize" source={logo} style={styles.logo} />
         </View>
@@ -65,7 +68,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="person" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -78,7 +81,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="lock-open" style={styles.inputIcon} />
               <TextInput
-                underlineColorAndroid={'transparent'}
+                underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
                 style={styles.input}
@@ -93,19 +96,21 @@ class Login extends Component {
               light
               rounded
               style={styles.button}
-              onPress={() => this._login()}>
+              onPress={() => this._login()}
+            >
               <Text>Login</Text>
             </Button>
             <Button
               rounded
               transparent
               style={styles.button}
-              onPress={() => this._register()}>
+              onPress={() => this._register()}
+            >
               <Text>Register</Text>
             </Button>
           </View>
         </Content>
-        <Spinner overlay={true} visible={this.props.loginLoading}/>
+        <Spinner overlay visible={this.props.loginLoading} />
       </LayoutView>
     );
   }
@@ -118,7 +123,7 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   loggedIn: !!state.auth.token,
   error: state.auth.error,
-  loginLoading: state.auth.loginLoading
+  loginLoading: state.auth.loginLoading,
 });
 
 export default connect(mapStateToProps, bindActions)(Login);

@@ -4,42 +4,39 @@ import { NavigationActions } from 'react-navigation';
 import {
   apiLogin,
   apiRegister,
-  apiLogout
+  apiLogout,
 } from '../api/auth';
 
 import { loginRequest } from '../actions/auth';
 
 import {
-  LOGIN,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   LOGOUT,
-  LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
   LOGOUT_REQUEST,
   FORM_ERROR,
   LOGIN_LOADING,
-  REGISTER_LOADING
+  REGISTER_LOADING,
 } from '../constants/auth';
 
 import {
   STOP_SAGAS,
-  REQUEST_ERROR
+  REQUEST_ERROR,
 } from '../constants/utils';
 
 import { TOKEN } from '../requests';
 
-export function * parseError({ error }) {
+export function* parseError({ error }) {
   let parsedError = {};
   if (error.non_field_errors || error.email || error.password) {
     parsedError = {
-      'non_field_errors': error.non_field_errors && error.non_field_errors[0],
-      'email': error.email && error.email[0],
-      'password': error.password && error.password[0]
-    }
-  } else  {
+      non_field_errors: error.non_field_errors && error.non_field_errors[0],
+      email: error.email && error.email[0],
+      password: error.password && error.password[0],
+    };
+  } else {
     parsedError.non_field_errors = 'Unknown error while authenticating';
   }
   yield put({ type: FORM_ERROR, error: parsedError });
@@ -84,7 +81,7 @@ function* loginFlow(action) {
  * Register saga
  * Very similar to log in saga!
  */
-export function * registerFlow(action) {
+export function* registerFlow(action) {
   const credentials = action.data;
 
   yield put({ type: REGISTER_LOADING, loading: true });
@@ -105,14 +102,14 @@ export function * registerFlow(action) {
   }
 }
 
-export function * logoutFlow() {
+export function* logoutFlow() {
   yield put({ type: STOP_SAGAS });
   yield put({ type: LOGOUT });
   yield put(apiLogout());
 }
 
 // Bootstrap sagas
-export default function * root() {
+export default function* root() {
   yield takeLatest(LOGIN_REQUEST, loginFlow);
   yield takeLatest(REGISTER_REQUEST, registerFlow);
   yield takeLatest(LOGOUT_REQUEST, logoutFlow);

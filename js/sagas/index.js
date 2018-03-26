@@ -9,5 +9,5 @@ export default [
   home,
   search,
   reviews,
-  friends
+  friends,
 ];

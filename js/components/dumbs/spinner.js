@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import { colors } from '../../parameters';
 
-export default class Spinner extends Component {
+export default class Spinner extends PureComponent {
   static propTypes = {
     ...ActivityIndicator.propTypes,
     color: PropTypes.string,
@@ -16,24 +16,26 @@ export default class Spinner extends Component {
   static defaultProps = {
     color: colors.green,
     visible: false,
-    overlay: false
+    overlay: false,
   }
 
   render() {
-    const { visible, style, overlay, color, size } = this.props;
+    const {
+      visible, style, overlay, color, size,
+    } = this.props;
 
-		return (
+    return (
       <View style={[visible && style, overlay && visible ? styles.overlay : {}]}>
         { visible && (
-          <ActivityIndicator
-    				{...this.props}
-    				color={color}
-    				size={this.size ? this.size : "large"}
-    			/>
+        <ActivityIndicator
+          {...this.props}
+          color={color}
+          size={size || 'large'}
+        />
         )}
       </View>
     );
-	}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.whiteTransparentLight,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

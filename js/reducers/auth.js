@@ -3,7 +3,7 @@ import {
   LOGOUT,
   ME_SUCCESS,
   LOGIN_LOADING,
-  REGISTER_LOADING
+  REGISTER_LOADING,
 } from '../constants/auth';
 
 import { TOKEN } from '../requests';
@@ -12,7 +12,7 @@ const initialState = {
   loginLoading: false,
   registerLoading: false,
   token: null,
-  me: null
+  me: null,
 };
 
 function authReducer(state = initialState, action) {

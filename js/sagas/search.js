@@ -1,15 +1,14 @@
-import { put, fork, takeLatest, call, take } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 
 import {
   NEARBY_SUCCESS,
   NEARBY_ERROR,
-  NEARBY
 } from '../constants/search';
 
 import { nearby } from '../actions/search';
 
 
-function * nearbyFlow(actions) {
+function* nearbyFlow(actions) {
   const { error, payload } = actions;
 
   if (!error) {
@@ -17,6 +16,6 @@ function * nearbyFlow(actions) {
   }
 }
 
-export default function * root() {
+export default function* root() {
   yield takeLatest([NEARBY_SUCCESS, NEARBY_ERROR], nearbyFlow);
 }

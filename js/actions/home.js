@@ -1,24 +1,29 @@
 import {
-  GEOLOCATION,
+  GET_GEOLOCATION,
+  SET_GEOLOCATION,
   SELECTED_PLACE,
   LEVEL_CHANGE,
   REGION_CHANGE,
-  NEARBY,
   NEW_PLACE,
   CURRENT_PLACES,
   GOOGLE_PLACE,
   SEARCHED_PLACES,
-  FROM_REVIEW
+  FROM_REVIEW,
 } from '../constants/home';
 
+export function getGeolocation() {
+  return {
+    type: GET_GEOLOCATION,
+  };
+}
 export function setGeolocation(position) {
   return {
-    type: GEOLOCATION,
+    type: SET_GEOLOCATION,
     position,
   };
 }
 
-export function selectedPlace(selectedPlace) {
+export function _selectedPlace(selectedPlace) {
   return {
     type: SELECTED_PLACE,
     selectedPlace,
@@ -60,7 +65,7 @@ export function googlePlace(place) {
   };
 }
 
-export function searchedPlaces(places) {
+export function _searchedPlaces(places) {
   return {
     type: SEARCHED_PLACES,
     places,

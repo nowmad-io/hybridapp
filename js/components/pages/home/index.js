@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
+import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
-import Config from 'react-native-config';
 import shortid from 'shortid';
 import _ from 'lodash';
 
 import CarouselXY from '../../dumbs/carouselXY';
+import Marker from '../../dumbs/marker';
+import MarkerPosition from '../../dumbs/markerPosition';
+import Button from '../../dumbs/button';
+import Text from '../../dumbs/text';
+import Icon from '../../dumbs/icon';
+import Filters from '../../dumbs/filters';
+import Badge from '../../dumbs/badge';
 import Map from '../../map';
-import Marker from '../../marker';
 import SearchWrapper from '../../searchWrapper';
 
-import { selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, searchedPlaces, googlePlace, setFromReview } from '../../../actions/home'
+import {
+  _selectedPlace, regionChanged, levelChange, selectNewPlace,
+  currentPlacesChange, _searchedPlaces, googlePlace, setFromReview, getGeolocation,
+} from '../../../actions/home';
 import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
@@ -22,13 +29,29 @@ class Home extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     places: PropTypes.array,
+    searchedPlaces: PropTypes.array,
     currentPlaces: PropTypes.array,
-    position: PropTypes.object,
+    geolocation: PropTypes.object,
     level: PropTypes.number,
     selectedPlace: PropTypes.object,
     region: PropTypes.object,
     newPlace: PropTypes.object,
-    searchFocus: PropTypes.bool
+    fromReview: PropTypes.bool,
+    googlePlace: PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      addThisPlace: false,
+      searchVisible: false,
+      panY: new Animated.Value(-carousel.level1),
+      filtersVisible: false,
+      filters: {
+        categories: [],
+      },
+    };
   }
 
   componentDidMount() {
@@ -38,11 +61,16 @@ class Home extends Component {
     if (this.props.googlePlace) {
       this._searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
     }
+    if (this.props.level) {
+      this._carouselXY.goToLevel(this.props.level);
+    }
 
     this.onRegionChangeComplete(this.props.region);
   }
 
-  componentWillReceiveProps({ selectedPlace, level, fromReview, position }) {
+  componentWillReceiveProps({
+    selectedPlace, level, fromReview, geolocation,
+  }) {
     if (fromReview) {
       this._searchWrapper.getWrappedInstance().clear();
       this._searchWrapper.getWrappedInstance().blurInput();
@@ -53,30 +81,28 @@ class Home extends Component {
     if (selectedPlace
         && this.props.selectedPlace
         && selectedPlace.id !== this.props.selectedPlace.id) {
-
-      if (this.props.level === 2) {
+      if (this.props.level === 2) {
         this._map.animateToCoordinate(selectedPlace);
       }
     }
 
-    if (position
-      && this.props.position
-      && position.latitude !== this.props.position.latitude
-      && position.longitude !== this.props.position.longitude) {
-      setTimeout(() => this._map.fitToCoordinates([position], {
+    if (geolocation && geolocation.location
+        && !geolocation.loading && this.props.geolocation.loading) {
+      this._map.fitToCoordinates([geolocation.location], {
         edgePadding: {
           top: 20,
           right: 20,
           bottom: 20,
-          left: 20
-        }
-      }), 500);
+          left: 20,
+        },
+      });
+      this.setState({ addThisPlace: true });
     }
 
     if (level && level !== this.props.level) {
       this._map.updatePadding({
         top: sizes.toolbarHeight,
-        bottom: level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2
+        bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
 
       if (level < 3 && this.props.selectedPlace) {
@@ -85,20 +111,24 @@ class Home extends Component {
     }
   }
 
-  onMarkerPress = (e, place) => {
-    const { searchedPlaces, currentPlaces } = this.props,
-          index = _.findIndex(searchedPlaces.length ? searchedPlaces : currentPlaces, (p) => (p.id == place.id));
+  onMarkerPress = (place) => {
+    const { searchedPlaces, currentPlaces } = this.props;
+    const index = _.findIndex(
+      searchedPlaces.length ? searchedPlaces : currentPlaces,
+      p => (p.id === place.id),
+    );
 
-    this.props.dispatch(selectedPlace(place));
+    this.props.dispatch(_selectedPlace(place));
     this._carouselXY.goToIndex(index);
 
-    if (this.props.level === 2) {
+    if (this.props.level === 2) {
       this._map.animateToCoordinate(place);
     }
   }
 
   onIndexChange = (index) => {
-    this.props.dispatch(selectedPlace(this.props.searchedPlaces.length ? this.props.searchedPlaces[index] : this.props.currentPlaces[index]));
+    const { dispatch, searchedPlaces, currentPlaces } = this.props;
+    dispatch(_selectedPlace(searchedPlaces.length ? searchedPlaces[index] : currentPlaces[index]));
   }
 
   onLevelChange = (level) => {
@@ -106,19 +136,20 @@ class Home extends Component {
   }
 
   onRegionChangeComplete = (region) => {
-    const scale = Math.pow(2, Math.log2(360 * ((sizes.width/256) / region.longitudeDelta)) + 1) + 1,
-          { level } = this.props;
-
-    this.props.dispatch(regionChanged(region));
+    const { level } = this.props;
+    const helper = Math.log2(360 * ((sizes.width / 256) / region.longitudeDelta));
+    /* eslint-disable-next-line no-restricted-properties */
+    const scale = Math.pow(2, helper + 1) + 1;
 
     const southWest = {
-      latitude: (region.latitude - region.latitudeDelta / 2)  - ((level === 1 ? - carousel.level1 : - carousel.level1 - carousel.level2) / scale),
-      longitude: region.longitude - region.longitudeDelta / 2
+      latitude: (region.latitude - region.latitudeDelta / 2) -
+        ((level === 1 ? -carousel.level1 : -carousel.level1 - carousel.level2) / scale),
+      longitude: region.longitude - region.longitudeDelta / 2,
     };
 
     const northEast = {
       latitude: (region.latitude + region.latitudeDelta / 2) - (sizes.toolbarHeight / scale),
-      longitude: region.longitude + region.longitudeDelta / 2
+      longitude: region.longitude + region.longitudeDelta / 2,
     };
 
     const newPlaces = _.filter(this.props.places, (place) => {
@@ -126,9 +157,14 @@ class Home extends Component {
           && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
         return true;
       }
-    })
+      return false;
+    });
 
-    this.props.dispatch(currentPlacesChange(newPlaces));
+    this.props.dispatch(regionChanged(region));
+
+    if (!_.isEqual(this.props.currentPlaces, newPlaces)) {
+      this.props.dispatch(currentPlacesChange(newPlaces));
+    }
   }
 
   onMapReady = () => {
@@ -137,7 +173,7 @@ class Home extends Component {
     }
   }
 
-  onMapLongPress = ({coordinate}) => {
+  onMapLongPress = ({ coordinate }) => {
     this._searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
     this.props.dispatch(selectNewPlace(coordinate));
   }
@@ -149,7 +185,7 @@ class Home extends Component {
     if (this.props.googlePlace) {
       this.props.dispatch(googlePlace(null));
     }
-    this.props.dispatch(searchedPlaces(null));
+    this.props.dispatch(_searchedPlaces(null));
   }
 
   onNewMarkerPress = () => {
@@ -168,13 +204,13 @@ class Home extends Component {
   }
 
   onPlaceSelected = (place) => {
-    this.props.dispatch(searchedPlaces([place]));
+    this.props.dispatch(_searchedPlaces([place]));
     this._searchWrapper.getWrappedInstance().blurInput();
     this._map.animateToCoordinate(place);
   }
 
   onPlacesSelected = (place, places) => {
-    this.props.dispatch(searchedPlaces(_.compact([place, ...places])));
+    this.props.dispatch(_searchedPlaces(_.compact([place, ...places])));
     this._searchWrapper.getWrappedInstance().blurInput();
     if (place) {
       this._map.animateToCoordinate(place);
@@ -184,7 +220,7 @@ class Home extends Component {
   onReviewPress = (place, review) => {
     this._searchWrapper.getWrappedInstance().blurInput();
     this._searchWrapper.getWrappedInstance().setValue(review.short_description);
-    this.props.dispatch(selectedPlace(place));
+    this.props.dispatch(_selectedPlace(place));
     this._map.animateToCoordinate(place);
   }
 
@@ -198,7 +234,7 @@ class Home extends Component {
   }
 
   onHeaderPress = () => {
-    const toLevel = this.props.level <= 2 ? this.props.level === 1 ? 2 : 1 : null;
+    const toLevel = (this.props.level <= 2) ? this.props.level === 1 ? 2 : 1 : null;
     if (toLevel) {
       this.onLevelChange(toLevel);
       this._carouselXY.goToLevel(toLevel);
@@ -207,27 +243,77 @@ class Home extends Component {
 
   onPoiClick = (poi) => {
     placeDetails(poi.placeId)
-      .then((response) => response.json())
-      .then(({result}) => {
+      .then(response => response.json())
+      .then(({ result }) => {
         this.onNearbyPlaceSelected(gPlaceToPlace(result));
-      })
-      .catch((error) => {
-        console.error(error);
       });
   }
 
-  onLayout = () => {
+  onPanDrag = () => {
+    if (this.state.addThisPlace) {
+      this.setState({ addThisPlace: false });
+    }
+  }
 
+  onFiltersPress = () => {
+    if (this.state.filtersVisible) {
+      this._carouselXY.goToLevel(this.props.level);
+    } else {
+      this._carouselXY.goToLevel(1);
+    }
+    this.setState({ filtersVisible: !this.state.filtersVisible });
+  }
+
+  onFiltersChange = ({ categories }) => {
+    this.setState({
+      filters: {
+        ...this.state.filters,
+        categories,
+      },
+    });
+  }
+
+  filter(places) {
+    if (!this.state.filters.categories.length) {
+      return places;
+    }
+
+    return _.filter(places, (place) => {
+      if (!place.reviews) {
+        return true;
+      }
+
+      const placeCategories = _.uniqWith(
+        _.flatten(place.reviews.map(review => review.categories)),
+        _.isEqual,
+      );
+
+      return _.intersectionWith(
+        placeCategories,
+        this.state.filters.categories,
+        (cat, name) => (cat.name === name),
+      ).length;
+    });
+  }
+
+  zoomOut = () => {
+    this._map.zoomBy(-4);
   }
 
   render() {
-    const { places, currentPlaces, selectedPlace, region, navigation, newPlace,
-      searchFocus, searchedPlaces } = this.props;
+    const {
+      dispatch, places, currentPlaces, selectedPlace, region,
+      navigation, newPlace, searchedPlaces, geolocation,
+    } = this.props;
+    const {
+      addThisPlace, searchVisible, panY, filtersVisible,
+    } = this.state;
 
     return (
       <SearchWrapper
-        ref='searchWrapper'
         ref={(sw) => { this._searchWrapper = sw; }}
+        onFocus={() => this.setState({ searchVisible: true })}
+        onBlur={() => this.setState({ searchVisible: false })}
         onClear={() => this.onSearchClear()}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
@@ -237,22 +323,30 @@ class Home extends Component {
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
       >
+        {(addThisPlace && !searchVisible) && (
+          <Button
+            style={styles.addPlaceButton}
+            onPress={() => this.onMapLongPress({ coordinate: geolocation.location })}
+            fab
+          >
+            <Text>Add this place</Text>
+          </Button>
+        )}
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
-          onMarkerPress={this.onMarkerPress}
           onRegionChangeComplete={this.onRegionChangeComplete}
           mapPadding={{
             top: sizes.toolbarHeight,
-            bottom: - carousel.level1
+            bottom: carousel.level1,
           }}
-          onLayout={this.onLayout}
           onPoiClick={this.onPoiClick}
+          onPanDrag={this.onPanDrag}
         >
-          { (searchedPlaces.length ? searchedPlaces : places).map(place => (
+          {this.filter(searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker
               key={shortid.generate()}
               selected={selectedPlace && selectedPlace.id === place.id}
@@ -260,24 +354,72 @@ class Home extends Component {
               onMarkerPress={this.onMarkerPress}
             />
           ))}
-          { newPlace && (
+          {newPlace && (
             <Marker
               key={shortid.generate()}
               place={newPlace}
               onMarkerPress={this.onNewMarkerPress}
             />
           )}
+          {geolocation && geolocation.location && (
+            <MarkerPosition
+              location={geolocation.location}
+              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
+            />
+          )}
         </Map>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
-          data={searchedPlaces.length ? searchedPlaces : currentPlaces}
+          data={this.filter(searchedPlaces.length ? searchedPlaces : currentPlaces)}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
-          onHeaderPress={this.onHeaderPress}
           selectedPlace={selectedPlace}
+          panY={panY}
         />
+
+        <Animated.View
+          style={[
+            styles.buttonControls,
+            { transform: [{ translateY: panY }] },
+          ]}
+          pointerEvents="box-none"
+        >
+          <Button
+            fab
+            icon="zoom-out-map"
+            style={styles.zoomOut}
+            onPress={this.zoomOut}
+          />
+          <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
+        </Animated.View>
+        <Filters
+          style={styles.filters}
+          visible={filtersVisible}
+          onFiltersChange={this.onFiltersChange}
+        >
+          <Animated.View
+            style={[
+              styles.filterButtonWrapper,
+              { transform: [{ translateY: panY }] },
+            ]}
+            pointerEvents="box-none"
+          >
+            <Button
+              fab
+              style={styles.filterButton}
+              onPress={this.onFiltersPress}
+            >
+              <Text>Filters</Text>
+              {this.state.filters.categories.length ? (
+                <Badge text={this.state.filters.categories.length} />
+              ) : (
+                <Icon name="equalizer" set="SimpleLineIcons" />
+              )}
+            </Button>
+          </Animated.View>
+        </Filters>
       </SearchWrapper>
     );
   }
@@ -291,14 +433,59 @@ const mapStateToProps = state => ({
   places: state.home.places,
   currentPlaces: state.home.currentPlaces,
   searchedPlaces: state.home.searchedPlaces,
-  position: state.home.position,
+  geolocation: state.home.geolocation,
   selectedPlace: state.home.selectedPlace,
   level: state.home.level,
   region: state.home.region,
   newPlace: state.home.newPlace,
   googlePlace: state.home.googlePlace,
   fromReview: state.home.fromReview,
-  searchFocus: state.search.focused,
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
+
+
+const styles = StyleSheet.create({
+  addPlaceButton: {
+    marginTop: 28,
+    borderRadius: 2,
+    height: 40,
+    alignSelf: 'center',
+    zIndex: 1,
+  },
+  filters: {
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    paddingTop: 20,
+  },
+  zoomOut: {
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+  buttonControls: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flex: 1,
+    padding: 14,
+  },
+  filterButtonWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    height: 56,
+    alignItems: 'center',
+    width: '100%',
+    flex: 1,
+    marginBottom: 8,
+    zIndex: 2,
+  },
+  filterButton: {
+    height: 40,
+  },
+});

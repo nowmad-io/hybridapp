@@ -8,7 +8,7 @@ class Map extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.array,
-      PropTypes.object
+      PropTypes.object,
     ]),
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
@@ -16,15 +16,13 @@ class Map extends Component {
     region: PropTypes.object,
     onLongPress: PropTypes.func,
     onLayout: PropTypes.func,
+    onMapReady: PropTypes.func,
+    onPanDrag: PropTypes.func,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     moveOnMarkerPress: PropTypes.bool,
     mapPadding: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   onRef(ref) {
@@ -34,17 +32,17 @@ class Map extends Component {
 
   onMapReady() {
     if (this._ref) {
-      this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 0} });
+      this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 0 } });
     }
 
     this.props.onMapReady();
   }
 
   updatePadding(mapPadding) {
-    this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 1} });
+    this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 1 } });
     this._ref.map.setNativeProps({ mapPadding });
     setTimeout(() => {
-      this._ref.map.setNativeProps({ style: {...styles.map, marginBottom: 0} });
+      this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 0 } });
     }, 100);
   }
 
@@ -56,18 +54,24 @@ class Map extends Component {
     this._ref.fitToCoordinates(coordinates);
   }
 
+  zoomBy(zoom) {
+    this._ref.zoomBy(zoom);
+  }
+
   render() {
-    const { region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
-      onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout } = this.props;
+    const {
+      region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
+      onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout, onPanDrag,
+    } = this.props;
     return (
       <MapView
-        ref={(ref) => this.onRef(ref)}
+        ref={ref => this.onRef(ref)}
         onMapReady={() => this.onMapReady()}
-        onRegionChangeComplete={(region) => onRegionChangeComplete(region)}
-        onLongPress={(event) => onLongPress(event.nativeEvent)}
+        onRegionChangeComplete={newRegion => onRegionChangeComplete(newRegion)}
+        onLongPress={event => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
-        style={{...styles.map, marginBottom: 1}}
-        showsUserLocation={true}
+        style={{ ...styles.map, marginBottom: 1 }}
+        showsMyLocationButton={false}
         initialRegion={region}
         zoomEnabled={zoomEnabled}
         rotateEnabled={rotateEnabled}
@@ -75,11 +79,12 @@ class Map extends Component {
         mapPadding={mapPadding}
         moveOnMarkerPress={moveOnMarkerPress}
         onLayout={onLayout}
-        onPoiClick={(event) => onPoiClick(event.nativeEvent)}
+        onPanDrag={onPanDrag}
+        onPoiClick={event => onPoiClick(event.nativeEvent)}
       >
         {this.props.children}
       </MapView>
-    )
+    );
   }
 }
 
@@ -91,6 +96,6 @@ Map.defaultProps = {
   zoomEnabled: true,
   rotateEnabled: true,
   scrollEnabled: true,
-}
+};
 
 export default Map;

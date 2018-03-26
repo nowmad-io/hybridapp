@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { StackNavigator } from 'react-navigation';
 
 import HomeRouter from './HomeRouter';
@@ -14,11 +12,11 @@ const AppRouter = StackNavigator({
   AddReview,
   ReviewDetail,
   AddImage,
-  AddFriend
+  AddFriend,
 }, {
   navigationOptions: {
     header: null,
-  }
+  },
 });
 
 export default AppRouter;

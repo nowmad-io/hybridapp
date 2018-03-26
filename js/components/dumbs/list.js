@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
 import Text from './text';
 
-import { colors } from '../../parameters';
+import { colors } from '../../parameters';
 
-export default class List extends Component {
+export default class List extends PureComponent {
   static propTypes = {
-    children: PropTypes.any,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     style: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
   };
 
   render() {
@@ -29,7 +32,7 @@ export default class List extends Component {
         {children}
       </View>
     );
-	}
+  }
 }
 
 const styles = StyleSheet.create({
@@ -39,6 +42,6 @@ const styles = StyleSheet.create({
   },
   label: {
     paddingHorizontal: 16,
-    color: colors.grey
-  }
+    color: colors.grey,
+  },
 });

@@ -1,19 +1,17 @@
-import React, { StyleSheet } from 'react-native';
-
 import { colors } from '../../../parameters';
 
 export default {
   content: {
     backgroundColor: colors.white,
     paddingTop: 16,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   imageWrapper: {
-    marginTop: 14
+    marginTop: 14,
   },
   image: {
     height: 400,
-    width: '100%'
+    width: '100%',
   },
   actionsWrapper: {
     marginTop: 12,
@@ -22,9 +20,9 @@ export default {
     justifyContent: 'flex-end',
   },
   iconHeader: {
-    color: colors.white
+    color: colors.white,
   },
   icon: {
-    color: colors.grey
-  }
+    color: colors.grey,
+  },
 };
