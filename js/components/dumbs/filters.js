@@ -98,7 +98,6 @@ export default class Filters extends PureComponent {
 const styles = StyleSheet.create({
   wrapper: {
     height: sizes.filters,
-    zIndex: 1,
   },
   filters: {
     backgroundColor: colors.white,
