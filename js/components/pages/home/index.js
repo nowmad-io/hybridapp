@@ -12,6 +12,7 @@ import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 import Icon from '../../dumbs/icon';
 import Filters from '../../dumbs/filters';
+import Badge from '../../dumbs/badge';
 import Map from '../../map';
 import SearchWrapper from '../../searchWrapper';
 
@@ -47,6 +48,9 @@ class Home extends Component {
       searchVisible: false,
       panY: new Animated.Value(-carousel.level1),
       filtersVisible: false,
+      filters: {
+        categories: [],
+      },
     };
   }
 
@@ -260,6 +264,38 @@ class Home extends Component {
     this.setState({ filtersVisible: !this.state.filtersVisible });
   }
 
+  onFiltersChange = ({ categories }) => {
+    this.setState({
+      filters: {
+        ...this.state.filters,
+        categories,
+      },
+    });
+  }
+
+  filter(places) {
+    if (!this.state.filters.categories.length) {
+      return places;
+    }
+
+    return _.filter(places, (place) => {
+      if (!place.reviews) {
+        return true;
+      }
+
+      const placeCategories = _.uniqWith(
+        _.flatten(place.reviews.map(review => review.categories)),
+        _.isEqual,
+      );
+
+      return _.intersectionWith(
+        placeCategories,
+        this.state.filters.categories,
+        (cat, name) => (cat.name === name),
+      ).length;
+    });
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
@@ -310,7 +346,7 @@ class Home extends Component {
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
         >
-          {(searchedPlaces.length ? searchedPlaces : places).map(place => (
+          {this.filter(searchedPlaces.length ? searchedPlaces : places).map(place => (
             <Marker
               key={shortid.generate()}
               selected={selectedPlace && selectedPlace.id === place.id}
@@ -334,7 +370,7 @@ class Home extends Component {
         </Map>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
-          data={searchedPlaces.length ? searchedPlaces : currentPlaces}
+          data={this.filter(searchedPlaces.length ? searchedPlaces : currentPlaces)}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
@@ -358,7 +394,11 @@ class Home extends Component {
           />
           <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
         </Animated.View>
-        <Filters style={styles.filters} visible={filtersVisible}>
+        <Filters
+          style={styles.filters}
+          visible={filtersVisible}
+          onFiltersChange={this.onFiltersChange}
+        >
           <Animated.View
             style={[
               styles.filterButtonWrapper,
@@ -372,7 +412,11 @@ class Home extends Component {
               onPress={this.onFiltersPress}
             >
               <Text>Filters</Text>
-              <Icon name="equalizer" set="SimpleLineIcons" />
+              {this.state.filters.categories.length ? (
+                <Badge text={this.state.filters.categories.length} />
+              ) : (
+                <Icon name="equalizer" set="SimpleLineIcons" />
+              )}
             </Button>
           </Animated.View>
         </Filters>

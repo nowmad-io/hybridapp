@@ -59,7 +59,7 @@ export default class Filters extends PureComponent {
     }
 
     this.setState({ categories: newCategories });
-    this.props.onFiltersChange({ categories });
+    this.props.onFiltersChange({ categories: newCategories });
   }
 
   render() {

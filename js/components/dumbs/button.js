@@ -39,7 +39,7 @@ export default class Button extends PureComponent {
           return child;
         }
 
-        let newProps = {};
+        let newProps = { style: {} };
 
         switch (child.type) {
           case Text: {

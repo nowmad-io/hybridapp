@@ -59,7 +59,7 @@ export default class Entry extends Component {
     const orderedReviews = _.compact(_.concat(_.compact([starredReview]), friendsReviews));
     const thumbnails = _.without(reviews, reviews[0]);
     const pictures = _.flatten(reviews.map(review => review.pictures));
-    const categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)));
+    const categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)), _.isEqual);
 
     return (
       <View style={[styles.card, style]}>
@@ -74,7 +74,7 @@ export default class Entry extends Component {
           <View style={styles.item}>
             <Pictures pictures={pictures} />
             <View style={styles.tagsWrapper}>
-              {_.slice(categories, 0, 3).map(categorie => (
+              {categories.map(categorie => (
                 <Tag
                   key={shortid.generate()}
                   text={categorie.name}
