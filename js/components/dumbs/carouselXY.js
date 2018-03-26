@@ -9,10 +9,6 @@ import { sizes, carousel } from '../../parameters';
 
 export default class carouselXY extends Component {
   static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.object,
-    ]),
     navigation: PropTypes.object,
     style: PropTypes.oneOfType([
       PropTypes.object,
@@ -24,6 +20,7 @@ export default class carouselXY extends Component {
     onLevelChange: PropTypes.func,
     onIndexChange: PropTypes.func,
     onHeaderPress: PropTypes.func,
+    panY: PropTypes.object,
   };
 
   static valueToLevel(value) {
@@ -35,7 +32,6 @@ export default class carouselXY extends Component {
 
     this.state = {
       buttonsHeight: 0,
-      panY: new Animated.Value(-carousel.level1),
       carouselEnabled: true,
     };
   }
@@ -49,12 +45,12 @@ export default class carouselXY extends Component {
       },
       onPanResponderGrant: () => {
         this.setState({ carouselEnabled: false });
-        const offset = this.state.panY._value + this.state.panY._offset + this.state.buttonsHeight;
-        this.state.panY.setOffset(offset);
-        this.state.panY.setValue(-this.state.buttonsHeight);
+        const offset = this.props.panY._value + this.props.panY._offset + this.state.buttonsHeight;
+        this.props.panY.setOffset(offset);
+        this.props.panY.setValue(-this.state.buttonsHeight);
       },
       onPanResponderMove: (_, { dy }) => {
-        const { panY } = this.state;
+        const { panY } = this.props;
         let val = -panY._offset - dy;
 
         if (val > carousel.level3) {
@@ -68,7 +64,7 @@ export default class carouselXY extends Component {
         panY.setValue(-val - this.state.buttonsHeight);
       },
       onPanResponderRelease: (e, { dy }) => {
-        const { panY } = this.state;
+        const { panY } = this.props;
         const value = -panY._offset - dy;
         const min = carousel.level1;
         const step = carousel.level2;
@@ -101,7 +97,7 @@ export default class carouselXY extends Component {
   onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     this.setState({ buttonsHeight: height });
-    this.state.panY.setValue(this.state.panY._value - height);
+    this.props.panY.setValue(this.props.panY._value - height);
   }
 
   levelToValue(level) {
@@ -111,7 +107,7 @@ export default class carouselXY extends Component {
   }
 
   goToLevel = (level) => {
-    Animated.timing(this.state.panY, {
+    Animated.timing(this.props.panY, {
       duration: 200,
       toValue: this.levelToValue(level),
     }).start();
@@ -128,7 +124,7 @@ export default class carouselXY extends Component {
         styles={styles.entry}
         onHeaderPress={this.props.onHeaderPress}
         navigation={this.props.navigation}
-        panY={this.state.panY}
+        panY={this.props.panY}
         min={carousel.level1}
         step={carousel.level2}
         max={carousel.level3}
@@ -137,39 +133,34 @@ export default class carouselXY extends Component {
   )
 
   render() {
-    const { children, data, onIndexChange } = this.props;
-    const { panY, carouselEnabled } = this.state;
+    const { data, onIndexChange, panY } = this.props;
+    const { carouselEnabled } = this.state;
 
     return (
       <Animated.View
+        {...this._responder.panHandlers}
         style={[
           styles.carousel,
           { transform: [{ translateY: panY }] },
         ]}
-        pointerEvents="box-none"
       >
-        <View style={styles.buttonWrapper} onLayout={this.onLayout} pointerEvents="box-none">
-          { children }
-        </View>
-        <View {...this._responder.panHandlers}>
-          <Carousel
-            ref={(c) => { this._carousel = c; }}
-            data={data}
-            renderItem={this._renderItem}
-            sliderWidth={carousel.sliderWidth}
-            itemWidth={carousel.itemWidth}
-            inactiveSlideOpacity={1}
-            inactiveSlideScale={1}
-            onSnapToItem={onIndexChange}
-            activeSlideOffset={1}
-            swipeThreshold={1}
-            lockScrollWhileSnapping
-            decelerationRate="fast"
-            activeAnimationType="decay"
-            callbackOffsetMargin={10}
-            scrollEnabled={carouselEnabled}
-          />
-        </View>
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          data={data}
+          renderItem={this._renderItem}
+          sliderWidth={carousel.sliderWidth}
+          itemWidth={carousel.itemWidth}
+          inactiveSlideOpacity={1}
+          inactiveSlideScale={1}
+          onSnapToItem={onIndexChange}
+          activeSlideOffset={1}
+          swipeThreshold={1}
+          lockScrollWhileSnapping
+          decelerationRate="fast"
+          activeAnimationType="decay"
+          callbackOffsetMargin={10}
+          scrollEnabled={carouselEnabled}
+        />
       </Animated.View>
     );
   }

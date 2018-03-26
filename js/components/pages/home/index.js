@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
@@ -11,6 +11,7 @@ import MarkerPosition from '../../dumbs/markerPosition';
 import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 import Icon from '../../dumbs/icon';
+import Filters from '../../dumbs/filters';
 import Map from '../../map';
 import SearchWrapper from '../../searchWrapper';
 
@@ -44,6 +45,8 @@ class Home extends Component {
     this.state = {
       addThisPlace: false,
       searchVisible: false,
+      panY: new Animated.Value(-carousel.level1),
+      filtersVisible: false,
     };
   }
 
@@ -53,6 +56,9 @@ class Home extends Component {
     }
     if (this.props.googlePlace) {
       this._searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
+    }
+    if (this.props.level) {
+      this._carouselXY.goToLevel(this.props.level);
     }
 
     this.onRegionChangeComplete(this.props.region);
@@ -245,6 +251,15 @@ class Home extends Component {
     }
   }
 
+  onFiltersPress = () => {
+    if (this.state.filtersVisible) {
+      this._carouselXY.goToLevel(this.props.level);
+    } else {
+      this._carouselXY.goToLevel(1);
+    }
+    this.setState({ filtersVisible: !this.state.filtersVisible });
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
@@ -254,7 +269,9 @@ class Home extends Component {
       dispatch, places, currentPlaces, selectedPlace, region,
       navigation, newPlace, searchedPlaces, geolocation,
     } = this.props;
-    const { addThisPlace, searchVisible } = this.state;
+    const {
+      addThisPlace, searchVisible, panY, filtersVisible,
+    } = this.state;
 
     return (
       <SearchWrapper
@@ -323,6 +340,15 @@ class Home extends Component {
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
           selectedPlace={selectedPlace}
+          panY={panY}
+        />
+
+        <Animated.View
+          style={[
+            styles.buttonControls,
+            { transform: [{ translateY: panY }] },
+          ]}
+          pointerEvents="box-none"
         >
           <Button
             fab
@@ -330,18 +356,26 @@ class Home extends Component {
             style={styles.zoomOut}
             onPress={this.zoomOut}
           />
-
-          <View style={styles.bottomButtons}>
-            <View style={styles.helper} />
-
-            <Button style={styles.filters} fab>
+          <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
+        </Animated.View>
+        <Filters style={styles.filters} visible={filtersVisible}>
+          <Animated.View
+            style={[
+              styles.filterButtonWrapper,
+              { transform: [{ translateY: panY }] },
+            ]}
+            pointerEvents="box-none"
+          >
+            <Button
+              fab
+              style={styles.filterButton}
+              onPress={this.onFiltersPress}
+            >
               <Text>Filters</Text>
               <Icon name="equalizer" set="SimpleLineIcons" />
             </Button>
-
-            <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
-          </View>
-        </CarouselXY>
+          </Animated.View>
+        </Filters>
       </SearchWrapper>
     );
   }
@@ -375,21 +409,39 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     zIndex: 1,
   },
+  filters: {
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    paddingTop: 20,
+  },
   zoomOut: {
     alignSelf: 'flex-end',
     marginBottom: 16,
   },
-  bottomButtons: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  buttonControls: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flex: 1,
+    padding: 14,
+  },
+  filterButtonWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    height: 56,
     alignItems: 'center',
     width: '100%',
+    flex: 1,
+    marginBottom: 8,
+    zIndex: 3,
   },
-  filters: {
+  filterButton: {
     height: 40,
-  },
-  helper: {
-    width: 56,
   },
 });

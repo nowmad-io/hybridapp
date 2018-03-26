@@ -53,6 +53,7 @@ export const sizes = {
   toolbarHeight: Platform.OS === 'ios' ? toolbarHelper : 56,
   statusBar: StatusBar.currentHeight,
   drawerWidth: 0.625 * Dimensions.get('window').width,
+  filters: 142,
 };
 
 const HELPER = sizes.headerHeight;
