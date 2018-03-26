@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     marginBottom: 8,
-    zIndex: 3,
+    zIndex: 2,
   },
   filterButton: {
     height: 40,

@@ -75,11 +75,9 @@ export default class Filters extends PureComponent {
             { transform: [{ translateY: panY }] },
           ]}
         >
-          <View>
-            <Text>
-              Choose the filters that better describe the experience you are looking for !
-            </Text>
-          </View>
+          <Text>
+            Choose the filters that better describe the experience you are looking for !
+          </Text>
           <View style={styles.tagWrapper}>
             {categoriesList.map(categorie => (
               <Tag
@@ -100,6 +98,7 @@ export default class Filters extends PureComponent {
 const styles = StyleSheet.create({
   wrapper: {
     height: sizes.filters,
+    zIndex: 1,
   },
   filters: {
     backgroundColor: colors.white,
