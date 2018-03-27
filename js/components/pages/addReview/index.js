@@ -51,6 +51,8 @@ class AddReview extends Component {
       status: statusList[0],
       categories: [],
       pictures: [],
+      links_1: '',
+      links_2: '',
     };
 
     this.state = {
@@ -68,6 +70,8 @@ class AddReview extends Component {
         categories: review.categories ?
           review.categories.map(cat => (cat.name)) : defaultReview.categories,
         pictures: review.pictures || defaultReview.pictures,
+        links_1: review.links_1 || defaultReview.links_1,
+        links_2: review.links_2 || defaultReview.links_2,
       };
     }
   }
@@ -213,7 +217,8 @@ class AddReview extends Component {
 
   render() {
     const {
-      short_description: shortDescription, information, place, categories, pictures, status,
+      short_description: shortDescription, information, place, categories,
+      pictures, status, link_1: link1, link_2: link2,
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
@@ -257,7 +262,7 @@ class AddReview extends Component {
                 maxLength={50}
               />
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="You were..." required />
               {statusList.map(stat => (
                 <RadioButton
@@ -268,7 +273,7 @@ class AddReview extends Component {
                 />
               ))}
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Was it..." />
               <View style={styles.tagWrapper}>
                 {categoriesList.map(categorie => (
@@ -281,7 +286,7 @@ class AddReview extends Component {
                 ))}
               </View>
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Tell your friends about your experience" />
               <FormInput
                 defaultValue={information}
@@ -291,7 +296,7 @@ class AddReview extends Component {
                 maxLength={300}
               />
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
               <View style={styles.imagesWrapper}>
@@ -310,6 +315,25 @@ class AddReview extends Component {
               <Text style={styles.imagesCaption}>
                 E.g: A water mirror in Bordeaux !
               </Text>
+            </View>
+            <View style={styles.group}>
+              <Label text="Add some links related" />
+              <FormInput
+                style={styles.linkInput}
+                icon="link"
+                defaultValue={link1}
+                placeholder="http://..."
+                onChangeText={link => this.setState({ link_1: link })}
+              />
+              {!!link1 && (
+                <FormInput
+                  style={styles.linkInput}
+                  icon="link"
+                  defaultValue={link2}
+                  placeholder="http://..."
+                  onChangeText={link => this.setState({ link_2: link })}
+                />
+              )}
             </View>
           </View>
         </Content>

@@ -7,6 +7,9 @@ export default {
   content: {
     backgroundColor: colors.white,
   },
+  group: {
+    marginTop: 10,
+  },
   addressWrapper: {
     position: 'absolute',
     flexDirection: 'row',
@@ -52,7 +55,7 @@ export default {
     fontWeight: '400',
     paddingBottom: 4,
     borderBottomWidth: 1,
-    borderColor: colors.greyDark,
+    borderColor: colors.grey,
   },
   icon: {
     color: colors.white,
