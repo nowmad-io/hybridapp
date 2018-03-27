@@ -18,6 +18,7 @@ import Tag from '../../dumbs/tag';
 import Label from '../../dumbs/label';
 import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
+import Icon from '../../dumbs/icon';
 
 import Map from '../../map';
 import Marker from '../../dumbs/marker';
@@ -47,6 +48,7 @@ class AddReview extends Component {
     const defaultReview = {
       short_description: '',
       information: '',
+      address: '',
       status: statusList[0],
       categories: [],
       pictures: [],
@@ -161,6 +163,11 @@ class AddReview extends Component {
     this.setState({ pictures: newPictures });
   }
 
+  onAddressLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    this._map.updatePadding({ bottom: height });
+  }
+
   toggleCategorie(categorie) {
     const { categories } = this.state;
     let newCategories = categories;
@@ -203,7 +210,9 @@ class AddReview extends Component {
   }
 
   render() {
-    const { categories, pictures, status } = this.state;
+    const {
+      short_description: shortDescription, information, place, categories, pictures, status,
+    } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
 
@@ -220,13 +229,15 @@ class AddReview extends Component {
             <Map
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
-              zoomEnabled
-              rotateEnabled={false}
-              scrollEnabled
+              cacheEnabled
               region={this.props.region}
             >
-              <Marker place={this.state.place} />
+              <Marker place={place} />
             </Map>
+            <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
+              <Icon style={styles.addressIcon} name="location-on" />
+              <Text style={styles.addressText}>{place.address}</Text>
+            </View>
           </View>
           <View style={styles.reviewWrapper}>
             <Text style={styles.title}>My review</Text>
@@ -236,10 +247,10 @@ class AddReview extends Component {
                 required
               />
               <FormInput
-                defaultValue={this.state.short_description}
+                defaultValue={shortDescription}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={
-                  shortDescription => this.setState({ short_description: shortDescription })
+                  short => this.setState({ short_description: short })
                 }
                 maxLength={50}
               />
@@ -271,10 +282,10 @@ class AddReview extends Component {
             <View>
               <Label text="Tell your friends about your experience" />
               <FormInput
-                defaultValue={this.state.information}
+                defaultValue={information}
                 multiline
                 placeholder="What made that experience mad awesome ?"
-                onChangeText={information => this.setState({ information })}
+                onChangeText={info => this.setState({ information: info })}
                 maxLength={300}
               />
             </View>
