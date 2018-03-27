@@ -54,6 +54,5 @@ const styles = StyleSheet.create({
   },
   note: {
     color: colors.greyDark,
-    marginTop: 8,
   },
 });

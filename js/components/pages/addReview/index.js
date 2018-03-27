@@ -18,6 +18,7 @@ import Tag from '../../dumbs/tag';
 import Label from '../../dumbs/label';
 import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
+import Icon from '../../dumbs/icon';
 
 import Map from '../../map';
 import Marker from '../../dumbs/marker';
@@ -50,6 +51,8 @@ class AddReview extends Component {
       status: statusList[0],
       categories: [],
       pictures: [],
+      links_1: '',
+      links_2: '',
     };
 
     this.state = {
@@ -67,6 +70,8 @@ class AddReview extends Component {
         categories: review.categories ?
           review.categories.map(cat => (cat.name)) : defaultReview.categories,
         pictures: review.pictures || defaultReview.pictures,
+        links_1: review.links_1 || defaultReview.links_1,
+        links_2: review.links_2 || defaultReview.links_2,
       };
     }
   }
@@ -100,8 +105,11 @@ class AddReview extends Component {
       ...this.state,
       public: this.props.public_default,
       place: {
+        place_id: this.state.place.place_id,
+        name: this.state.place.name,
         latitude: this.state.place.latitude,
         longitude: this.state.place.longitude,
+        address: this.state.place.address,
       },
       categories: this.state.categories.map(categorie => ({
         name: categorie,
@@ -161,6 +169,11 @@ class AddReview extends Component {
     this.setState({ pictures: newPictures });
   }
 
+  onAddressLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    this._map.updatePadding({ bottom: height });
+  }
+
   toggleCategorie(categorie) {
     const { categories } = this.state;
     let newCategories = categories;
@@ -203,7 +216,10 @@ class AddReview extends Component {
   }
 
   render() {
-    const { categories, pictures, status } = this.state;
+    const {
+      short_description: shortDescription, information, place, categories,
+      pictures, status, link_1: link1, link_2: link2,
+    } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
 
@@ -220,13 +236,15 @@ class AddReview extends Component {
             <Map
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
-              zoomEnabled
-              rotateEnabled={false}
-              scrollEnabled
+              cacheEnabled
               region={this.props.region}
             >
-              <Marker place={this.state.place} />
+              <Marker place={place} />
             </Map>
+            <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
+              <Icon style={styles.addressIcon} name="location-on" />
+              <Text style={styles.addressText}>{place.address}</Text>
+            </View>
           </View>
           <View style={styles.reviewWrapper}>
             <Text style={styles.title}>My review</Text>
@@ -236,15 +254,15 @@ class AddReview extends Component {
                 required
               />
               <FormInput
-                defaultValue={this.state.short_description}
+                defaultValue={shortDescription}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={
-                  shortDescription => this.setState({ short_description: shortDescription })
+                  short => this.setState({ short_description: short })
                 }
                 maxLength={50}
               />
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="You were..." required />
               {statusList.map(stat => (
                 <RadioButton
@@ -255,7 +273,7 @@ class AddReview extends Component {
                 />
               ))}
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Was it..." />
               <View style={styles.tagWrapper}>
                 {categoriesList.map(categorie => (
@@ -268,17 +286,17 @@ class AddReview extends Component {
                 ))}
               </View>
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Tell your friends about your experience" />
               <FormInput
-                defaultValue={this.state.information}
+                defaultValue={information}
                 multiline
                 placeholder="What made that experience mad awesome ?"
-                onChangeText={information => this.setState({ information })}
+                onChangeText={info => this.setState({ information: info })}
                 maxLength={300}
               />
             </View>
-            <View>
+            <View style={styles.group}>
               <Label text="Add some pictures with a caption" />
               <Label subtitle text="You can add your best 5 pictures !" />
               <View style={styles.imagesWrapper}>
@@ -297,6 +315,25 @@ class AddReview extends Component {
               <Text style={styles.imagesCaption}>
                 E.g: A water mirror in Bordeaux !
               </Text>
+            </View>
+            <View style={styles.group}>
+              <Label text="Add some links related" />
+              <FormInput
+                style={styles.linkInput}
+                icon="link"
+                defaultValue={link1}
+                placeholder="http://..."
+                onChangeText={link => this.setState({ link_1: link })}
+              />
+              {!!link1 && (
+                <FormInput
+                  style={styles.linkInput}
+                  icon="link"
+                  defaultValue={link2}
+                  placeholder="http://..."
+                  onChangeText={link => this.setState({ link_2: link })}
+                />
+              )}
             </View>
           </View>
         </Content>

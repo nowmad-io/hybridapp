@@ -13,16 +13,27 @@ class Map extends Component {
     onRef: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
     onPoiClick: PropTypes.func,
-    region: PropTypes.object,
     onLongPress: PropTypes.func,
     onLayout: PropTypes.func,
     onMapReady: PropTypes.func,
     onPanDrag: PropTypes.func,
+    region: PropTypes.object,
     zoomEnabled: PropTypes.bool,
     rotateEnabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     moveOnMarkerPress: PropTypes.bool,
+    cacheEnabled: PropTypes.bool,
     mapPadding: PropTypes.object,
+  }
+
+  static defaultProps = {
+    onRef: () => true,
+    onRegionChangeComplete: () => true,
+    onPoiClick: () => true,
+    onLongPress: () => true,
+    onLayout: () => true,
+    onMapReady: () => true,
+    onPanDrag: () => true,
   }
 
   onRef(ref) {
@@ -62,7 +73,9 @@ class Map extends Component {
     const {
       region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
       onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout, onPanDrag,
+      cacheEnabled,
     } = this.props;
+
     return (
       <MapView
         ref={ref => this.onRef(ref)}
@@ -80,7 +93,8 @@ class Map extends Component {
         moveOnMarkerPress={moveOnMarkerPress}
         onLayout={onLayout}
         onPanDrag={onPanDrag}
-        onPoiClick={event => onPoiClick(event.nativeEvent)}
+        onPoiClick={event => onPoiClick && onPoiClick(event.nativeEvent)}
+        cacheEnabled={cacheEnabled}
       >
         {this.props.children}
       </MapView>

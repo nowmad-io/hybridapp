@@ -15,11 +15,8 @@ export default {
     alignSelf: 'flex-end',
   },
   searchInput: {
-    display: 'flex',
-    flexDirection: 'row',
     flex: 1,
     fontSize: 16,
-    lineHeight: 16,
     color: colors.white,
   },
   searchWrapper: {

@@ -7,6 +7,28 @@ export default {
   content: {
     backgroundColor: colors.white,
   },
+  group: {
+    marginTop: 10,
+  },
+  addressWrapper: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: colors.whiteTransparent,
+  },
+  addressIcon: {
+    fontSize: 14,
+    color: colors.grey,
+  },
+  addressText: {
+    fontSize: 10,
+    marginLeft: 8,
+  },
   reviewWrapper: {
     paddingTop: 16,
     paddingHorizontal: 16,
@@ -33,7 +55,7 @@ export default {
     fontWeight: '400',
     paddingBottom: 4,
     borderBottomWidth: 1,
-    borderColor: colors.greyDark,
+    borderColor: colors.grey,
   },
   icon: {
     color: colors.white,

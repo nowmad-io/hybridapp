@@ -37,8 +37,8 @@ export default class ReviewHeader extends PureComponent {
           <Thumbnail
             style={styles.thumbnail}
             source={
-            reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg
-          }
+              reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg
+            }
           />
           <View style={styles.textWrapper}>
             <Text numberOfLines={1}>

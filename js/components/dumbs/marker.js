@@ -16,6 +16,10 @@ export default class Marker extends PureComponent {
     onMarkerPress: PropTypes.func,
   };
 
+  static defaultProps = {
+    onMarkerPress: () => true,
+  }
+
   static getPlaceType(place) {
     if (!place.reviews) {
       return 'new';
