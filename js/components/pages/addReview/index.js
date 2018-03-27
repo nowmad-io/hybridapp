@@ -48,7 +48,6 @@ class AddReview extends Component {
     const defaultReview = {
       short_description: '',
       information: '',
-      address: '',
       status: statusList[0],
       categories: [],
       pictures: [],
@@ -102,8 +101,11 @@ class AddReview extends Component {
       ...this.state,
       public: this.props.public_default,
       place: {
+        place_id: this.state.place.place_id,
+        name: this.state.place.name,
         latitude: this.state.place.latitude,
         longitude: this.state.place.longitude,
+        address: this.state.place.address,
       },
       categories: this.state.categories.map(categorie => ({
         name: categorie,

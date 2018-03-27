@@ -38,7 +38,7 @@ export function gPlaceToPlace(gPlace) {
   return gPlace ? {
     ...gPlace,
     id: gPlace.place_id,
-    address: gPlace.vicinity,
+    address: gPlace.formatted_address || gPlace.vicinity,
     latitude: gPlace.geometry.location.lat,
     longitude: gPlace.geometry.location.lng,
     reviews: [{
