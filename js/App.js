@@ -19,32 +19,26 @@ console.ignoredYellowBox = [
   'Remote debugger',
 ];
 
-function App(): Component {
-  class Root extends Component {
-    static onBeforeLift() {
-      sagaMiddleware.run(requestsSaga(new Api({
-        basePath: Config.API_URL,
-      })));
+export default class App extends Component {
+  static onBeforeLift() {
+    sagaMiddleware.run(requestsSaga(new Api({
+      basePath: Config.API_URL,
+    })));
 
-      sagas.map(saga => sagaMiddleware.run(saga));
-    }
-
-    render() {
-      return (
-        <Provider store={store}>
-          <PersistGate
-            loading={<SplashScreen />}
-            persistor={persistor}
-            onBeforeLift={Root.onBeforeLift}
-          >
-            <MainRouter addListener={addListener} />
-          </PersistGate>
-        </Provider>
-      );
-    }
+    sagas.map(saga => sagaMiddleware.run(saga));
   }
 
-  return Root;
+  render() {
+    return (
+      <Provider store={store}>
+        <PersistGate
+          loading={<SplashScreen />}
+          persistor={persistor}
+          onBeforeLift={App.onBeforeLift}
+        >
+          <MainRouter addListener={addListener} />
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
-
-export default App;
