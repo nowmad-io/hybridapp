@@ -1,5 +1,3 @@
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import _ from 'lodash';
 
 import {
@@ -58,7 +56,7 @@ function updateReview(currentPlaces, place, updatedReview) {
   });
 }
 
-function HomeReducer(state = initialState, action) {
+const homeReducer = (state = initialState, action) => {
   const { place, ...review } = action.review || {};
 
   switch (action.type) {
@@ -194,12 +192,6 @@ function HomeReducer(state = initialState, action) {
     default:
       return state;
   }
-}
-
-const homePersistConfig = {
-  key: 'home',
-  storage,
-  blacklist: ['position'],
 };
 
-export default persistReducer(homePersistConfig, HomeReducer);
+export default homeReducer;
