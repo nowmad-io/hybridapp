@@ -15,7 +15,7 @@ const initialState = {
   me: null,
 };
 
-function authReducer(state = initialState, action) {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOKEN:
       return { ...state, token: action.token };
@@ -32,6 +32,6 @@ function authReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
 
 export default authReducer;

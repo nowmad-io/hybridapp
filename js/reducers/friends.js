@@ -36,7 +36,7 @@ const initialState = {
   error: '',
 };
 
-export default function friendsReducer(state = initialState, action) {
+const friendsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_FRIENDS_SUCCESS:
       return { ...state, search: action.payload };
@@ -71,4 +71,6 @@ export default function friendsReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default friendsReducer;
