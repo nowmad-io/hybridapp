@@ -19,14 +19,13 @@ import {
   FORM_ERROR,
   LOGIN_LOADING,
   REGISTER_LOADING,
+  TOKEN,
 } from '../constants/auth';
 
 import {
   STOP_SAGAS,
   REQUEST_ERROR,
 } from '../constants/utils';
-
-import { TOKEN } from '../requests';
 
 export function* parseError({ error }) {
   let parsedError = {};

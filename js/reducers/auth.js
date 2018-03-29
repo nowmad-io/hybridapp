@@ -4,9 +4,8 @@ import {
   ME_SUCCESS,
   LOGIN_LOADING,
   REGISTER_LOADING,
+  TOKEN,
 } from '../constants/auth';
-
-import { TOKEN } from '../requests';
 
 const initialState = {
   loginLoading: false,
