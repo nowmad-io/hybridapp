@@ -1,14 +1,14 @@
 import _ from 'lodash';
 
 import {
-  SEARCH_FRIENDS_SUCCESS,
-  FETCH_FRIENDS_SUCCESS,
-  FETCH_FRIENDSINCOMING_SUCCESS,
-  FETCH_FRIENDSOUTGOING_SUCCESS,
-  SEND_FRIENDSHIP_SUCCESS,
-  ACCEPT_FRIENDSHIP_SUCCESS,
-  CANCEL_FRIENDSHIP_SUCCESS,
-  REJECT_FRIENDSHIP_SUCCESS,
+  SEARCH_FRIENDS,
+  FETCH_FRIENDS,
+  FETCH_FRIENDSINCOMING,
+  FETCH_FRIENDSOUTGOING,
+  SEND_FRIENDSHIP,
+  ACCEPT_FRIENDSHIP,
+  CANCEL_FRIENDSHIP,
+  REJECT_FRIENDSHIP,
 } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
 
@@ -38,19 +38,19 @@ const initialState = {
 
 const friendsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SEARCH_FRIENDS_SUCCESS:
+    case `${SEARCH_FRIENDS}_SUCCESS`:
       return { ...state, search: action.payload };
-    case FETCH_FRIENDS_SUCCESS:
+    case `${FETCH_FRIENDS}_SUCCESS`:
       return { ...state, all: action.payload };
-    case FETCH_FRIENDSINCOMING_SUCCESS:
+    case `${FETCH_FRIENDSINCOMING}_SUCCESS`:
       return { ...state, incomings: action.payload };
-    case FETCH_FRIENDSOUTGOING_SUCCESS:
+    case `${FETCH_FRIENDSOUTGOING}_SUCCESS`:
       return { ...state, outgoings: action.payload };
-    case ACCEPT_FRIENDSHIP_SUCCESS:
+    case `${ACCEPT_FRIENDSHIP}_SUCCESS`:
       return addNewFriend(state, action);
-    case SEND_FRIENDSHIP_SUCCESS:
+    case `${SEND_FRIENDSHIP}_SUCCESS`:
       return { ...state, outgoings: state.outgoings.concat([action.payload]) };
-    case CANCEL_FRIENDSHIP_SUCCESS:
+    case `${CANCEL_FRIENDSHIP}_SUCCESS`:
       return {
         ...state,
         outgoings: _.filter(
@@ -58,7 +58,7 @@ const friendsReducer = (state = initialState, action) => {
           outgoing => (outgoing.id !== action.payload.id),
         ),
       };
-    case REJECT_FRIENDSHIP_SUCCESS:
+    case `${REJECT_FRIENDSHIP}_SUCCESS`:
       return {
         ...state,
         incomings: _.filter(
