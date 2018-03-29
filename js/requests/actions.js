@@ -1,12 +1,10 @@
-import {
-  API_CALL,
-  TOKEN,
-} from './constants';
+import { API_CALL } from './constants';
 
-export function apiCall(success, failure, method, path, params = {}, data = {}, options = {}) {
+function apiCall([request, success, failure], method, path, params, data, schema) {
   return {
     type: API_CALL,
     meta: {
+      request,
       success,
       failure,
     },
@@ -15,16 +13,23 @@ export function apiCall(success, failure, method, path, params = {}, data = {}, 
       path,
       params,
       data,
-      options,
+      schema,
     },
   };
 }
 
-export function setToken(token) {
-  return {
-    type: TOKEN,
-    payload: {
-      token,
-    },
-  };
+export function apiGet(types, path, params = {}, schema = null) {
+  apiCall(types, 'get', path, params, {}, schema);
+}
+
+export function apiPost(types, path, data = {}, schema = null) {
+  apiCall(types, 'post', path, {}, data, schema);
+}
+
+export function apiPut(types, path, data = {}, schema = null) {
+  apiCall(types, 'put', path, {}, data, schema);
+}
+
+export function apiDelete(types, path) {
+  apiCall(types, 'delete', path, {}, {});
 }

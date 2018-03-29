@@ -1,13 +1,6 @@
 import requestsSaga from './sagas';
-import * as actions from './actions';
-import * as constants from './constants';
 import Api from './api';
 
-export { requestsSaga, actions, Api, constants };
+export { requestsSaga, Api };
 
-export { apiCall } from './actions';
-
-export {
-  API_CALL,
-  TOKEN,
-} from './constants';
+export { apiGet, apiPost, apiPut, apiDelete } from './actions';
