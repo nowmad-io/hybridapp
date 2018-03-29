@@ -11,7 +11,7 @@ import ListItem from '../../dumbs/listItem';
 import LayoutView from '../../dumbs/layoutView';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
-import { logoutRequest } from '../../../actions/auth';
+import { apiLogout } from '../../../api/auth';
 import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
 
 import styles from './styles';
@@ -31,10 +31,6 @@ class DrawBar extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatch(stopSagas());
-  }
-
-  onLogoutPress() {
-    this.props.dispatch(logoutRequest());
   }
 
   _onAccept(id) {
@@ -135,7 +131,7 @@ class DrawBar extends React.Component {
           <Button
             transparent
             style={styles.logoutButton}
-            onPress={() => this.onLogoutPress()}
+            onPress={() => apiLogout()}
           >
             <Icon name="exit-to-app" style={styles.actionIcon} />
             <Text style={styles.actionLabel}>Logout</Text>
@@ -146,14 +142,10 @@ class DrawBar extends React.Component {
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
 const mapStateToProps = state => ({
   me: state.auth.me,
   incomings: state.friends.incomings,
   outgoings: state.friends.outgoings,
 });
 
-export default connect(mapStateToProps, bindActions)(DrawBar);
+export default connect(mapStateToProps, null)(DrawBar);
