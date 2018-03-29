@@ -4,7 +4,7 @@ import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
-import { registerRequest } from '../../../actions/auth';
+import { apiRegister } from '../../../api/auth';
 
 import Icon from '../../dumbs/icon';
 import LayoutView from '../../dumbs/layoutView';
@@ -24,8 +24,7 @@ class Register extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    register: PropTypes.func,
-    registerLoading: PropTypes.bool,
+    authLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -40,7 +39,7 @@ class Register extends Component {
   }
 
   _register() {
-    this.props.register({
+    apiRegister({
       email: this.state.email,
       password: this.state.password,
       firstName: this.state.firstName,
@@ -130,20 +129,15 @@ class Register extends Component {
             </Button>
           </View>
         </Content>
-        <Spinner overlay visible={this.props.registerLoading} />
+        <Spinner overlay visible={this.props.authLoading} />
       </LayoutView>
     );
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-  register: credentials => dispatch(registerRequest(credentials)),
-});
-
 const mapStateToProps = state => ({
   error: state.auth.error,
-  registerLoading: state.auth.registerLoading,
+  authLoading: state.auth.authLoading,
 });
 
-export default connect(mapStateToProps, bindActions)(Register);
+export default connect(mapStateToProps, null)(Register);

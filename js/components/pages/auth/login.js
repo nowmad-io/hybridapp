@@ -4,7 +4,7 @@ import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
-import { loginRequest } from '../../../actions/auth';
+import { apiLogin } from '../../../api/auth';
 
 import Icon from '../../dumbs/icon';
 import Button from '../../dumbs/button';
@@ -24,17 +24,16 @@ class Login extends Component {
 
   static propTypes = {
     navigation: PropTypes.object,
-    login: PropTypes.func,
     loggedIn: PropTypes.bool,
-    loginLoading: PropTypes.bool,
+    authLoading: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: 'j@j.com',
+      password: 'j',
     };
 
     // Check if logged in and redirect to App if so
@@ -50,7 +49,10 @@ class Login extends Component {
   }
 
   _login() {
-    this.props.login(this.state.email, this.state.password);
+    apiLogin({
+      email: this.state.email,
+      password: this.state.password,
+    });
   }
 
   _register() {
@@ -110,20 +112,16 @@ class Login extends Component {
             </Button>
           </View>
         </Content>
-        <Spinner overlay visible={this.props.loginLoading} />
+        <Spinner overlay visible={this.props.authLoading} />
       </LayoutView>
     );
   }
 }
 
-const bindActions = dispatch => ({
-  login: (email, password) => dispatch(loginRequest({ email, password })),
-});
-
 const mapStateToProps = state => ({
   loggedIn: !!state.auth.token,
   error: state.auth.error,
-  loginLoading: state.auth.loginLoading,
+  authLoading: state.auth.authLoading,
 });
 
-export default connect(mapStateToProps, bindActions)(Login);
+export default connect(mapStateToProps, null)(Login);

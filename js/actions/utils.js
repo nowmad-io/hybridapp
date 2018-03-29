@@ -8,6 +8,7 @@ export function runSagas() {
     type: RUN_SAGAS,
   };
 }
+
 export function stopSagas() {
   return {
     type: STOP_SAGAS,

@@ -1,31 +1,26 @@
 import {
-  FORM_ERROR,
+  LOGIN,
+  REGISTER,
   LOGOUT,
-  ME_SUCCESS,
-  LOGIN_LOADING,
-  REGISTER_LOADING,
-  TOKEN,
+  ME,
 } from '../constants/auth';
 
 const initialState = {
-  loginLoading: false,
-  registerLoading: false,
+  authLoading: false,
   token: null,
   me: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOKEN:
-      return { ...state, token: action.token };
-    case ME_SUCCESS:
+    case `${LOGIN}_SUCCESS`:
+    case `${REGISTER}_SUCCESS`:
+      return { ...state, token: action.auth_token, authLoading: false };
+    case `${LOGIN}_REQUEST`:
+    case `${REGISTER}_REQUEST`:
+      return { ...state, authLoading: true };
+    case `${ME}_SUCCESS`:
       return { ...state, me: action.payload };
-    case FORM_ERROR:
-      return { ...state, error: action.error };
-    case LOGIN_LOADING:
-      return { ...state, loginLoading: action.loading };
-    case REGISTER_LOADING:
-      return { ...state, registerLoading: action.loading };
     case LOGOUT:
       return initialState;
     default:
