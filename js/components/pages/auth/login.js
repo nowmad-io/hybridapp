@@ -23,6 +23,7 @@ class Login extends Component {
   };
 
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     loggedIn: PropTypes.bool,
     authLoading: PropTypes.bool,
@@ -49,10 +50,10 @@ class Login extends Component {
   }
 
   _login() {
-    apiLogin({
+    this.props.dispatch(apiLogin({
       email: this.state.email,
       password: this.state.password,
-    });
+    }));
   }
 
   _register() {

@@ -39,12 +39,12 @@ class Register extends Component {
   }
 
   _register() {
-    apiRegister({
+    this.props.dispatch(apiRegister({
       email: this.state.email,
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-    });
+    }));
   }
 
   _backToLogin() {

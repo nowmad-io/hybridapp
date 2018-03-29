@@ -33,6 +33,10 @@ class DrawBar extends React.Component {
     this.props.dispatch(stopSagas());
   }
 
+  onLogoutPress() {
+    this.props.dispatch(apiLogout());
+  }
+
   _onAccept(id) {
     this.props.dispatch(acceptFriendship(id));
   }
@@ -131,7 +135,7 @@ class DrawBar extends React.Component {
           <Button
             transparent
             style={styles.logoutButton}
-            onPress={() => apiLogout()}
+            onPress={() => this.onLogoutPress()}
           >
             <Icon name="exit-to-app" style={styles.actionIcon} />
             <Text style={styles.actionLabel}>Logout</Text>
