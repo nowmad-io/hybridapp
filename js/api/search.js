@@ -1,12 +1,10 @@
 import Config from 'react-native-config';
 
-import { apiCall } from '../requests';
+import { apiGet } from '../requests';
 
 import {
-  NEARBY_SUCCESS,
-  NEARBY_ERROR,
-  PLACES_SEARCH,
-  PLACES_SEARCH_ERROR,
+  NEARBY,
+  GPLACE_SEARCH,
 } from '../constants/search';
 
 export function getNearbyPlaces(place) {
@@ -15,15 +13,15 @@ export function getNearbyPlaces(place) {
   const location = `location=${place.latitude},${place.longitude}`;
   const radius = 'radius=500';
 
-  return apiCall(NEARBY_SUCCESS, NEARBY_ERROR, 'get', `${url}?${key}&${location}&${radius}`);
+  return apiGet(NEARBY, `${url}?${key}&${location}&${radius}`);
 }
 
-export function placesSearch(query) {
+export function gplacesSearch(query) {
   const url = 'https://maps.googleapis.com/maps/api/place/queryautocomplete/json';
   const key = `key=${Config.PLACES_API_KEY}`;
   const input = `input=${query}`;
 
-  return apiCall(PLACES_SEARCH, PLACES_SEARCH_ERROR, 'get', `${url}?${key}&${input}`);
+  return apiGet(GPLACE_SEARCH, `${url}?${key}&${input}`);
 }
 
 export function placeDetails(placeId) {

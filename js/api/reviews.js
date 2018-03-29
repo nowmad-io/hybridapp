@@ -4,8 +4,9 @@ import {
   ADD_REVIEW,
   UPDATE_REVIEW,
   REVIEW_BY_QUERY,
-  REVIEW_BY_USER,
 } from '../constants/reviews';
+
+import { GPLACE_SEARCH } from '../constants/search';
 
 export function fetchPlaces() {
   return apiGet(PLACES, 'places/');
@@ -24,5 +25,5 @@ export function reviewsSearchByQuery(query) {
 }
 
 export function reviewsSearchByUser(email) {
-  return apiGet(REVIEW_BY_USER, 'places/', { user: email });
+  return apiGet(GPLACE_SEARCH, 'places/', { user: email });
 }

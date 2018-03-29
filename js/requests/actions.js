@@ -1,6 +1,6 @@
 import { API_CALL } from './constants';
 
-function apiCall(type, method, path, params, data, schema) {
+function apiCall(type, method, path, params, data, schema, options) {
   return {
     type: API_CALL,
     meta: {
@@ -11,6 +11,7 @@ function apiCall(type, method, path, params, data, schema) {
     payload: {
       method,
       path,
+      options,
       params,
       data,
       schema,
@@ -18,18 +19,18 @@ function apiCall(type, method, path, params, data, schema) {
   };
 }
 
-export function apiGet(type, path, params = {}, schema = null) {
-  apiCall(type, 'get', path, params, {}, schema);
+export function apiGet(type, path, params = {}, schema = null, options = {}) {
+  return apiCall(type, 'get', path, {}, params, schema, options);
 }
 
-export function apiPost(type, path, data = {}, schema = null) {
-  apiCall(type, 'post', path, {}, data, schema);
+export function apiPost(type, path, data = {}, schema = null, options = {}) {
+  return apiCall(type, 'post', path, data, {}, schema, options);
 }
 
-export function apiPut(type, path, data = {}, schema = null) {
-  apiCall(type, 'put', path, {}, data, schema);
+export function apiPut(type, path, data = {}, schema = null, options = {}) {
+  return apiCall(type, 'put', path, data, {}, schema, options);
 }
 
-export function apiDelete(type, path) {
-  apiCall(type, 'delete', path, {}, {});
+export function apiDelete(type, path, schema = null, options = {}) {
+  return apiCall(type, 'delete', path, {}, {}, schema, options);
 }

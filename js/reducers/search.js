@@ -1,16 +1,10 @@
 import {
   NEARBY,
-  NEARBY_LOADING,
-  PLACES_SEARCH,
-  PLACES_SEARCH_ERROR,
-  PLACES_LOADING,
-  REVIEWS_SEARCH,
-  REVIEWS_SEARCH_ERROR,
-  REVIEWS_LOADING,
-  FRIENDS_SEARCH,
-  FRIENDS_SEARCH_ERROR,
-  FRIENDS_LOADING,
+  GPLACE_SEARCH,
 } from '../constants/search';
+
+import { REVIEW_BY_QUERY } from '../constants/reviews';
+import { FRIENDS_SEARCH } from '../constants/friends';
 
 import { LOGOUT } from '../constants/auth';
 
@@ -28,52 +22,49 @@ const initialState = {
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
-    case NEARBY:
+    case `${NEARBY}_REQUEST`:
+      return {
+        ...state,
+        nearbyLoading: true,
+      };
+    case `${NEARBY}_SUCCESS`:
       return {
         ...state,
         nearbyPlaces: action.places ? action.places.results : initialState.nearbyPlaces,
         nearbyLoading: false,
       };
-    case PLACES_SEARCH_ERROR:
-    case PLACES_SEARCH:
+    case `${GPLACE_SEARCH}_REQUEST`:
+      return {
+        ...state,
+        placesLoading: true,
+      };
+    case `${GPLACE_SEARCH}_SUCCESS`:
       return {
         ...state,
         placesSearch: action.error ? initialState.placesSearch : action.payload.predictions,
         placesLoading: false,
       };
-    case REVIEWS_SEARCH_ERROR:
-    case REVIEWS_SEARCH:
+    case `${REVIEW_BY_QUERY}_REQUEST`:
+      return {
+        ...state,
+        reviewsLoading: true,
+      };
+    case `${REVIEW_BY_QUERY}_SUCCESS`:
       return {
         ...state,
         reviewsSearch: action.error ? initialState.reviewsSearch : action.payload,
         reviewsLoading: false,
       };
-    case FRIENDS_SEARCH_ERROR:
-    case FRIENDS_SEARCH:
+    case `${FRIENDS_SEARCH}_REQUEST`:
+      return {
+        ...state,
+        friendsLoading: true,
+      };
+    case `${FRIENDS_SEARCH}_SUCCESS`:
       return {
         ...state,
         friendsSearch: action.error ? initialState.friendsSearch : action.payload,
         friendsLoading: false,
-      };
-    case NEARBY_LOADING:
-      return {
-        ...state,
-        nearbyLoading: action.loading,
-      };
-    case FRIENDS_LOADING:
-      return {
-        ...state,
-        friendsLoading: action.loading,
-      };
-    case REVIEWS_LOADING:
-      return {
-        ...state,
-        reviewsLoading: action.loading,
-      };
-    case PLACES_LOADING:
-      return {
-        ...state,
-        placesLoading: action.loading,
       };
     case LOGOUT:
       return initialState;
