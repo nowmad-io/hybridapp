@@ -9,7 +9,7 @@ import { RUN_SAGAS } from '../constants/utils';
 
 import { fetchPlaces } from '../api/reviews';
 
-export function* placesFlow() {
+function* placesFlow() {
   yield put(fetchPlaces());
 }
 
