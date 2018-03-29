@@ -25,7 +25,6 @@ import Marker from '../../dumbs/marker';
 
 import { categoriesList, statusList } from '../../../lists';
 import { addReview, updateReview } from '../../../api/reviews';
-import { reviewLoading } from '../../../actions/reviews';
 
 import styles from './styles';
 
@@ -35,7 +34,7 @@ class AddReview extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    reviewLoading: PropTypes.bool,
+    addingReview: PropTypes.bool,
     public_default: PropTypes.bool,
     region: PropTypes.object,
   }
@@ -56,13 +55,16 @@ class AddReview extends Component {
     };
 
     this.state = {
-      place,
-      ...defaultReview,
+      addingImage: false,
+      review: {
+        place,
+        ...defaultReview,
+      },
     };
 
     if (review) {
-      this.state = {
-        place,
+      this.state.review = {
+        ...this.state.review,
         id: review.id,
         short_description: review.short_description || defaultReview.short_description,
         information: review.information || defaultReview.information,
@@ -78,10 +80,6 @@ class AddReview extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-
-    if (this.props.reviewLoading) {
-      this.props.dispatch(reviewLoading(false));
-    }
   }
 
   componentWillUnmount() {
@@ -126,7 +124,6 @@ class AddReview extends Component {
 
     Keyboard.dismiss();
 
-    this.props.dispatch(reviewLoading(true));
     if (this.state.id) {
       this.props.dispatch(updateReview(review));
     } else {
@@ -137,7 +134,7 @@ class AddReview extends Component {
   onImageEditBack = ({ image, remove }) => {
     const { pictures } = this.state;
 
-    this.props.dispatch(reviewLoading(false));
+    this.setState({ addingImage: false });
 
     if (!image) {
       return;
@@ -197,11 +194,12 @@ class AddReview extends Component {
         path: Config.IMAGES_FOLDER,
       },
     };
-    this.props.dispatch(reviewLoading(true));
+
+    this.setState({ addingImage: true });
 
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel || response.error) {
-        this.props.dispatch(reviewLoading(false));
+        this.setState({ addingImage: false });
       } else {
         this.navigateToImage(response);
       }
@@ -216,9 +214,10 @@ class AddReview extends Component {
   }
 
   render() {
+    const { addingReview, navigation, region } = this.props;
     const {
       short_description: shortDescription, information, place, categories,
-      pictures, status, link_1: link1, link_2: link2,
+      pictures, status, link_1: link1, link_2: link2, addingImage,
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
@@ -227,7 +226,7 @@ class AddReview extends Component {
       <LayoutView type="container">
         <LayoutView type="header">
           <LayoutView type="left">
-            <Button transparent onPress={() => this.props.navigation.goBack()} icon="arrow-back" header />
+            <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
@@ -237,7 +236,7 @@ class AddReview extends Component {
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
               cacheEnabled
-              region={this.props.region}
+              region={region}
             >
               <Marker place={place} />
             </Map>
@@ -344,7 +343,7 @@ class AddReview extends Component {
           <Text>Publish</Text>
         </Button>
 
-        <Spinner overlay visible={this.props.reviewLoading} />
+        <Spinner overlay visible={addingReview || addingImage} />
       </LayoutView>
     );
   }
@@ -356,7 +355,7 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   region: state.home.region,
-  reviewLoading: state.home.reviewLoading,
+  addingReview: state.home.addingReview,
   public_default: state.auth.me.public_default,
 });
 

@@ -11,13 +11,11 @@ import {
   CURRENT_PLACES,
   GOOGLE_PLACE,
   SEARCHED_PLACES,
-  FROM_REVIEW,
 } from '../constants/home';
 import {
-  PLACES_SUCCESS,
+  PLACES,
   UPDATE_REVIEW,
   ADD_REVIEW,
-  REVIEW_LOADING,
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -39,7 +37,7 @@ const initialState = {
     longitude: 5.266113225370649,
     latitude: 20.476854784243514,
   },
-  reviewLoading: false,
+  addingReview: false,
   fromReview: false,
 };
 
@@ -60,36 +58,31 @@ const homeReducer = (state = initialState, action) => {
   const { place, ...review } = action.review || {};
 
   switch (action.type) {
-    case FROM_REVIEW:
-      return {
-        ...state,
-        fromReview: action.from,
-      };
-    case REVIEW_LOADING:
-      return {
-        ...state,
-        reviewLoading: action.loading,
-      };
-    case PLACES_SUCCESS:
+    case `${PLACES}_SUCCESS`:
       return {
         ...state,
         places: _.compact([state.googlePlace, ...action.payload]),
         selectedPlace: action.payload.length ? action.payload[0] : null,
       };
-    case ADD_REVIEW: {
-      let exist = false;
+    case `${ADD_REVIEW}_REQUEST`:
+      return {
+        ...state,
+        addingReview: true,
+      };
+    case `${ADD_REVIEW}_SUCCESS`: {
+      let placeExist = false;
 
-      const newPlacesAddReview = state.places.map((statePlace) => {
-        if (statePlace.id === place.id) {
-          exist = true;
+      const updatedPlaces = state.places.map((pl) => {
+        if (pl.id === place.id) {
+          placeExist = true;
+
           return {
-            ...statePlace,
-            reviews: [review, ...statePlace.reviews],
-            selectedPlace: review,
+            ...pl,
+            reviews: [review, ...pl.reviews],
           };
         }
 
-        return statePlace;
+        return pl;
       });
 
       return {
@@ -97,10 +90,10 @@ const homeReducer = (state = initialState, action) => {
         newPlace: initialState.newPlace,
         searchedPlaces: initialState.searchedPlaces,
         selectedPlace: { ...place, reviews: [review] },
-        places: exist ? newPlacesAddReview : [{ ...place, reviews: [review] }, ...state.places],
+        places: placeExist ? updatedPlaces : [{ ...place, reviews: [review] }, ...state.places],
       };
     }
-    case UPDATE_REVIEW:
+    case `${UPDATE_REVIEW}_SUCCESS`:
       return {
         ...state,
         places: updateReview(state.places, place, review),

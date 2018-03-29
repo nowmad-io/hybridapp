@@ -2,35 +2,26 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { NavigationActions } from 'react-navigation';
 
 import {
-  UPDATE_REVIEW_SUCCESS,
-  ADD_REVIEW_SUCCESS,
-  REVIEW_ERROR,
+  ADD_REVIEW,
+  UPDATE_REVIEW,
 } from '../constants/reviews';
 import { RUN_SAGAS } from '../constants/utils';
 
-import { setFromReview } from '../actions/home';
-import { addReview, updateReview, reviewLoading } from '../actions/reviews';
-import { fetchReviews } from '../api/reviews';
+import { fetchPlaces } from '../api/reviews';
 
-export function* reviewsFlow() {
-  yield put(fetchReviews());
+export function* placesFlow() {
+  yield put(fetchPlaces());
 }
 
-const _reviewFlow = update =>
-  function* reviewFlow(action) {
-    const { error, payload } = action;
+function* reviewFlow(action) {
+  const { error } = action;
 
-    yield put(reviewLoading(false));
-
-    if (!error) {
-      yield put(update ? updateReview(payload) : addReview(payload));
-      yield put(NavigationActions.back());
-      yield put(setFromReview(true));
-    }
-  };
+  if (!error) {
+    yield put(NavigationActions.back());
+  }
+}
 
 export default function* root() {
-  yield takeLatest(RUN_SAGAS, reviewsFlow);
-  yield takeLatest([UPDATE_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow(true));
-  yield takeLatest([ADD_REVIEW_SUCCESS, REVIEW_ERROR], _reviewFlow());
+  yield takeLatest(RUN_SAGAS, placesFlow);
+  yield takeLatest([`${ADD_REVIEW}_SUCCESS`, `${UPDATE_REVIEW}_SUCCESS`], reviewFlow);
 }
