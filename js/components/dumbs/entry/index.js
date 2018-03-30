@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import shortid from 'shortid';
 
+import { selectPlace } from '../../../reducers/entities';
 import ReviewHeader from './reviewHeader';
 import Review from './review';
 
@@ -15,7 +17,7 @@ import Tag from '../tag';
 
 import { colors, sizes, carousel } from '../../../parameters';
 
-export default class Entry extends Component {
+class Entry extends Component {
   static propTypes = {
     style: PropTypes.oneOfType([
       PropTypes.object,
@@ -109,6 +111,16 @@ export default class Entry extends Component {
     );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const placeSelector = selectPlace();
+
+  return {
+    place: placeSelector(state, props.id),
+  };
+};
+
+export default connect(mapStateToProps)(Entry);
 
 const styles = StyleSheet.create({
   card: {

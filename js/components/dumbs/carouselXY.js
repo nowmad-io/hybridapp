@@ -15,7 +15,6 @@ export default class carouselXY extends Component {
       PropTypes.number,
       PropTypes.array,
     ]),
-    selectedPlace: PropTypes.object,
     data: PropTypes.array,
     onLevelChange: PropTypes.func,
     onIndexChange: PropTypes.func,
@@ -120,7 +119,7 @@ export default class carouselXY extends Component {
   _renderItem = ({ item }) => (
     <View style={styles.entryWrapper}>
       <Entry
-        place={item}
+        id={item}
         styles={styles.entry}
         onHeaderPress={this.props.onHeaderPress}
         navigation={this.props.navigation}
