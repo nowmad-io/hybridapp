@@ -56,15 +56,13 @@ class AddReview extends Component {
 
     this.state = {
       addingImage: false,
-      review: {
-        place,
-        ...defaultReview,
-      },
+      place,
+      ...defaultReview,
     };
 
     if (review) {
-      this.state.review = {
-        ...this.state.review,
+      this.state = {
+        place,
         id: review.id,
         short_description: review.short_description || defaultReview.short_description,
         information: review.information || defaultReview.information,
