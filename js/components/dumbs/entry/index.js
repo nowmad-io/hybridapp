@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import shortid from 'shortid';
 
-import { selectPlace } from '../../../reducers/entities';
+import { selectFullPlace } from '../../../reducers/entities';
 import ReviewHeader from './reviewHeader';
 import Review from './review';
 
@@ -113,7 +113,7 @@ class Entry extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const placeSelector = selectPlace();
+  const placeSelector = selectFullPlace();
 
   return {
     place: placeSelector(state, props.id),

@@ -1,19 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 import _ from 'lodash';
+
+import { selectPlace, selectThumbnail } from '../../reducers/entities';
 
 import Text from '../dumbs/text';
 import Thumbnail from '../dumbs/thumbnail';
 
 import { colors } from '../../parameters';
 
-export default class Marker extends PureComponent {
+class Marker extends PureComponent {
   static propTypes = {
     selected: PropTypes.bool,
-    place: PropTypes.object,
     onMarkerPress: PropTypes.func,
+    place: PropTypes.object,
+    thumbnail: PropTypes.string,
   };
 
   static defaultProps = {
@@ -40,7 +44,7 @@ export default class Marker extends PureComponent {
   }
 
   render() {
-    const { selected, place } = this.props;
+    const { selected, place, thumbnail } = this.props;
     const { type, friendsCount } = this.state;
 
     return (
@@ -70,7 +74,7 @@ export default class Marker extends PureComponent {
                 {friendsCount}
               </Text>
             ) : (type !== 'new') && (
-              <Thumbnail small source={{ uri: place.reviews[0].created_by.picture }} />
+              <Thumbnail small source={{ uri: thumbnail }} />
             )}
           </View>
           <View style={[
@@ -84,6 +88,18 @@ export default class Marker extends PureComponent {
     );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const placeSelector = selectPlace();
+  const thumbnailSelector = selectThumbnail();
+
+  return {
+    place: placeSelector(state, props.id),
+    thumbnail: thumbnailSelector(state, props.id),
+  };
+};
+
+export default connect(mapStateToProps)(Marker);
 
 const styles = StyleSheet.create({
   wrapper: {
