@@ -55,7 +55,7 @@ function updateReview(currentPlaces, place, updatedReview) {
 }
 
 const homeReducer = (state = initialState, action) => {
-  const { place, ...review } = action.review || {};
+  const { place, ...review } = action.payload || {};
 
   switch (action.type) {
     case `${PLACES}_SUCCESS`:
@@ -64,6 +64,7 @@ const homeReducer = (state = initialState, action) => {
         places: _.compact([state.googlePlace, ...action.payload]),
         selectedPlace: action.payload.length ? action.payload[0] : null,
       };
+    case `${UPDATE_REVIEW}_REQUEST`:
     case `${ADD_REVIEW}_REQUEST`:
       return {
         ...state,
@@ -91,6 +92,7 @@ const homeReducer = (state = initialState, action) => {
         searchedPlaces: initialState.searchedPlaces,
         selectedPlace: { ...place, reviews: [review] },
         places: placeExist ? updatedPlaces : [{ ...place, reviews: [review] }, ...state.places],
+        addingReview: false,
       };
     }
     case `${UPDATE_REVIEW}_SUCCESS`:
@@ -98,6 +100,7 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         places: updateReview(state.places, place, review),
         currentPlaces: updateReview(state.currentPlaces, place, review),
+        addingReview: false,
       };
     case NEW_PLACE: {
       const extras = {};

@@ -101,6 +101,7 @@ class AddReview extends Component {
       ...this.state,
       public: this.props.public_default,
       place: {
+        ...this.state.place,
         place_id: this.state.place.place_id,
         name: this.state.place.name,
         latitude: this.state.place.latitude,

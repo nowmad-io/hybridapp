@@ -19,6 +19,9 @@ const authReducer = (state = initialState, action) => {
     case `${LOGIN}_REQUEST`:
     case `${REGISTER}_REQUEST`:
       return { ...state, authLoading: true };
+    case `${LOGIN}_ERROR`:
+    case `${REGISTER}_ERROR`:
+      return { ...state, authLoading: false };
     case `${ME}_SUCCESS`:
       return { ...state, me: action.payload };
     case LOGOUT:

@@ -6,7 +6,7 @@ function apiCall(type, method, path, params, data, schema, options) {
     meta: {
       request: `${type}_REQUEST`,
       success: `${type}_SUCCESS`,
-      failure: `${type}_FAILURE`,
+      failure: `${type}_ERROR`,
     },
     payload: {
       method,
