@@ -4,8 +4,7 @@ import { TextInput, BackHandler, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { nearbyLoading, placesLoading, friendsLoading, reviewsLoading } from '../../actions/search';
-import { getNearbyPlaces, placesSearch, placeDetails, gPlaceToPlace } from '../../api/search';
+import { getNearbyPlaces, gplacesSearch, placeDetails, gPlaceToPlace } from '../../api/search';
 import { friendsSearch } from '../../api/friends';
 import { reviewsSearchByQuery, reviewsSearchByUser } from '../../api/reviews';
 
@@ -154,14 +153,9 @@ class SearchWrapper extends Component {
   getAutocompleteDebounce = _.debounce(this.getAutocomplete, 300)
 
   getAutocomplete(text) {
-    this.props.dispatch(friendsLoading(true));
     this.props.dispatch(friendsSearch(text));
-
-    this.props.dispatch(reviewsLoading(true));
     this.props.dispatch(reviewsSearchByQuery(text));
-
-    this.props.dispatch(placesLoading(true));
-    this.props.dispatch(placesSearch(text));
+    this.props.dispatch(gplacesSearch(text));
   }
 
   setValue(text) {
@@ -205,7 +199,6 @@ class SearchWrapper extends Component {
         this.setState({ searchType: 'nearby' });
       }
 
-      this.props.dispatch(nearbyLoading(true));
       this.props.dispatch(getNearbyPlaces({
         latitude: coord[1],
         longitude: coord[2],
