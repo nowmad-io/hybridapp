@@ -16,10 +16,8 @@ import Badge from '../../dumbs/badge';
 import Map from '../../map';
 import SearchWrapper from '../../searchWrapper';
 
-import {
-  _selectedPlace, regionChanged, levelChange, selectNewPlace,
-  currentPlacesChange, _searchedPlaces, googlePlace, setFromReview, getGeolocation,
-} from '../../../actions/home';
+import { levelChange, getGeolocation, regionChanged } from '../../../actions/home';
+import { selectPlaces, selectVisiblePlaces } from '../../../reducers/home';
 import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
@@ -29,15 +27,10 @@ class Home extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     places: PropTypes.array,
-    searchedPlaces: PropTypes.array,
-    currentPlaces: PropTypes.array,
+    visiblePlaces: PropTypes.array,
     geolocation: PropTypes.object,
     level: PropTypes.number,
-    selectedPlace: PropTypes.object,
     region: PropTypes.object,
-    newPlace: PropTypes.object,
-    fromReview: PropTypes.bool,
-    googlePlace: PropTypes.object,
   }
 
   constructor(props) {
@@ -55,37 +48,14 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    if (this.props.newPlace) {
-      this._searchWrapper.getWrappedInstance().searchCoordinates(this.props.newPlace, true);
-    }
-    if (this.props.googlePlace) {
-      this._searchWrapper.getWrappedInstance().setValue(this.props.googlePlace.name);
-    }
     if (this.props.level) {
       this._carouselXY.goToLevel(this.props.level);
     }
 
-    this.onRegionChangeComplete(this.props.region);
+    this.onRegionChangeDebounce(this.props.region);
   }
 
-  componentWillReceiveProps({
-    selectedPlace, level, fromReview, geolocation,
-  }) {
-    if (fromReview) {
-      this._searchWrapper.getWrappedInstance().clear();
-      this._searchWrapper.getWrappedInstance().blurInput();
-      this.onRegionChangeComplete(this.props.region);
-      this.props.dispatch(setFromReview(false));
-    }
-
-    if (selectedPlace
-        && this.props.selectedPlace
-        && selectedPlace.id !== this.props.selectedPlace.id) {
-      if (this.props.level === 2) {
-        this._map.animateToCoordinate(selectedPlace);
-      }
-    }
-
+  componentWillReceiveProps({ level, geolocation }) {
     if (geolocation && geolocation.location
         && !geolocation.loading && this.props.geolocation.loading) {
       this._map.fitToCoordinates([geolocation.location], {
@@ -104,133 +74,56 @@ class Home extends Component {
         top: sizes.toolbarHeight,
         bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
-
-      if (level < 3 && this.props.selectedPlace) {
-        this._map.animateToCoordinate(this.props.selectedPlace);
-      }
     }
   }
 
   onMarkerPress = (place) => {
-    const { searchedPlaces, currentPlaces } = this.props;
-    const index = _.findIndex(
-      searchedPlaces.length ? searchedPlaces : currentPlaces,
-      p => (p.id === place.id),
-    );
-
-    this.props.dispatch(_selectedPlace(place));
-    this._carouselXY.goToIndex(index);
-
     if (this.props.level === 2) {
       this._map.animateToCoordinate(place);
     }
   }
 
-  onIndexChange = (index) => {
-    const { dispatch, searchedPlaces, currentPlaces } = this.props;
-    dispatch(_selectedPlace(searchedPlaces.length ? searchedPlaces[index] : currentPlaces[index]));
+  onIndexChange = () => {
   }
 
   onLevelChange = (level) => {
     this.props.dispatch(levelChange(level));
   }
 
-  onRegionChangeComplete = (region) => {
-    const { level } = this.props;
-    const helper = Math.log2(360 * ((sizes.width / 256) / region.longitudeDelta));
-    /* eslint-disable-next-line no-restricted-properties */
-    const scale = Math.pow(2, helper + 1) + 1;
+  onRegionChangeDebounce = _.debounce(region => this.onRegionChange(region), 300)
 
-    const southWest = {
-      latitude: (region.latitude - region.latitudeDelta / 2) -
-        ((level === 1 ? -carousel.level1 : -carousel.level1 - carousel.level2) / scale),
-      longitude: region.longitude - region.longitudeDelta / 2,
-    };
-
-    const northEast = {
-      latitude: (region.latitude + region.latitudeDelta / 2) - (sizes.toolbarHeight / scale),
-      longitude: region.longitude + region.longitudeDelta / 2,
-    };
-
-    const newPlaces = _.filter(this.props.places, (place) => {
-      if (place.latitude > southWest.latitude && place.latitude < northEast.latitude
-          && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
-        return true;
-      }
-      return false;
-    });
-
+  onRegionChange = (region) => {
     this.props.dispatch(regionChanged(region));
-
-    if (!_.isEqual(this.props.currentPlaces, newPlaces)) {
-      this.props.dispatch(currentPlacesChange(newPlaces));
-    }
   }
 
   onMapReady = () => {
-    if (this._map && this.props.newPlace) {
-      this._map.animateToCoordinate(this.props.newPlace);
-    }
   }
 
-  onMapLongPress = ({ coordinate }) => {
-    this._searchWrapper.getWrappedInstance().searchCoordinates(coordinate);
-    this.props.dispatch(selectNewPlace(coordinate));
+  onMapLongPress = () => {
   }
 
   onSearchClear = () => {
-    if (this.props.newPlace) {
-      this.props.dispatch(selectNewPlace(null));
-    }
-    if (this.props.googlePlace) {
-      this.props.dispatch(googlePlace(null));
-    }
-    this.props.dispatch(_searchedPlaces(null));
   }
 
   onNewMarkerPress = () => {
-    this._searchWrapper.getWrappedInstance().focusInput();
   }
 
-  onNearbySelected = (place) => {
-    this.props.dispatch(selectNewPlace(place));
-    this.props.navigation.navigate('AddReview', { place });
+  onNearbySelected = () => {
   }
 
-  onNearbyPlaceSelected = (place) => {
-    this.props.dispatch(googlePlace(place));
-    this._searchWrapper.getWrappedInstance().blurInput();
-    this._searchWrapper.getWrappedInstance().setValue(place.name);
+  onNearbyPlaceSelected = () => {
   }
 
-  onPlaceSelected = (place) => {
-    this.props.dispatch(_searchedPlaces([place]));
-    this._searchWrapper.getWrappedInstance().blurInput();
-    this._map.animateToCoordinate(place);
+  onPlaceSelected = () => {
   }
 
-  onPlacesSelected = (place, places) => {
-    this.props.dispatch(_searchedPlaces(_.compact([place, ...places])));
-    this._searchWrapper.getWrappedInstance().blurInput();
-    if (place) {
-      this._map.animateToCoordinate(place);
-    }
+  onPlacesSelected = () => {
   }
 
-  onReviewPress = (place, review) => {
-    this._searchWrapper.getWrappedInstance().blurInput();
-    this._searchWrapper.getWrappedInstance().setValue(review.short_description);
-    this.props.dispatch(_selectedPlace(place));
-    this._map.animateToCoordinate(place);
+  onReviewPress = () => {
   }
 
-  onFriendPress = (user) => {
-    if (user.type === 'other') {
-      this.props.navigation.navigate('AddFriend', { user });
-    } else {
-      this._searchWrapper.getWrappedInstance().blurInput();
-      this._searchWrapper.getWrappedInstance().setValue(user.first_name);
-    }
+  onFriendPress = () => {
   }
 
   onHeaderPress = () => {
@@ -250,6 +143,8 @@ class Home extends Component {
   }
 
   onPanDrag = () => {
+    this.onRegionChangeDebounce.cancel();
+
     if (this.state.addThisPlace) {
       this.setState({ addThisPlace: false });
     }
@@ -273,37 +168,13 @@ class Home extends Component {
     });
   }
 
-  filter(places) {
-    if (!this.state.filters.categories.length) {
-      return places;
-    }
-
-    return _.filter(places, (place) => {
-      if (!place.reviews) {
-        return true;
-      }
-
-      const placeCategories = _.uniqWith(
-        _.flatten(place.reviews.map(review => review.categories)),
-        _.isEqual,
-      );
-
-      return _.intersectionWith(
-        placeCategories,
-        this.state.filters.categories,
-        (cat, name) => (cat.name === name),
-      ).length;
-    });
-  }
-
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
 
   render() {
     const {
-      dispatch, places, currentPlaces, selectedPlace, region,
-      navigation, newPlace, searchedPlaces, geolocation,
+      dispatch, navigation, places, visiblePlaces, region, geolocation,
     } = this.props;
     const {
       addThisPlace, searchVisible, panY, filtersVisible,
@@ -338,7 +209,7 @@ class Home extends Component {
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
-          onRegionChangeComplete={this.onRegionChangeComplete}
+          onRegionChangeComplete={this.onRegionChangeDebounce}
           mapPadding={{
             top: sizes.toolbarHeight,
             bottom: carousel.level1,
@@ -346,36 +217,21 @@ class Home extends Component {
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
         >
-          {this.filter(searchedPlaces.length ? searchedPlaces : places).map(place => (
+          {places.map(place => (
             <Marker
               key={shortid.generate()}
-              selected={selectedPlace && selectedPlace.id === place.id}
-              place={place}
+              id={place}
               onMarkerPress={this.onMarkerPress}
             />
           ))}
-          {newPlace && (
-            <Marker
-              key={shortid.generate()}
-              place={newPlace}
-              onMarkerPress={this.onNewMarkerPress}
-            />
-          )}
-          {geolocation && geolocation.location && (
-            <MarkerPosition
-              location={geolocation.location}
-              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
-            />
-          )}
         </Map>
         <CarouselXY
           ref={(c) => { this._carouselXY = c; }}
-          data={this.filter(searchedPlaces.length ? searchedPlaces : currentPlaces)}
+          data={visiblePlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
           navigation={this.props.navigation}
-          selectedPlace={selectedPlace}
           panY={panY}
         />
 
@@ -429,18 +285,16 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = state => ({
-  places: state.home.places,
-  currentPlaces: state.home.currentPlaces,
-  searchedPlaces: state.home.searchedPlaces,
-  geolocation: state.home.geolocation,
-  selectedPlace: state.home.selectedPlace,
-  level: state.home.level,
-  region: state.home.region,
-  newPlace: state.home.newPlace,
-  googlePlace: state.home.googlePlace,
-  fromReview: state.home.fromReview,
-});
+const mapStateToProps = (state) => {
+  console.log('selectVisiblePlaces', selectVisiblePlaces(state))
+  return {
+    places: selectPlaces(state),
+    visiblePlaces: selectVisiblePlaces(state),
+    geolocation: state.home.geolocation,
+    level: state.home.level,
+    region: state.home.region,
+  };
+};
 
 export default connect(mapStateToProps, bindActions)(Home);
 
