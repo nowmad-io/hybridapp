@@ -5,23 +5,24 @@ import { placeSchema } from '../api/reviews';
 import { PLACES, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
-const selectEntities = state => state.entities;
-const selectUsers = state => state.entities.users;
-const selectReviews = state => state.entities.reviews;
-const placeById = (state, id) => state.entities.places[id];
+const getEntities = state => state.entities;
+const getUsers = state => state.entities.users;
+const getReviews = state => state.entities.reviews;
+export const getPlaces = state => state.entities.places;
+const getPlace = (state, id) => state.entities.places[id];
 
 export const selectFullPlace = () => createSelector(
-  [placeById, selectEntities],
+  [getPlace, getEntities],
   (place, entities) => denormalize(place, placeSchema, entities),
 );
 
 export const selectPlace = () => createSelector(
-  [placeById],
+  [getPlace],
   place => place,
 );
 
 export const selectThumbnail = () => createSelector(
-  [placeById, selectUsers, selectReviews],
+  [getPlace, getUsers, getReviews],
   (place, users, reviews) =>
     place.reviews && place.reviews.length && users[reviews[place.reviews[0]].created_by].picture,
 );
