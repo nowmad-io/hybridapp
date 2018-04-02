@@ -16,6 +16,7 @@ class Marker extends PureComponent {
   static propTypes = {
     selected: PropTypes.bool,
     onMarkerPress: PropTypes.func,
+    id: PropTypes.number,
     place: PropTypes.object,
     thumbnail: PropTypes.string,
   };
@@ -43,14 +44,24 @@ class Marker extends PureComponent {
     };
   }
 
+  onMarkerPress = () => {
+    this.props.onMarkerPress({
+      id: this.props.id,
+      coordinates: {
+        latitude: this.props.place.latitude,
+        longitude: this.props.place.longitude,
+      },
+    });
+  }
+
   render() {
-    const { selected, place, thumbnail } = this.props;
+    const { place, selected, thumbnail } = this.props;
     const { type, friendsCount } = this.state;
 
     return (
       <MapView.Marker
         coordinate={{ latitude: place.latitude, longitude: place.longitude }}
-        onPress={() => this.props.onMarkerPress(place)}
+        onPress={this.onMarkerPress}
         anchor={selected ? { x: 0.5, y: 0.91 } : { x: 0.5, y: 1 }}
       >
 
