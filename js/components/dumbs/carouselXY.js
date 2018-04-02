@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, PanResponder, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
@@ -7,7 +7,7 @@ import Entry from './entry';
 
 import { sizes, carousel } from '../../parameters';
 
-export default class carouselXY extends Component {
+export default class carouselXY extends PureComponent {
   static propTypes = {
     navigation: PropTypes.object,
     style: PropTypes.oneOfType([
