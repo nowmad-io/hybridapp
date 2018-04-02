@@ -3,12 +3,10 @@ import _ from 'lodash';
 
 import { getPlaces } from './entities';
 
-import { REGION_CHANGE } from '../constants/home';
 import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getListPlaces = state => state.home.places;
-const getRegion = state => state.home.region;
 
 export const selectPlaces = createSelector(
   [getListPlaces],
@@ -16,7 +14,7 @@ export const selectPlaces = createSelector(
 );
 
 export const selectVisiblePlaces = createSelector(
-  [getPlaces, getRegion],
+  [getPlaces, (state, region) => region],
   (places, region) => {
     const southWest = {
       latitude: region.latitude - region.latitudeDelta / 2,
@@ -40,13 +38,12 @@ export const selectVisiblePlaces = createSelector(
 
 const initialState = {
   places: [],
-  selectedPlace: null,
   level: 1,
   geolocation: {
     loading: false,
     location: null,
   },
-  region: {
+  initialRegion: {
     longitudeDelta: 126.56254928559065,
     latitudeDelta: 114.96000427333595,
     longitude: 5.266113225370649,
@@ -75,11 +72,6 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         addingReview: false,
-      };
-    case REGION_CHANGE:
-      return {
-        ...state,
-        region: action.region,
       };
     case LOGOUT:
       return initialState;

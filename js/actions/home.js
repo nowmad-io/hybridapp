@@ -1,7 +1,6 @@
 import {
   GET_GEOLOCATION,
   SET_GEOLOCATION,
-  SELECTED_PLACE,
   LEVEL_CHANGE,
   REGION_CHANGE,
   NEW_PLACE,
@@ -20,13 +19,6 @@ export function setGeolocation(position) {
   return {
     type: SET_GEOLOCATION,
     position,
-  };
-}
-
-export function _selectedPlace(selectedPlace) {
-  return {
-    type: SELECTED_PLACE,
-    selectedPlace,
   };
 }
 

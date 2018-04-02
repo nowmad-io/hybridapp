@@ -1,6 +1,5 @@
 export const GET_GEOLOCATION = 'home/GET_GEOLOCATION';
 export const SET_GEOLOCATION = 'home/SET_GEOLOCATION';
-export const SELECTED_PLACE = 'home/SELECTED_PLACE';
 export const LEVEL_CHANGE = 'home/LEVEL_CHANGE';
 export const REGION_CHANGE = 'home/REGION_CHANGE';
 

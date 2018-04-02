@@ -37,6 +37,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
+      selectedPlace: null,
       addThisPlace: false,
       searchVisible: false,
       panY: new Animated.Value(-carousel.level1),
@@ -77,9 +78,11 @@ class Home extends Component {
     }
   }
 
-  onMarkerPress = (place) => {
+  onMarkerPress = ({ id, coordinates }) => {
+    this.setState({ selectedPlace: id });
+
     if (this.props.level === 2) {
-      this._map.animateToCoordinate(place);
+      this._map.animateToCoordinate(coordinates);
     }
   }
 
@@ -100,9 +103,6 @@ class Home extends Component {
   }
 
   onMapLongPress = () => {
-  }
-
-  onSearchClear = () => {
   }
 
   onNewMarkerPress = () => {
@@ -168,24 +168,43 @@ class Home extends Component {
     });
   }
 
+  onAddPlace = () => {
+    this.onMapLongPress({ coordinate: this.props.geolocation.location });
+  }
+
+  onLocationPress = () => {
+    this.props.dispatch(getGeolocation());
+  }
+
+  onSearchFocus = () => {
+    this.setState({ searchVisible: true });
+  }
+
+  onSearchBlur = () => {
+    this.setState({ searchVisible: false });
+  }
+
+  onSearchClear = () => {
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
 
   render() {
     const {
-      dispatch, navigation, places, visiblePlaces, region, geolocation,
+      navigation, places, visiblePlaces, region,
     } = this.props;
     const {
-      addThisPlace, searchVisible, panY, filtersVisible,
+      addThisPlace, searchVisible, panY, filtersVisible, selectedPlace,
     } = this.state;
 
     return (
       <SearchWrapper
         ref={(sw) => { this._searchWrapper = sw; }}
-        onFocus={() => this.setState({ searchVisible: true })}
-        onBlur={() => this.setState({ searchVisible: false })}
-        onClear={() => this.onSearchClear()}
+        onFocus={this.onSearchFocus}
+        onBlur={this.onSearchBlur}
+        onClear={this.onSearchClear}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
         onPlaceSelected={this.onPlaceSelected}
@@ -197,7 +216,7 @@ class Home extends Component {
         {(addThisPlace && !searchVisible) && (
           <Button
             style={styles.addPlaceButton}
-            onPress={() => this.onMapLongPress({ coordinate: geolocation.location })}
+            onPress={this.onAddPlace}
             fab
           >
             <Text>Add this place</Text>
@@ -221,6 +240,7 @@ class Home extends Component {
             <Marker
               key={shortid.generate()}
               id={place}
+              selected={selectedPlace === place}
               onMarkerPress={this.onMarkerPress}
             />
           ))}
@@ -248,7 +268,7 @@ class Home extends Component {
             style={styles.zoomOut}
             onPress={this.zoomOut}
           />
-          <Button fab icon="my-location" onPress={() => dispatch(getGeolocation())} />
+          <Button fab icon="my-location" onPress={this.onLocationPress} />
         </Animated.View>
         <Filters
           style={styles.filters}
