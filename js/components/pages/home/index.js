@@ -305,16 +305,13 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = (state) => {
-  console.log('selectVisiblePlaces', selectVisiblePlaces(state))
-  return {
-    places: selectPlaces(state),
-    visiblePlaces: selectVisiblePlaces(state),
-    geolocation: state.home.geolocation,
-    level: state.home.level,
-    region: state.home.region,
-  };
-};
+const mapStateToProps = state => ({
+  places: selectPlaces(state),
+  visiblePlaces: selectVisiblePlaces(state),
+  geolocation: state.home.geolocation,
+  level: state.home.level,
+  region: state.home.region,
+});
 
 export default connect(mapStateToProps, bindActions)(Home);
 

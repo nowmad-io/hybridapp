@@ -7,6 +7,7 @@ import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getListPlaces = state => state.home.places;
+const getRegion = state => state.home.region;
 
 export const selectPlaces = createSelector(
   [getListPlaces],
@@ -14,7 +15,7 @@ export const selectPlaces = createSelector(
 );
 
 export const selectVisiblePlaces = createSelector(
-  [getPlaces, (state, region) => region],
+  [getPlaces, getRegion],
   (places, region) => {
     const southWest = {
       latitude: region.latitude - region.latitudeDelta / 2,
@@ -43,7 +44,7 @@ const initialState = {
     loading: false,
     location: null,
   },
-  initialRegion: {
+  region: {
     longitudeDelta: 126.56254928559065,
     latitudeDelta: 114.96000427333595,
     longitude: 5.266113225370649,
