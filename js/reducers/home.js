@@ -1,22 +1,25 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
 
-import { getPlaces } from './entities';
+import { getReviews, getPlaces } from './entities';
 
+import { REGION_CHANGE } from '../constants/home';
 import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
-const getListPlaces = state => state.home.places;
 const getRegion = state => state.home.region;
 
 export const selectPlaces = createSelector(
-  [getListPlaces],
-  places => places,
+  [getReviews],
+  reviews => _.uniq(_.filter(
+    reviews,
+    review => _.indexOf(review.categories, 1) !== -1,
+  ).map(review => review.place)),
 );
 
 export const selectVisiblePlaces = createSelector(
-  [getPlaces, getRegion],
-  (places, region) => {
+  [selectPlaces, getPlaces, getRegion],
+  (placesId, places, region) => {
     const southWest = {
       latitude: region.latitude - region.latitudeDelta / 2,
       longitude: region.longitude - region.longitudeDelta / 2,
@@ -27,7 +30,8 @@ export const selectVisiblePlaces = createSelector(
       longitude: region.longitude + region.longitudeDelta / 2,
     };
 
-    return _.compact(_.map(places, (place) => {
+    return _.compact(placesId.map((id) => {
+      const place = places[id];
       if (place.latitude > southWest.latitude && place.latitude < northEast.latitude
           && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
         return place.id;
@@ -73,6 +77,11 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         addingReview: false,
+      };
+    case REGION_CHANGE:
+      return {
+        ...state,
+        region: action.region,
       };
     case LOGOUT:
       return initialState;

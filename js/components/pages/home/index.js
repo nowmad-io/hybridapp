@@ -52,8 +52,6 @@ class Home extends Component {
     if (this.props.level) {
       this._carouselXY.goToLevel(this.props.level);
     }
-
-    this.onRegionChangeDebounce(this.props.region);
   }
 
   componentWillReceiveProps({ level, geolocation }) {
@@ -92,8 +90,6 @@ class Home extends Component {
   onLevelChange = (level) => {
     this.props.dispatch(levelChange(level));
   }
-
-  onRegionChangeDebounce = _.debounce(region => this.onRegionChange(region), 300)
 
   onRegionChange = (region) => {
     this.props.dispatch(regionChanged(region));
@@ -143,8 +139,6 @@ class Home extends Component {
   }
 
   onPanDrag = () => {
-    this.onRegionChangeDebounce.cancel();
-
     if (this.state.addThisPlace) {
       this.setState({ addThisPlace: false });
     }
@@ -228,7 +222,7 @@ class Home extends Component {
           onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
-          onRegionChangeComplete={this.onRegionChangeDebounce}
+          onRegionChangeComplete={this.onRegionChange}
           mapPadding={{
             top: sizes.toolbarHeight,
             bottom: carousel.level1,

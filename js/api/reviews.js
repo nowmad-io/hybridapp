@@ -22,6 +22,10 @@ export const placeSchema = new schema.Entity('places', {
   reviews: [reviewSchema],
 });
 
+reviewSchema.define({
+  place: placeSchema,
+});
+
 export function fetchPlaces() {
   return apiGet(PLACES, 'places/', {}, [placeSchema]);
 }

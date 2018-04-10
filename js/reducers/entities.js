@@ -7,7 +7,7 @@ import { LOGOUT } from '../constants/auth';
 
 const getEntities = state => state.entities;
 const getUsers = state => state.entities.users;
-const getReviews = state => state.entities.reviews;
+export const getReviews = state => state.entities.reviews;
 export const getPlaces = state => state.entities.places;
 const getPlace = (state, id) => state.entities.places[id];
 
