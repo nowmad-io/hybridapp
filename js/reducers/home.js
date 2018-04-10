@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { getReviews, getPlaces } from './entities';
 
-import { REGION_CHANGE } from '../constants/home';
+import { REGION_CHANGE, LEVEL_CHANGE } from '../constants/home';
 import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -82,6 +82,11 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         region: action.region,
+      };
+    case LEVEL_CHANGE:
+      return {
+        ...state,
+        level: action.level,
       };
     case LOGOUT:
       return initialState;
