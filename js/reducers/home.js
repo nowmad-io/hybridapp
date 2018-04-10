@@ -13,7 +13,7 @@ export const selectPlaces = createSelector(
   [getReviews],
   reviews => _.uniq(_.filter(
     reviews,
-    review => _.indexOf(review.categories, 1) !== -1,
+    review => true,
   ).map(review => review.place)),
 );
 

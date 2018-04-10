@@ -132,6 +132,14 @@ export default class carouselXY extends PureComponent {
     this._carousel.snapToItem(index, animated);
   }
 
+  goToEntry(id, animated = true) {
+    const index = _.indexOf(this.props.data, id);
+
+    if (index !== -1) {
+      this._carousel.snapToItem(index, animated);
+    }
+  }
+
   _renderItem = ({ item }) => (
     <View style={styles.entryWrapper}>
       <Entry

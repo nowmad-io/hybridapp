@@ -82,6 +82,7 @@ class Home extends Component {
 
   onMarkerPress = ({ id, coordinates }) => {
     this.setState({ selectedPlace: id });
+    this._carouselXY.goToEntry(id);
 
     if (this.props.level === 2) {
       this._map.animateToCoordinate(coordinates);
@@ -89,7 +90,6 @@ class Home extends Component {
   }
 
   onIndexChange = (id) => {
-    console.log('id', id);
     this.setState({ selectedPlace: id });
   }
 
