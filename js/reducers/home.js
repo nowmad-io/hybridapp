@@ -30,14 +30,14 @@ export const selectVisiblePlaces = createSelector(
       longitude: region.longitude + region.longitudeDelta / 2,
     };
 
-    return _.compact(placesId.map((id) => {
+    return _.filter(placesId, (id) => {
       const place = places[id];
       if (place.latitude > southWest.latitude && place.latitude < northEast.latitude
           && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
-        return place.id;
+        return true;
       }
       return false;
-    }));
+    });
   },
 );
 

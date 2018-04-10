@@ -37,7 +37,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      selectedPlace: {},
+      selectedPlace: null,
       addThisPlace: false,
       searchVisible: false,
       panY: new Animated.Value(-carousel.level1),
@@ -74,21 +74,23 @@ class Home extends Component {
         bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
 
-      if (level === 2 && this.state.selectedPlace.id) {
-        this._map.animateToCoordinate(this.state.selectedPlace.coordinates);
-      }
+      // if (level === 2 && this.state.selectedPlace.id) {
+      //   this._map.animateToCoordinate(this.state.selectedPlace.coordinates);
+      // }
     }
   }
 
-  onMarkerPress = (marker) => {
-    this.setState({ selectedPlace: marker });
+  onMarkerPress = ({ id, coordinates }) => {
+    this.setState({ selectedPlace: id });
 
     if (this.props.level === 2) {
-      this._map.animateToCoordinate(marker.coordinates);
+      this._map.animateToCoordinate(coordinates);
     }
   }
 
-  onIndexChange = () => {
+  onIndexChange = (id) => {
+    console.log('id', id);
+    this.setState({ selectedPlace: id });
   }
 
   onLevelChange = (level) => {
@@ -238,7 +240,7 @@ class Home extends Component {
             <Marker
               key={shortid.generate()}
               id={place}
-              selected={selectedPlace.id === place}
+              selected={selectedPlace === place}
               onMarkerPress={this.onMarkerPress}
             />
           ))}

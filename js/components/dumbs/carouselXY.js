@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Animated, PanResponder, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import _ from 'lodash';
 
 import Entry from './entry';
 
@@ -37,7 +38,7 @@ export default class carouselXY extends PureComponent {
 
   componentWillMount() {
     this._responder = PanResponder.create({
-      onMoveShouldSetPanResponderCapture: (_, { dx, dy }) => {
+      onMoveShouldSetPanResponderCapture: (__, { dx, dy }) => {
         const dx2 = dx * dx;
         const dy2 = dy * dy;
         return !(dx2 > dy2);
@@ -48,7 +49,7 @@ export default class carouselXY extends PureComponent {
         this.props.panY.setOffset(offset);
         this.props.panY.setValue(-this.state.buttonsHeight);
       },
-      onPanResponderMove: (_, { dy }) => {
+      onPanResponderMove: (__, { dy }) => {
         const { panY } = this.props;
         let val = -panY._offset - dy;
 
@@ -93,10 +94,25 @@ export default class carouselXY extends PureComponent {
     });
   }
 
+  componentDidMount() {
+    this._onIndexChange(0);
+  }
+
+  componentWillReceiveProps({ data }) {
+    if (data && !_.isEqual(data, this.props.data)) {
+      this.goToIndex(0);
+      this.props.onIndexChange(data[0]);
+    }
+  }
+
   onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     this.setState({ buttonsHeight: height });
     this.props.panY.setValue(this.props.panY._value - height);
+  }
+
+  _onIndexChange = (index) => {
+    this.props.onIndexChange(this.props.data[index]);
   }
 
   levelToValue(level) {
@@ -132,7 +148,7 @@ export default class carouselXY extends PureComponent {
   )
 
   render() {
-    const { data, onIndexChange, panY } = this.props;
+    const { data, panY } = this.props;
     const { carouselEnabled } = this.state;
 
     return (
@@ -151,7 +167,7 @@ export default class carouselXY extends PureComponent {
           itemWidth={carousel.itemWidth}
           inactiveSlideOpacity={1}
           inactiveSlideScale={1}
-          onSnapToItem={onIndexChange}
+          onSnapToItem={this._onIndexChange}
           activeSlideOffset={1}
           swipeThreshold={1}
           lockScrollWhileSnapping
