@@ -233,7 +233,7 @@ class Home extends Component {
             <Marker
               key={shortid.generate()}
               place={place}
-              selected={selectedPlace.id === place.id}
+              selected={selectedPlace && selectedPlace.id === place.id}
               onMarkerPress={this.onMarkerPress}
             />
           ))}

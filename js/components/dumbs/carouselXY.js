@@ -102,9 +102,9 @@ export default class carouselXY extends PureComponent {
   componentWillReceiveProps({ data }) {
     if (data && !_.isEqual(data, this.props.data)) {
       const currentEntry = this.state.data[this._carousel.currentIndex];
-      const index = data.findIndex(d => d.id === currentEntry.id);
+      const index = currentEntry ? data.findIndex(d => d.id === currentEntry.id) : -1;
       const newData = index !== -1 ?
-        [currentEntry, ..._.filter(data, d => d.id === currentEntry.id)] : data;
+        [currentEntry, ..._.filter(data, d => d.id !== currentEntry.id)] : data;
 
       this.setState({ data: newData }, () => {
         this.goToIndex(0, false);
