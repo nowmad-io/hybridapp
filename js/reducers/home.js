@@ -4,24 +4,23 @@ import _ from 'lodash';
 import { getReviews, getPlaces } from './entities';
 
 import { REGION_CHANGE, LEVEL_CHANGE, FILTERS_CHANGE } from '../constants/home';
-import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
+import { ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getRegion = state => state.home.region;
 const getFilters = state => state.home.filters;
-const getHomePlaces = state => state.home.places;
 
 export const selectPlaces = createSelector(
-  [getReviews, getFilters, getHomePlaces],
+  [getReviews, getFilters, getPlaces],
   (reviews, filters, places) => (filters.categories.length ? _.uniq(_.filter(
     reviews,
     review => _.intersection(review.categories, filters.categories).length,
-  ).map(review => review.place)) : places),
+  ).map(review => places[review.place])) : _.values(places)),
 );
 
 export const selectVisiblePlaces = createSelector(
-  [selectPlaces, getPlaces, getRegion],
-  (placesId, places, region) => {
+  [selectPlaces, getRegion],
+  (places, region) => {
     const southWest = {
       latitude: region.latitude - region.latitudeDelta / 2,
       longitude: region.longitude - region.longitudeDelta / 2,
@@ -32,8 +31,7 @@ export const selectVisiblePlaces = createSelector(
       longitude: region.longitude + region.longitudeDelta / 2,
     };
 
-    return _.filter(placesId, (id) => {
-      const place = places[id];
+    return _.filter(places, (place) => {
       if (place.latitude > southWest.latitude && place.latitude < northEast.latitude
           && place.longitude > southWest.longitude && place.longitude < northEast.longitude) {
         return true;
@@ -44,7 +42,6 @@ export const selectVisiblePlaces = createSelector(
 );
 
 const initialState = {
-  places: [],
   filters: {
     categories: [],
   },
@@ -64,11 +61,6 @@ const initialState = {
 
 const homeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case `${PLACES}_SUCCESS`:
-      return {
-        ...state,
-        places: action.payload.result,
-      };
     case `${ADD_REVIEW}_REQUEST`:
     case `${UPDATE_REVIEW}_REQUEST`:
       return {

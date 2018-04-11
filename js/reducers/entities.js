@@ -9,22 +9,15 @@ const getEntities = state => state.entities;
 const getUsers = state => state.entities.users;
 export const getReviews = state => state.entities.reviews;
 export const getPlaces = state => state.entities.places;
-const getPlace = (state, id) => state.entities.places[id];
 
-export const selectFullPlace = () => createSelector(
-  [getPlace, getEntities],
-  (place, entities) => denormalize(place, placeSchema, entities),
+export const selectFullPlace = place => createSelector(
+  [getEntities],
+  entities => denormalize(place, placeSchema, entities),
 );
 
-export const selectPlace = () => createSelector(
-  [getPlace],
-  place => place,
-);
-
-export const selectThumbnail = () => createSelector(
-  [getPlace, getUsers, getReviews],
-  (place, users, reviews) =>
-    place.reviews && place.reviews.length && users[reviews[place.reviews[0]].created_by].picture,
+export const selectThumbnail = place => createSelector(
+  [getUsers, getReviews],
+  (users, reviews) => users[reviews[place.reviews[0]].created_by].picture,
 );
 
 const initialState = {

@@ -113,10 +113,10 @@ class Entry extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const placeSelector = selectFullPlace();
+  const placeSelector = selectFullPlace(props.place);
 
   return {
-    place: placeSelector(state, props.id),
+    place: placeSelector(state),
   };
 };
 

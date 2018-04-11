@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 import _ from 'lodash';
 
-import { selectPlace, selectThumbnail } from '../../reducers/entities';
+import { selectThumbnail } from '../../reducers/entities';
 
 import Text from '../dumbs/text';
 import Thumbnail from '../dumbs/thumbnail';
@@ -16,7 +16,6 @@ class Marker extends PureComponent {
   static propTypes = {
     selected: PropTypes.bool,
     onMarkerPress: PropTypes.func,
-    id: PropTypes.number,
     place: PropTypes.object,
     thumbnail: PropTypes.string,
   };
@@ -46,7 +45,7 @@ class Marker extends PureComponent {
 
   onMarkerPress = () => {
     this.props.onMarkerPress({
-      id: this.props.id,
+      id: this.props.place.id,
       coordinates: {
         latitude: this.props.place.latitude,
         longitude: this.props.place.longitude,
@@ -101,12 +100,10 @@ class Marker extends PureComponent {
 }
 
 const mapStateToProps = (state, props) => {
-  const placeSelector = selectPlace();
-  const thumbnailSelector = selectThumbnail();
+  const thumbnailSelector = selectThumbnail(props.place);
 
   return {
-    place: placeSelector(state, props.id),
-    thumbnail: thumbnailSelector(state, props.id),
+    thumbnail: thumbnailSelector(state),
   };
 };
 

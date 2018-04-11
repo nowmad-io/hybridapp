@@ -31,7 +31,7 @@ export default class carouselXY extends PureComponent {
     super(props);
 
     this.state = {
-      data: [],
+      data: props.data || [],
       buttonsHeight: 0,
       carouselEnabled: true,
     };
@@ -96,14 +96,15 @@ export default class carouselXY extends PureComponent {
   }
 
   componentDidMount() {
-    this._onIndexChange(0);
+    this.props.onIndexChange(this.props.data[0]);
   }
 
   componentWillReceiveProps({ data }) {
     if (data && !_.isEqual(data, this.props.data)) {
       const currentEntry = this.state.data[this._carousel.currentIndex];
-      const index = _.indexOf(data, currentEntry);
-      const newData = index !== -1 ? [data[index], ..._.without(data, currentEntry)] : data;
+      const index = data.findIndex(d => d.id === currentEntry.id);
+      const newData = index !== -1 ?
+        [currentEntry, ..._.filter(data, d => d.id === currentEntry.id)] : data;
 
       this.setState({ data: newData }, () => {
         this.goToIndex(0, false);
@@ -139,8 +140,8 @@ export default class carouselXY extends PureComponent {
     this._carousel.snapToItem(index, animated);
   }
 
-  goToEntry(id, animated = true) {
-    const index = _.indexOf(this.state.data, id);
+  goToEntry(place, animated = true) {
+    const index = this.state.data.findIndex(d => d.id === place.id);
 
     if (index !== -1) {
       this._carousel.snapToItem(index, animated);
@@ -150,7 +151,7 @@ export default class carouselXY extends PureComponent {
   _renderItem = ({ item }) => (
     <View style={styles.entryWrapper}>
       <Entry
-        id={item}
+        place={item}
         styles={styles.entry}
         onHeaderPress={this.props.onHeaderPress}
         navigation={this.props.navigation}
