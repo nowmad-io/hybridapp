@@ -72,8 +72,8 @@ class Home extends Component {
         bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
 
-      if (level === 2 && this.state.selectedPlace.id) {
-        this._map.animateToCoordinate(this.state.selectedPlace.coordinates);
+      if (level === 2 && this.state.selectedPlace) {
+        this._map.animateToCoordinate(this.state.selectedPlace);
       }
     }
   }
@@ -81,14 +81,14 @@ class Home extends Component {
   onMarkerPress = (place) => {
     this.setState({ selectedPlace: place });
     this._carouselXY.goToEntry(place);
-
-    if (this.props.level === 2) {
-      this._map.animateToCoordinate(place.coordinates);
-    }
   }
 
   onIndexChange = (place) => {
     this.setState({ selectedPlace: place });
+
+    if (this.props.level === 2) {
+      this._map.animateToCoordinate(place);
+    }
   }
 
   onLevelChange = (level) => {

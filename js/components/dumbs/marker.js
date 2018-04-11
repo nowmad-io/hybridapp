@@ -44,13 +44,7 @@ class Marker extends PureComponent {
   }
 
   onMarkerPress = () => {
-    this.props.onMarkerPress({
-      id: this.props.place.id,
-      coordinates: {
-        latitude: this.props.place.latitude,
-        longitude: this.props.place.longitude,
-      },
-    });
+    this.props.onMarkerPress(this.props.place);
   }
 
   render() {

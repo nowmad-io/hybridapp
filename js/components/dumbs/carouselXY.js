@@ -155,10 +155,6 @@ export default class carouselXY extends PureComponent {
         styles={styles.entry}
         onHeaderPress={this.props.onHeaderPress}
         navigation={this.props.navigation}
-        panY={this.props.panY}
-        min={carousel.level1}
-        step={carousel.level2}
-        max={carousel.level3}
       />
     </View>
   )
