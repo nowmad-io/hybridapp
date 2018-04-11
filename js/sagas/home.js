@@ -10,7 +10,7 @@ import { GET_GEOLOCATION } from '../constants/home';
 import { RUN_SAGAS } from '../constants/utils';
 
 import { apiMe } from '../api/auth';
-import { fetchPlaces } from '../api/reviews';
+import { fetchPlaces, fetchCategories } from '../api/reviews';
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
 
 import { setGeolocation } from '../actions/home';
@@ -37,6 +37,7 @@ export function* currentPosition() {
 
 export function* homeFlow() {
   yield put(fetchPlaces());
+  yield put(fetchCategories());
   yield put(apiMe());
   yield put(fetchFriends());
   yield put(fetchIncomingRequests());

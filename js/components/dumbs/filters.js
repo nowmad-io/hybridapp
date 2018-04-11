@@ -4,8 +4,6 @@ import { StyleSheet, View, Animated } from 'react-native';
 import shortid from 'shortid';
 import _ from 'lodash';
 
-import { categoriesList } from '../../lists';
-
 import Text from './text';
 import Tag from './tag';
 
@@ -24,6 +22,7 @@ export default class Filters extends PureComponent {
     ]),
     onFiltersChange: PropTypes.func,
     visible: PropTypes.bool,
+    list: PropTypes.object,
   };
 
   static defaultProps = {
@@ -47,15 +46,15 @@ export default class Filters extends PureComponent {
     }
   }
 
-  toggleCategorie(categorie) {
+  toggleCategorie(id) {
     const { categories } = this.state;
     let newCategories = [...categories];
-    const selected = _.indexOf(categories, categorie) !== -1;
+    const selected = _.indexOf(categories, id) !== -1;
 
     if (selected) {
-      newCategories = _.without(newCategories, categorie);
+      newCategories = _.without(newCategories, id);
     } else {
-      newCategories.push(categorie);
+      newCategories.push(id);
     }
 
     this.setState({ categories: newCategories });
@@ -63,7 +62,7 @@ export default class Filters extends PureComponent {
   }
 
   render() {
-    const { children, style } = this.props;
+    const { children, style, list } = this.props;
     const { panY, categories } = this.state;
 
     return (
@@ -79,12 +78,12 @@ export default class Filters extends PureComponent {
             Choose the filters that better describe the experience you are looking for !
           </Text>
           <View style={styles.tagWrapper}>
-            {categoriesList.map(categorie => (
+            {_.map(list, categorie => (
               <Tag
                 key={shortid.generate()}
-                text={categorie}
-                selected={_.indexOf(categories, categorie) !== -1}
-                onPress={() => this.toggleCategorie(categorie)}
+                text={categorie.name}
+                selected={_.indexOf(categories, categorie.id) !== -1}
+                onPress={() => this.toggleCategorie(categorie.id)}
                 style={styles.tags}
               />
             ))}

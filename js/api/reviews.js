@@ -3,6 +3,7 @@ import { schema } from 'normalizr';
 import { apiGet, apiPost, apiPut } from '../requests';
 import {
   PLACES,
+  CATEGORIES,
   ADD_REVIEW,
   UPDATE_REVIEW,
   REVIEW_BY_QUERY,
@@ -25,6 +26,10 @@ export const placeSchema = new schema.Entity('places', {
 reviewSchema.define({
   place: placeSchema,
 });
+
+export function fetchCategories() {
+  return apiGet(CATEGORIES, 'categories/', {}, [categorySchema]);
+}
 
 export function fetchPlaces() {
   return apiGet(PLACES, 'places/', {}, [placeSchema]);

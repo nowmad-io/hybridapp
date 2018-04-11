@@ -3,7 +3,6 @@ import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
-import _ from 'lodash';
 
 import CarouselXY from '../../dumbs/carouselXY';
 import Marker from '../../dumbs/marker';
@@ -16,7 +15,7 @@ import Badge from '../../dumbs/badge';
 import Map from '../../map';
 import SearchWrapper from '../../searchWrapper';
 
-import { levelChange, getGeolocation, regionChanged } from '../../../actions/home';
+import { levelChange, getGeolocation, regionChanged, filtersChange } from '../../../actions/home';
 import { selectPlaces, selectVisiblePlaces } from '../../../reducers/home';
 import { placeDetails, gPlaceToPlace } from '../../../api/search';
 
@@ -31,6 +30,8 @@ class Home extends Component {
     geolocation: PropTypes.object,
     level: PropTypes.number,
     region: PropTypes.object,
+    filters: PropTypes.object,
+    categories: PropTypes.object,
   }
 
   constructor(props) {
@@ -42,9 +43,6 @@ class Home extends Component {
       searchVisible: false,
       panY: new Animated.Value(-carousel.level1),
       filtersVisible: false,
-      filters: {
-        categories: [],
-      },
     };
   }
 
@@ -160,12 +158,7 @@ class Home extends Component {
   }
 
   onFiltersChange = ({ categories }) => {
-    this.setState({
-      filters: {
-        ...this.state.filters,
-        categories,
-      },
-    });
+    this.props.dispatch(filtersChange(categories));
   }
 
   onAddPlace = () => {
@@ -193,7 +186,7 @@ class Home extends Component {
 
   render() {
     const {
-      navigation, places, visiblePlaces, region,
+      navigation, places, visiblePlaces, region, categories, filters,
     } = this.props;
     const {
       addThisPlace, searchVisible, panY, filtersVisible, selectedPlace,
@@ -251,7 +244,7 @@ class Home extends Component {
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
-          navigation={this.props.navigation}
+          navigation={navigation}
           panY={panY}
         />
 
@@ -271,6 +264,7 @@ class Home extends Component {
           <Button fab icon="my-location" onPress={this.onLocationPress} />
         </Animated.View>
         <Filters
+          list={categories}
           style={styles.filters}
           visible={filtersVisible}
           onFiltersChange={this.onFiltersChange}
@@ -288,8 +282,8 @@ class Home extends Component {
               onPress={this.onFiltersPress}
             >
               <Text>Filters</Text>
-              {this.state.filters.categories.length ? (
-                <Badge text={this.state.filters.categories.length} />
+              {filters.categories.length ? (
+                <Badge text={filters.categories.length} />
               ) : (
                 <Icon name="equalizer" set="SimpleLineIcons" />
               )}
@@ -307,10 +301,12 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = state => ({
   places: selectPlaces(state),
+  categories: state.entities.categories,
   visiblePlaces: selectVisiblePlaces(state),
   geolocation: state.home.geolocation,
   level: state.home.level,
   region: state.home.region,
+  filters: state.home.filters,
 });
 
 export default connect(mapStateToProps, bindActions)(Home);

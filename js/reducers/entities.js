@@ -2,7 +2,7 @@ import { denormalize } from 'normalizr';
 import { createSelector } from 'reselect';
 
 import { placeSchema } from '../api/reviews';
-import { PLACES, UPDATE_REVIEW } from '../constants/reviews';
+import { PLACES, UPDATE_REVIEW, CATEGORIES } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getEntities = state => state.entities;
@@ -45,6 +45,14 @@ const entitiesReducer = (state = initialState, action) => {
         categories: { ...state.categories, ...action.payload.entities.categories },
         pictures: { ...state.pictures, ...action.payload.entities.pictures },
         users: { ...state.users, ...action.payload.entities.users },
+      };
+    case `${CATEGORIES}_SUCCESS`:
+      return {
+        ...state,
+        categories: {
+          ...state.categories,
+          ...action.payload.entities.categories,
+        },
       };
     case `${UPDATE_REVIEW}_SUCCESS`:
       return {

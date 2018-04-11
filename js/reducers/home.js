@@ -3,18 +3,20 @@ import _ from 'lodash';
 
 import { getReviews, getPlaces } from './entities';
 
-import { REGION_CHANGE, LEVEL_CHANGE } from '../constants/home';
+import { REGION_CHANGE, LEVEL_CHANGE, FILTERS_CHANGE } from '../constants/home';
 import { PLACES, ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getRegion = state => state.home.region;
+const getFilters = state => state.home.filters;
+const getHomePlaces = state => state.home.places;
 
 export const selectPlaces = createSelector(
-  [getReviews],
-  reviews => _.uniq(_.filter(
+  [getReviews, getFilters, getHomePlaces],
+  (reviews, filters, places) => (filters.categories.length ? _.uniq(_.filter(
     reviews,
-    review => true,
-  ).map(review => review.place)),
+    review => _.intersection(review.categories, filters.categories).length,
+  ).map(review => review.place)) : places),
 );
 
 export const selectVisiblePlaces = createSelector(
@@ -43,6 +45,9 @@ export const selectVisiblePlaces = createSelector(
 
 const initialState = {
   places: [],
+  filters: {
+    categories: [],
+  },
   level: 1,
   geolocation: {
     loading: false,
@@ -87,6 +92,13 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         level: action.level,
+      };
+    case FILTERS_CHANGE:
+      return {
+        ...state,
+        filters: {
+          categories: action.categories,
+        },
       };
     case LOGOUT:
       return initialState;

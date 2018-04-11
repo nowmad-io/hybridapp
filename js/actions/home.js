@@ -8,6 +8,7 @@ import {
   GOOGLE_PLACE,
   SEARCHED_PLACES,
   FROM_REVIEW,
+  FILTERS_CHANGE,
 } from '../constants/home';
 
 export function getGeolocation() {
@@ -33,6 +34,13 @@ export function regionChanged(region) {
   return {
     type: REGION_CHANGE,
     region,
+  };
+}
+
+export function filtersChange(categories) {
+  return {
+    type: FILTERS_CHANGE,
+    categories,
   };
 }
 
