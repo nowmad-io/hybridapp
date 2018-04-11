@@ -31,6 +31,7 @@ export default class carouselXY extends PureComponent {
     super(props);
 
     this.state = {
+      data: [],
       buttonsHeight: 0,
       carouselEnabled: true,
     };
@@ -100,8 +101,14 @@ export default class carouselXY extends PureComponent {
 
   componentWillReceiveProps({ data }) {
     if (data && !_.isEqual(data, this.props.data)) {
-      this.goToIndex(0);
-      this.props.onIndexChange(data[0]);
+      const currentEntry = this.state.data[this._carousel.currentIndex];
+      const index = _.indexOf(data, currentEntry);
+      const newData = index !== -1 ? [data[index], ..._.without(data, currentEntry)] : data;
+
+      this.setState({ data: newData }, () => {
+        this.goToIndex(0, false);
+        this.props.onIndexChange(newData[0]);
+      });
     }
   }
 
@@ -112,7 +119,7 @@ export default class carouselXY extends PureComponent {
   }
 
   _onIndexChange = (index) => {
-    this.props.onIndexChange(this.props.data[index]);
+    this.props.onIndexChange(this.state.data[index]);
   }
 
   levelToValue(level) {
@@ -133,7 +140,7 @@ export default class carouselXY extends PureComponent {
   }
 
   goToEntry(id, animated = true) {
-    const index = _.indexOf(this.props.data, id);
+    const index = _.indexOf(this.state.data, id);
 
     if (index !== -1) {
       this._carousel.snapToItem(index, animated);
@@ -156,8 +163,8 @@ export default class carouselXY extends PureComponent {
   )
 
   render() {
-    const { data, panY } = this.props;
-    const { carouselEnabled } = this.state;
+    const { panY } = this.props;
+    const { carouselEnabled, data } = this.state;
 
     return (
       <Animated.View
