@@ -44,16 +44,12 @@ export function* homeFlow() {
   yield put(fetchOutgoingRequests());
 }
 
-function* reviewFlow(action) {
-  const { error } = action;
-
-  if (!error) {
-    yield put(NavigationActions.back());
-  }
+function* reviewFlow() {
+  yield put(NavigationActions.back());
 }
 
 export default function* root() {
   yield takeLatest(RUN_SAGAS, homeFlow);
   yield takeLatest(GET_GEOLOCATION, currentPosition);
-  yield takeLatest([`${ADD_REVIEW}_SUCCESS`, `${UPDATE_REVIEW}_SUCCESS`], reviewFlow);
+  yield takeLatest([`${ADD_REVIEW}_REQUEST`, `${UPDATE_REVIEW}_REQUEST`], reviewFlow);
 }

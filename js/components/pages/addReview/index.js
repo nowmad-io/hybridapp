@@ -23,7 +23,7 @@ import Icon from '../../dumbs/icon';
 import Map from '../../map';
 import Marker from '../../dumbs/marker';
 
-import { categoriesList, statusList } from '../../../lists';
+import { statusList } from '../../../lists';
 import { addReview, updateReview } from '../../../api/reviews';
 
 import styles from './styles';
@@ -34,8 +34,9 @@ class AddReview extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
+    categoriesList: PropTypes.array,
     addingReview: PropTypes.bool,
-    public_default: PropTypes.bool,
+    me: PropTypes.object,
     region: PropTypes.object,
   }
 
@@ -67,8 +68,7 @@ class AddReview extends Component {
         short_description: review.short_description || defaultReview.short_description,
         information: review.information || defaultReview.information,
         status: review.status || defaultReview.status,
-        categories: review.categories ?
-          review.categories.map(cat => (cat.name)) : defaultReview.categories,
+        categories: review.categories || defaultReview.categories,
         pictures: review.pictures || defaultReview.pictures,
         links_1: review.links_1 || defaultReview.links_1,
         links_2: review.links_2 || defaultReview.links_2,
@@ -93,13 +93,17 @@ class AddReview extends Component {
   }
 
   onMapReady = () => {
-    this._map.animateToCoordinate(this.state.place);
+    this._map.animateToCoordinate({
+      longitude: this.state.place.longitude,
+      latitude: this.state.place.latitude,
+    });
   }
 
   onPublish = () => {
     const review = {
       ...this.state,
-      public: this.props.public_default,
+      created_by: this.props.me,
+      public: this.props.me.public_default,
       place: {
         ...this.state.place,
         place_id: this.state.place.place_id,
@@ -108,9 +112,7 @@ class AddReview extends Component {
         longitude: this.state.place.longitude,
         address: this.state.place.address,
       },
-      categories: this.state.categories.map(categorie => ({
-        name: categorie,
-      })),
+      categories: this.state.categories,
       pictures: this.state.pictures.map((image) => {
         const picture = image.id ? { pictureId: image.id } : { source: image.data };
 
@@ -172,12 +174,12 @@ class AddReview extends Component {
 
   toggleCategorie(categorie) {
     const { categories } = this.state;
-    let newCategories = categories;
+    let newCategories = [...categories];
 
-    const selected = _.indexOf(categories, categorie) !== -1;
+    const selected = _.findIndex(categories, { id: categorie.id });
 
-    if (selected) {
-      newCategories = _.without(newCategories, categorie);
+    if (selected !== -1) {
+      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
     } else {
       newCategories.push(categorie);
     }
@@ -213,7 +215,9 @@ class AddReview extends Component {
   }
 
   render() {
-    const { addingReview, navigation, region } = this.props;
+    const {
+      addingReview, navigation, region, categoriesList,
+    } = this.props;
     const {
       short_description: shortDescription, information, place, categories,
       pictures, status, link_1: link1, link_2: link2, addingImage,
@@ -227,17 +231,20 @@ class AddReview extends Component {
           <LayoutView type="left">
             <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
           </LayoutView>
-          <LayoutView type="right" />
+          <LayoutView type="right">
+            <Button transparent onPress={this.onPublish}>
+              <Text>PUBLISH</Text>
+            </Button>
+          </LayoutView>
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
-              cacheEnabled
               region={region}
             >
-              <Marker place={place} />
+              <Marker place={{ ...place, reviews: place.reviews.map(review => review.id) }} />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
@@ -276,9 +283,9 @@ class AddReview extends Component {
               <View style={styles.tagWrapper}>
                 {categoriesList.map(categorie => (
                   <Tag
-                    key={categorie}
-                    text={categorie}
-                    selected={_.indexOf(categories, categorie) !== -1}
+                    key={shortid.generate()}
+                    text={categorie.name}
+                    selected={_.findIndex(categories, { id: categorie.id }) !== -1}
                     onPress={() => this.toggleCategorie(categorie)}
                   />
                 ))}
@@ -335,27 +342,17 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <Button
-          wrapped
-          onPress={this.onPublish}
-        >
-          <Text>Publish</Text>
-        </Button>
-
         <Spinner overlay visible={addingReview || addingImage} />
       </LayoutView>
     );
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
 const mapStateToProps = state => ({
   region: state.home.region,
+  categoriesList: _.map(state.entities.categories, categorie => categorie),
   addingReview: state.home.addingReview,
-  public_default: state.auth.me.public_default,
+  me: state.auth.me,
 });
 
-export default connect(mapStateToProps, bindActions)(AddReview);
+export default connect(mapStateToProps)(AddReview);

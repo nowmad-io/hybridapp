@@ -25,18 +25,15 @@ class Entry extends Component {
       PropTypes.array,
     ]),
     navigation: PropTypes.object,
+    me: PropTypes.object,
     onHeaderPress: PropTypes.func,
     place: PropTypes.object.isRequired,
   };
 
-  onPressAddReview() {
-    this.props.navigation.navigate('AddReview', { place: this.props.place });
-  }
-
-  onPressEditReview(review) {
+  onPressAddReview(myReview = false) {
     this.props.navigation.navigate('AddReview', {
       place: this.props.place,
-      review,
+      review: myReview,
     });
   }
 
@@ -47,19 +44,11 @@ class Entry extends Component {
   }
 
   render() {
-    const { place: { address, reviews, all_reviews: allReviews }, style } = this.props;
-    const reviewsToOrder = allReviews || reviews;
-    const starredReview = _.find(reviewsToOrder, (review) => {
-      if (allReviews) {
-        return reviews[0].created_by.email === review.created_by.email;
-      }
-      return review.user_type === 'me';
-    });
-    const myReview = !allReviews ? starredReview : _.find(reviewsToOrder, review => review.user_type === 'me');
-    const friendsReviews = starredReview ?
-      _.filter(reviewsToOrder, review => review.id !== starredReview.id) : reviewsToOrder;
-    const orderedReviews = _.compact(_.concat(_.compact([starredReview]), friendsReviews));
-    const thumbnails = _.without(reviews, reviews[0]);
+    const { place: { address, reviews }, style, me } = this.props;
+    const myReview = me ? _.find(reviews, review => review.created_by.id === me.id) : null;
+    const orderedReviews = myReview ?
+      [myReview, ..._.filter(reviews, ({ id }) => id !== myReview.id)] : reviews;
+    const thumbnails = _.drop(orderedReviews);
     const pictures = _.flatten(reviews.map(review => review.pictures));
     const categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)), _.isEqual);
 
@@ -67,7 +56,7 @@ class Entry extends Component {
       <View style={[styles.card, style]}>
         <View>
           <ReviewHeader
-            reviews={allReviews ? reviews : orderedReviews}
+            reviews={orderedReviews}
             placeAddress={address}
             showcase
             thumbnails={thumbnails}
@@ -88,7 +77,7 @@ class Entry extends Component {
         <View>
           <Button
             wrapped
-            onPress={() => (myReview ? this.onPressEditReview(myReview) : this.onPressAddReview())}
+            onPress={() => this.onPressAddReview(myReview)}
           >
             <Text>{myReview ? 'My review' : 'Add review'}</Text>
           </Button>
@@ -113,10 +102,11 @@ class Entry extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const placeSelector = selectFullPlace(props.place);
+  const placeSelector = selectFullPlace();
 
   return {
-    place: placeSelector(state),
+    place: placeSelector(state, props.place.id),
+    me: state.auth.me,
   };
 };
 

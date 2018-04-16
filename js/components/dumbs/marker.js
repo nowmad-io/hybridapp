@@ -94,10 +94,10 @@ class Marker extends PureComponent {
 }
 
 const mapStateToProps = (state, props) => {
-  const thumbnailSelector = selectThumbnail(props.place);
+  const thumbnailSelector = selectThumbnail();
 
   return {
-    thumbnail: thumbnailSelector(state),
+    thumbnail: thumbnailSelector(state, props.place.id),
   };
 };
 

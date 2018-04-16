@@ -19,7 +19,9 @@ export const apiGeneric = api =>
       };
     }
 
-    yield put({ type: request });
+    yield put({
+      type: request, params, data, schema,
+    });
 
     try {
       const response = yield call(api[method], path, {

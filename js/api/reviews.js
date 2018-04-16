@@ -19,11 +19,19 @@ export const reviewSchema = new schema.Entity('reviews', {
   pictures: [pictureSchema],
   created_by: userSchema,
 });
+export const reviewsSchema = new schema.Entity('reviews', {
+  categories: [categorySchema],
+  pictures: [pictureSchema],
+  created_by: userSchema,
+});
 export const placeSchema = new schema.Entity('places', {
-  reviews: [reviewSchema],
+  reviews: [reviewsSchema],
 });
 
-reviewSchema.define({
+export const simpleReviewSchema = new schema.Entity('reviews', {
+  categories: [categorySchema],
+  pictures: [pictureSchema],
+  created_by: userSchema,
   place: placeSchema,
 });
 
@@ -36,11 +44,11 @@ export function fetchPlaces() {
 }
 
 export function addReview(data) {
-  return apiPost(ADD_REVIEW, 'reviews/', data, reviewSchema);
+  return apiPost(ADD_REVIEW, 'reviews/', data, simpleReviewSchema);
 }
 
 export function updateReview(data) {
-  return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, reviewSchema);
+  return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, simpleReviewSchema);
 }
 
 export function reviewsSearchByQuery(query) {
