@@ -46,6 +46,8 @@ class AddReview extends Component {
     const { place, review } = props.navigation.state.params;
 
     const defaultReview = {
+      created_by: props.me,
+      public: props.me.public_default,
       short_description: '',
       information: '',
       status: statusList[0],
@@ -57,23 +59,10 @@ class AddReview extends Component {
 
     this.state = {
       addingImage: false,
-      place,
       ...defaultReview,
+      ...(review || {}),
+      place,
     };
-
-    if (review) {
-      this.state = {
-        place,
-        id: review.id,
-        short_description: review.short_description || defaultReview.short_description,
-        information: review.information || defaultReview.information,
-        status: review.status || defaultReview.status,
-        categories: review.categories || defaultReview.categories,
-        pictures: review.pictures || defaultReview.pictures,
-        links_1: review.links_1 || defaultReview.links_1,
-        links_2: review.links_2 || defaultReview.links_2,
-      };
-    }
   }
 
   componentDidMount() {
@@ -100,19 +89,10 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
+    const action = this.state.id ? updateReview : addReview;
     const review = {
+      id: shortid.generate(),
       ...this.state,
-      created_by: this.props.me,
-      public: this.props.me.public_default,
-      place: {
-        ...this.state.place,
-        place_id: this.state.place.place_id,
-        name: this.state.place.name,
-        latitude: this.state.place.latitude,
-        longitude: this.state.place.longitude,
-        address: this.state.place.address,
-      },
-      categories: this.state.categories,
       pictures: this.state.pictures.map((image) => {
         const picture = image.id ? { pictureId: image.id } : { source: image.data };
 
@@ -122,14 +102,8 @@ class AddReview extends Component {
         };
       }),
     };
-
     Keyboard.dismiss();
-
-    if (this.state.id) {
-      this.props.dispatch(updateReview(review));
-    } else {
-      this.props.dispatch(addReview(review));
-    }
+    this.props.dispatch(action(review));
   }
 
   onImageEditBack = ({ image, remove }) => {

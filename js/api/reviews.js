@@ -14,18 +14,13 @@ import { GPLACE_SEARCH } from '../constants/search';
 const userSchema = new schema.Entity('users');
 const categorySchema = new schema.Entity('categories');
 const pictureSchema = new schema.Entity('pictures');
-export const reviewSchema = new schema.Entity('reviews', {
-  categories: [categorySchema],
-  pictures: [pictureSchema],
-  created_by: userSchema,
-});
-export const reviewsSchema = new schema.Entity('reviews', {
+const reviewSchema = new schema.Entity('reviews', {
   categories: [categorySchema],
   pictures: [pictureSchema],
   created_by: userSchema,
 });
 export const placeSchema = new schema.Entity('places', {
-  reviews: [reviewsSchema],
+  reviews: [reviewSchema],
 });
 
 export const simpleReviewSchema = new schema.Entity('reviews', {
