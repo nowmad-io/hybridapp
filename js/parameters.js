@@ -22,7 +22,7 @@ export const font = {
 
 export const colors = {
   green: '#00C69F',
-  greenShadow: 'rgba(0, 198, 159, 0.3)',
+  greenShadow: 'rgba(0, 198, 159, 0.4)',
   white: '#FFFFFF',
   black: '#000000',
   grey: '#BCB9B9',

@@ -9,7 +9,11 @@ export default class Spinner extends PureComponent {
     ...ActivityIndicator.propTypes,
     color: PropTypes.string,
     visible: PropTypes.bool,
-    style: PropTypes.object,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     overlay: PropTypes.bool,
   };
 

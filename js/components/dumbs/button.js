@@ -18,6 +18,11 @@ export default class Button extends PureComponent {
       PropTypes.number,
       PropTypes.array,
     ]),
+    iconStyle: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     transparent: PropTypes.bool,
     light: PropTypes.bool,
     rounded: PropTypes.bool,
@@ -29,7 +34,7 @@ export default class Button extends PureComponent {
 
   render() {
     const {
-      onPress, style, rounded, transparent, light, wrapped, fab, icon, header,
+      onPress, style, iconStyle, rounded, transparent, light, wrapped, fab, icon, header,
     } = this.props;
 
     const children = React.Children.map(
@@ -45,7 +50,7 @@ export default class Button extends PureComponent {
           case Text: {
             newProps = {
               style: [(light && !transparent) && styles.light_text],
-              uppercase: true,
+              uppercase: child.props.uppercase !== undefined ? child.props.uppercase : true,
             };
             break;
           }
@@ -61,6 +66,7 @@ export default class Button extends PureComponent {
           styles.text,
           ...newProps.style,
           fab && styles.fab_text,
+          child.props.style,
         ];
 
         return React.cloneElement(child, { ...child.props, ...newProps });
@@ -97,6 +103,7 @@ export default class Button extends PureComponent {
                 styles.text,
                 { fontSize: 22 },
                 fab && styles.fab_text,
+                iconStyle && iconStyle,
               ]}
             />
           )}

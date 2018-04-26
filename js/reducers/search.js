@@ -22,10 +22,10 @@ const searchReducer = (state = initialState, action) => {
         peopleLoading: true,
       };
     case `${PEOPLE_SEARCH}_SUCCESS`:
-    console.log('PEOPLE_SEARCH', action.payload);
       return {
         ...state,
         peopleLoading: false,
+        people: action.payload,
       };
     case `${PLACES_SEARCH}_REQUEST`:
       return {

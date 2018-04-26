@@ -1,14 +1,20 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
 import Spinner from '../../dumbs/spinner';
 import LayoutView from '../../dumbs/layoutView';
+import Button from '../../dumbs/button';
+
+import { colors } from '../../../parameters';
 
 const MAX_LIST = 3;
+
+const googleImage = require('../../../../assets/images/icons/google.png');
+const placeImage = require('../../../../assets/images/icons/place.png');
 
 class Tab extends PureComponent {
   static propTypes = {
@@ -20,32 +26,60 @@ class Tab extends PureComponent {
     placesLoading: PropTypes.bool,
   };
 
+  toPeople = () => {
+    console.log('this.props.navigation', this.props.navigation)
+    this.props.navigation.navigate('People');
+  }
+
   render() {
     const {
-      navigation: { state: { routeName } },
+      navigation,
       reviews,
       people, peopleLoading,
       places, placesLoading,
     } = this.props;
 
-    const allPage = routeName === 'All';
+    const allPage = navigation.state.routeName === 'All';
 
     return (
       <LayoutView type="container" style={styles.container}>
         { people && (
-          <List label={allPage ? 'RESULTS BY PEOPLE' : null} style={styles.list} styleWrapper={{ marginTop: 0 }}>
-            <Spinner visible={peopleLoading} />
-            {!peopleLoading && people.slice(0, MAX_LIST).map(result => (
+          <List
+            label={allPage ? 'RESULTS BY PEOPLE' : null}
+            style={[styles.list, { marginTop: 0 }]}
+            action="see all"
+            actionDisable={people.length <= MAX_LIST}
+            onActionPress={() => navigation.navigate('People')}
+          >
+            <Spinner visible={peopleLoading} style={styles.spinner} />
+            {!peopleLoading && (allPage ? people.slice(0, MAX_LIST) : people).map(result => (
               <ListItem
                 key={result.id}
-                text=""
-              />
+                text={`${result.first_name} ${result.last_name}`}
+                secondaryText={!result.type ? null : (result.type === 'friends_friends' ? '2nd' : '3rd')}
+                thumbnail={{ uri: result.picture }}
+              >
+                {(result.type === 'friends_friends') && (
+                  <Button
+                    transparent
+                    style={{ height: 24, padding: 0 }}
+                    iconStyle={styles.icon}
+                    onPress={() => true}
+                    icon="person-add"
+                  />
+                )}
+              </ListItem>
             ))}
           </List>
         )}
         { reviews && (
-          <List label={allPage ? 'RESULTS BY REVIEWS' : null} style={styles.list}>
-            {reviews.slice(0, MAX_LIST).map(result => (
+          <List
+            label={allPage ? 'RESULTS BY REVIEWS' : null}
+            style={styles.list}
+            action="see all"
+            actionDisable={reviews.length <= MAX_LIST}
+          >
+            {(allPage ? reviews.slice(0, MAX_LIST) : reviews).map(result => (
               <ListItem
                 key={result.id}
                 text=""
@@ -54,9 +88,14 @@ class Tab extends PureComponent {
           </List>
         )}
         { places && (
-          <List label={allPage ? 'RESULTS BY PLACES' : null} style={styles.list}>
-            <Spinner visible={placesLoading} />
-            {!placesLoading && places.slice(0, MAX_LIST).map(result => (
+          <List
+            label={allPage ? 'RESULTS BY PLACES' : null}
+            style={styles.list}
+            action="see all"
+            actionDisable={places.length <= MAX_LIST}
+          >
+            <Spinner visible={placesLoading} style={styles.spinner} />
+            {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
               <ListItem
                 key={result.id}
                 text=""
@@ -103,7 +142,14 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
   },
   list: {
-    paddingTop: 16,
-    minHeight: 52,
+    minHeight: 62,
+    marginTop: 24,
+  },
+  spinner: {
+    marginTop: 4,
+  },
+  icon: {
+    fontSize: 24,
+    color: colors.green,
   },
 });
