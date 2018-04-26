@@ -1,6 +1,6 @@
 import { API_CALL } from './constants';
 
-function apiCall(type, method, path, params, data, schema, options) {
+function apiCall(type, method, path, params, data, schema, parser, options) {
   return {
     type: API_CALL,
     meta: {
@@ -15,22 +15,23 @@ function apiCall(type, method, path, params, data, schema, options) {
       params,
       data,
       schema,
+      parser,
     },
   };
 }
 
-export function apiGet(type, path, params = {}, schema = null, options = {}) {
-  return apiCall(type, 'get', path, {}, params, schema, options);
+export function apiGet(type, path, params = {}, schema = null, parser = null, options = {}) {
+  return apiCall(type, 'get', path, {}, params, schema, parser, options);
 }
 
-export function apiPost(type, path, data = {}, schema = null, options = {}) {
-  return apiCall(type, 'post', path, data, {}, schema, options);
+export function apiPost(type, path, data = {}, schema = null, parser = null, options = {}) {
+  return apiCall(type, 'post', path, data, {}, schema, parser, options);
 }
 
-export function apiPut(type, path, data = {}, schema = null, options = {}) {
-  return apiCall(type, 'put', path, data, {}, schema, options);
+export function apiPut(type, path, data = {}, schema = null, parser = null, options = {}) {
+  return apiCall(type, 'put', path, data, {}, schema, parser, options);
 }
 
-export function apiDelete(type, path, schema = null, options = {}) {
-  return apiCall(type, 'delete', path, {}, {}, schema, options);
+export function apiDelete(type, path, schema = null, parser = null, options = {}) {
+  return apiCall(type, 'delete', path, {}, {}, schema, parser, options);
 }

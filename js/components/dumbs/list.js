@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
 import Text from './text';
+import LayoutView from './layoutView';
 
 import { colors } from '../../parameters';
 
@@ -12,32 +13,47 @@ export default class List extends PureComponent {
       PropTypes.array,
       PropTypes.object,
     ]),
-    style: PropTypes.string,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
+    styleWrapper: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     label: PropTypes.string,
   };
 
   render() {
-    const { children, style, label } = this.props;
+    const {
+      children, style, styleWrapper, label,
+    } = this.props;
 
     return (
-      <View
-        {...this.props}
-        style={[styles.listContainer, style && style]}
-      >
+      <View style={[styles.wrapper, styleWrapper]}>
         {label && (
           <Text uppercase style={styles.label}>
             {label}
           </Text>
         )}
-        {children}
+        <View
+          {...this.props}
+          style={[styles.listContainer, style && style]}
+        >
+          {children}
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  listContainer: {
+  wrapper: {
     marginTop: 24,
+  },
+  listContainer: {
     backgroundColor: colors.white,
   },
   label: {

@@ -3,25 +3,57 @@ import Config from 'react-native-config';
 import { apiGet } from '../requests';
 
 import {
-  NEARBY,
-  GPLACE_SEARCH,
+  REVIEWS_SEARCH,
+  PLACES_SEARCH,
+  PEOPLE_SEARCH,
 } from '../constants/search';
 
-export function getNearbyPlaces(place) {
-  const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-  const key = `key=${Config.PLACES_API_KEY}`;
-  const location = `location=${place.latitude},${place.longitude}`;
-  const radius = 'radius=500';
+const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 
-  return apiGet(NEARBY, `${url}?${key}&${location}&${radius}`);
+function peopleParser(people) {
+  if (!people) {
+    return [];
+  }
+
+  return [
+    ...people.friends,
+    ...people.friends_friends.map(friend => ({
+      ...friend,
+      type: 'friends_friends',
+    })),
+    ...people.others.map(other => ({
+      ...other,
+      type: 'other',
+    })),
+  ];
 }
 
-export function gplacesSearch(query) {
-  const url = 'https://maps.googleapis.com/maps/api/place/queryautocomplete/json';
-  const key = `key=${Config.PLACES_API_KEY}`;
-  const input = `input=${query}`;
+export function reviewsSearch(query) {
+  return {
+    type: REVIEWS_SEARCH,
+    query,
+  };
+}
 
-  return apiGet(GPLACE_SEARCH, `${url}?${key}&${input}`);
+export function peopleSearch(query) {
+  return apiGet(PEOPLE_SEARCH, 'friends/search/', { query }, null, peopleParser);
+}
+
+export function placesSearch(query) {
+  const key = `key=${Config.PLACES_API_KEY}`;
+  const coord = COORD_REGEX.exec(query);
+  let url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+  let params = `input=${query}`;
+
+  if (coord && coord.length >= 3) {
+    const location = `location=${coord[1]},${coord[2]}`;
+    const radius = 'radius=500';
+
+    url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+    params = `${location}&${radius}`;
+  }
+
+  return apiGet(PLACES_SEARCH, `${url}?${key}&${params}`);
 }
 
 export function placeDetails(placeId) {
@@ -32,7 +64,7 @@ export function placeDetails(placeId) {
   return fetch(`${url}?${key}&${placeid}`);
 }
 
-export function gPlaceToPlace(gPlace) {
+function gPlaceToPlace(gPlace) {
   return gPlace ? {
     ...gPlace,
     id: gPlace.place_id,

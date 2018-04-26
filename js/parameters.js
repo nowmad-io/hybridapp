@@ -43,6 +43,7 @@ export const colors = {
   transparent: 'rgba(0, 0, 0, 0)',
   ripple: 'rgba(256, 256, 256, 0.3)',
   rippleDark: 'rgba(0, 0, 0, 0.15)',
+  disabled: 'rgba(0, 0, 0, 0.4)',
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);

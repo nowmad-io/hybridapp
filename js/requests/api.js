@@ -21,7 +21,7 @@ class Api {
 
     methods.forEach((method) => {
       this[method] = (path, {
-        params, data, options, schema,
+        params, data, options, schema, parser,
       } = {}) => {
         const config = {
           ...baseConfig,
@@ -56,6 +56,7 @@ class Api {
           .then(response => ({ response, format }))
           .then(Api.handleErrors)
           .then(response => response[format]())
+          .then(response => (parser ? parser(response) : response))
           .then(response => (schema ? normalize(response, schema) : response));
       };
     });

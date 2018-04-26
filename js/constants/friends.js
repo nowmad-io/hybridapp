@@ -5,4 +5,3 @@ export const SEND_FRIENDSHIP = 'friends/SEND_FRIENDSHIP';
 export const ACCEPT_FRIENDSHIP = 'friends/ACCEPT_FRIENDSHIP';
 export const CANCEL_FRIENDSHIP = 'friends/CANCEL_FRIENDSHIP';
 export const REJECT_FRIENDSHIP = 'friends/REJECT_FRIENDSHIP';
-export const FRIENDS_SEARCH = 'friends/FRIENDS_SEARCH';

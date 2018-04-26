@@ -5,7 +5,7 @@ import { API_CALL } from './constants';
 export const apiGeneric = api =>
   function* _apiGeneric(action) {
     const {
-      method, path, params, data, schema,
+      method, path, params, data, schema, parser,
     } = action.payload;
     const { options } = action.payload;
     const { request, success, failure } = action.meta;
@@ -25,7 +25,7 @@ export const apiGeneric = api =>
 
     try {
       const response = yield call(api[method], path, {
-        params, data, options, schema,
+        params, data, options, schema, parser,
       });
       yield put({ type: success, payload: response });
     } catch (error) {

@@ -6,10 +6,7 @@ import {
   CATEGORIES,
   ADD_REVIEW,
   UPDATE_REVIEW,
-  REVIEW_BY_QUERY,
 } from '../constants/reviews';
-
-import { GPLACE_SEARCH } from '../constants/search';
 
 const userSchema = new schema.Entity('users');
 const categorySchema = new schema.Entity('categories');
@@ -44,12 +41,4 @@ export function addReview(data) {
 
 export function updateReview(data) {
   return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, simpleReviewSchema);
-}
-
-export function reviewsSearchByQuery(query) {
-  return apiGet(REVIEW_BY_QUERY, 'places/', { query });
-}
-
-export function reviewsSearchByUser(email) {
-  return apiGet(GPLACE_SEARCH, 'places/', { user: email });
 }

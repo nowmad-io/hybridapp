@@ -8,7 +8,6 @@ import {
   ACCEPT_FRIENDSHIP,
   CANCEL_FRIENDSHIP,
   REJECT_FRIENDSHIP,
-  FRIENDS_SEARCH,
 } from '../constants/friends';
 
 export function fetchFriends() {
@@ -37,8 +36,4 @@ export function rejectFriendship(id) {
 
 export function cancelFriendship(id) {
   return apiGet(CANCEL_FRIENDSHIP, 'get', `friendships/cancel/${id}/`);
-}
-
-export function friendsSearch(query) {
-  return apiGet(FRIENDS_SEARCH, 'friends/search/', { query });
 }

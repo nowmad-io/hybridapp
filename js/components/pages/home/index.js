@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
-import CarouselXY from '../../dumbs/carouselXY';
+import Carousel from './carousel';
 import Marker from '../../dumbs/marker';
 import MarkerPosition from '../../dumbs/markerPosition';
 import Button from '../../dumbs/button';
@@ -13,7 +13,7 @@ import Icon from '../../dumbs/icon';
 import Filters from '../../dumbs/filters';
 import Badge from '../../dumbs/badge';
 import Map from '../../map';
-import SearchWrapper from '../../searchWrapper';
+import Search from './search';
 
 import { levelChange, getGeolocation, regionChanged, filtersChange } from '../../../actions/home';
 import { selectPlaces, selectVisiblePlaces } from '../../../reducers/home';
@@ -40,7 +40,6 @@ class Home extends Component {
     this.state = {
       selectedPlace: {},
       addThisPlace: false,
-      searchVisible: false,
       panY: new Animated.Value(-carousel.level1),
       filtersVisible: false,
     };
@@ -48,7 +47,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.level) {
-      this._carouselXY.goToLevel(this.props.level);
+      this._carousel.goToLevel(this.props.level);
     }
   }
 
@@ -80,7 +79,7 @@ class Home extends Component {
 
   onMarkerPress = (place) => {
     this.setState({ selectedPlace: place });
-    this._carouselXY.goToEntry(place);
+    this._carousel.goToEntry(place);
   }
 
   onIndexChange = (place) => {
@@ -99,37 +98,14 @@ class Home extends Component {
     this.props.dispatch(regionChanged(region));
   }
 
-  onMapReady = () => {
-  }
-
   onMapLongPress = () => {
-  }
-
-  onNewMarkerPress = () => {
-  }
-
-  onNearbySelected = () => {
-  }
-
-  onNearbyPlaceSelected = () => {
-  }
-
-  onPlaceSelected = () => {
-  }
-
-  onPlacesSelected = () => {
-  }
-
-  onReviewPress = () => {
-  }
-
-  onFriendPress = () => {
+    // Nearby search
   }
 
   onHeaderPress = () => {
     const toLevel = (this.props.level <= 2) ? this.props.level === 1 ? 2 : 1 : null;
     if (toLevel) {
-      this._carouselXY.goToLevel(toLevel);
+      this._carousel.goToLevel(toLevel);
       this.onLevelChange(toLevel);
     }
   }
@@ -150,9 +126,9 @@ class Home extends Component {
 
   onFiltersPress = () => {
     if (this.state.filtersVisible) {
-      this._carouselXY.goToLevel(this.props.level);
+      this._carousel.goToLevel(this.props.level);
     } else {
-      this._carouselXY.goToLevel(1);
+      this._carousel.goToLevel(1);
     }
     this.setState({ filtersVisible: !this.state.filtersVisible });
   }
@@ -169,14 +145,6 @@ class Home extends Component {
     this.props.dispatch(getGeolocation());
   }
 
-  onSearchFocus = () => {
-    this.setState({ searchVisible: true });
-  }
-
-  onSearchBlur = () => {
-    this.setState({ searchVisible: false });
-  }
-
   onSearchClear = () => {
   }
 
@@ -186,17 +154,14 @@ class Home extends Component {
 
   render() {
     const {
-      navigation, places, visiblePlaces, region, categories, filters,
+      navigation, places, visiblePlaces, region, categories, filters, geolocation,
     } = this.props;
     const {
-      addThisPlace, searchVisible, panY, filtersVisible, selectedPlace,
+      addThisPlace, panY, filtersVisible, selectedPlace,
     } = this.state;
 
     return (
-      <SearchWrapper
-        ref={(sw) => { this._searchWrapper = sw; }}
-        onFocus={this.onSearchFocus}
-        onBlur={this.onSearchBlur}
+      <Search
         onClear={this.onSearchClear}
         onNearbySelected={this.onNearbySelected}
         onNearbyPlaceSelected={this.onNearbyPlaceSelected}
@@ -206,7 +171,7 @@ class Home extends Component {
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
       >
-        {(addThisPlace && !searchVisible) && (
+        {addThisPlace && (
           <Button
             style={styles.addPlaceButton}
             onPress={this.onAddPlace}
@@ -218,7 +183,6 @@ class Home extends Component {
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
-          onMapReady={this.onMapReady}
           onLongPress={this.onMapLongPress}
           region={region}
           onRegionChangeComplete={this.onRegionChange}
@@ -237,9 +201,15 @@ class Home extends Component {
               onMarkerPress={this.onMarkerPress}
             />
           ))}
+          {geolocation && geolocation.location && (
+            <MarkerPosition
+              location={geolocation.location}
+              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
+            />
+          )}
         </Map>
-        <CarouselXY
-          ref={(c) => { this._carouselXY = c; }}
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
           data={visiblePlaces}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
@@ -290,7 +260,7 @@ class Home extends Component {
             </Button>
           </Animated.View>
         </Filters>
-      </SearchWrapper>
+      </Search>
     );
   }
 }
@@ -310,7 +280,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
-
 
 const styles = StyleSheet.create({
   addPlaceButton: {
