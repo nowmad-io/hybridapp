@@ -26,11 +26,6 @@ class Tab extends PureComponent {
     placesLoading: PropTypes.bool,
   };
 
-  toPeople = () => {
-    console.log('this.props.navigation', this.props.navigation)
-    this.props.navigation.navigate('People');
-  }
-
   render() {
     const {
       navigation,
@@ -78,6 +73,7 @@ class Tab extends PureComponent {
             style={styles.list}
             action="see all"
             actionDisable={reviews.length <= MAX_LIST}
+            onActionPress={() => navigation.navigate('Reviews')}
           >
             {(allPage ? reviews.slice(0, MAX_LIST) : reviews).map(result => (
               <ListItem
@@ -93,6 +89,7 @@ class Tab extends PureComponent {
             style={styles.list}
             action="see all"
             actionDisable={places.length <= MAX_LIST}
+            onActionPress={() => navigation.navigate('Places')}
           >
             <Spinner visible={placesLoading} style={styles.spinner} />
             {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
