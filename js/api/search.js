@@ -1,4 +1,5 @@
 import Config from 'react-native-config';
+import shortid from 'shortid';
 
 import { apiGet } from '../requests';
 
@@ -28,6 +29,20 @@ function peopleParser(people) {
   ];
 }
 
+function autocompleteToPlace(autocomplete) {
+  if (!autocomplete) {
+    return [];
+  }
+
+  return [
+    ...autocomplete.predictions.map(prediction => ({
+      ...prediction,
+      id: shortid.generate(),
+      name: prediction.description,
+    })),
+  ];
+}
+
 export function reviewsSearch(query) {
   return {
     type: REVIEWS_SEARCH,
@@ -44,6 +59,7 @@ export function placesSearch(query) {
   const coord = COORD_REGEX.exec(query);
   let url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
   let params = `input=${query}`;
+  const parser = autocompleteToPlace;
 
   if (coord && coord.length >= 3) {
     const location = `location=${coord[1]},${coord[2]}`;
@@ -53,7 +69,7 @@ export function placesSearch(query) {
     params = `${location}&${radius}`;
   }
 
-  return apiGet(PLACES_SEARCH, `${url}?${key}&${params}`);
+  return apiGet(PLACES_SEARCH, `${url}?${key}&${params}`, {}, null, parser);
 }
 
 export function placeDetails(placeId) {

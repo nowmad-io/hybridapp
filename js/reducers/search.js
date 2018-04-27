@@ -63,6 +63,14 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         placesLoading: false,
+        places: action.payload,
+      };
+    case `${PEOPLE_SEARCH}_ERROR`:
+    case `${PLACES_SEARCH}_ERROR`:
+      return {
+        ...state,
+        peopleLoading: false,
+        placesLoading: false,
       };
     case REVIEWS_SEARCH:
       return {

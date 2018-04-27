@@ -94,11 +94,12 @@ class Tab extends PureComponent {
             actionDisable={places.length <= MAX_LIST}
             onActionPress={() => navigation.navigate('Places')}
           >
-            <Spinner visible={placesLoading}/>
+            <Spinner visible={placesLoading} />
             {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
               <ListItem
                 key={result.id}
-                text=""
+                text={result.name}
+                thumbnail={googleImage}
               />
             ))}
           </List>
