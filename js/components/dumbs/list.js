@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import Text from './text';
 import Button from './button';
 
-import { colors } from '../../parameters';
+import { colors, font } from '../../parameters';
 
 export default class List extends PureComponent {
   static propTypes = {
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   label: {
     color: colors.greyDark,
     flex: 1,
+    marginBottom: 18,
   },
   actionButton: {
     height: 14,
@@ -86,6 +87,7 @@ const styles = StyleSheet.create({
   action: {
     fontSize: 14,
     color: colors.green,
+    fontWeight: font.fontWeight.regular,
   },
   action_disable: {
     color: colors.greenShadow,

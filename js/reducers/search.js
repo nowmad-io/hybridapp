@@ -1,17 +1,44 @@
+import { createSelector } from 'reselect';
+import Fuse from 'fuse.js';
+import _ from 'lodash';
+
 import {
   PEOPLE_SEARCH,
   REVIEWS_SEARCH,
   PLACES_SEARCH,
 } from '../constants/search';
-
 import { LOGOUT } from '../constants/auth';
+
+import { getReviews } from './entities';
+
+const options = {
+  shouldSort: true,
+  keys: [
+    'short_description',
+    'information',
+    'categories.name',
+  ],
+};
+
+const getFuse = createSelector(
+  [getReviews],
+  reviews => new Fuse(_.map(reviews, review => review), options),
+);
+
+const getQuery = state => state.search.query;
+
+export const selectFilteredReviews = createSelector(
+  [getFuse, getQuery],
+  (fuse, query) => fuse.search(query),
+);
 
 const initialState = {
   reviews: [],
   people: [],
   places: [],
-  peopleLoading: false,
-  placesLoading: false,
+  peopleLoading: true,
+  placesLoading: true,
+  query: '',
 };
 
 const searchReducer = (state = initialState, action) => {
@@ -40,6 +67,7 @@ const searchReducer = (state = initialState, action) => {
     case REVIEWS_SEARCH:
       return {
         ...state,
+        query: action.query,
       };
     case LOGOUT:
       return initialState;

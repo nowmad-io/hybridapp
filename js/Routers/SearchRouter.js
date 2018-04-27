@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   regular: {
     fontSize: 14,
     fontWeight: font.fontWeight.medium,
+    color: colors.disabled,
   },
   focused: {
     color: colors.black,

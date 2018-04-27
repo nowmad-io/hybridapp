@@ -17,7 +17,7 @@ import Search from './search';
 
 import { levelChange, getGeolocation, regionChanged, filtersChange } from '../../../actions/home';
 import { selectPlaces, selectVisiblePlaces } from '../../../reducers/home';
-import { placeDetails, gPlaceToPlace } from '../../../api/search';
+import { placeDetails } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
 
@@ -114,7 +114,6 @@ class Home extends Component {
     placeDetails(poi.placeId)
       .then(response => response.json())
       .then(({ result }) => {
-        this.onNearbyPlaceSelected(gPlaceToPlace(result));
       });
   }
 
@@ -163,13 +162,7 @@ class Home extends Component {
     return (
       <Search
         onClear={this.onSearchClear}
-        onNearbySelected={this.onNearbySelected}
-        onNearbyPlaceSelected={this.onNearbyPlaceSelected}
-        onPlaceSelected={this.onPlaceSelected}
-        onPlacesSelected={this.onPlacesSelected}
-        onFriendPress={this.onFriendPress}
         onMenuPress={() => navigation.navigate('DrawerOpen')}
-        onReviewPress={this.onReviewPress}
       >
         {addThisPlace && (
           <Button

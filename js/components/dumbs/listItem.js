@@ -20,6 +20,7 @@ export default class List extends PureComponent {
     thumbnail: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
+      PropTypes.number,
     ]),
     disabled: PropTypes.bool,
   };
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 18,
+    marginBottom: 18,
   },
   image_disabled: {
     opacity: 0.5,

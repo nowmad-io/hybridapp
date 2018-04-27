@@ -164,15 +164,7 @@ const bindActions = dispatch => ({
   dispatch,
 });
 
-const mapStateToProps = state => ({
-  nearbyPlaces: state.search.nearbyPlaces,
-  reviewsSearch: state.search.reviewsSearch,
-  friendsSearch: state.search.friendsSearch,
-  nearbyLoading: state.search.nearbyLoading,
-  friendsLoading: state.search.friendsLoading,
-  reviewsLoading: state.search.reviewsLoading,
-  placesLoading: state.search.placesLoading,
-});
+const mapStateToProps = null;
 
 export default connect(mapStateToProps, bindActions, null, { withRef: true })(SearchWrapper);
 

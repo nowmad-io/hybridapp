@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 
 import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
 import Spinner from '../../dumbs/spinner';
-import LayoutView from '../../dumbs/layoutView';
 import Button from '../../dumbs/button';
 
-import { colors } from '../../../parameters';
+import { selectFilteredReviews } from '../../../reducers/search';
+
+import { sizes, colors } from '../../../parameters';
 
 const MAX_LIST = 3;
 
@@ -37,16 +38,16 @@ class Tab extends PureComponent {
     const allPage = navigation.state.routeName === 'All';
 
     return (
-      <LayoutView type="container" style={styles.container}>
+      <ScrollView style={styles.container}>
         { people && (
           <List
             label={allPage ? 'RESULTS BY PEOPLE' : null}
-            style={[styles.list, { marginTop: 0 }]}
+            style={styles.list}
             action="see all"
             actionDisable={people.length <= MAX_LIST}
             onActionPress={() => navigation.navigate('People')}
           >
-            <Spinner visible={peopleLoading} style={styles.spinner} />
+            <Spinner visible={peopleLoading} />
             {!peopleLoading && (allPage ? people.slice(0, MAX_LIST) : people).map(result => (
               <ListItem
                 key={result.id}
@@ -79,7 +80,8 @@ class Tab extends PureComponent {
             {(allPage ? reviews.slice(0, MAX_LIST) : reviews).map(result => (
               <ListItem
                 key={result.id}
-                text=""
+                text={result.short_description}
+                thumbnail={placeImage}
               />
             ))}
           </List>
@@ -92,7 +94,7 @@ class Tab extends PureComponent {
             actionDisable={places.length <= MAX_LIST}
             onActionPress={() => navigation.navigate('Places')}
           >
-            <Spinner visible={placesLoading} style={styles.spinner} />
+            <Spinner visible={placesLoading}/>
             {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
               <ListItem
                 key={result.id}
@@ -101,7 +103,7 @@ class Tab extends PureComponent {
             ))}
           </List>
         )}
-      </LayoutView>
+      </ScrollView>
     );
   }
 }
@@ -114,7 +116,7 @@ const mapStateToProps = (state, props) => {
   const { routeName } = props.navigation.state;
 
   const reviews = {
-    reviews: state.search.reviews,
+    reviews: selectFilteredReviews(state),
   };
   const people = {
     people: state.search.people,
@@ -138,13 +140,12 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 22,
+    flex: 1,
+    height: sizes.height,
   },
   list: {
     minHeight: 62,
-    marginTop: 24,
-  },
-  spinner: {
-    marginTop: 4,
+    marginBottom: 16,
   },
   icon: {
     fontSize: 24,
