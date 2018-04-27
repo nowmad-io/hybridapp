@@ -8,7 +8,7 @@ import Entry from '../../dumbs/entry';
 
 import { sizes, carousel } from '../../../parameters';
 
-export default class carouselXY extends PureComponent {
+export default class Carousel extends PureComponent {
   static propTypes = {
     navigation: PropTypes.object,
     style: PropTypes.oneOfType([

@@ -33,13 +33,11 @@ const searchReducer = (state = initialState, action) => {
         placesLoading: true,
       };
     case `${PLACES_SEARCH}_SUCCESS`:
-    console.log('PLACES_SEARCH', action);
       return {
         ...state,
         placesLoading: false,
       };
     case REVIEWS_SEARCH:
-    console.log('REVIEWS_SEARCH', action);
       return {
         ...state,
       };

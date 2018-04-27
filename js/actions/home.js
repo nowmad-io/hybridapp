@@ -3,11 +3,7 @@ import {
   SET_GEOLOCATION,
   LEVEL_CHANGE,
   REGION_CHANGE,
-  NEW_PLACE,
-  CURRENT_PLACES,
-  GOOGLE_PLACE,
-  SEARCHED_PLACES,
-  FROM_REVIEW,
+  PLACE_SELECT,
   FILTERS_CHANGE,
 } from '../constants/home';
 
@@ -44,37 +40,9 @@ export function filtersChange(categories) {
   };
 }
 
-export function selectNewPlace(place) {
+export function placeSelect(place) {
   return {
-    type: NEW_PLACE,
+    type: PLACE_SELECT,
     place,
-  };
-}
-
-export function currentPlacesChange(places) {
-  return {
-    type: CURRENT_PLACES,
-    places,
-  };
-}
-
-export function googlePlace(place) {
-  return {
-    type: GOOGLE_PLACE,
-    place,
-  };
-}
-
-export function _searchedPlaces(places) {
-  return {
-    type: SEARCHED_PLACES,
-    places,
-  };
-}
-
-export function setFromReview(from) {
-  return {
-    type: FROM_REVIEW,
-    from,
   };
 }
