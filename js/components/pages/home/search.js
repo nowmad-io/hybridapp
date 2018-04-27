@@ -75,6 +75,7 @@ class SearchWrapper extends Component {
 
   onClearPress = () => {
     this.setState({ text: '', previousValue: '' });
+    this.searchDebounced('');
     this.props.onClear();
   }
 
