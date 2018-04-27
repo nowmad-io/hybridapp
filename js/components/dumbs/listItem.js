@@ -21,20 +21,27 @@ export default class List extends PureComponent {
       PropTypes.string,
       PropTypes.object,
     ]),
+    disabled: PropTypes.bool,
   };
 
   render() {
     const {
-      children, onPress, text, secondaryText, thumbnail,
+      children, onPress, text, secondaryText, thumbnail, disabled,
     } = this.props;
 
     return (
       <TouchableOpacity onPress={onPress} style={styles.wrapper}>
         { thumbnail && (
-          <Image source={thumbnail} style={styles.image} />
+          <Image
+            source={thumbnail}
+            style={[
+              styles.image,
+              disabled && styles.image_disabled,
+            ]}
+          />
         )}
         <LayoutView type="wrapper">
-          <Text>{text}</Text>
+          <Text style={[disabled && styles.secondaryText]}>{text}</Text>
           {secondaryText && (
             <Text style={styles.secondaryText}> - {secondaryText}</Text>
           )}
@@ -54,6 +61,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: 18,
+  },
+  image_disabled: {
+    opacity: 0.5,
   },
   image: {
     height: 24,

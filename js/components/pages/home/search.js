@@ -150,7 +150,7 @@ class SearchWrapper extends Component {
         <View
           style={[
             styles.tabs,
-            { top: sizes.headerHeight },
+            focused && { top: sizes.headerHeight },
           ]}
         >
           <SearchRouter />

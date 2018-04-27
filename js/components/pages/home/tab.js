@@ -53,6 +53,7 @@ class Tab extends PureComponent {
                 text={`${result.first_name} ${result.last_name}`}
                 secondaryText={!result.type ? null : (result.type === 'friends_friends' ? '2nd' : '3rd')}
                 thumbnail={{ uri: result.picture }}
+                disabled={result.type === 'other'}
               >
                 {(result.type === 'friends_friends') && (
                   <Button
