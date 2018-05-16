@@ -1,26 +1,33 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Animated, PanResponder, View, StyleSheet } from 'react-native';
 import SnapCarousel from 'react-native-snap-carousel';
 import _ from 'lodash';
 
 import Entry from '../../dumbs/entry';
 
+import { placeSelect } from '../../../actions/home';
+import { selectVisiblePlaces } from '../../../reducers/home';
+
 import { sizes, carousel } from '../../../parameters';
 
-export default class Carousel extends PureComponent {
+class Carousel extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
       PropTypes.array,
     ]),
-    data: PropTypes.array,
+    visiblePlaces: PropTypes.array,
+    selectedPlace: PropTypes.object,
     onLevelChange: PropTypes.func,
     onIndexChange: PropTypes.func,
     onHeaderPress: PropTypes.func,
     panY: PropTypes.object,
+    defaultEntry: PropTypes.object,
   };
 
   static valueToLevel(value) {
@@ -31,7 +38,6 @@ export default class Carousel extends PureComponent {
     super(props);
 
     this.state = {
-      data: props.data || [],
       buttonsHeight: 0,
       carouselEnabled: true,
     };
@@ -89,27 +95,29 @@ export default class Carousel extends PureComponent {
           toValue: -toValue - this.state.buttonsHeight,
         }).start(() => {
           this.setState({ carouselEnabled: true });
-          this.props.onLevelChange(carouselXY.valueToLevel(toValue));
+          this.props.onLevelChange(Carousel.valueToLevel(toValue));
         });
       },
     });
   }
 
-  componentDidMount() {
-    this.props.onIndexChange(this.props.data[0]);
-  }
-
-  componentWillReceiveProps({ data }) {
-    if (data && !_.isEqual(data, this.props.data)) {
-      const currentEntry = this.state.data[this._carousel.currentIndex];
-      const index = currentEntry ? data.findIndex(d => d.id === currentEntry.id) : -1;
-      const newData = index !== -1 ?
-        [currentEntry, ..._.filter(data, d => d.id !== currentEntry.id)] : data;
-
-      this.setState({ data: newData }, () => {
-        this.goToIndex(0, false);
-        this.props.onIndexChange(newData[0]);
-      });
+  componentDidUpdate({ selectedPlace, visiblePlaces }) {
+    console.log('componentDidUpdate ?', this.props.selectedPlace, selectedPlace);
+    console.log('componentDidUpdate visiblePlaces', this.props.visiblePlaces, visiblePlaces);
+    if (!_.isEqual(this.props.selectedPlace, selectedPlace)
+      || !_.isEqual(this.props.visiblePlaces, visiblePlaces)) {
+      const index = this.props.visiblePlaces.findIndex(d => d.id === this.props.selectedPlace.id);
+      console.log('index', index)
+      console.log('this._carousel.currentIndex', this._carousel.currentIndex)
+      console.log('this._carousel.currentScrollPosition', this._carousel.currentScrollPosition)
+      // this._carousel.snapToItem(0, false, false);
+      if (index !== -1 && index !== this._carousel.currentIndex) {
+        console.log('this.goToIndex(index);')
+        this.goToIndex(index);
+      } else if (index === -1) {
+        console.log('this.goToIndex(0);')
+        this.goToIndex(0);
+      }
     }
   }
 
@@ -120,7 +128,8 @@ export default class Carousel extends PureComponent {
   }
 
   _onIndexChange = (index) => {
-    this.props.onIndexChange(this.state.data[index]);
+    console.log('_onIndexChange ?');
+    this.props.dispatch(placeSelect(this.props.visiblePlaces[index]));
   }
 
   levelToValue(level) {
@@ -141,7 +150,7 @@ export default class Carousel extends PureComponent {
   }
 
   goToEntry(place, animated = true) {
-    const index = this.state.data.findIndex(d => d.id === place.id);
+    const index = this.props.visiblePlaces.findIndex(d => d.id === place.id);
 
     if (index !== -1) {
       this._carousel.snapToItem(index, animated);
@@ -160,8 +169,8 @@ export default class Carousel extends PureComponent {
   )
 
   render() {
-    const { panY } = this.props;
-    const { carouselEnabled, data } = this.state;
+    const { panY, visiblePlaces } = this.props;
+    const { carouselEnabled } = this.state;
 
     return (
       <Animated.View
@@ -173,7 +182,7 @@ export default class Carousel extends PureComponent {
       >
         <SnapCarousel
           ref={(c) => { this._carousel = c; }}
-          data={data}
+          data={visiblePlaces}
           renderItem={this._renderItem}
           sliderWidth={carousel.sliderWidth}
           itemWidth={carousel.itemWidth}
@@ -192,6 +201,17 @@ export default class Carousel extends PureComponent {
     );
   }
 }
+
+const bindActions = dispatch => ({
+  dispatch,
+});
+
+const mapStateToProps = state => ({
+  visiblePlaces: selectVisiblePlaces(state),
+  selectedPlace: state.home.selectedPlace,
+});
+
+export default connect(mapStateToProps, bindActions, null, { withRef: true })(Carousel);
 
 const styles = StyleSheet.create({
   carousel: {

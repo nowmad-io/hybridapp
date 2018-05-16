@@ -3,7 +3,12 @@ import _ from 'lodash';
 
 import { getReviews, getPlaces } from './entities';
 
-import { REGION_CHANGE, LEVEL_CHANGE, FILTERS_CHANGE } from '../constants/home';
+import {
+  REGION_CHANGE,
+  LEVEL_CHANGE,
+  FILTERS_CHANGE,
+  PLACE_SELECT,
+} from '../constants/home';
 import { ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -57,6 +62,7 @@ const initialState = {
     latitude: 20.476854784243514,
   },
   addingReview: false,
+  selectedPlace: {},
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -91,6 +97,11 @@ const homeReducer = (state = initialState, action) => {
         filters: {
           categories: action.categories,
         },
+      };
+    case PLACE_SELECT:
+      return {
+        ...state,
+        selectedPlace: action.place,
       };
     case LOGOUT:
       return initialState;

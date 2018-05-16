@@ -15,8 +15,8 @@ import Badge from '../../dumbs/badge';
 import Map from '../../map';
 import Search from './search';
 
-import { levelChange, getGeolocation, regionChanged, filtersChange } from '../../../actions/home';
-import { selectPlaces, selectVisiblePlaces } from '../../../reducers/home';
+import { levelChange, getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';
+import { selectPlaces } from '../../../reducers/home';
 import { placeDetails } from '../../../api/search';
 
 import { sizes, carousel } from '../../../parameters';
@@ -25,8 +25,8 @@ class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
+    selectedPlace: PropTypes.object,
     places: PropTypes.array,
-    visiblePlaces: PropTypes.array,
     geolocation: PropTypes.object,
     level: PropTypes.number,
     region: PropTypes.object,
@@ -38,7 +38,6 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      selectedPlace: {},
       addThisPlace: false,
       panY: new Animated.Value(-carousel.level1),
       filtersVisible: false,
@@ -71,19 +70,19 @@ class Home extends Component {
         bottom: level === 1 ? carousel.level1 : carousel.level2,
       });
 
-      if (level === 2 && this.state.selectedPlace) {
-        this._map.animateToCoordinate(this.state.selectedPlace);
+      if (level === 2 && this.props.selectedPlace) {
+        this._map.animateToCoordinate(this.props.selectedPlace);
       }
     }
   }
 
   onMarkerPress = (place) => {
-    this.setState({ selectedPlace: place });
-    this._carousel.goToEntry(place);
+    this.props.dispatch(placeSelect(place));
   }
 
   onIndexChange = (place) => {
-    this.setState({ selectedPlace: place });
+    console.log('yo ?', place);
+    this.props.dispatch(placeSelect(place));
 
     if (this.props.level === 2) {
       this._map.animateToCoordinate(place);
@@ -147,22 +146,31 @@ class Home extends Component {
   onSearchClear = () => {
   }
 
+  onReviewPress = (place) => {
+    this.onFiltersChange({ categories: [] });
+    this.props.dispatch(placeSelect(place));
+    this._map.animateToCoordinate(place);
+    this._carousel.goToLevel(2);
+    this.onLevelChange(2);
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
 
   render() {
     const {
-      navigation, places, visiblePlaces, region, categories, filters, geolocation,
+      navigation, places, region, categories, filters, geolocation, selectedPlace,
     } = this.props;
     const {
-      addThisPlace, panY, filtersVisible, selectedPlace,
+      addThisPlace, panY, filtersVisible,
     } = this.state;
 
     return (
       <Search
         onClear={this.onSearchClear}
         onMenuPress={() => navigation.navigate('DrawerOpen')}
+        onReviewPress={this.onReviewPress}
       >
         {addThisPlace && (
           <Button
@@ -202,8 +210,9 @@ class Home extends Component {
           )}
         </Map>
         <Carousel
-          ref={(c) => { this._carousel = c; }}
-          data={visiblePlaces}
+          ref={(c) => {
+            if (c) { this._carousel = c.getWrappedInstance(); }
+          }}
           onIndexChange={this.onIndexChange}
           onLevelChange={this.onLevelChange}
           onHeaderPress={this.onHeaderPress}
@@ -263,9 +272,9 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
+  selectedPlace: state.home.selectedPlace,
   places: selectPlaces(state),
   categories: state.entities.categories,
-  visiblePlaces: selectVisiblePlaces(state),
   geolocation: state.home.geolocation,
   level: state.home.level,
   region: state.home.region,

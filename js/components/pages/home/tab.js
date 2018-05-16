@@ -20,12 +20,23 @@ const placeImage = require('../../../../assets/images/icons/place.png');
 class Tab extends PureComponent {
   static propTypes = {
     navigation: PropTypes.object,
+    screenProps: PropTypes.object,
     reviews: PropTypes.array,
     people: PropTypes.array,
     peopleLoading: PropTypes.bool,
+    placesEntities: PropTypes.object,
     places: PropTypes.array,
     placesLoading: PropTypes.bool,
   };
+
+  onReviewPress(review) {
+    console.log('this.props.placesEntities', this.props.placesEntities)
+    console.log('review', review)
+    this.props.screenProps.onReviewPress({
+      ...review,
+      place: this.props.placesEntities[review.place],
+    });
+  }
 
   render() {
     const {
@@ -38,7 +49,10 @@ class Tab extends PureComponent {
     const allPage = navigation.state.routeName === 'All';
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
         { people && (
           <List
             label={allPage ? 'RESULTS BY PEOPLE' : null}
@@ -82,6 +96,7 @@ class Tab extends PureComponent {
                 key={result.id}
                 text={result.short_description}
                 thumbnail={placeImage}
+                onPress={() => this.onReviewPress(result)}
               />
             ))}
           </List>
@@ -117,6 +132,7 @@ const mapStateToProps = (state, props) => {
   const { routeName } = props.navigation.state;
 
   const reviews = {
+    placesEntities: state.entities.places,
     reviews: selectFilteredReviews(state),
   };
   const people = {

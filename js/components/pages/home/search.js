@@ -19,6 +19,7 @@ class SearchWrapper extends Component {
       PropTypes.object,
     ]),
     dispatch: PropTypes.func,
+    onReviewPress: PropTypes.func,
     onClear: PropTypes.func,
     onMenuPress: PropTypes.func,
   }
@@ -79,6 +80,16 @@ class SearchWrapper extends Component {
     this.props.onClear();
   }
 
+  onReviewPress = ({ short_description: shortDescription, place }) => {
+    console.log('search palce', place);
+    this.blur();
+    this.setState({
+      text: shortDescription,
+      previousValue: shortDescription,
+    });
+    this.props.onReviewPress(place);
+  }
+
   search = _.debounce(this.searchDebounced, 300)
 
   searchDebounced(query) {
@@ -95,6 +106,7 @@ class SearchWrapper extends Component {
   }
 
   blur() {
+    console.log('blur', this.textInput);
     this.setState({ focused: false });
     this.textInput.blur();
   }
@@ -154,7 +166,10 @@ class SearchWrapper extends Component {
             focused && { top: sizes.headerHeight },
           ]}
         >
-          <SearchRouter />
+          <SearchRouter screenProps={{
+              onReviewPress: this.onReviewPress,
+            }}
+          />
         </View>
       </LayoutView>
     );
