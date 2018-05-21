@@ -1,9 +1,12 @@
-# OSX
-#
-.DS_Store
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# node.js
+/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Xcode
-#
 build/
 *.pbxuser
 !default.pbxuser
@@ -23,33 +26,13 @@ DerivedData
 project.xcworkspace
 
 # Android/IntelliJ
-#
 build/
 .idea
 .gradle
 local.properties
 *.iml
 
-# node.js
-#
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# BUCK
-buck-out/
-\.buckd/
+# misc
 *.keystore
-
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
-
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-
 .env.release
+.git2
