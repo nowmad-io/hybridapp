@@ -8,7 +8,6 @@
   },
   "scripts": {
     "avd": "~/Library/Android/sdk/tools/emulator -avd nowmad_avd &",
-    "generateIcon": "yo rn-toolbox:assets --icon icon.png",
     "start": "react-native start",
     "link": "react-native link",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
@@ -61,7 +60,6 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.7.0",
     "eslint-plugin-react-native": "3.2.1",
-    "generator-rn-toolbox": "3.3.0",
     "read-json": "1.0.3",
     "rimraf": "2.6.2",
     "simple-git": "1.92.0"
