@@ -1,5 +1,5 @@
-import devTools from 'remote-redux-devtools';
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { composeWithDevTools } from 'remote-redux-devtools';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {
@@ -21,10 +21,6 @@ export default () => {
 
   const enhancers = [
     applyMiddleware(...middlewares),
-    devTools({
-      name: 'nowmad',
-      realtime: true,
-    }),
   ];
 
   const rootPersistConfig = {
@@ -39,7 +35,7 @@ export default () => {
 
   const store = createStore(
     persistReducer(rootPersistConfig, rootReducer),
-    compose(...enhancers),
+    composeWithDevTools(...enhancers),
   );
 
   const persistor = persistStore(store);
