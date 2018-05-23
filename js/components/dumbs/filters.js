@@ -42,6 +42,7 @@ export default class Filters extends PureComponent {
       Animated.timing(this.state.panY, {
         duration: 200,
         toValue: visible ? 0 : sizes.filters,
+        useNativeDriver: true,
       }).start();
     }
   }

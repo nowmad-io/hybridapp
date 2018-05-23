@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated, View, StyleSheet } from 'react-native';
-import SnapCarousel from 'react-native-snap-carousel';
 import _ from 'lodash';
 
 import Entry from '../../dumbs/entry';
+import PanController from '../../dumbs/panController';
 
 import { placeSelect } from '../../../actions/home';
 import { selectVisiblePlaces } from '../../../reducers/home';
@@ -52,6 +52,7 @@ class Carousel extends PureComponent {
     Animated.timing(this.props.panY, {
       duration: 200,
       toValue: -carousel.level2,
+      useNativeDriver: true,
     }).start();
   }
 
@@ -59,15 +60,16 @@ class Carousel extends PureComponent {
     Animated.timing(this.props.panY, {
       duration: 200,
       toValue: -carousel.level1,
+      useNativeDriver: true,
     }).start();
   }
 
   goToIndex(index, triggerCallBack = true, animated = true) {
-    this._carousel.snapToItem(index, animated, triggerCallBack);
+    // this._carousel.snapToItem(index, animated, triggerCallBack);
   }
 
   _renderItem = ({ item }) => (
-    <View style={styles.entryWrapper}>
+    <View style={styles.entryWrapper} key={item.id}>
       <Entry
         place={item}
         styles={styles.entry}
@@ -80,30 +82,16 @@ class Carousel extends PureComponent {
     const { panY, visiblePlaces } = this.props;
 
     return (
-      <Animated.View
-        style={[
-          styles.carousel,
-          { transform: [{ translateY: panY }] },
-        ]}
-      >
-        <SnapCarousel
-          ref={(c) => { this._carousel = c; }}
-          data={visiblePlaces}
-          renderItem={this._renderItem}
-          sliderWidth={carousel.sliderWidth}
-          itemWidth={carousel.itemWidth}
-          inactiveSlideOpacity={1}
-          inactiveSlideScale={1}
-          onSnapToItem={this._onIndexChange}
-          activeSlideOffset={1}
-          swipeThreshold={1}
-          lockScrollWhileSnapping
-          decelerationRate="fast"
-          activeAnimationType="decay"
-          onLayout={this._onLayout}
-          callbackOffsetMargin={10}
-        />
-      </Animated.View>
+      <PanController
+        ref={(c) => { this._carousel = c; }}
+        style={styles.carousel}
+        horizontal
+        lockDirection
+        xBounds={[-sizes.width * (visiblePlaces.length - 1), null, 0]}
+        data={visiblePlaces}
+        panY={panY}
+        renderItem={this._renderItem}
+      />
     );
   }
 }
@@ -133,7 +121,7 @@ const styles = StyleSheet.create({
     width: sizes.width,
   },
   entryWrapper: {
-    paddingHorizontal: carousel.itemSpacing / 2,
+    paddingRight: carousel.itemSpacing / 2,
     width: carousel.itemWidth,
   },
   entry: {

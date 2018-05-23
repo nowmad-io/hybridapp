@@ -100,8 +100,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.white,
     position: 'relative',
-    minHeight: sizes.height,
-    paddingBottom: sizes.toolbarHeight,
     borderColor: colors.green,
     borderTopWidth: carousel.border,
     borderRadius: 2,
