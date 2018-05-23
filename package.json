@@ -39,7 +39,6 @@
     "react-native-maps": "github:nowmad-io/react-native-maps#map-controls",
     "react-native-modalbox": "1.4.2",
     "react-native-sentry": "0.35.3",
-    "react-native-snap-carousel": "3.7.0",
     "react-native-vector-icons": "4.5.0",
     "react-navigation": "1.5.11",
     "react-navigation-redux-helpers": "1.0.5",
