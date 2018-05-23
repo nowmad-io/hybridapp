@@ -241,6 +241,12 @@ export default class PanController extends Component {
   _listener = null;
   _direction = null;
 
+  _onIndexChange = (x) => {
+    const { snapSpacingX } = this.props;
+
+    this.props.onIndexChange(Math.abs(Math.round(x / snapSpacingX)));
+  }
+
   handleResponderMove(anim, delta, min, max, overshoot) {
     let val = anim._offset + delta;
 
@@ -399,24 +405,14 @@ export default class PanController extends Component {
     const bounds = [endX - spacing / 2, endX + spacing / 2];
     const endV = this.velocityAtBounds(anim._value, velocity, bounds);
 
-    this._listener = anim.addListener(({ value }) => {
-      if (value > bounds[0] && value < bounds[1]) {
-        Animated.spring(anim, {
-          toValue: endX,
-          velocity: endV,
-          useNativeDriver: true,
-        }).start(() => {
-          anim.setValue(endX);
-        });
-      }
-    });
-
-    Animated.decay(anim, {
-      ...this.props.momentumDecayConfig,
-      velocity,
+    Animated.timing(anim, {
+      duration: 200,
+      toValue: endX,
+      velocity: endV,
       useNativeDriver: true,
     }).start(() => {
-      anim.removeListener(this._listener);
+      anim.setValue(endX);
+      this._onIndexChange(endX);
     });
   }
 

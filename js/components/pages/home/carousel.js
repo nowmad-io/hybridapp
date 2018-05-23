@@ -29,7 +29,7 @@ class Carousel extends PureComponent {
     if (!_.isEqual(this.props.selectedPlace, selectedPlace)) {
       const index = selectedPlace ?
         this.props.visiblePlaces.findIndex(d => d.id === selectedPlace.id) : 0;
-      this.goToIndex(index, false);
+      this.goToIndex(index);
     }
   }
 
@@ -42,7 +42,7 @@ class Carousel extends PureComponent {
       this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace.id) : 0;
 
     if (index !== -1) {
-      this.goToIndex(index, false, false);
+      this.goToIndex(index);
     } else {
       this.goToIndex(0);
     }
@@ -64,8 +64,8 @@ class Carousel extends PureComponent {
     }).start();
   }
 
-  goToIndex(index, triggerCallBack = true, animated = true) {
-    // this._carousel.snapToItem(index, animated, triggerCallBack);
+  goToIndex(index) {
+    this._carousel.toIndex(index);
   }
 
   _renderItem = ({ item }) => (
@@ -91,6 +91,7 @@ class Carousel extends PureComponent {
         data={visiblePlaces}
         panY={panY}
         renderItem={this._renderItem}
+        onIndexChange={this._onIndexChange}
       />
     );
   }
