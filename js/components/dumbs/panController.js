@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, PanResponder } from 'react-native';
+import _ from 'lodash';
 
 import { sizes } from '../../parameters';
 
@@ -237,6 +238,19 @@ export default class PanController extends Component {
     });
   }
 
+  shouldComponentUpdate({ data }) {
+    return !_.isEqual(data, this.props.data);
+  }
+
+  componentDidUpdate({ data: prevData }) {
+    const { panX, snapSpacingX, data } = this.props;
+    const currentIndex = Math.abs(Math.round(panX / snapSpacingX));
+    const currentItem = prevData[currentIndex];
+    const newIndex = currentItem ? data.findIndex(item => item.id === currentItem.id) : 0;
+
+    this.toIndex(newIndex);
+  }
+
   _responder = null;
   _listener = null;
   _direction = null;
@@ -457,6 +471,10 @@ export default class PanController extends Component {
   }
 
   toIndex(index) {
+    if (index < 0) {
+      return;
+    }
+
     const { panX } = this.props;
     const toValue = -PanController.closestCenter(
       index * this.props.snapSpacingX,
@@ -467,7 +485,9 @@ export default class PanController extends Component {
       duration: 200,
       useNativeDriver: true,
       toValue,
-    }).start();
+    }).start(() => {
+      panX.setValue(toValue);
+    });
   }
 
   render() {
