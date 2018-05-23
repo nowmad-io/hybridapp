@@ -86,11 +86,6 @@ class Home extends Component {
   }
 
   onFiltersPress = () => {
-    if (this.state.filtersVisible) {
-      this._carousel.show();
-    } else {
-      this._carousel.hide();
-    }
     this.setState({ filtersVisible: !this.state.filtersVisible });
   }
 
@@ -176,6 +171,7 @@ class Home extends Component {
           }}
           navigation={navigation}
           panY={panY}
+          hidden={filtersVisible}
         />
 
         <Animated.View

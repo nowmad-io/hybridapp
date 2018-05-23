@@ -19,13 +19,33 @@ class Carousel extends PureComponent {
     visiblePlaces: PropTypes.array,
     selectedPlace: PropTypes.object,
     panY: PropTypes.object,
+    hidden: PropTypes.bool,
   };
 
-  componentWillReceiveProps({ selectedPlace }) {
+  static defaultProps = {
+    hidden: false,
+  }
+
+  componentWillReceiveProps({ selectedPlace, visiblePlaces, hidden }) {
     if (!_.isEqual(this.props.selectedPlace, selectedPlace)) {
       const index = selectedPlace ?
         this.props.visiblePlaces.findIndex(d => d.id === selectedPlace.id) : 0;
       this.goToIndex(index);
+    }
+
+    if (hidden && !this.props.hidden) {
+      this.toggleVisibility(false, true);
+    }
+    if (!hidden && this.props.hidden) {
+      this.toggleVisibility(this.props.visiblePlaces.length);
+    }
+
+    if (!this.props.hidden) {
+      if (this.props.visiblePlaces.length && !visiblePlaces.length) {
+        this.toggleVisibility(false);
+      } else if (!this.props.visiblePlaces.length && visiblePlaces.length) {
+        this.toggleVisibility(true);
+      }
     }
   }
 
@@ -44,18 +64,10 @@ class Carousel extends PureComponent {
     }
   }
 
-  show = () => {
+  toggleVisibility = (visible = true, half = false) => {
     Animated.timing(this.props.panY, {
       duration: 200,
-      toValue: -carousel.level2,
-      useNativeDriver: true,
-    }).start();
-  }
-
-  hide = () => {
-    Animated.timing(this.props.panY, {
-      duration: 200,
-      toValue: -carousel.level1,
+      toValue: visible ? -carousel.level2 : half ? -carousel.level1 : 0,
       useNativeDriver: true,
     }).start();
   }
