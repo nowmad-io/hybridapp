@@ -443,7 +443,7 @@ export default class PanController extends Component {
     let x1 = x0;
     let x = x1;
     let vf;
-    
+
     /* eslint-disable-next-line no-constant-condition */
     while (true) {
       t += 16;
