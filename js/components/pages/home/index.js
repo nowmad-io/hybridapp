@@ -15,7 +15,7 @@ import Badge from '../../dumbs/badge';
 import Map from '../../map';
 import Search from './search';
 
-import { levelChange, getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';
+import { getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
 import { placeDetails } from '../../../api/search';
 
@@ -28,7 +28,6 @@ class Home extends Component {
     selectedPlace: PropTypes.object,
     places: PropTypes.array,
     geolocation: PropTypes.object,
-    level: PropTypes.number,
     region: PropTypes.object,
     filters: PropTypes.object,
     categories: PropTypes.object,
@@ -39,18 +38,14 @@ class Home extends Component {
 
     this.state = {
       addThisPlace: false,
-      panY: new Animated.Value(-carousel.level1),
+      panY: new Animated.Value(-carousel.level2),
       filtersVisible: false,
     };
   }
 
-  componentDidMount() {
-    if (this.props.level) {
-      this._carousel.goToLevel(this.props.level);
-    }
-  }
+  componentDidMount() {}
 
-  componentWillReceiveProps({ level, geolocation }) {
+  componentWillReceiveProps({ geolocation }) {
     if (geolocation && geolocation.location
         && !geolocation.loading && this.props.geolocation.loading) {
       this._map.fitToCoordinates([geolocation.location], {
@@ -63,34 +58,10 @@ class Home extends Component {
       });
       this.setState({ addThisPlace: true });
     }
-
-    if (level && level !== this.props.level) {
-      this._map.updatePadding({
-        top: sizes.toolbarHeight,
-        bottom: level === 1 ? carousel.level1 : carousel.level2,
-      });
-
-      if (level === 2 && this.props.selectedPlace) {
-        this._map.animateToCoordinate(this.props.selectedPlace);
-      }
-    }
   }
 
   onMarkerPress = (place) => {
     this.props.dispatch(placeSelect(place));
-  }
-
-  onIndexChange = (place) => {
-    console.log('yo ?', place);
-    this.props.dispatch(placeSelect(place));
-
-    if (this.props.level === 2) {
-      this._map.animateToCoordinate(place);
-    }
-  }
-
-  onLevelChange = (level) => {
-    this.props.dispatch(levelChange(level));
   }
 
   onRegionChange = (region) => {
@@ -99,14 +70,6 @@ class Home extends Component {
 
   onMapLongPress = () => {
     // Nearby search
-  }
-
-  onHeaderPress = () => {
-    const toLevel = (this.props.level <= 2) ? this.props.level === 1 ? 2 : 1 : null;
-    if (toLevel) {
-      this._carousel.goToLevel(toLevel);
-      this.onLevelChange(toLevel);
-    }
   }
 
   onPoiClick = (poi) => {
@@ -124,9 +87,9 @@ class Home extends Component {
 
   onFiltersPress = () => {
     if (this.state.filtersVisible) {
-      this._carousel.goToLevel(this.props.level);
+      this._carousel.show();
     } else {
-      this._carousel.goToLevel(1);
+      this._carousel.hide();
     }
     this.setState({ filtersVisible: !this.state.filtersVisible });
   }
@@ -150,8 +113,6 @@ class Home extends Component {
     this.onFiltersChange({ categories: [] });
     this.props.dispatch(placeSelect(place));
     this._map.animateToCoordinate(place);
-    this._carousel.goToLevel(2);
-    this.onLevelChange(2);
   }
 
   zoomOut = () => {
@@ -189,7 +150,7 @@ class Home extends Component {
           onRegionChangeComplete={this.onRegionChange}
           mapPadding={{
             top: sizes.toolbarHeight,
-            bottom: carousel.level1,
+            bottom: carousel.level2,
           }}
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
@@ -213,9 +174,6 @@ class Home extends Component {
           ref={(c) => {
             if (c) { this._carousel = c.getWrappedInstance(); }
           }}
-          onIndexChange={this.onIndexChange}
-          onLevelChange={this.onLevelChange}
-          onHeaderPress={this.onHeaderPress}
           navigation={navigation}
           panY={panY}
         />
@@ -276,7 +234,6 @@ const mapStateToProps = state => ({
   places: selectPlaces(state),
   categories: state.entities.categories,
   geolocation: state.home.geolocation,
-  level: state.home.level,
   region: state.home.region,
   filters: state.home.filters,
 });

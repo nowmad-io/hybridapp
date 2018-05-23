@@ -1,7 +1,6 @@
 import {
   GET_GEOLOCATION,
   SET_GEOLOCATION,
-  LEVEL_CHANGE,
   REGION_CHANGE,
   PLACE_SELECT,
   FILTERS_CHANGE,
@@ -16,13 +15,6 @@ export function setGeolocation(position) {
   return {
     type: SET_GEOLOCATION,
     position,
-  };
-}
-
-export function levelChange(level) {
-  return {
-    type: LEVEL_CHANGE,
-    level,
   };
 }
 

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import shortid from 'shortid';
 
 import Icon from '../icon';
@@ -13,7 +13,6 @@ const googleImg = require('../../../../assets/images/icons/google.png');
 
 export default class ReviewHeader extends PureComponent {
   static propTypes = {
-    onPress: PropTypes.func,
     reviews: PropTypes.array,
     showcase: PropTypes.bool,
     thumbnails: PropTypes.array,
@@ -28,48 +27,46 @@ export default class ReviewHeader extends PureComponent {
 
   render() {
     const {
-      reviews, showcase, thumbnails, placeAddress, onPress,
+      reviews, showcase, thumbnails, placeAddress,
     } = this.props;
 
     return (
-      <TouchableWithoutFeedback onPress={onPress}>
-        <View style={styles.wrapper}>
-          <Thumbnail
-            style={styles.thumbnail}
-            source={
-              reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg
-            }
-          />
-          <View style={styles.textWrapper}>
-            <Text numberOfLines={1}>
-              <Text>
-                {reviews[0].created_by === 'me' ? 'You' : reviews[0].created_by.first_name }
-              </Text>
-              {reviews.length > 1 ? ` and ${reviews.length - 1} more friend${reviews.length > 2 ? 's' : ''}` : ''}
+      <View style={styles.wrapper}>
+        <Thumbnail
+          style={styles.thumbnail}
+          source={
+            reviews[0].created_by.picture ? { uri: reviews[0].created_by.picture } : googleImg
+          }
+        />
+        <View style={styles.textWrapper}>
+          <Text numberOfLines={1}>
+            <Text>
+              {reviews[0].created_by === 'me' ? 'You' : reviews[0].created_by.first_name }
             </Text>
-            <Text numberOfLines={1} note>- { reviews[0].short_description } -</Text>
-            { showcase && (
-              <Text numberOfLines={1} style={styles.address}>
-                <Icon style={styles.addressIcon} name="location-on" /> {placeAddress}
-              </Text>
-            )}
-          </View>
-          {thumbnails.map((review, index) => (
-            <Thumbnail
-              xsmall
-              key={shortid.generate()}
-              style={[
-                styles.thumbnailFriends,
-                {
-                  right: index * 8 + 8,
-                  zIndex: 100 - index,
-                },
-              ]}
-              source={{ uri: review.created_by.picture }}
-            />
-          ))}
+            {reviews.length > 1 ? ` and ${reviews.length - 1} more friend${reviews.length > 2 ? 's' : ''}` : ''}
+          </Text>
+          <Text numberOfLines={1} note>- { reviews[0].short_description } -</Text>
+          { showcase && (
+            <Text numberOfLines={1} style={styles.address}>
+              <Icon style={styles.addressIcon} name="location-on" /> {placeAddress}
+            </Text>
+          )}
         </View>
-      </TouchableWithoutFeedback>
+        {thumbnails.map((review, index) => (
+          <Thumbnail
+            xsmall
+            key={shortid.generate()}
+            style={[
+              styles.thumbnailFriends,
+              {
+                right: index * 8 + 8,
+                zIndex: 100 - index,
+              },
+            ]}
+            source={{ uri: review.created_by.picture }}
+          />
+        ))}
+      </View>
     );
   }
 }

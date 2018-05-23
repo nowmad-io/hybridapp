@@ -5,7 +5,6 @@ import { getReviews, getPlaces } from './entities';
 
 import {
   REGION_CHANGE,
-  LEVEL_CHANGE,
   FILTERS_CHANGE,
   PLACE_SELECT,
 } from '../constants/home';
@@ -50,7 +49,6 @@ const initialState = {
   filters: {
     categories: [],
   },
-  level: 1,
   geolocation: {
     loading: false,
     location: null,
@@ -85,11 +83,6 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         region: action.region,
-      };
-    case LEVEL_CHANGE:
-      return {
-        ...state,
-        level: action.level,
       };
     case FILTERS_CHANGE:
       return {

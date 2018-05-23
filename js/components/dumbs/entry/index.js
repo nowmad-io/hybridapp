@@ -26,7 +26,6 @@ class Entry extends Component {
     ]),
     navigation: PropTypes.object,
     me: PropTypes.object,
-    onHeaderPress: PropTypes.func,
     place: PropTypes.object.isRequired,
   };
 
@@ -60,7 +59,6 @@ class Entry extends Component {
             placeAddress={address}
             showcase
             thumbnails={thumbnails}
-            onPress={this.props.onHeaderPress}
           />
           <View style={styles.item}>
             <Pictures pictures={pictures} />
@@ -81,20 +79,6 @@ class Entry extends Component {
           >
             <Text>{myReview ? 'My review' : 'Add review'}</Text>
           </Button>
-        </View>
-        <View>
-          <View style={styles.addressWrapper}>
-            <Text style={styles.address}>
-              <Icon style={styles.addressIcon} name="location-on" /> {address}
-            </Text>
-          </View>
-          {orderedReviews && orderedReviews.map(review => (
-            <Review
-              key={shortid.generate()}
-              review={review}
-              onPress={() => this.onPressReview(review)}
-            />
-          ))}
         </View>
       </View>
     );
