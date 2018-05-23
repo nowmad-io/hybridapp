@@ -130,7 +130,7 @@ export default class PanController extends Component {
         this._direction = horizontal && !vertical ? 'x' : (vertical && !horizontal ? 'y' : null);
       },
 
-      onPanResponderMove: (_, {
+      onPanResponderMove: (__, {
         dx, dy, x0, y0,
       }) => {
         const {
@@ -180,7 +180,7 @@ export default class PanController extends Component {
         }
       },
 
-      onPanResponderRelease: (_, {
+      onPanResponderRelease: (__, {
         vx, vy, dx, dy,
       }) => {
         const {
@@ -244,11 +244,11 @@ export default class PanController extends Component {
 
   componentDidUpdate({ data: prevData }) {
     const { panX, snapSpacingX, data } = this.props;
-    const currentIndex = Math.abs(Math.round(panX / snapSpacingX));
-    const currentItem = prevData[currentIndex];
-    const newIndex = currentItem ? data.findIndex(item => item.id === currentItem.id) : 0;
-    
-    this.toIndex(newIndex, false);
+    const currentIndex = Math.abs(Math.round(panX._value / snapSpacingX));
+    const item = prevData[currentIndex];
+    const newIndex = item ? data.findIndex(d => d.id === item.id) : -1;
+
+    this.toIndex(newIndex, newIndex < 0, newIndex < 0);
   }
 
   _responder = null;
@@ -470,16 +470,18 @@ export default class PanController extends Component {
     return vf;
   }
 
-  toIndex(index, animated = true) {
-    if (index < 0) {
-      return;
-    }
+  toIndex(i, animated = true, callback = false) {
+    const index = i < 0 ? 0 : i;
 
     const { panX } = this.props;
     const toValue = -PanController.closestCenter(
       index * this.props.snapSpacingX,
       this.props.snapSpacingX,
     );
+
+    if (callback) {
+      this.props.onIndexChange(index);
+    }
 
     if (!animated) {
       panX.setValue(toValue);
