@@ -21,10 +21,6 @@ class Carousel extends PureComponent {
     panY: PropTypes.object,
   };
 
-  componentDidMount() {
-    this.goToIndex(0);
-  }
-
   componentWillReceiveProps({ selectedPlace }) {
     if (!_.isEqual(this.props.selectedPlace, selectedPlace)) {
       const index = selectedPlace ?

@@ -456,6 +456,20 @@ export default class PanController extends Component {
     return vf;
   }
 
+  toIndex(index) {
+    const { panX } = this.props;
+    const toValue = -PanController.closestCenter(
+      index * this.props.snapSpacingX,
+      this.props.snapSpacingX,
+    );
+
+    Animated.timing(panX, {
+      duration: 200,
+      useNativeDriver: true,
+      toValue,
+    }).start();
+  }
+
   render() {
     return (
       <View
