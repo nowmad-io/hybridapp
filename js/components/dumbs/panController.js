@@ -425,10 +425,10 @@ export default class PanController extends Component {
     let x1 = x0;
     let x = x1;
 
+    /* eslint-disable-next-line no-constant-condition */
     while (true) {
       t += 16;
-      x = x0 + (vx / (1 - this.deceleration)) *
-      (1 - Math.exp(-(1 - this.deceleration) * t));
+      x = x0 + (vx / (1 - this.deceleration)) * (1 - Math.exp(-(1 - this.deceleration) * t));
       if (Math.abs(x - x1) < 0.1) {
         x1 = x;
         break;
@@ -443,10 +443,11 @@ export default class PanController extends Component {
     let x1 = x0;
     let x = x1;
     let vf;
+    
+    /* eslint-disable-next-line no-constant-condition */
     while (true) {
       t += 16;
-      x = x0 + (vx / (1 - this.deceleration)) *
-      (1 - Math.exp(-(1 - this.deceleration) * t));
+      x = x0 + (vx / (1 - this.deceleration)) * (1 - Math.exp(-(1 - this.deceleration) * t));
       vf = (x - x1) / 16;
       if (x > bounds[0] && x < bounds[1]) {
         break;
