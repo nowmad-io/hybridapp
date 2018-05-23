@@ -247,8 +247,8 @@ export default class PanController extends Component {
     const currentIndex = Math.abs(Math.round(panX / snapSpacingX));
     const currentItem = prevData[currentIndex];
     const newIndex = currentItem ? data.findIndex(item => item.id === currentItem.id) : 0;
-
-    this.toIndex(newIndex);
+    
+    this.toIndex(newIndex, false);
   }
 
   _responder = null;
@@ -470,7 +470,7 @@ export default class PanController extends Component {
     return vf;
   }
 
-  toIndex(index) {
+  toIndex(index, animated = true) {
     if (index < 0) {
       return;
     }
@@ -481,13 +481,17 @@ export default class PanController extends Component {
       this.props.snapSpacingX,
     );
 
-    Animated.timing(panX, {
-      duration: 200,
-      useNativeDriver: true,
-      toValue,
-    }).start(() => {
+    if (!animated) {
       panX.setValue(toValue);
-    });
+    } else {
+      Animated.timing(panX, {
+        duration: 200,
+        useNativeDriver: true,
+        toValue,
+      }).start(() => {
+        panX.setValue(toValue);
+      });
+    }
   }
 
   render() {
