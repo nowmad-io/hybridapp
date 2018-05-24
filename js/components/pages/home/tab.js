@@ -30,8 +30,6 @@ class Tab extends PureComponent {
   };
 
   onReviewPress(review) {
-    console.log('this.props.placesEntities', this.props.placesEntities)
-    console.log('review', review)
     this.props.screenProps.onReviewPress({
       ...review,
       place: this.props.placesEntities[review.place],

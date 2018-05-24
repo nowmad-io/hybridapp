@@ -58,11 +58,14 @@ class SearchWrapper extends Component {
 
   onFocus() {
     this.setState({ focused: true });
-    this.search(this.state.text);
+    this.searchDebounced(this.state.text);
   }
 
-  onChangeText(text) {
-    this.setState({ text });
+  onChangeText(text, previous = false) {
+    this.setState({
+      text,
+      ...(previous ? { previousValue: text } : {}),
+    });
     this.search(text);
   }
 
@@ -81,13 +84,9 @@ class SearchWrapper extends Component {
   }
 
   onReviewPress = ({ short_description: shortDescription, place }) => {
-    console.log('search palce', place);
     this.blur();
-    this.setState({
-      text: shortDescription,
-      previousValue: shortDescription,
-    });
     this.props.onReviewPress(place);
+    this.onChangeText(shortDescription, true);
   }
 
   search = _.debounce(this.searchDebounced, 300)
@@ -106,7 +105,6 @@ class SearchWrapper extends Component {
   }
 
   blur() {
-    console.log('blur', this.textInput);
     this.setState({ focused: false });
     this.textInput.blur();
   }
