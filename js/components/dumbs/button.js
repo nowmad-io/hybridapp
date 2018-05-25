@@ -49,13 +49,19 @@ export default class Button extends PureComponent {
         switch (child.type) {
           case Text: {
             newProps = {
-              style: [(light && !transparent) && styles.light_text],
+              style: [
+                (light && !transparent) && styles.light_text,
+                fab && fab && styles.fab_text,
+              ],
               uppercase: child.props.uppercase !== undefined ? child.props.uppercase : true,
             };
             break;
           }
           case Icon: {
-            newProps.style = [(React.Children.count(this.props.children) > 1) && styles.icon];
+            newProps.style = [
+              (React.Children.count(this.props.children) > 1) && styles.icon,
+              fab && fab && styles.fab_icon,
+            ];
             break;
           }
           default:
@@ -65,7 +71,6 @@ export default class Button extends PureComponent {
         newProps.style = [
           styles.text,
           ...newProps.style,
-          fab && styles.fab_text,
           child.props.style,
         ];
 
@@ -102,7 +107,7 @@ export default class Button extends PureComponent {
               style={[
                 styles.text,
                 { fontSize: 22 },
-                fab && styles.fab_text,
+                fab && styles.fab_icon,
                 iconStyle && iconStyle,
               ]}
             />
@@ -143,6 +148,10 @@ const styles = StyleSheet.create({
   },
   fab_text: {
     color: colors.black,
+    fontSize: 14,
+  },
+  fab_icon: {
+    color: colors.greyButton,
   },
   rounded: {
     borderRadius: 40,

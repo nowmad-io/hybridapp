@@ -1,8 +1,16 @@
 import { Platform, StatusBar, Dimensions } from 'react-native';
+import hexRgb from 'hex-rgb';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 const isIphoneX = Platform.OS === 'ios' && deviceHeight === 812 && deviceWidth === 375;
+
+function rgba(hex, a = null) {
+  const {
+    red, green, blue, alpha,
+  } = hexRgb(hex);
+  return `rgba(${red}, ${green}, ${blue}, ${a !== null ? a : alpha})`;
+}
 
 export const font = {
   fontFamily: 'Roboto',
@@ -20,9 +28,8 @@ export const font = {
   },
 };
 
-export const colors = {
+const plain = {
   green: '#1DA07F',
-  greenShadow: 'rgba(29, 160, 127, 0.4)',
   white: '#FFFFFF',
   black: '#000000',
   grey: '#BCB9B9',
@@ -30,20 +37,23 @@ export const colors = {
   red: '#FF4A40',
   blue: '#0076FF',
   blueDark: '#101172',
+};
+
+export const colors = {
+  ...plain,
+  greenShadow: rgba(plain.green, 0.4),
   blackShadow: {
     elevation: 5,
-    shadowColor: '#000000',
+    shadowColor: plain.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
   },
-  greyTransparent: 'rgba(188, 185, 185, 0.2)',
-  whiteTransparent: 'rgba(255, 255, 255, 0.6)',
-  whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
-  transparent: 'rgba(0, 0, 0, 0)',
-  ripple: 'rgba(256, 256, 256, 0.3)',
-  rippleDark: 'rgba(0, 0, 0, 0.15)',
-  disabled: 'rgba(0, 0, 0, 0.4)',
+  greyTransparent: rgba(plain.grey, 0.2),
+  greyButton: rgba(plain.black, 0.6),
+  whiteTransparent: rgba(plain.white, 0.6),
+  whiteTransparentLight: rgba(plain.white, 0.8),
+  transparent: rgba(plain.black, 0),
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);

@@ -19,7 +19,7 @@ import { getGeolocation, regionChanged, filtersChange, placeSelect } from '../..
 import { selectPlaces } from '../../../reducers/home';
 import { placeDetails } from '../../../api/search';
 
-import { sizes, carousel } from '../../../parameters';
+import { sizes, carousel, colors } from '../../../parameters';
 
 class Home extends Component {
   static propTypes = {
@@ -211,7 +211,7 @@ class Home extends Component {
               {filters.categories.length ? (
                 <Badge text={filters.categories.length} />
               ) : (
-                <Icon name="equalizer" set="SimpleLineIcons" />
+                <Icon name="equalizer" set="SimpleLineIcons" style={styles.filterIcon} />
               )}
             </Button>
           </Animated.View>
@@ -278,5 +278,8 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     height: 40,
+  },
+  filterIcon: {
+    color: colors.black,
   },
 });
