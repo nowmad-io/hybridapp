@@ -22,6 +22,16 @@ export const selectThumbnail = () => createSelector(
   (place, users, reviews) => users[reviews[place.reviews[0]].created_by].picture,
 );
 
+export const selectReview = reviewId => createSelector(
+  [getReviews],
+  reviews => reviews[reviewId],
+);
+
+export const selectUser = userId => createSelector(
+  [getUsers],
+  users => users[userId],
+);
+
 const initialState = {
   places: {},
   reviews: {},
