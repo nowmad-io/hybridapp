@@ -42,6 +42,7 @@ const plain = {
 export const colors = {
   ...plain,
   greenShadow: rgba(plain.green, 0.4),
+  greenShadowDark: rgba(plain.green, 0.8),
   blackShadow: {
     elevation: 5,
     shadowColor: plain.black,
@@ -77,7 +78,7 @@ export const carousel = {
   itemSpacing: ITEM_SPACING,
   itemWidth: sizes.width - (ITEM_SPACING * 2),
   level1: LEVEL1,
-  level2: 230,
+  level2: 164,
   level3: sizes.height - HELPER - PADDING_TOP,
   border: 4,
 };

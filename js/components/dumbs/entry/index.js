@@ -3,27 +3,15 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import shortid from 'shortid';
 
 import { selectFullPlace } from '../../../reducers/entities';
-import ReviewHeader from './reviewHeader';
 import Review from './review';
 
-import Icon from '../icon';
-import Text from '../text';
-import Button from '../button';
-import Pictures from '../pictures';
-import Tag from '../tag';
 
-import { colors, sizes, carousel } from '../../../parameters';
+import { colors, carousel } from '../../../parameters';
 
 class Entry extends Component {
   static propTypes = {
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
     navigation: PropTypes.object,
     me: PropTypes.object,
     place: PropTypes.object.isRequired,
@@ -43,43 +31,23 @@ class Entry extends Component {
   }
 
   render() {
-    const { place: { address, reviews }, style, me } = this.props;
-    const myReview = me ? _.find(reviews, review => review.created_by.id === me.id) : null;
-    const orderedReviews = myReview ?
-      [myReview, ..._.filter(reviews, ({ id }) => id !== myReview.id)] : reviews;
-    const thumbnails = _.drop(orderedReviews);
-    const pictures = _.flatten(reviews.map(review => review.pictures));
-    const categories = _.uniqWith(_.flatten(reviews.map(review => review.categories)), _.isEqual);
+    const { place: { reviews }, me } = this.props;
+    const review = (me ? _.find(reviews, r => r.created_by.id === me.id) : reviews[0])
+      || reviews[0];
+    const pictures = reviews.map(r => r.pictures);
+    const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
+    const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
 
     return (
-      <View style={[styles.card, style]}>
-        <View>
-          <ReviewHeader
-            reviews={orderedReviews}
-            placeAddress={address}
-            showcase
-            thumbnails={thumbnails}
-          />
-          <View style={styles.item}>
-            <Pictures pictures={pictures} />
-            <View style={styles.tagsWrapper}>
-              {categories.map(categorie => (
-                <Tag
-                  key={shortid.generate()}
-                  text={categorie.name}
-                />
-              ))}
-            </View>
-          </View>
-        </View>
-        <View>
-          <Button
-            wrapped
-            onPress={() => this.onPressAddReview(myReview)}
-          >
-            <Text>{myReview ? 'My review' : 'Add review'}</Text>
-          </Button>
-        </View>
+      <View style={styles.card}>
+        <Review
+          review={{
+            ...review,
+            categories,
+            pictures,
+          }}
+          others={others}
+        />
       </View>
     );
   }
@@ -98,41 +66,12 @@ export default connect(mapStateToProps)(Entry);
 
 const styles = StyleSheet.create({
   card: {
+    height: carousel.level2,
     backgroundColor: colors.white,
     position: 'relative',
     borderColor: colors.green,
     borderTopWidth: carousel.border,
     borderRadius: 2,
     elevation: 3,
-  },
-  addressWrapper: {
-    borderColor: colors.green,
-    borderBottomWidth: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingTop: 1,
-    paddingBottom: 4,
-  },
-  address: {
-    paddingTop: 4,
-    fontSize: 12,
-    alignSelf: 'center',
-    color: colors.grey,
-  },
-  addressIcon: {
-    fontSize: 10,
-    color: colors.grey,
-  },
-  item: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  tagsWrapper: {
-    position: 'absolute',
-    bottom: 8,
-    left: 16,
-    right: 16,
-    alignItems: 'flex-start',
-    flexDirection: 'row',
   },
 });
