@@ -37,6 +37,7 @@ const plain = {
   red: '#FF4A40',
   blue: '#0076FF',
   blueDark: '#101172',
+  yellow: '#FFC546',
 };
 
 export const colors = {
@@ -55,6 +56,7 @@ export const colors = {
   whiteTransparent: rgba(plain.white, 0.6),
   whiteTransparentLight: rgba(plain.white, 0.8),
   transparent: rgba(plain.black, 0),
+  yellowTransparent: rgba(plain.yellow, 0.95),
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);

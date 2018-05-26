@@ -12,13 +12,27 @@ export default class Review extends PureComponent {
     review: PropTypes.object,
     others: PropTypes.array,
     onPress: PropTypes.func,
+    cover: PropTypes.bool,
   }
 
   static initials({ first_name: firstName, last_name: lastName }) {
     return firstName[0] + lastName[0];
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      xHeaderRight: 0,
+    };
+  }
+
+  _onLayout = ({ nativeEvent: { layout: { x } } }) => {
+    this.setState({ xHeaderRight: x });
+  }
+
   render() {
+    const { xHeaderRight } = this.state;
     const {
       onPress,
       review: {
@@ -30,6 +44,7 @@ export default class Review extends PureComponent {
         status,
       },
       others,
+      cover,
     } = this.props;
 
     const userText = userType === 'me' ? 'Me' : `${createdBy.first_name} ${createdBy.last_name[0]}`;
@@ -44,7 +59,10 @@ export default class Review extends PureComponent {
         >
           <View style={styles.header}>
             <Avatar text={Review.initials(createdBy)} />
-            <View style={styles.header_right}>
+            <View
+              style={styles.header_right}
+              onLayout={this._onLayout}
+            >
               <Text>
                 <Text style={styles.user_text}>{userText}</Text>
                 {othersText}
@@ -76,7 +94,14 @@ export default class Review extends PureComponent {
                   style={styles.picture}
                 />
               )}
-              <View style={styles.body_right}>
+              <View
+                style={[
+                  styles.body_right,
+                  cover && (!pictures || !pictures.length) && {
+                    left: xHeaderRight - 14,
+                  },
+                ]}
+              >
                 <Text
                   style={[
                     styles.description,

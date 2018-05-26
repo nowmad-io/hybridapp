@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { selectFullPlace } from '../../../reducers/entities';
 import Review from './review';
+import Icon from '../icon';
 
 
 import { colors, carousel } from '../../../parameters';
@@ -32,8 +33,8 @@ class Entry extends Component {
 
   render() {
     const { place: { reviews }, me } = this.props;
-    const review = (me ? _.find(reviews, r => r.created_by.id === me.id) : reviews[0])
-      || reviews[0];
+    const myReview = me ? _.find(reviews, r => r.created_by.id === me.id) : null;
+    const review = myReview || reviews[0];
     const pictures = _.flatten(reviews.map(r => r.pictures));
     const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
     const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
@@ -47,7 +48,17 @@ class Entry extends Component {
             pictures,
           }}
           others={others}
+          cover
         />
+        <TouchableOpacity style={styles.cta}>
+          <Icon
+            name={myReview ? 'edit' : 'playlist-add'}
+            style={[
+              styles.cta_icon,
+              myReview && styles.cta_edit,
+            ]}
+          />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -73,5 +84,25 @@ const styles = StyleSheet.create({
     borderTopWidth: carousel.border,
     borderRadius: 2,
     elevation: 3,
+  },
+  cta: {
+    backgroundColor: colors.yellowTransparent,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: 64,
+    width: 64,
+    borderTopRightRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingRight: 10,
+  },
+  cta_icon: {
+    color: colors.white,
+    fontSize: 32,
+  },
+  cta_edit: {
+    fontSize: 28,
   },
 });
