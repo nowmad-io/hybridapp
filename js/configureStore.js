@@ -32,12 +32,10 @@ export default () => {
   const rootReducer = combineReducers({ ...reducers });
 
   const addListener = createReduxBoundAddListener('root');
-  const composeEnhancers = composeWithDevTools({
-    suppressConnectErrors: false,
-  });
+
   const store = createStore(
     persistReducer(rootPersistConfig, rootReducer),
-    composeEnhancers(...enhancers),
+    composeWithDevTools(...enhancers),
   );
 
   const persistor = persistStore(store);

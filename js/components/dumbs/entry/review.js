@@ -68,9 +68,10 @@ export default class Review extends PureComponent {
           </View>
           <View style={styles.body}>
             <View style={styles.body_wrapper}>
-              {pictures && pictures.length && (
+              { (pictures && pictures.length > 0) && (
                 <Image
                   resizeMode="cover"
+                  resizeMethode="resize"
                   source={{ uri: pictures[0].source }}
                   style={styles.picture}
                 />
@@ -79,7 +80,7 @@ export default class Review extends PureComponent {
                 <Text
                   style={[
                     styles.description,
-                    pictures && pictures.length && styles.description_noimage,
+                    (!pictures || !pictures.length) && styles.description_noimage,
                   ]}
                 >
                   {shortDescription}
@@ -138,8 +139,11 @@ const styles = StyleSheet.create({
   },
   picture: {
     flex: 1,
+    paddingRight: 12,
   },
   body_right: {
+    paddingLeft: 12,
+    flex: 1,
     justifyContent: 'space-between',
   },
   description: {

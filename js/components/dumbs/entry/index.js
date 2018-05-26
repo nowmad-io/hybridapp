@@ -34,7 +34,7 @@ class Entry extends Component {
     const { place: { reviews }, me } = this.props;
     const review = (me ? _.find(reviews, r => r.created_by.id === me.id) : reviews[0])
       || reviews[0];
-    const pictures = reviews.map(r => r.pictures);
+    const pictures = _.flatten(reviews.map(r => r.pictures));
     const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
     const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
 
