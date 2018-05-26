@@ -43,7 +43,8 @@ class AddReview extends Component {
   constructor(props) {
     super(props);
 
-    const { place, review } = props.navigation.state.params;
+    const { place, review: reviewfromProps } = props.navigation.state.params;
+    const review = reviewfromProps || {};
 
     const defaultReview = {
       created_by: props.me,
@@ -60,7 +61,7 @@ class AddReview extends Component {
     this.state = {
       addingImage: false,
       ...defaultReview,
-      ...(review || {}),
+      ...review,
       place,
     };
   }
@@ -92,6 +93,7 @@ class AddReview extends Component {
     const action = this.state.id ? updateReview : addReview;
     const review = {
       id: shortid.generate(),
+      created_by: this.props.me.id,
       ...this.state,
       pictures: this.state.pictures.map((image) => {
         const picture = image.id ? { pictureId: image.id } : { source: image.data };

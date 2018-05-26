@@ -1,6 +1,6 @@
 import { denormalize, normalize } from 'normalizr';
 import { createSelector } from 'reselect';
-import shortid from 'shortid';
+import _ from 'lodash';
 
 import { placeSchema } from '../api/reviews';
 import { PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES } from '../constants/reviews';
@@ -32,6 +32,27 @@ export const selectUser = userId => createSelector(
   users => users[userId],
 );
 
+function handleAddEditReview(action) {
+  const { place, ...review } = action.params;
+  const newPlace = {
+    ...place,
+    reviews: [{
+      ...review,
+      place: place.id,
+    }],
+  };
+
+  const {
+    entities: { places, reviews }, result,
+  } = normalize(newPlace, action.schema);
+
+  return {
+    places,
+    reviews,
+    result,
+  };
+}
+
 const initialState = {
   places: {},
   reviews: {},
@@ -59,28 +80,32 @@ const entitiesReducer = (state = initialState, action) => {
           ...action.payload.entities.categories,
         },
       };
-    case `${ADD_REVIEW}_REQUEST`:
-    case `${UPDATE_REVIEW}_REQUEST`: {
-      const { entities: { places, reviews }, result } = normalize({
-        id: shortid.generate(),
-        ...action.params,
-      }, action.schema);
-      const placeId = reviews[result].place;
-
-      places[placeId] = {
-        ...places[placeId],
-        reviews: [
-          result,
-          ...places[placeId].reviews,
-        ],
+    case `${ADD_REVIEW}_REQUEST`: {
+      const { places, reviews, result } = handleAddEditReview(action);
+      const { ...placeToUpdate } = state.places[result];
+      const newPlaces = {};
+      newPlaces[result] = {
+        ...places[result],
+        reviews: _.concat(places[result].reviews, placeToUpdate.reviews),
       };
 
       return {
         ...state,
         places: {
           ...state.places,
-          ...places,
+          ...newPlaces,
         },
+        reviews: {
+          ...state.reviews,
+          ...reviews,
+        },
+      };
+    }
+    case `${UPDATE_REVIEW}_REQUEST`: {
+      const { reviews } = handleAddEditReview(action);
+
+      return {
+        ...state,
         reviews: {
           ...state.reviews,
           ...reviews,

@@ -18,16 +18,16 @@ class Entry extends Component {
     place: PropTypes.object.isRequired,
   };
 
-  onPressAddReview(myReview = false) {
+  addOrEditReview = (myReview = false) => () => {
     this.props.navigation.navigate('AddReview', {
       place: this.props.place,
       review: myReview,
     });
   }
 
-  onPressReview(review) {
-    this.props.navigation.navigate('ReviewDetail', {
-      review,
+  placeDetails = () => {
+    this.props.navigation.navigate('PlaceDetail', {
+      place: this.props.place,
     });
   }
 
@@ -42,6 +42,7 @@ class Entry extends Component {
     return (
       <View style={styles.card}>
         <Review
+          onPress={this.placeDetails}
           review={{
             ...review,
             categories,
@@ -50,7 +51,11 @@ class Entry extends Component {
           others={others}
           cover
         />
-        <TouchableOpacity style={styles.cta}>
+        <TouchableOpacity
+          style={styles.cta}
+          activeOpacity={0.6}
+          onPress={this.addOrEditReview(myReview)}
+        >
           <Icon
             name={myReview ? 'edit' : 'playlist-add'}
             style={[

@@ -36,9 +36,9 @@ export function fetchPlaces() {
 }
 
 export function addReview(data) {
-  return apiPost(ADD_REVIEW, 'reviews/', data, simpleReviewSchema);
+  return apiPost(ADD_REVIEW, 'reviews/', data, placeSchema);
 }
 
 export function updateReview(data) {
-  return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, simpleReviewSchema);
+  return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, placeSchema);
 }
