@@ -9,6 +9,11 @@ import { font, colors } from '../../../parameters';
 
 export default class Review extends PureComponent {
   static propTypes = {
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     review: PropTypes.object,
     others: PropTypes.array,
     onPress: PropTypes.func,
@@ -34,6 +39,7 @@ export default class Review extends PureComponent {
   render() {
     const { xHeaderRight } = this.state;
     const {
+      style,
       onPress,
       review: {
         short_description: shortDescription,
@@ -51,7 +57,11 @@ export default class Review extends PureComponent {
     const othersText = others && others.length ? ` and ${others.length} more friend${others.length > 2 ? 's' : ''}` : '';
 
     return (
-      <View style={styles.review}>
+      <View style={[
+          styles.review,
+          style && style,
+        ]}
+      >
         <TouchableOpacity
           onPress={onPress}
           activeOpacity={onPress ? 0.2 : 1}
@@ -157,10 +167,11 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
+    maxHeight: 84,
   },
   body_wrapper: {
     flexDirection: 'row',
-    height: '100%',
+    flex: 1,
   },
   picture: {
     flex: 1,

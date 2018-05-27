@@ -26,7 +26,7 @@ class Entry extends Component {
   }
 
   placeDetails = () => {
-    this.props.navigation.navigate('PlaceDetail', {
+    this.props.navigation.navigate('PlaceDetails', {
       place: this.props.place,
     });
   }
