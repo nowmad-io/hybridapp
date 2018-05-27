@@ -16,10 +16,14 @@ const getFilters = state => state.home.filters;
 
 export const selectPlaces = createSelector(
   [getReviews, getFilters, getPlaces],
-  (reviews, filters, places) => (filters.categories.length ? _.uniq(_.filter(
+  (reviews, filters, places) => (_.uniq(_.filter(
     reviews,
-    review => _.intersection(review.categories, filters.categories).length,
-  ).map(review => places[review.place])) : _.values(places)),
+    review => (
+      (filters.friend ? review.created_by === filters.friend : true)
+      && (filters.categories.length ?
+        _.intersection(review.categories, filters.categories).length : true)
+    ),
+  ).map(review => places[review.place]))),
 );
 
 export const selectVisiblePlaces = createSelector(
@@ -48,6 +52,7 @@ export const selectVisiblePlaces = createSelector(
 const initialState = {
   filters: {
     categories: [],
+    friend: null,
   },
   geolocation: {
     loading: false,
@@ -84,13 +89,15 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         region: action.region,
       };
-    case FILTERS_CHANGE:
+    case FILTERS_CHANGE: {
       return {
         ...state,
         filters: {
-          categories: action.categories,
+          categories: action.categories || state.filters.categories,
+          friend: action.friend !== undefined ? action.friend : state.filters.friend,
         },
       };
+    }
     case PLACE_SELECT:
       return {
         ...state,

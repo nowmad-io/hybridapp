@@ -89,8 +89,8 @@ class Home extends Component {
     this.setState({ filtersVisible: !this.state.filtersVisible });
   }
 
-  onFiltersChange = ({ categories }) => {
-    this.props.dispatch(filtersChange(categories));
+  onFiltersChange = (filters) => {
+    this.props.dispatch(filtersChange(filters));
   }
 
   onAddPlace = () => {
@@ -102,12 +102,17 @@ class Home extends Component {
   }
 
   onSearchClear = () => {
+    this.onFiltersChange({ friend: null });
   }
 
   onReviewPress = (place) => {
     this.onFiltersChange({ categories: [] });
     this.props.dispatch(placeSelect(place));
     this._map.animateToCoordinate(place);
+  }
+
+  onFriendPress = (friend) => {
+    this.onFiltersChange({ friend: friend.id });
   }
 
   zoomOut = () => {
@@ -127,6 +132,7 @@ class Home extends Component {
         onClear={this.onSearchClear}
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
+        onFriendPress={this.onFriendPress}
       >
         {addThisPlace && (
           <Button

@@ -64,7 +64,7 @@ export default class Review extends PureComponent {
       >
         <TouchableOpacity
           onPress={onPress}
-          activeOpacity={onPress ? 0.2 : 1}
+          activeOpacity={onPress ? 0.8 : 1}
           style={{ flex: 1 }}
         >
           <View style={styles.header}>

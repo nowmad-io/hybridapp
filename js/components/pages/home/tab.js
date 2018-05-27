@@ -29,6 +29,10 @@ class Tab extends PureComponent {
     placesLoading: PropTypes.bool,
   };
 
+  onFriendPress(friend) {
+    this.props.screenProps.onFriendPress(friend);
+  }
+
   onReviewPress(review) {
     this.props.screenProps.onReviewPress({
       ...review,
@@ -67,8 +71,9 @@ class Tab extends PureComponent {
                 secondaryText={!result.type ? null : (result.type === 'friends_friends' ? '2nd' : '3rd')}
                 thumbnail={{ uri: result.picture }}
                 disabled={result.type === 'other'}
+                onPress={() => (result.type !== 'other') && this.onFriendPress(result)}
               >
-                {(result.type === 'friends_friends') && (
+                {(result.type === 'friends_friends' || result.type === 'other') && (
                   <Button
                     transparent
                     style={{ height: 24, padding: 0 }}

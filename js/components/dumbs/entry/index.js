@@ -53,7 +53,7 @@ class Entry extends Component {
         />
         <TouchableOpacity
           style={styles.cta}
-          activeOpacity={0.6}
+          activeOpacity={0.8}
           onPress={this.addOrEditReview(myReview)}
         >
           <Icon

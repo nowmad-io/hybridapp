@@ -18,7 +18,7 @@ export default class Tag extends PureComponent {
     return (
       <TouchableOpacity
         onPress={onPress}
-        activeOpacity={onPress ? 0.2 : 1}
+        activeOpacity={onPress ? 0.8 : 1}
       >
         <View style={[
           styles.tags,

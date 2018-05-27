@@ -25,13 +25,21 @@ export default class List extends PureComponent {
     disabled: PropTypes.bool,
   };
 
+  static defaultProps = {
+    onPress: () => false,
+  }
+
   render() {
     const {
       children, onPress, text, secondaryText, thumbnail, disabled,
     } = this.props;
 
     return (
-      <TouchableOpacity onPress={onPress} style={styles.wrapper}>
+      <TouchableOpacity
+        activeOpacity={onPress ? 0.8 : 1}
+        onPress={onPress}
+        style={styles.wrapper}
+      >
         { thumbnail && (
           <Image
             source={thumbnail}

@@ -25,10 +25,10 @@ export function regionChanged(region) {
   };
 }
 
-export function filtersChange(categories) {
+export function filtersChange(filters) {
   return {
     type: FILTERS_CHANGE,
-    categories,
+    ...filters,
   };
 }
 

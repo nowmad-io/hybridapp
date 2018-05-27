@@ -20,6 +20,7 @@ class SearchWrapper extends Component {
     ]),
     dispatch: PropTypes.func,
     onReviewPress: PropTypes.func,
+    onFriendPress: PropTypes.func,
     onClear: PropTypes.func,
     onMenuPress: PropTypes.func,
   }
@@ -87,6 +88,13 @@ class SearchWrapper extends Component {
     this.blur();
     this.props.onReviewPress(place);
     this.onChangeText(shortDescription, true);
+  }
+
+  onFriendPress = (friend) => {
+    console.log('friend', friend);
+    this.blur();
+    this.props.onFriendPress(friend);
+    this.onChangeText(friend.first_name, true);
   }
 
   search = _.debounce(this.searchDebounced, 300)
@@ -166,6 +174,7 @@ class SearchWrapper extends Component {
         >
           <SearchRouter screenProps={{
               onReviewPress: this.onReviewPress,
+              onFriendPress: this.onFriendPress,
             }}
           />
         </View>
