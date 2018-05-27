@@ -45,7 +45,7 @@ export const colors = {
   greenShadow: rgba(plain.green, 0.4),
   greenShadowDark: rgba(plain.green, 0.8),
   blackShadow: {
-    elevation: 5,
+    elevation: 2,
     shadowColor: plain.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,

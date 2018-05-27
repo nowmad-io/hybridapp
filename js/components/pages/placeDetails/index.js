@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, BackHandler, View } from 'react-native';
+import { StyleSheet, BackHandler, View, ScrollView } from 'react-native';
 
 import Review from '../../dumbs/entry/review';
 import Button from '../../dumbs/button';
@@ -46,7 +46,7 @@ export default class PlaceDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <View style={styles.content}>
+        <ScrollView style={styles.content}>
           {reviews.map(review => (
             <View
               key={review.id}
@@ -55,7 +55,7 @@ export default class PlaceDetails extends Component {
               <Review review={review} />
             </View>
           ))}
-        </View>
+        </ScrollView>
       </LayoutView>
     );
   }
@@ -65,15 +65,14 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.white,
-    justifyContent: 'flex-start',
-    padding: 8,
   },
   review: {
     flex: 0,
     minHeight: 162,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    elevation: 4,
+    marginTop: 8,
+    marginHorizontal: 8,
+    borderColor: colors.transparent,
+    backgroundColor: colors.white,
+    elevation: 2,
   },
 });
