@@ -45,7 +45,7 @@ export default class Map extends Component {
 
   onMapReady() {
     if (this._ref) {
-      this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 0 } });
+      this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 0 }] });
     }
 
     this.props.onMapReady();
