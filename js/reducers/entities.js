@@ -80,7 +80,7 @@ const entitiesReducer = (state = initialState, action) => {
           ...action.payload.entities.categories,
         },
       };
-    case `${ADD_REVIEW}_REQUEST`: {
+    case `${UPDATE_REVIEW}_REQUEST`: {
       const { places, reviews, result } = handleAddEditReview(action);
       const { ...placeToUpdate } = state.places[result];
       const newPlaces = {};
@@ -101,11 +101,15 @@ const entitiesReducer = (state = initialState, action) => {
         },
       };
     }
-    case `${UPDATE_REVIEW}_REQUEST`: {
-      const { reviews } = handleAddEditReview(action);
+    case `${ADD_REVIEW}_REQUEST`: {
+      const { reviews, places } = handleAddEditReview(action);
 
       return {
         ...state,
+        places: {
+          ...state.places,
+          ...places,
+        },
         reviews: {
           ...state.reviews,
           ...reviews,

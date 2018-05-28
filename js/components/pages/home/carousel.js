@@ -104,19 +104,8 @@ class Carousel extends Component {
     this._carousel.current.toIndex(index);
   }
 
-  _renderItem = ({ item }) => (
-    <View style={styles.entryWrapper} key={item.id}>
-      <Entry
-        place={item}
-        styles={styles.entry}
-        navigation={this.props.navigation}
-      />
-    </View>
-  )
-
   render() {
     const { panY, visiblePlaces, gPlace } = this.props;
-
     return (
       <PanController
         ref={this._carousel}

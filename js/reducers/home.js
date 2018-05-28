@@ -76,6 +76,7 @@ const homeReducer = (state = initialState, action) => {
     case `${UPDATE_REVIEW}_REQUEST`:
       return {
         ...state,
+        gPlace: null,
         addingReview: true,
       };
     case `${ADD_REVIEW}_SUCCESS`:

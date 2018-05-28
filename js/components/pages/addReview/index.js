@@ -90,11 +90,17 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
-    const action = this.state.id ? updateReview : addReview;
-    const review = {
+    const { place: { google, reviews, ...newPlace }, ...review } = this.state;
+
+    const action = (newPlace.id && !google) ? updateReview : addReview;
+    const newReview = {
       id: shortid.generate(),
       created_by: this.props.me.id,
-      ...this.state,
+      ...review,
+      place: {
+        ...newPlace,
+        ...((newPlace.id && !google) ? { reviews } : {}),
+      },
       pictures: this.state.pictures.map((image) => {
         const picture = image.id ? { pictureId: image.id } : { source: image.data };
 
@@ -105,7 +111,7 @@ class AddReview extends Component {
       }),
     };
     Keyboard.dismiss();
-    this.props.dispatch(action(review));
+    this.props.dispatch(action(newReview));
   }
 
   onImageEditBack = ({ image, remove }) => {

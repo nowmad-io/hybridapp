@@ -19,9 +19,14 @@ class Entry extends Component {
   };
 
   addOrEditReview = (myReview = false) => () => {
+    const { place } = this.props;
+
     this.props.navigation.navigate('AddReview', {
-      place: this.props.place,
-      review: myReview,
+      place,
+      review: myReview && {
+        ...myReview,
+        pictures: !place.google ? myReview.pictures : [],
+      },
     });
   }
 
