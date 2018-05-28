@@ -96,6 +96,7 @@ class AddReview extends Component {
     const newReview = {
       id: shortid.generate(),
       created_by: this.props.me.id,
+      user_type: 'me',
       ...review,
       place: {
         ...newPlace,
