@@ -66,7 +66,7 @@ const friendsReducer = (state = initialState, action) => {
           incoming => (incoming.id !== action.payload.id),
         ),
       };
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return state;

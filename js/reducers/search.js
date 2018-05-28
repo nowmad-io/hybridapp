@@ -77,7 +77,7 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         query: action.query,
       };
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return state;

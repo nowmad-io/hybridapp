@@ -30,7 +30,6 @@ class DrawBar extends React.Component {
     if (!firstName && !lastName) {
       return '';
     }
-
     return `${firstName[0]}${lastName[0]}`;
   }
 
@@ -46,11 +45,11 @@ class DrawBar extends React.Component {
     this.props.dispatch(apiLogout());
   }
 
-  _onAccept = id => () => {
+  onAcceptPress = id => () => {
     this.props.dispatch(acceptFriendship(id));
   }
 
-  _onReject = id => () => {
+  onRejectPress = id => () => {
     this.props.dispatch(rejectFriendship(id));
   }
 
@@ -95,14 +94,14 @@ class DrawBar extends React.Component {
                   icon="close"
                   style={styles.requestButton}
                   iconStyle={styles.requestIcon}
-                  onPress={this._onReject(id)}
+                  onPress={this.onRejectPress(id)}
                 />
                 <Button
                   transparent
                   icon="check"
                   style={styles.requestButton}
                   iconStyle={styles.requestIcon}
-                  onPress={this._onAccept(id)}
+                  onPress={this.onAcceptPress(id)}
                 />
               </View>
             ))}
@@ -125,7 +124,7 @@ class DrawBar extends React.Component {
             <Button
               transparent
               style={styles.footerButton}
-              onPress={() => this.onLogoutPress()}
+              onPress={() => this.onSharePress()}
             >
               <Icon name="share" style={styles.footerIcon} />
               <Text

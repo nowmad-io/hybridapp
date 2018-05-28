@@ -5,7 +5,7 @@ const initialState = MainNavigator.router.getStateForAction(MainNavigator.router
 
 const navReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return MainNavigator.router.getStateForAction(action, state) || state;

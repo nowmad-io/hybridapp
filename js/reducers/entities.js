@@ -112,7 +112,7 @@ const entitiesReducer = (state = initialState, action) => {
         },
       };
     }
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return state;

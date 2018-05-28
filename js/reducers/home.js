@@ -103,7 +103,7 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         selectedPlace: action.place,
       };
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return state;
