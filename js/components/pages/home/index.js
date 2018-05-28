@@ -12,7 +12,7 @@ import Text from '../../dumbs/text';
 import Icon from '../../dumbs/icon';
 import Filters from '../../dumbs/filters';
 import Badge from '../../dumbs/badge';
-import Map from '../../map';
+import Map from '../../dumbs/map';
 import Search from './search';
 
 import { getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';

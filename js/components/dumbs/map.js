@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
-import styles from './styles';
-
-class Map extends Component {
+export default class Map extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.array,
@@ -34,6 +33,9 @@ class Map extends Component {
     onLayout: () => true,
     onMapReady: () => true,
     onPanDrag: () => true,
+    zoomEnabled: true,
+    rotateEnabled: true,
+    scrollEnabled: true,
   }
 
   onRef(ref) {
@@ -83,7 +85,10 @@ class Map extends Component {
         onRegionChangeComplete={newRegion => onRegionChangeComplete(newRegion)}
         onLongPress={event => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
-        style={{ ...styles.map, marginBottom: 1 }}
+        style={[
+          styles.map,
+          { marginBottom: 1 },
+        ]}
         showsMyLocationButton={false}
         initialRegion={region}
         zoomEnabled={zoomEnabled}
@@ -102,14 +107,8 @@ class Map extends Component {
   }
 }
 
-Map.defaultProps = {
-  onRef: () => true,
-  onRegionChangeComplete: () => true,
-  onMapReady: () => true,
-  onLongPress: () => true,
-  zoomEnabled: true,
-  rotateEnabled: true,
-  scrollEnabled: true,
-};
-
-export default Map;
+const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

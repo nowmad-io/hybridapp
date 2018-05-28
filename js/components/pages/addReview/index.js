@@ -20,7 +20,7 @@ import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
 import Icon from '../../dumbs/icon';
 
-import Map from '../../map';
+import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
 import { statusList } from '../../../lists';

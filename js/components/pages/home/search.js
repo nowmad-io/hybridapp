@@ -12,7 +12,7 @@ import LayoutView from '../../dumbs/layoutView';
 
 import { colors, sizes } from '../../../parameters';
 
-class SearchWrapper extends Component {
+class Search extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.array,
@@ -194,7 +194,7 @@ const bindActions = dispatch => ({
 
 const mapStateToProps = null;
 
-export default connect(mapStateToProps, bindActions, null, { withRef: true })(SearchWrapper);
+export default connect(mapStateToProps, bindActions, null, { withRef: true })(Search);
 
 const styles = StyleSheet.create({
   headerButton: {
