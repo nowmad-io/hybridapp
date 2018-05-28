@@ -18,6 +18,7 @@ class Carousel extends PureComponent {
     navigation: PropTypes.object,
     visiblePlaces: PropTypes.array,
     selectedPlace: PropTypes.object,
+    newPlace: PropTypes.object,
     panY: PropTypes.object,
     hidden: PropTypes.bool,
   };
@@ -95,12 +96,19 @@ class Carousel extends PureComponent {
         style={styles.carousel}
         horizontal
         lockDirection
-        xBounds={[-sizes.width * (visiblePlaces.length - 1), null, 0]}
-        data={visiblePlaces}
         panY={panY}
-        renderItem={this._renderItem}
         onIndexChange={this._onIndexChange}
-      />
+      >
+        {visiblePlaces && visiblePlaces.map(place => (
+          <View style={styles.entryWrapper} key={place.id}>
+            <Entry
+              place={place}
+              styles={styles.entry}
+              navigation={this.props.navigation}
+            />
+          </View>
+        ))}
+      </PanController>
     );
   }
 }
@@ -112,6 +120,7 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   visiblePlaces: selectVisiblePlaces(state),
   selectedPlace: state.home.selectedPlace,
+  newPlace: state.home.newPlace,
 });
 
 export default connect(mapStateToProps, bindActions, null, { withRef: true })(Carousel);

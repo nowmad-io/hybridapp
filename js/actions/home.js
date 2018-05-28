@@ -4,6 +4,7 @@ import {
   REGION_CHANGE,
   PLACE_SELECT,
   FILTERS_CHANGE,
+  NEW_PLACE,
 } from '../constants/home';
 
 export function getGeolocation() {
@@ -35,6 +36,13 @@ export function filtersChange(filters) {
 export function placeSelect(place) {
   return {
     type: PLACE_SELECT,
+    place,
+  };
+}
+
+export function newPlace(place) {
+  return {
+    type: NEW_PLACE,
     place,
   };
 }

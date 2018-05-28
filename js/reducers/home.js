@@ -7,6 +7,7 @@ import {
   REGION_CHANGE,
   FILTERS_CHANGE,
   PLACE_SELECT,
+  NEW_PLACE,
 } from '../constants/home';
 import { ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
@@ -66,6 +67,7 @@ const initialState = {
   },
   addingReview: false,
   selectedPlace: {},
+  newPlace: null,
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -102,6 +104,11 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedPlace: action.place,
+      };
+    case NEW_PLACE:
+      return {
+        ...state,
+        newPlace: action.place,
       };
     case `${LOGOUT}_REQUEST`:
       return initialState;

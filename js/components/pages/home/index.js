@@ -15,9 +15,8 @@ import Badge from '../../dumbs/badge';
 import Map from '../../dumbs/map';
 import Search from './search';
 
-import { getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';
+import { getGeolocation, regionChanged, filtersChange, placeSelect, gPlace } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
-import { placeDetails } from '../../../api/search';
 import { sendFriendship } from '../../../api/friends';
 
 import { sizes, carousel, colors } from '../../../parameters';
@@ -33,6 +32,7 @@ class Home extends Component {
     filters: PropTypes.object,
     categories: PropTypes.object,
     me: PropTypes.object,
+    newPlace: PropTypes.object,
   }
 
   constructor(props) {
@@ -70,16 +70,9 @@ class Home extends Component {
     this.props.dispatch(regionChanged(region));
   }
 
-  onMapLongPress = () => {
-    // Nearby search
-  }
+  onMapLongPress = () => {}
 
-  onPoiClick = (poi) => {
-    placeDetails(poi.placeId)
-      .then(response => response.json())
-      .then(({ result }) => {
-      });
-  }
+  onPoiClick = () => {}
 
   onPanDrag = () => {
     if (this.state.addThisPlace) {
@@ -120,13 +113,17 @@ class Home extends Component {
     }));
   }
 
+  onPlacePress = (place) => {
+    this.props.dispatch(gPlace(place));
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
 
   render() {
     const {
-      navigation, places, region, categories, filters, geolocation, selectedPlace,
+      navigation, places, region, categories, filters, geolocation, selectedPlace, newPlace,
     } = this.props;
     const {
       addThisPlace, panY, filtersVisible,
@@ -138,6 +135,7 @@ class Home extends Component {
         onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
         onAddFriendPress={this.onAddFriendPress}
+        onPlacePress={this.onPlacePress}
       >
         {addThisPlace && (
           <Button
@@ -161,6 +159,14 @@ class Home extends Component {
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
         >
+          {newPlace && (
+            <Marker
+              key={shortid.generate()}
+              place={newPlace}
+              selected={selectedPlace && selectedPlace.id === newPlace.id}
+              onMarkerPress={this.onMarkerPress}
+            />
+          )}
           {places.map(place => (
             <Marker
               key={shortid.generate()}
@@ -237,6 +243,7 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
+  newPlace: state.home.newPlace,
   selectedPlace: state.home.selectedPlace,
   places: selectPlaces(state),
   categories: state.entities.categories,

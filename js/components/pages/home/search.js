@@ -22,9 +22,14 @@ class Search extends Component {
     onReviewPress: PropTypes.func,
     onFriendPress: PropTypes.func,
     onAddFriendPress: PropTypes.func,
+    onPlacePress: PropTypes.func,
     onClear: PropTypes.func,
     onMenuPress: PropTypes.func,
   }
+
+  static defaultProps = {
+    onClear: () => true,
+  };
 
   static coordinatesToString(coordinates) {
     if (coordinates && coordinates.latitude && coordinates.longitude) {
@@ -80,7 +85,7 @@ class Search extends Component {
   }
 
   onClearPress = () => {
-    this.props.onFriendPress(null);
+    this.props.onFriendPress({});
     this.setState({ text: '', previousValue: '' });
     this.searchDebounced('');
     this.props.onClear();
@@ -99,7 +104,11 @@ class Search extends Component {
     this.onChangeText(friend.first_name, true);
   }
 
-  onPlacePress = () => {};
+  onPlacePress = (place) => {
+    this.blur();
+    this.props.onPlacePress(place);
+    this.onChangeText(place.name, true);
+  };
 
   onAddFriendPress = (friend) => {
     this.props.onAddFriendPress(friend);

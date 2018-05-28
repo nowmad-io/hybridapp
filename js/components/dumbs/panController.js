@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, PanResponder } from 'react-native';
 import _ from 'lodash';
@@ -12,18 +12,20 @@ const AnimatedPropType = PropTypes.any;
 export default class PanController extends Component {
   static propTypes = {
     // Component Config
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
     lockDirection: PropTypes.bool,
     horizontal: PropTypes.bool,
     vertical: PropTypes.bool,
     overshootX: OvershootPropType,
     overshootY: OvershootPropType,
-    xBounds: PropTypes.arrayOf(PropTypes.number),
     yBounds: PropTypes.arrayOf(PropTypes.number),
     xMode: ModePropType,
     yMode: ModePropType,
     snapSpacingX: PropTypes.number, // TODO: also allow an array of values?
     snapSpacingY: PropTypes.number,
-    data: PropTypes.array,
     renderItem: PropTypes.func,
 
     // Animated Values
@@ -59,7 +61,6 @@ export default class PanController extends Component {
     overshootY: 'clamp',
     panX: new Animated.Value(0),
     panY: new Animated.Value(0),
-    xBounds: [-Infinity, null, Infinity],
     yBounds: [-Infinity, null, Infinity],
     yMode: 'decay',
     xMode: 'snap',
@@ -136,7 +137,6 @@ export default class PanController extends Component {
         const {
           panX,
           panY,
-          xBounds,
           yBounds,
           overshootX,
           overshootY,
@@ -168,7 +168,8 @@ export default class PanController extends Component {
         }
 
         if (horizontal && (!lockDirection || dir === 'x')) {
-          const [xMin, xMax] = xBounds;
+          const xMin = this.childrenWidth();
+          const xMax = 0;
 
           this.handleResponderMove(panX, dx, xMin, xMax, overshootX);
         }
@@ -186,7 +187,6 @@ export default class PanController extends Component {
         const {
           panX,
           panY,
-          xBounds,
           yBounds,
           overshootX,
           overshootY,
@@ -210,7 +210,8 @@ export default class PanController extends Component {
         }
 
         if (!cancel && horizontal && (!lockDirection || dir === 'x')) {
-          const [xMin, xMax] = xBounds;
+          const xMin = this.childrenWidth();
+          const xMax = 0;
           if (this.props.onReleaseX) {
             cancel = !this.props.onReleaseX({
               vx, vy, dx, dy,
@@ -238,10 +239,6 @@ export default class PanController extends Component {
     });
   }
 
-  shouldComponentUpdate({ data }) {
-    return !_.isEqual(data, this.props.data);
-  }
-
   componentDidUpdate({ data: prevData }) {
     const { panX, snapSpacingX, data } = this.props;
     const currentIndex = Math.abs(Math.round(panX._value / snapSpacingX));
@@ -260,6 +257,8 @@ export default class PanController extends Component {
 
     this.props.onIndexChange(Math.abs(Math.round(x / snapSpacingX)));
   }
+
+  childrenWidth = () => (-sizes.width * (Children.count(this.props.children) - 1));
 
   handleResponderMove(anim, delta, min, max, overshoot) {
     let val = anim._offset + delta;
@@ -426,7 +425,7 @@ export default class PanController extends Component {
       useNativeDriver: true,
     }).start(() => {
       anim.setValue(endX);
-      this._onIndexChange(endX);
+      this.onIndexChange(endX);
     });
   }
 
@@ -516,7 +515,7 @@ export default class PanController extends Component {
             },
           ]}
         >
-          {this.props.data.map(place => this.props.renderItem({ item: place }))}
+          {this.props.children}
         </Animated.View>
       </View>
     );

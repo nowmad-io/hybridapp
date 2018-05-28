@@ -8,6 +8,7 @@ import ListItem from '../../dumbs/listItem';
 import Spinner from '../../dumbs/spinner';
 import Button from '../../dumbs/button';
 
+import { placeDetails } from '../../../api/search';
 import { selectFilteredReviews } from '../../../reducers/search';
 
 import { sizes, colors } from '../../../parameters';
@@ -44,10 +45,9 @@ class Tab extends PureComponent {
     });
   }
 
-  onPlacePress = place => () => {
-    this.props.screenProps.onPlacePress({
-      place,
-    });
+  onPlacePress = ({ place_id: placeId }) => () => {
+    placeDetails(placeId)
+      .then(place => this.props.screenProps.onPlacePress(place));
   }
 
   render() {
