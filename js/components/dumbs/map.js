@@ -52,10 +52,10 @@ export default class Map extends Component {
   }
 
   updatePadding(mapPadding) {
-    this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 1 } });
+    this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 1 }] });
     this._ref.map.setNativeProps({ mapPadding });
     setTimeout(() => {
-      this._ref.map.setNativeProps({ style: { ...styles.map, marginBottom: 0 } });
+      this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 0 }] });
     }, 100);
   }
 
