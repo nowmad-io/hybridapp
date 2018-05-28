@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Animated, View, StyleSheet } from 'react-native';
@@ -12,7 +12,7 @@ import { selectVisiblePlaces } from '../../../reducers/home';
 
 import { sizes, carousel } from '../../../parameters';
 
-class Carousel extends PureComponent {
+class Carousel extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
@@ -25,6 +25,12 @@ class Carousel extends PureComponent {
 
   static defaultProps = {
     hidden: false,
+  }
+
+  constructor(props) {
+    super(props);
+
+    this._carousel = React.createRef();
   }
 
   componentWillReceiveProps({ selectedPlace, visiblePlaces, hidden }) {
@@ -50,6 +56,10 @@ class Carousel extends PureComponent {
     }
   }
 
+  shouldComponentUpdate({ visiblePlaces }) {
+    return !_.isEqual(visiblePlaces, this.props.visiblePlaces);
+  }
+
   _onIndexChange = (index) => {
     this.props.dispatch(placeSelect(this.props.visiblePlaces[index]));
   }
@@ -65,6 +75,15 @@ class Carousel extends PureComponent {
     }
   }
 
+  _onCarouselDidUpdate = () => {
+    const { selectedPlace, visiblePlaces } = this.props;
+    const index = (selectedPlace && selectedPlace.id)
+      ? visiblePlaces.findIndex(d => d.id === selectedPlace.id)
+      : -1;
+
+    this._carousel.current.toIndex(index, index < 0, index < 0);
+  }
+
   toggleVisibility = (visible = true, half = false) => {
     Animated.timing(this.props.panY, {
       duration: 200,
@@ -74,7 +93,7 @@ class Carousel extends PureComponent {
   }
 
   goToIndex(index) {
-    this._carousel.toIndex(index);
+    this._carousel.current.toIndex(index);
   }
 
   _renderItem = ({ item }) => (
@@ -92,12 +111,13 @@ class Carousel extends PureComponent {
 
     return (
       <PanController
-        ref={(c) => { this._carousel = c; }}
+        ref={this._carousel}
         style={styles.carousel}
         horizontal
         lockDirection
         panY={panY}
         onIndexChange={this._onIndexChange}
+        onComponentDidUpdate={this._onCarouselDidUpdate}
       >
         {visiblePlaces && visiblePlaces.map(place => (
           <View style={styles.entryWrapper} key={place.id}>

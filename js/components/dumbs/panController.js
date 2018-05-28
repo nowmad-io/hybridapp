@@ -1,4 +1,4 @@
-import React, { Component, Children } from 'react';
+import React, { PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, PanResponder } from 'react-native';
 import _ from 'lodash';
@@ -9,13 +9,14 @@ const ModePropType = PropTypes.oneOf(['decay', 'snap', 'spring-origin']);
 const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);
 const AnimatedPropType = PropTypes.any;
 
-export default class PanController extends Component {
+export default class PanController extends PureComponent {
   static propTypes = {
     // Component Config
     children: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.object,
     ]),
+    onComponentDidUpdate: PropTypes.func,
     lockDirection: PropTypes.bool,
     horizontal: PropTypes.bool,
     vertical: PropTypes.bool,
@@ -239,13 +240,8 @@ export default class PanController extends Component {
     });
   }
 
-  componentDidUpdate({ data: prevData }) {
-    const { panX, snapSpacingX, data } = this.props;
-    const currentIndex = Math.abs(Math.round(panX._value / snapSpacingX));
-    const item = prevData[currentIndex];
-    const newIndex = item ? data.findIndex(d => d.id === item.id) : -1;
-
-    this.toIndex(newIndex, newIndex < 0, newIndex < 0);
+  componentDidUpdate() {
+    this.props.onComponentDidUpdate();
   }
 
   _responder = null;
@@ -425,7 +421,7 @@ export default class PanController extends Component {
       useNativeDriver: true,
     }).start(() => {
       anim.setValue(endX);
-      this.onIndexChange(endX);
+      this._onIndexChange(endX);
     });
   }
 

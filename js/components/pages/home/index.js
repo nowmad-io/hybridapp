@@ -183,9 +183,6 @@ class Home extends Component {
           )}
         </Map>
         <Carousel
-          ref={(c) => {
-            if (c) { this._carousel = c.getWrappedInstance(); }
-          }}
           navigation={navigation}
           panY={panY}
           hidden={filtersVisible}
