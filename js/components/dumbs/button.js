@@ -23,6 +23,11 @@ export default class Button extends PureComponent {
       PropTypes.number,
       PropTypes.array,
     ]),
+    buttonStyle: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     transparent: PropTypes.bool,
     light: PropTypes.bool,
     rounded: PropTypes.bool,
@@ -34,7 +39,7 @@ export default class Button extends PureComponent {
 
   render() {
     const {
-      onPress, style, iconStyle, rounded, transparent, light, wrapped, fab, icon, header,
+      onPress, style, iconStyle, buttonStyle, rounded, transparent, light, wrapped, fab, icon, header,
     } = this.props;
 
     const children = React.Children.map(
@@ -44,6 +49,7 @@ export default class Button extends PureComponent {
           return child;
         }
 
+        const { style: childStyle, ...childProps } = child.props;
         let newProps = { style: {} };
 
         switch (child.type) {
@@ -53,7 +59,7 @@ export default class Button extends PureComponent {
                 (light && !transparent) && styles.light_text,
                 fab && fab && styles.fab_text,
               ],
-              uppercase: child.props.uppercase !== undefined ? child.props.uppercase : true,
+              uppercase: true,
             };
             break;
           }
@@ -71,10 +77,10 @@ export default class Button extends PureComponent {
         newProps.style = [
           styles.text,
           ...newProps.style,
-          child.props.style,
+          childStyle,
         ];
 
-        return React.cloneElement(child, { ...child.props, ...newProps });
+        return React.cloneElement(child, { ...newProps, ...childProps });
       },
     );
 
@@ -98,6 +104,7 @@ export default class Button extends PureComponent {
           style={[
             styles.button,
             wrapped && styles.wrapped_button,
+            buttonStyle && buttonStyle,
           ]}
         >
           {children}
