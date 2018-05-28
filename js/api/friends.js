@@ -31,9 +31,9 @@ export function acceptFriendship(id) {
 }
 
 export function rejectFriendship(id) {
-  return apiGet(REJECT_FRIENDSHIP, 'get', `friendships/reject/${id}/`);
+  return apiGet(REJECT_FRIENDSHIP, `friendships/reject/${id}/`);
 }
 
 export function cancelFriendship(id) {
-  return apiGet(CANCEL_FRIENDSHIP, 'get', `friendships/cancel/${id}/`);
+  return apiGet(CANCEL_FRIENDSHIP, `friendships/cancel/${id}/`);
 }

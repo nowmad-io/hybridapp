@@ -10,7 +10,7 @@ import Avatar from '../../dumbs/avatar';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
 import { apiLogout } from '../../../api/auth';
-import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
+import { acceptFriendship, rejectFriendship } from '../../../api/friends';
 
 import { colors, font } from '../../../parameters';
 
@@ -46,16 +46,12 @@ class DrawBar extends React.Component {
     this.props.dispatch(apiLogout());
   }
 
-  _onAccept(id) {
+  _onAccept = id => () => {
     this.props.dispatch(acceptFriendship(id));
   }
 
-  _onReject(id) {
+  _onReject = id => () => {
     this.props.dispatch(rejectFriendship(id));
-  }
-
-  _onCancel(id) {
-    this.props.dispatch(cancelFriendship(id));
   }
 
   render() {
@@ -80,7 +76,7 @@ class DrawBar extends React.Component {
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.pending}>Pending friend request</Text>
-            { incomings.length > 0 && incomings.map(({ from_user: fromUser }) => (
+            { incomings.length > 0 && incomings.map(({ id, from_user: fromUser }) => (
               <View
                 key={fromUser.id}
                 style={styles.request}
@@ -99,12 +95,14 @@ class DrawBar extends React.Component {
                   icon="close"
                   style={styles.requestButton}
                   iconStyle={styles.requestIcon}
+                  onPress={this._onReject(id)}
                 />
                 <Button
                   transparent
                   icon="check"
                   style={styles.requestButton}
                   iconStyle={styles.requestIcon}
+                  onPress={this._onAccept(id)}
                 />
               </View>
             ))}
@@ -183,10 +181,12 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
     lineHeight: 26,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   footer: {
     width: '100%',
     borderTopWidth: 0.5,
-    borderColor: colors.blueDark,
+    borderColor: colors.grey,
   },
   addFriendsButton: {
     borderWidth: 0,
