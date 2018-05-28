@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Share } from 'react-native';
 import { connect } from 'react-redux';
 
 import Icon from '../../dumbs/icon';
@@ -41,7 +41,16 @@ class DrawBar extends React.Component {
     this.props.dispatch(stopSagas());
   }
 
-  onLogoutPress() {
+  onSharePress = () => {
+    Share.share({
+      message: `Hi!
+Join me in Nowmad and lets start sharing the best places for travelling around the world !
+See you soon on Nowmad !
+https://play.google.com/store/apps/details?id=com.nowmad`,
+    });
+  }
+
+  onLogoutPress = () => {
     this.props.dispatch(apiLogout());
   }
 
@@ -124,7 +133,7 @@ class DrawBar extends React.Component {
             <Button
               transparent
               style={styles.footerButton}
-              onPress={() => this.onSharePress()}
+              onPress={this.onSharePress}
             >
               <Icon name="share" style={styles.footerIcon} />
               <Text
@@ -137,7 +146,7 @@ class DrawBar extends React.Component {
             <Button
               transparent
               style={styles.footerButton}
-              onPress={() => this.onLogoutPress()}
+              onPress={this.onLogoutPress}
             >
               <Icon name="exit-to-app" style={styles.footerIcon} />
               <Text
