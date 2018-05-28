@@ -86,26 +86,30 @@ class Search extends Component {
 
   onClearPress = () => {
     this.props.onFriendPress({});
+    this.props.onPlacePress(null);
     this.setState({ text: '', previousValue: '' });
     this.searchDebounced('');
     this.props.onClear();
   }
 
   onReviewPress = ({ short_description: shortDescription, place }) => {
-    this.props.onFriendPress(null);
     this.blur();
+    this.props.onPlacePress(null);
+    this.props.onFriendPress({});
     this.props.onReviewPress(place);
     this.onChangeText(shortDescription, true);
   }
 
   onFriendPress = (friend) => {
     this.blur();
+    this.props.onPlacePress(null);
     this.props.onFriendPress(friend);
     this.onChangeText(friend.first_name, true);
   }
 
   onPlacePress = (place) => {
     this.blur();
+    this.props.onFriendPress({});
     this.props.onPlacePress(place);
     this.onChangeText(place.name, true);
   };

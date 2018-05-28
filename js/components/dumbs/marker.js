@@ -44,7 +44,7 @@ class Marker extends PureComponent {
       text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
-    const avatarSize = (text === 'me') ? 46 : 40;
+    const avatarSize = (text === 'me') ? 40 : 46;
     const height = !selected ?
       (avatarSize + triangleHelper - 1) : (avatarSize + 2 * (triangleHelper + 1));
 
