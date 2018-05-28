@@ -43,7 +43,7 @@ class Entry extends Component {
     return (
       <View style={styles.card}>
         <Review
-          onPress={this.placeDetails}
+          onPress={() => (!google && this.placeDetails())}
           review={{
             ...review,
             categories,
