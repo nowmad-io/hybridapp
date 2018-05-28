@@ -32,7 +32,7 @@ class Home extends Component {
     filters: PropTypes.object,
     categories: PropTypes.object,
     me: PropTypes.object,
-    newPlace: PropTypes.object,
+    gPlace: PropTypes.object,
   }
 
   constructor(props) {
@@ -123,7 +123,14 @@ class Home extends Component {
 
   render() {
     const {
-      navigation, places, region, categories, filters, geolocation, selectedPlace, newPlace,
+      navigation,
+      places,
+      region,
+      categories,
+      filters,
+      geolocation,
+      selectedPlace,
+      gPlace: googlePlace,
     } = this.props;
     const {
       addThisPlace, panY, filtersVisible,
@@ -159,11 +166,11 @@ class Home extends Component {
           onPoiClick={this.onPoiClick}
           onPanDrag={this.onPanDrag}
         >
-          {newPlace && (
+          {googlePlace && (
             <Marker
               key={shortid.generate()}
-              place={newPlace}
-              selected={selectedPlace && selectedPlace.id === newPlace.id}
+              place={googlePlace}
+              selected={selectedPlace && selectedPlace.id === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
             />
           )}
@@ -240,7 +247,7 @@ const bindActions = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  newPlace: state.home.newPlace,
+  gPlace: state.home.gPlace,
   selectedPlace: state.home.selectedPlace,
   places: selectPlaces(state),
   categories: state.entities.categories,

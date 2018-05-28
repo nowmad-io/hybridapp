@@ -18,7 +18,7 @@ class Carousel extends Component {
     navigation: PropTypes.object,
     visiblePlaces: PropTypes.array,
     selectedPlace: PropTypes.object,
-    newPlace: PropTypes.object,
+    gPlace: PropTypes.object,
     panY: PropTypes.object,
     hidden: PropTypes.bool,
   };
@@ -107,8 +107,8 @@ class Carousel extends Component {
   )
 
   render() {
-    const { panY, visiblePlaces } = this.props;
-
+    const { panY, visiblePlaces, gPlace } = this.props;
+    console.log('gPlace', gPlace);
     return (
       <PanController
         ref={this._carousel}
@@ -119,8 +119,23 @@ class Carousel extends Component {
         onIndexChange={this._onIndexChange}
         onComponentDidUpdate={this._onCarouselDidUpdate}
       >
+        {gPlace && (
+          <View
+            key={gPlace.id}
+            style={styles.entryWrapper}
+          >
+            <Entry
+              place={gPlace}
+              styles={styles.entry}
+              navigation={this.props.navigation}
+            />
+          </View>
+        )}
         {visiblePlaces && visiblePlaces.map(place => (
-          <View style={styles.entryWrapper} key={place.id}>
+          <View
+            key={place.id}
+            style={styles.entryWrapper}
+          >
             <Entry
               place={place}
               styles={styles.entry}
@@ -140,7 +155,7 @@ const bindActions = dispatch => ({
 const mapStateToProps = state => ({
   visiblePlaces: selectVisiblePlaces(state),
   selectedPlace: state.home.selectedPlace,
-  newPlace: state.home.newPlace,
+  gPlace: state.home.gPlace,
 });
 
 export default connect(mapStateToProps, bindActions, null, { withRef: true })(Carousel);

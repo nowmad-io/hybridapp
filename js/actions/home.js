@@ -4,7 +4,7 @@ import {
   REGION_CHANGE,
   PLACE_SELECT,
   FILTERS_CHANGE,
-  NEW_PLACE,
+  G_PLACE,
 } from '../constants/home';
 
 export function getGeolocation() {
@@ -40,9 +40,9 @@ export function placeSelect(place) {
   };
 }
 
-export function newPlace(place) {
+export function gPlace(place) {
   return {
-    type: NEW_PLACE,
+    type: G_PLACE,
     place,
   };
 }

@@ -30,7 +30,7 @@ class Marker extends PureComponent {
   render() {
     const {
       place: {
-        reviews, latitude, longitude,
+        reviews, latitude, longitude, google,
       },
       selected,
       review,
@@ -40,7 +40,7 @@ class Marker extends PureComponent {
 
     if (reviews && reviews.length > 1) {
       text = reviews.length;
-    } else if (review) {
+    } else if (review && !google) {
       text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
@@ -65,6 +65,8 @@ class Marker extends PureComponent {
           <Avatar
             size={avatarSize}
             text={text}
+            set="FontAwesome"
+            icon={google && 'google'}
             uppercase={(text !== 'me')}
             style={[
               selected && styles.avatar_selected,
@@ -86,18 +88,14 @@ class Marker extends PureComponent {
 }
 
 const mapStateToProps = (state, props) => {
-  const { place: { reviews } } = props;
+  const { place: { google, reviews } } = props;
 
-  if (!reviews || !reviews.length) {
-    return {};
-  }
-
-  const review = selectReview(reviews[0])(state);
+  const review = google ? reviews[0] : selectReview(reviews[0])(state);
 
   return {
     review: {
       ...review,
-      created_by: review && selectUser(review.created_by)(state),
+      ...(!google ? { created_by: review && selectUser(review.created_by)(state) } : {}),
     },
   };
 };

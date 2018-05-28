@@ -16,8 +16,8 @@ const gPlaceToPlace = gPlace => ({
   address: gPlace.formatted_address,
   latitude: gPlace.geometry.location.lat,
   longitude: gPlace.geometry.location.lng,
+  google: true,
   reviews: [{
-    google: true,
     created_by: {
       first_name: gPlace.name,
     },
@@ -105,9 +105,9 @@ export function placeDetails(placeId) {
     .then(response => response.json())
     .then(({ result: { photos, ...gPlace } }) => ({
       ...gPlace,
-      photos: photos.slice(0, 2).map(({ photo_reference: ref }) => ({
+      photos: photos ? photos.slice(0, 2).map(({ photo_reference: ref }) => ({
         source: photoUrl(ref),
-      })),
+      })) : [],
     }))
     .then(gPlace => gPlaceToPlace(gPlace));
 }

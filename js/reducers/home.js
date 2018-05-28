@@ -7,7 +7,7 @@ import {
   REGION_CHANGE,
   FILTERS_CHANGE,
   PLACE_SELECT,
-  NEW_PLACE,
+  G_PLACE,
 } from '../constants/home';
 import { ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
@@ -67,7 +67,7 @@ const initialState = {
   },
   addingReview: false,
   selectedPlace: {},
-  newPlace: null,
+  gPlace: null,
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -105,10 +105,11 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         selectedPlace: action.place,
       };
-    case NEW_PLACE:
+    case G_PLACE:
+      console.log('action.place', action.place);
       return {
         ...state,
-        newPlace: action.place,
+        gPlace: action.place,
       };
     case `${LOGOUT}_REQUEST`:
       return initialState;
