@@ -35,8 +35,10 @@ class Carousel extends Component {
 
   componentWillReceiveProps({ selectedPlace, visiblePlaces, hidden }) {
     if (!_.isEqual(this.props.selectedPlace, selectedPlace)) {
-      const index = selectedPlace ?
-        this.props.visiblePlaces.findIndex(d => d.id === selectedPlace.id) : 0;
+      const index = selectedPlace
+        ? _.compact([this.props.gPlace, ...this.props.visiblePlaces])
+          .findIndex(d => d.id === selectedPlace.id)
+        : 0;
       this.goToIndex(index);
     }
 
@@ -64,7 +66,10 @@ class Carousel extends Component {
   }
 
   _onIndexChange = (index) => {
-    this.props.dispatch(placeSelect(this.props.visiblePlaces[index]));
+    const { visiblePlaces, gPlace } = this.props;
+    this.props.dispatch(placeSelect((gPlace && !index)
+      ? gPlace
+      : visiblePlaces[index - (gPlace ? '1' : 0)]));
   }
 
   _onLayout = () => {
@@ -79,9 +84,9 @@ class Carousel extends Component {
   }
 
   _onCarouselDidUpdate = () => {
-    const { selectedPlace, visiblePlaces } = this.props;
+    const { selectedPlace, visiblePlaces, gPlace } = this.props;
     const index = (selectedPlace && selectedPlace.id)
-      ? visiblePlaces.findIndex(d => d.id === selectedPlace.id)
+      ? _.compact([gPlace, ...visiblePlaces]).findIndex(d => d.id === selectedPlace.id)
       : -1;
 
     this._carousel.current.toIndex(index, index < 0, index < 0);
