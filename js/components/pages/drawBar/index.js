@@ -81,10 +81,32 @@ class DrawBar extends React.Component {
           <ScrollView style={styles.scrollView}>
             <Text style={styles.pending}>Pending friend request</Text>
             { incomings.length > 0 && incomings.map(({ from_user: fromUser }) => (
-              <Avatar
-                text={DrawBar.initials(fromUser)}
-                size={50}
-              />
+              <View
+                key={fromUser.id}
+                style={styles.request}
+              >
+                <Avatar
+                  text={DrawBar.initials(fromUser)}
+                  size={40}
+                />
+                <View style={styles.avatarInfo}>
+                  <Text>
+                    {`${fromUser.first_name} ${fromUser.last_name}`}
+                  </Text>
+                </View>
+                <Button
+                  transparent
+                  icon="close"
+                  style={styles.requestButton}
+                  iconStyle={styles.requestIcon}
+                />
+                <Button
+                  transparent
+                  icon="check"
+                  style={styles.requestButton}
+                  iconStyle={styles.requestIcon}
+                />
+              </View>
             ))}
           </ScrollView>
         </View>
@@ -172,10 +194,43 @@ const styles = StyleSheet.create({
     fontWeight: font.fontWeight.medium,
     color: colors.grey,
   },
+  pending: {
+    fontSize: 18,
+    lineHeight: 20,
+    fontWeight: font.fontWeight.medium,
+    marginBottom: 20,
+  },
   contentWrapper: {
     paddingTop: 32,
     paddingHorizontal: 20,
     flex: 1,
+    width: '100%',
+  },
+  request: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginBottom: 24,
+  },
+  avatarInfo: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  requestButton: {
+    height: 20,
+    width: 20,
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: colors.green,
+    borderRadius: 50,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  requestIcon: {
+    color: colors.green,
+    fontSize: 14,
   },
   footer: {
     width: '100%',

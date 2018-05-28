@@ -39,7 +39,17 @@ export default class Button extends PureComponent {
 
   render() {
     const {
-      onPress, style, iconStyle, buttonStyle, rounded, transparent, light, wrapped, fab, icon, header,
+      onPress,
+      style,
+      iconStyle,
+      buttonStyle,
+      rounded,
+      transparent,
+      light,
+      wrapped,
+      fab,
+      icon,
+      header,
     } = this.props;
 
     const children = React.Children.map(

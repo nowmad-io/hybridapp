@@ -33,6 +33,10 @@ class Tab extends PureComponent {
     this.props.screenProps.onFriendPress(friend);
   }
 
+  onAddFriendPress(friend) {
+    this.props.screenProps.onAddFriendPress(friend);
+  }
+
   onReviewPress(review) {
     this.props.screenProps.onReviewPress({
       ...review,
@@ -78,7 +82,7 @@ class Tab extends PureComponent {
                     transparent
                     style={{ height: 24, padding: 0 }}
                     iconStyle={styles.icon}
-                    onPress={() => true}
+                    onPress={() => this.onAddFriendPress(result)}
                     icon="person-add"
                   />
                 )}

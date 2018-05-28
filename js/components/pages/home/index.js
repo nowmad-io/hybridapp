@@ -18,6 +18,7 @@ import Search from './search';
 import { getGeolocation, regionChanged, filtersChange, placeSelect } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
 import { placeDetails } from '../../../api/search';
+import { sendFriendship } from '../../../api/friends';
 
 import { sizes, carousel, colors } from '../../../parameters';
 
@@ -31,6 +32,7 @@ class Home extends Component {
     region: PropTypes.object,
     filters: PropTypes.object,
     categories: PropTypes.object,
+    me: PropTypes.object,
   }
 
   constructor(props) {
@@ -115,6 +117,13 @@ class Home extends Component {
     this.onFiltersChange({ friend: friend.id });
   }
 
+  onAddFriendPress = ({ id }) => {
+    this.props.dispatch(sendFriendship({
+      from_user_id: this.props.me.id,
+      to_user_id: id,
+    }));
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
@@ -133,6 +142,7 @@ class Home extends Component {
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
+        onAddFriendPress={this.onAddFriendPress}
       >
         {addThisPlace && (
           <Button
@@ -238,6 +248,7 @@ const mapStateToProps = state => ({
   geolocation: state.home.geolocation,
   region: state.home.region,
   filters: state.home.filters,
+  me: state.auth.me,
 });
 
 export default connect(mapStateToProps, bindActions)(Home);
