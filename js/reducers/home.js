@@ -109,6 +109,7 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         gPlace: action.place,
+        selectedPlace: action.place || {},
       };
     case `${LOGOUT}_REQUEST`:
       return initialState;

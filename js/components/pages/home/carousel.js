@@ -56,8 +56,11 @@ class Carousel extends Component {
     }
   }
 
-  shouldComponentUpdate({ visiblePlaces }) {
-    return !_.isEqual(visiblePlaces, this.props.visiblePlaces);
+  shouldComponentUpdate({ visiblePlaces, gPlace }) {
+    return (
+      !_.isEqual(visiblePlaces, this.props.visiblePlaces)
+      || !_.isEqual(gPlace, this.props.gPlace)
+    );
   }
 
   _onIndexChange = (index) => {
@@ -121,7 +124,6 @@ class Carousel extends Component {
       >
         {gPlace && (
           <View
-            key={gPlace.id}
             style={styles.entryWrapper}
           >
             <Entry

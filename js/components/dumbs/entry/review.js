@@ -18,10 +18,11 @@ export default class Review extends PureComponent {
     others: PropTypes.array,
     onPress: PropTypes.func,
     cover: PropTypes.bool,
+    google: PropTypes.bool,
   }
 
   static initials({ first_name: firstName, last_name: lastName }) {
-    return firstName[0] + lastName[0];
+    return (firstName && lastName) ? firstName[0] + lastName[0] : '';
   }
 
   constructor(props) {
@@ -49,11 +50,12 @@ export default class Review extends PureComponent {
         pictures,
         status,
       },
+      google,
       others,
       cover,
     } = this.props;
 
-    const userText = userType === 'me' ? 'Me' : `${createdBy.first_name} ${createdBy.last_name[0]}`;
+    const userText = userType === 'me' ? 'Me' : `${createdBy.first_name} ${!google ? createdBy.last_name[0] : ''}`;
     const othersText = others && others.length ? ` and ${others.length} more friend${others.length > 2 ? 's' : ''}` : '';
 
     return (
@@ -68,7 +70,11 @@ export default class Review extends PureComponent {
           style={{ flex: 1 }}
         >
           <View style={styles.header}>
-            <Avatar text={Review.initials(createdBy)} />
+            <Avatar
+              text={Review.initials(createdBy)}
+              icon={google ? 'google' : ''}
+              set="FontAwesome"
+            />
             <View
               style={styles.header_right}
               onLayout={this._onLayout}

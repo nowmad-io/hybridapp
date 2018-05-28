@@ -32,7 +32,7 @@ class Entry extends Component {
   }
 
   render() {
-    const { place: { reviews }, me } = this.props;
+    const { place: { reviews, google }, me } = this.props;
 
     const myReview = me ? _.find(reviews, r => r.created_by.id === me.id) : null;
     const review = myReview || reviews[0];
@@ -50,6 +50,7 @@ class Entry extends Component {
             pictures,
           }}
           others={others}
+          google={!!google}
           cover
         />
         <TouchableOpacity
@@ -71,10 +72,11 @@ class Entry extends Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const { google } = props.place;
   const placeSelector = selectFullPlace();
 
   return {
-    place: placeSelector(state, props.place.id),
+    place: google ? props.place : placeSelector(state, props.place.id),
     me: state.auth.me,
   };
 };

@@ -66,7 +66,7 @@ class Marker extends PureComponent {
             size={avatarSize}
             text={text}
             set="FontAwesome"
-            icon={google && 'google'}
+            icon={google ? 'google' : ''}
             uppercase={(text !== 'me')}
             style={[
               selected && styles.avatar_selected,
