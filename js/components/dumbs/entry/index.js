@@ -46,7 +46,12 @@ class Entry extends Component {
     const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
 
     return (
-      <View style={styles.card}>
+      <View
+        style={[
+          styles.card,
+          google && styles.googleCard,
+        ]}
+      >
         <Review
           onPress={() => (!google && this.placeDetails())}
           review={{
@@ -97,6 +102,9 @@ const styles = StyleSheet.create({
     borderTopWidth: carousel.border,
     borderRadius: 2,
     elevation: 3,
+  },
+  googleCard: {
+    backgroundColor: colors.lightGreen,
   },
   cta: {
     backgroundColor: colors.yellowTransparent,

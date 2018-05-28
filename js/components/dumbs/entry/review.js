@@ -74,6 +74,9 @@ export default class Review extends PureComponent {
               text={Review.initials(createdBy)}
               icon={google ? 'google' : ''}
               set="FontAwesome"
+              textStyle={[
+                google && { color: colors.greyDark },
+              ]}
             />
             <View
               style={styles.header_right}
@@ -96,7 +99,7 @@ export default class Review extends PureComponent {
                   )) }
                 </View>
               ) : (
-                <Text lowercase>was {status}</Text>
+                <Text lowercase>was {google ? 'google' : `was ${status}`}</Text>
               )}
             </View>
           </View>
@@ -110,30 +113,43 @@ export default class Review extends PureComponent {
                   style={styles.picture}
                 />
               )}
-              <View
-                style={[
-                  styles.body_right,
-                  cover && (!pictures || !pictures.length) && {
-                    left: xHeaderRight - 14,
-                  },
-                ]}
-              >
-                <Text
+              { (google && pictures.length > 1) && (
+                <Image
+                  resizeMode="cover"
+                  resizeMethode="resize"
+                  source={{ uri: pictures[1].source }}
                   style={[
-                    styles.description,
-                    (!pictures || !pictures.length) && styles.description_noimage,
+                    styles.picture,
+                    { marginRight: 0 },
+                  ]}
+                />
+              )}
+              { !google && (
+                <View
+                  style={[
+                    styles.body_right,
+                    cover && (!pictures || !pictures.length) && {
+                      left: xHeaderRight - 14,
+                    },
                   ]}
                 >
-                  {shortDescription}
-                </Text>
-                <View style={styles.categories}>
-                  {categories.map(({ id, name }, index) => (
-                    <Text key={id} style={styles.categorie}>
-                      {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
-                    </Text>
-                  ))}
+                  <Text
+                    style={[
+                      styles.description,
+                      (!pictures || !pictures.length) && styles.description_noimage,
+                    ]}
+                  >
+                    {shortDescription}
+                  </Text>
+                  <View style={styles.categories}>
+                    {categories.map(({ id, name }, index) => (
+                      <Text key={id} style={styles.categorie}>
+                        {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
-              </View>
+              )}
             </View>
           </View>
         </TouchableOpacity>
@@ -181,7 +197,7 @@ const styles = StyleSheet.create({
   },
   picture: {
     flex: 1,
-    paddingRight: 12,
+    marginRight: 12,
   },
   body_right: {
     paddingLeft: 12,

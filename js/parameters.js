@@ -29,6 +29,7 @@ export const font = {
 };
 
 const plain = {
+  lightGreen: '#C4D6D1',
   green: '#1DA07F',
   white: '#FFFFFF',
   black: '#000000',
