@@ -108,7 +108,7 @@ class Carousel extends Component {
 
   render() {
     const { panY, visiblePlaces, gPlace } = this.props;
-    console.log('gPlace', gPlace);
+
     return (
       <PanController
         ref={this._carousel}

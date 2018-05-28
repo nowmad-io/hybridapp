@@ -106,7 +106,6 @@ const homeReducer = (state = initialState, action) => {
         selectedPlace: action.place,
       };
     case G_PLACE:
-      console.log('action.place', action.place);
       return {
         ...state,
         gPlace: action.place,
