@@ -29,18 +29,24 @@ class Tab extends PureComponent {
     placesLoading: PropTypes.bool,
   };
 
-  onFriendPress(friend) {
+  onFriendPress = (friend) => {
     this.props.screenProps.onFriendPress(friend);
   }
 
-  onAddFriendPress(friend) {
+  onAddFriendPress = friend => () => {
     this.props.screenProps.onAddFriendPress(friend);
   }
 
-  onReviewPress(review) {
+  onReviewPress = review => () => {
     this.props.screenProps.onReviewPress({
       ...review,
       place: this.props.placesEntities[review.place],
+    });
+  }
+
+  onPlacePress = place => () => {
+    this.props.screenProps.onPlacePress({
+      place,
     });
   }
 
@@ -82,7 +88,7 @@ class Tab extends PureComponent {
                     transparent
                     style={{ height: 24, padding: 0 }}
                     iconStyle={styles.icon}
-                    onPress={() => this.onAddFriendPress(result)}
+                    onPress={this.onAddFriendPress(result)}
                     icon="person-add"
                   />
                 )}
@@ -103,7 +109,7 @@ class Tab extends PureComponent {
                 key={result.id}
                 text={result.short_description}
                 thumbnail={placeImage}
-                onPress={() => this.onReviewPress(result)}
+                onPress={this.onReviewPress(result)}
               />
             ))}
           </List>
@@ -122,6 +128,7 @@ class Tab extends PureComponent {
                 key={result.id}
                 text={result.name}
                 thumbnail={googleImage}
+                onPress={this.onPlacePress(result)}
               />
             ))}
           </List>

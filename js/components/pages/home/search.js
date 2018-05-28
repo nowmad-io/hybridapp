@@ -80,12 +80,14 @@ class Search extends Component {
   }
 
   onClearPress = () => {
+    this.props.onFriendPress(null);
     this.setState({ text: '', previousValue: '' });
     this.searchDebounced('');
     this.props.onClear();
   }
 
   onReviewPress = ({ short_description: shortDescription, place }) => {
+    this.props.onFriendPress(null);
     this.blur();
     this.props.onReviewPress(place);
     this.onChangeText(shortDescription, true);
@@ -96,6 +98,8 @@ class Search extends Component {
     this.props.onFriendPress(friend);
     this.onChangeText(friend.first_name, true);
   }
+
+  onPlacePress = () => {};
 
   onAddFriendPress = (friend) => {
     this.props.onAddFriendPress(friend);
@@ -180,6 +184,7 @@ class Search extends Component {
               onReviewPress: this.onReviewPress,
               onFriendPress: this.onFriendPress,
               onAddFriendPress: this.onAddFriendPress,
+              onPlacePress: this.onPlacePress,
             }}
           />
         </View>

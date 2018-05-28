@@ -103,10 +103,6 @@ class Home extends Component {
     this.props.dispatch(getGeolocation());
   }
 
-  onSearchClear = () => {
-    this.onFiltersChange({ friend: null });
-  }
-
   onReviewPress = (place) => {
     this.onFiltersChange({ categories: [] });
     this.props.dispatch(placeSelect(place));
@@ -138,7 +134,6 @@ class Home extends Component {
 
     return (
       <Search
-        onClear={this.onSearchClear}
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
