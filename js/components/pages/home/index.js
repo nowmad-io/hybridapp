@@ -80,7 +80,7 @@ class Home extends Component {
 
   onPoiClick = (poi) => {
     this.onPlacePress(poiToPlace(poi));
-    placeDetails(poi.placeId)
+    placeDetails(poi.placeId, poi.name)
       .then((place) => {
         this.onPlacePress(place);
       });
