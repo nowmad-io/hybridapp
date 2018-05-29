@@ -117,7 +117,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
           </ScrollView>
         </View>
         <View style={styles.footer}>
-          <Button
+          {/* <Button
             light
             style={styles.addFriendsButton}
             buttonStyle={{ justifyContent: 'flex-start' }}
@@ -128,7 +128,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             >
               Add friends
             </Text>
-          </Button>
+          </Button> */}
           <View style={styles.subFooter}>
             <Button
               transparent
