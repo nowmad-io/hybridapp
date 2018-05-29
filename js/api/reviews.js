@@ -1,34 +1,44 @@
-import { apiCall } from '../requests';
+import { schema } from 'normalizr';
 
+import { apiGet, apiPost, apiPut } from '../requests';
 import {
-  PLACES_SUCCESS,
-  PLACES_ERROR,
-  UPDATE_REVIEW_SUCCESS,
-  ADD_REVIEW_SUCCESS,
-  REVIEW_ERROR,
+  PLACES,
+  CATEGORIES,
+  ADD_REVIEW,
+  UPDATE_REVIEW,
 } from '../constants/reviews';
-import { REVIEWS_SEARCH, REVIEWS_SEARCH_ERROR } from '../constants/search';
-import { SEARCHED_PLACES } from '../constants/home';
 
-const PLACES_PATH = 'places/';
-const REVIEWS_PATH = 'reviews/';
+const userSchema = new schema.Entity('users');
+const categorySchema = new schema.Entity('categories');
+const pictureSchema = new schema.Entity('pictures');
+const reviewSchema = new schema.Entity('reviews', {
+  categories: [categorySchema],
+  pictures: [pictureSchema],
+  created_by: userSchema,
+});
+export const placeSchema = new schema.Entity('places', {
+  reviews: [reviewSchema],
+});
 
-export function fetchReviews() {
-  return apiCall(PLACES_SUCCESS, PLACES_ERROR, 'get', PLACES_PATH);
+export const simpleReviewSchema = new schema.Entity('reviews', {
+  categories: [categorySchema],
+  pictures: [pictureSchema],
+  created_by: userSchema,
+  place: placeSchema,
+});
+
+export function fetchCategories() {
+  return apiGet(CATEGORIES, 'categories/', {}, [categorySchema]);
 }
 
-export function addReview(review) {
-  return apiCall(ADD_REVIEW_SUCCESS, REVIEW_ERROR, 'post', REVIEWS_PATH, review);
+export function fetchPlaces() {
+  return apiGet(PLACES, 'places/', {}, [placeSchema]);
 }
 
-export function updateReview(review) {
-  return apiCall(UPDATE_REVIEW_SUCCESS, REVIEW_ERROR, 'put', `${REVIEWS_PATH}${review.id}/`, review);
+export function addReview(data) {
+  return apiPost(ADD_REVIEW, 'reviews/', data, placeSchema);
 }
 
-export function reviewsSearchByQuery(query) {
-  return apiCall(REVIEWS_SEARCH, REVIEWS_SEARCH_ERROR, 'get', PLACES_PATH, {}, { query });
-}
-
-export function reviewsSearchByUser(email) {
-  return apiCall(SEARCHED_PLACES, REVIEWS_SEARCH_ERROR, 'get', PLACES_PATH, {}, { user: email });
+export function updateReview(data) {
+  return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, placeSchema);
 }

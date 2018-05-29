@@ -1,3 +1,5 @@
+import { normalize } from 'normalizr';
+
 class Api {
   constructor(passedConfig) {
     const baseConfig = {
@@ -12,14 +14,15 @@ class Api {
     };
 
     if (!passedConfig.basePath) {
-      // e.g. 'https://example.com/api/v3'
       throw new Error('You must pass a base path to the ApiClient');
     }
 
     const methods = passedConfig.methods || baseConfig.methods;
 
     methods.forEach((method) => {
-      this[method] = (path, { params, data, options } = {}) => {
+      this[method] = (path, {
+        params, data, options, schema, parser,
+      } = {}) => {
         const config = {
           ...baseConfig,
           ...passedConfig,
@@ -52,7 +55,9 @@ class Api {
         return fetch(requestPath, fetchOptions)
           .then(response => ({ response, format }))
           .then(Api.handleErrors)
-          .then(response => response[format]());
+          .then(response => response[format]())
+          .then(response => (parser ? parser(response) : response))
+          .then(response => (schema ? normalize(response, schema) : response));
       };
     });
   }

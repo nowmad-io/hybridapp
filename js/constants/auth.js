@@ -1,18 +1,5 @@
+export const TOKEN = 'auth/TOKEN';
 export const LOGIN = 'auth/LOGIN';
-export const LOGIN_REQUEST = 'auth/LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
-export const LOGIN_LOADING = 'auth/LOGIN_LOADING';
-
+export const REGISTER = 'auth/REGISTER';
 export const LOGOUT = 'auth/LOGOUT';
-export const LOGOUT_REQUEST = 'auth/LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
-export const LOGOUT_ERROR = 'auth/LOGOUT_SUCCESS';
-
-export const REGISTER_REQUEST = 'auth/REGISTER_REQUEST';
-export const REGISTER_SUCCESS = 'auth/REGISTER_SUCCESS';
-export const REGISTER_LOADING = 'auth/REGISTER_LOADING';
-
-export const FORM_ERROR = 'auth/FORM_ERROR';
-
-export const ME_SUCCESS = 'auth/ME_SUCCESS';
-export const ME_ERROR = 'auth/ME_ERROR';
+export const ME = 'auth/ME';

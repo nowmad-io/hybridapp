@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet } from 'react-native';
 
 import { colors } from '../../parameters';
@@ -9,6 +10,7 @@ import { colors } from '../../parameters';
 const setMapping = {
   MaterialIcon,
   SimpleLineIcons,
+  FontAwesome,
 };
 
 export default class Icon extends PureComponent {
@@ -21,6 +23,7 @@ export default class Icon extends PureComponent {
     set: PropTypes.oneOf([
       'MaterialIcon',
       'SimpleLineIcons',
+      'FontAwesome',
     ]),
     rotate: PropTypes.number,
   };

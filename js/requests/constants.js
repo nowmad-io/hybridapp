@@ -1,2 +1,2 @@
+/* eslint-disable-next-line import/prefer-default-export */
 export const API_CALL = 'request/API_CALL';
-export const TOKEN = 'request/TOKEN';

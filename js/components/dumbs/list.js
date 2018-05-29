@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
 import Text from './text';
+import Button from './button';
 
-import { colors } from '../../parameters';
+import { colors, font } from '../../parameters';
 
 export default class List extends PureComponent {
   static propTypes = {
@@ -12,23 +13,53 @@ export default class List extends PureComponent {
       PropTypes.array,
       PropTypes.object,
     ]),
-    style: PropTypes.string,
+    style: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.number,
+      PropTypes.array,
+    ]),
     label: PropTypes.string,
+    action: PropTypes.string,
+    onActionPress: PropTypes.func,
+    actionDisable: PropTypes.bool,
   };
 
+  static defaultProps = {
+    onActionPress: () => true,
+  }
+
   render() {
-    const { children, style, label } = this.props;
+    const {
+      children, style, label, action, onActionPress, actionDisable,
+    } = this.props;
 
     return (
-      <View
-        {...this.props}
-        style={[styles.listContainer, style && style]}
-      >
+      <View style={[styles.listContainer, style]}>
         {label && (
-          <Text uppercase style={styles.label}>
-            {label}
-          </Text>
+          <View style={styles.wrapper}>
+            <Text uppercase style={styles.label}>
+              {label}
+            </Text>
+            {action && (
+              <Button
+                onPress={!actionDisable ? onActionPress : () => true}
+                transparent
+                style={styles.actionButton}
+              >
+                <Text
+                  uppercase={false}
+                  style={[
+                    styles.action,
+                    actionDisable && styles.action_disable,
+                  ]}
+                >
+                  {action}
+                </Text>
+              </Button>
+            )}
+          </View>
         )}
+
         {children}
       </View>
     );
@@ -37,11 +68,28 @@ export default class List extends PureComponent {
 
 const styles = StyleSheet.create({
   listContainer: {
-    marginTop: 24,
     backgroundColor: colors.white,
   },
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   label: {
-    paddingHorizontal: 16,
-    color: colors.grey,
+    color: colors.greyDark,
+    flex: 1,
+    marginBottom: 18,
+  },
+  actionButton: {
+    height: 14,
+    margin: 0,
+    padding: 0,
+  },
+  action: {
+    fontSize: 14,
+    color: colors.green,
+    fontWeight: font.fontWeight.regular,
+  },
+  action_disable: {
+    color: colors.greenShadow,
   },
 });

@@ -1,14 +1,10 @@
 import {
   GET_GEOLOCATION,
   SET_GEOLOCATION,
-  SELECTED_PLACE,
-  LEVEL_CHANGE,
   REGION_CHANGE,
-  NEW_PLACE,
-  CURRENT_PLACES,
-  GOOGLE_PLACE,
-  SEARCHED_PLACES,
-  FROM_REVIEW,
+  PLACE_SELECT,
+  FILTERS_CHANGE,
+  G_PLACE,
 } from '../constants/home';
 
 export function getGeolocation() {
@@ -23,20 +19,6 @@ export function setGeolocation(position) {
   };
 }
 
-export function _selectedPlace(selectedPlace) {
-  return {
-    type: SELECTED_PLACE,
-    selectedPlace,
-  };
-}
-
-export function levelChange(level) {
-  return {
-    type: LEVEL_CHANGE,
-    level,
-  };
-}
-
 export function regionChanged(region) {
   return {
     type: REGION_CHANGE,
@@ -44,37 +26,23 @@ export function regionChanged(region) {
   };
 }
 
-export function selectNewPlace(place) {
+export function filtersChange(filters) {
   return {
-    type: NEW_PLACE,
+    type: FILTERS_CHANGE,
+    ...filters,
+  };
+}
+
+export function placeSelect(place) {
+  return {
+    type: PLACE_SELECT,
     place,
   };
 }
 
-export function currentPlacesChange(places) {
+export function gPlace(place) {
   return {
-    type: CURRENT_PLACES,
-    places,
-  };
-}
-
-export function googlePlace(place) {
-  return {
-    type: GOOGLE_PLACE,
+    type: G_PLACE,
     place,
-  };
-}
-
-export function _searchedPlaces(places) {
-  return {
-    type: SEARCHED_PLACES,
-    places,
-  };
-}
-
-export function setFromReview(from) {
-  return {
-    type: FROM_REVIEW,
-    from,
   };
 }

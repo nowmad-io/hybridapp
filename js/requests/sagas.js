@@ -5,10 +5,10 @@ import { API_CALL } from './constants';
 export const apiGeneric = api =>
   function* _apiGeneric(action) {
     const {
-      method, path, params, data,
+      method, path, params, data, schema, parser,
     } = action.payload;
     const { options } = action.payload;
-    const { success, failure } = action.meta;
+    const { request, success, failure } = action.meta;
 
     const token = yield select(state => state.auth.token);
 
@@ -18,8 +18,15 @@ export const apiGeneric = api =>
         Authorization: `Token ${token}`,
       };
     }
+
+    yield put({
+      type: request, params, data, schema,
+    });
+
     try {
-      const response = yield call(api[method], path, { params, data, options });
+      const response = yield call(api[method], path, {
+        params, data, options, schema, parser,
+      });
       yield put({ type: success, payload: response });
     } catch (error) {
       yield put({ type: failure, payload: error, error: true });

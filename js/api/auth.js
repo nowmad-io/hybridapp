@@ -1,30 +1,24 @@
-import { apiCall } from '../requests';
+import { apiGet, apiPost } from '../requests';
 
 import {
-  LOGIN_SUCCESS,
-  REGISTER_SUCCESS,
-  LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
-  ME_SUCCESS,
-  ME_ERROR,
+  LOGIN,
+  REGISTER,
+  LOGOUT,
+  ME,
 } from '../constants/auth';
 
-import { REQUEST_ERROR } from '../constants/utils';
-
-const PATH = 'auth';
-
-export function apiLogin(params = {}) {
-  return apiCall(LOGIN_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/token/create/`, params);
+export function apiLogin(data) {
+  return apiPost(LOGIN, 'auth/token/create/', data);
 }
 
-export function apiRegister(params = {}) {
-  return apiCall(REGISTER_SUCCESS, REQUEST_ERROR, 'post', `${PATH}/register/`, params);
+export function apiRegister(data) {
+  return apiPost(REGISTER, 'auth/register/', data);
 }
 
 export function apiLogout() {
-  return apiCall(LOGOUT_SUCCESS, LOGOUT_ERROR, 'post', `${PATH}/token/destroy/`);
+  return apiPost(LOGOUT, 'auth/token/destroy/');
 }
 
 export function apiMe() {
-  return apiCall(ME_SUCCESS, ME_ERROR, 'get', `${PATH}/me/`);
+  return apiGet(ME, 'auth/me/');
 }

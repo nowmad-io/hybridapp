@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, Share } from 'react-native';
 import { connect } from 'react-redux';
 
 import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
-import List from '../../dumbs/list';
-import ListItem from '../../dumbs/listItem';
-import LayoutView from '../../dumbs/layoutView';
+import Avatar from '../../dumbs/avatar';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
-import { logoutRequest } from '../../../actions/auth';
-import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
+import { apiLogout } from '../../../api/auth';
+import { acceptFriendship, rejectFriendship } from '../../../api/friends';
 
-import styles from './styles';
+import { colors, font } from '../../../parameters';
 
 class DrawBar extends React.Component {
   static navigationOptions = {
@@ -23,7 +21,17 @@ class DrawBar extends React.Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
+    me: PropTypes.object,
+    all: PropTypes.array,
+    incomings: PropTypes.array,
   };
+
+  static initials({ first_name: firstName, last_name: lastName }) {
+    if (!firstName && !lastName) {
+      return '';
+    }
+    return `${firstName[0]}${lastName[0]}`;
+  }
 
   componentWillMount() {
     this.props.dispatch(runSagas());
@@ -33,127 +41,235 @@ class DrawBar extends React.Component {
     this.props.dispatch(stopSagas());
   }
 
-  onLogoutPress() {
-    this.props.dispatch(logoutRequest());
+  onSharePress = () => {
+    Share.share({
+      message: `Hi!
+Join me in Nowmad and lets start sharing the best places for travelling around the world !
+See you soon on Nowmad !
+https://play.google.com/store/apps/details?id=com.nowmad`,
+    });
   }
 
-  _onAccept(id) {
+  onLogoutPress = () => {
+    this.props.dispatch(apiLogout());
+  }
+
+  onAcceptPress = id => () => {
     this.props.dispatch(acceptFriendship(id));
   }
 
-  _onReject(id) {
+  onRejectPress = id => () => {
     this.props.dispatch(rejectFriendship(id));
   }
 
-  _onCancel(id) {
-    this.props.dispatch(cancelFriendship(id));
-  }
-
   render() {
-    const { props } = this;
+    const {
+      me, all, incomings,
+    } = this.props;
 
     return (
       <View style={styles.container}>
         <View style={styles.profileWrapper}>
           <View style={styles.info}>
-            <Text style={styles.title}>{props.me && props.me.first_name}</Text>
-            <Text style={styles.subtitle}>See and edit profile</Text>
+            <Text style={styles.title}>{me.first_name}</Text>
+            <Text style={styles.subtitle}>
+              {`${all.length} friend${all.length > 0 ? 's' : ''}`}
+            </Text>
           </View>
-          <View>
-            <Image
-              resizeMethod="resize"
-              style={styles.thumbnail}
-              source={{ uri: props.me && props.me.picture }}
-            />
-          </View>
+          <Avatar
+            text={DrawBar.initials(me)}
+            size={50}
+          />
         </View>
         <View style={styles.contentWrapper}>
-          <ScrollView>
-            <List>
-              <Text style={styles.label}>PENDING SENT INVITATIONS</Text>
-              <View style={styles.listItemWrapper}>
-                { props.outgoings.length ? props.outgoings.map((request, index) => (
-                  <ListItem
-                    style={styles.listItem(props.outgoings.length - 1 === index)}
-                    key={request.id}
-                  >
-                    <LayoutView type="left">
-                      <Image resizeMethod="resize" source={{ uri: request.to_user.picture }} style={styles.userPicture} />
-                      <Text>{request.to_user.first_name}</Text>
-                    </LayoutView>
-                    <LayoutView type="right" style={styles.right}>
-                      <TouchableOpacity
-                        onPress={() => this._onCancel(request.id)}
-                      >
-                        <Text style={styles.actionLabel}>Cancel</Text>
-                      </TouchableOpacity>
-                    </LayoutView>
-                  </ListItem>
-                )) : (
-                  <ListItem
-                    style={styles.listItem(true)}
-                  >
-                    <Text style={styles.empty}>No outgoing request</Text>
-                  </ListItem>
-                )}
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.pending}>Pending friend request</Text>
+            { incomings.length > 0 && incomings.map(({ id, from_user: fromUser }) => (
+              <View
+                key={fromUser.id}
+                style={styles.request}
+              >
+                <Avatar
+                  text={DrawBar.initials(fromUser)}
+                  size={40}
+                />
+                <View style={styles.avatarInfo}>
+                  <Text>
+                    {`${fromUser.first_name} ${fromUser.last_name}`}
+                  </Text>
+                </View>
+                <Button
+                  transparent
+                  icon="close"
+                  style={styles.requestButton}
+                  iconStyle={styles.requestIcon}
+                  onPress={this.onRejectPress(id)}
+                />
+                <Button
+                  transparent
+                  icon="check"
+                  style={styles.requestButton}
+                  iconStyle={styles.requestIcon}
+                  onPress={this.onAcceptPress(id)}
+                />
               </View>
-              <Text style={styles.label}>PENDING FRIENDS REQUESTS</Text>
-              <View style={styles.listItemWrapper}>
-                { props.incomings.length ? props.incomings.map((request, index) => (
-                  <ListItem
-                    style={styles.listItem(props.incomings.length - 1 === index)}
-                    key={request.id}
-                  >
-                    <LayoutView type="left">
-                      <Image resizeMethod="resize" source={{ uri: request.from_user.picture }} style={styles.userPicture} />
-                      <Text style={styles.itemText}>{request.from_user.first_name}</Text>
-                    </LayoutView>
-                    <LayoutView type="right" style={styles.right}>
-                      <TouchableOpacity
-                        onPress={() => this._onReject(request.id)}
-                      >
-                        <Text style={styles.actionLabel}>Reject</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.acceptButton}
-                        onPress={() => this._onAccept(request.id)}
-                      >
-                        <Text style={styles.acceptLabel}>Accept</Text>
-                      </TouchableOpacity>
-                    </LayoutView>
-                  </ListItem>
-                )) : (
-                  <ListItem style={styles.listItem(true)}>
-                    <Text style={styles.empty}>No incoming request</Text>
-                  </ListItem>
-                )}
-              </View>
-            </List>
+            ))}
           </ScrollView>
         </View>
-        <View style={styles.actionsWrapper}>
-          <Button
-            transparent
-            style={styles.logoutButton}
-            onPress={() => this.onLogoutPress()}
+        <View style={styles.footer}>
+          {/* <Button
+            light
+            style={styles.addFriendsButton}
+            buttonStyle={{ justifyContent: 'flex-start' }}
           >
-            <Icon name="exit-to-app" style={styles.actionIcon} />
-            <Text style={styles.actionLabel}>Logout</Text>
-          </Button>
+            <Text
+              style={styles.addFriendsLabel}
+              uppercase={false}
+            >
+              Add friends
+            </Text>
+          </Button> */}
+          <View style={styles.subFooter}>
+            <Button
+              transparent
+              style={styles.footerButton}
+              onPress={this.onSharePress}
+            >
+              <Icon name="share" style={styles.footerIcon} />
+              <Text
+                style={styles.footerLabel}
+                uppercase={false}
+              >
+                Share
+              </Text>
+            </Button>
+            <Button
+              transparent
+              style={styles.footerButton}
+              onPress={this.onLogoutPress}
+            >
+              <Icon name="exit-to-app" style={styles.footerIcon} />
+              <Text
+                style={styles.footerLabel}
+                uppercase={false}
+              >
+                Logout
+              </Text>
+            </Button>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
 const mapStateToProps = state => ({
   me: state.auth.me,
+  all: state.friends.all,
   incomings: state.friends.incomings,
-  outgoings: state.friends.outgoings,
 });
 
-export default connect(mapStateToProps, bindActions)(DrawBar);
+export default connect(mapStateToProps, null)(DrawBar);
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  profileWrapper: {
+    marginHorizontal: 20,
+    marginTop: 16,
+    paddingBottom: 22,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: colors.grey,
+    borderBottomWidth: 0.5,
+  },
+  info: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 24,
+    lineHeight: 26,
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: font.fontWeight.medium,
+    color: colors.grey,
+  },
+  pending: {
+    fontSize: 18,
+    lineHeight: 20,
+    fontWeight: font.fontWeight.medium,
+    marginBottom: 20,
+  },
+  contentWrapper: {
+    paddingTop: 32,
+    paddingHorizontal: 20,
+    flex: 1,
+    width: '100%',
+  },
+  request: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginBottom: 24,
+  },
+  avatarInfo: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  requestButton: {
+    height: 20,
+    width: 20,
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: colors.green,
+    borderRadius: 50,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  requestIcon: {
+    color: colors.green,
+    fontSize: 14,
+  },
+  footer: {
+    width: '100%',
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+  },
+  addFriendsButton: {
+    borderWidth: 0,
+  },
+  addFriendsLabel: {
+    fontSize: 16,
+    lineHeight: 18,
+    fontWeight: font.fontWeight.regular,
+  },
+  subFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor: colors.green,
+    paddingRight: 4,
+    paddingLeft: 20,
+  },
+  footerButton: {
+    alignSelf: 'flex-end',
+  },
+  footerIcon: {
+    marginRight: 8,
+  },
+  footerLabel: {
+    fontSize: 12,
+    lineHeight: 14,
+    fontWeight: font.fontWeight.light,
+  },
+});

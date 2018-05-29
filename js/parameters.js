@@ -1,8 +1,16 @@
 import { Platform, StatusBar, Dimensions } from 'react-native';
+import hexRgb from 'hex-rgb';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 const isIphoneX = Platform.OS === 'ios' && deviceHeight === 812 && deviceWidth === 375;
+
+function rgba(hex, a = null) {
+  const {
+    red, green, blue, alpha,
+  } = hexRgb(hex);
+  return `rgba(${red}, ${green}, ${blue}, ${a !== null ? a : alpha})`;
+}
 
 export const font = {
   fontFamily: 'Roboto',
@@ -20,9 +28,9 @@ export const font = {
   },
 };
 
-export const colors = {
-  green: '#00C69F',
-  greenShadow: 'rgba(0, 198, 159, 0.3)',
+const plain = {
+  lightGreen: '#C4D6D1',
+  green: '#1DA07F',
   white: '#FFFFFF',
   black: '#000000',
   grey: '#BCB9B9',
@@ -30,19 +38,27 @@ export const colors = {
   red: '#FF4A40',
   blue: '#0076FF',
   blueDark: '#101172',
+  yellow: '#FFC546',
+  yellowDark: '#FFB000',
+};
+
+export const colors = {
+  ...plain,
+  greenShadow: rgba(plain.green, 0.4),
+  greenShadowDark: rgba(plain.green, 0.8),
   blackShadow: {
-    elevation: 5,
-    shadowColor: '#000000',
+    elevation: 2,
+    shadowColor: plain.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
   },
-  greyTransparent: 'rgba(188, 185, 185, 0.2)',
-  whiteTransparent: 'rgba(255, 255, 255, 0.6)',
-  whiteTransparentLight: 'rgba(255, 255, 255, 0.8)',
-  transparent: 'rgba(0, 0, 0, 0)',
-  ripple: 'rgba(256, 256, 256, 0.3)',
-  rippleDark: 'rgba(0, 0, 0, 0.15)',
+  greyTransparent: rgba(plain.grey, 0.2),
+  greyButton: rgba(plain.black, 0.6),
+  whiteTransparent: rgba(plain.white, 0.6),
+  whiteTransparentLight: rgba(plain.white, 0.8),
+  transparent: rgba(plain.black, 0),
+  yellowTransparent: rgba(plain.yellow, 0.95),
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);
@@ -52,7 +68,7 @@ export const sizes = {
   headerHeight: 56,
   toolbarHeight: Platform.OS === 'ios' ? toolbarHelper : 56,
   statusBar: StatusBar.currentHeight,
-  drawerWidth: 0.625 * Dimensions.get('window').width,
+  drawerWidth: 304,
   filters: 142,
 };
 
@@ -66,7 +82,7 @@ export const carousel = {
   itemSpacing: ITEM_SPACING,
   itemWidth: sizes.width - (ITEM_SPACING * 2),
   level1: LEVEL1,
-  level2: 230,
+  level2: 164,
   level3: sizes.height - HELPER - PADDING_TOP,
   border: 4,
 };

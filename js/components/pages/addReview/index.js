@@ -20,12 +20,11 @@ import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
 import Icon from '../../dumbs/icon';
 
-import Map from '../../map';
+import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
-import { categoriesList, statusList } from '../../../lists';
+import { statusList } from '../../../lists';
 import { addReview, updateReview } from '../../../api/reviews';
-import { reviewLoading } from '../../../actions/reviews';
 
 import styles from './styles';
 
@@ -35,17 +34,21 @@ class AddReview extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    reviewLoading: PropTypes.bool,
-    public_default: PropTypes.bool,
+    categoriesList: PropTypes.array,
+    addingReview: PropTypes.bool,
+    me: PropTypes.object,
     region: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
-    const { place, review } = props.navigation.state.params;
+    const { place, review: reviewfromProps } = props.navigation.state.params;
+    const review = reviewfromProps || {};
 
     const defaultReview = {
+      created_by: props.me,
+      public: props.me.public_default,
       short_description: '',
       information: '',
       status: statusList[0],
@@ -56,32 +59,15 @@ class AddReview extends Component {
     };
 
     this.state = {
-      place,
+      addingImage: false,
       ...defaultReview,
+      ...review,
+      place,
     };
-
-    if (review) {
-      this.state = {
-        place,
-        id: review.id,
-        short_description: review.short_description || defaultReview.short_description,
-        information: review.information || defaultReview.information,
-        status: review.status || defaultReview.status,
-        categories: review.categories ?
-          review.categories.map(cat => (cat.name)) : defaultReview.categories,
-        pictures: review.pictures || defaultReview.pictures,
-        links_1: review.links_1 || defaultReview.links_1,
-        links_2: review.links_2 || defaultReview.links_2,
-      };
-    }
   }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-
-    if (this.props.reviewLoading) {
-      this.props.dispatch(reviewLoading(false));
-    }
   }
 
   componentWillUnmount() {
@@ -97,23 +83,25 @@ class AddReview extends Component {
   }
 
   onMapReady = () => {
-    this._map.animateToCoordinate(this.state.place);
+    this._map.animateToCoordinate({
+      longitude: this.state.place.longitude,
+      latitude: this.state.place.latitude,
+    });
   }
 
   onPublish = () => {
-    const review = {
-      ...this.state,
-      public: this.props.public_default,
+    const { place: { google, reviews, ...newPlace }, ...review } = this.state;
+
+    const action = (newPlace.id && !google) ? updateReview : addReview;
+    const newReview = {
+      id: shortid.generate(),
+      created_by: this.props.me.id,
+      user_type: 'me',
+      ...review,
       place: {
-        place_id: this.state.place.place_id,
-        name: this.state.place.name,
-        latitude: this.state.place.latitude,
-        longitude: this.state.place.longitude,
-        address: this.state.place.address,
+        ...newPlace,
+        ...((newPlace.id && !google) ? { reviews } : {}),
       },
-      categories: this.state.categories.map(categorie => ({
-        name: categorie,
-      })),
       pictures: this.state.pictures.map((image) => {
         const picture = image.id ? { pictureId: image.id } : { source: image.data };
 
@@ -123,21 +111,14 @@ class AddReview extends Component {
         };
       }),
     };
-
     Keyboard.dismiss();
-
-    this.props.dispatch(reviewLoading(true));
-    if (this.state.id) {
-      this.props.dispatch(updateReview(review));
-    } else {
-      this.props.dispatch(addReview(review));
-    }
+    this.props.dispatch(action(newReview));
   }
 
   onImageEditBack = ({ image, remove }) => {
     const { pictures } = this.state;
 
-    this.props.dispatch(reviewLoading(false));
+    this.setState({ addingImage: false });
 
     if (!image) {
       return;
@@ -176,12 +157,12 @@ class AddReview extends Component {
 
   toggleCategorie(categorie) {
     const { categories } = this.state;
-    let newCategories = categories;
+    let newCategories = [...categories];
 
-    const selected = _.indexOf(categories, categorie) !== -1;
+    const selected = _.findIndex(categories, { id: categorie.id });
 
-    if (selected) {
-      newCategories = _.without(newCategories, categorie);
+    if (selected !== -1) {
+      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
     } else {
       newCategories.push(categorie);
     }
@@ -197,11 +178,12 @@ class AddReview extends Component {
         path: Config.IMAGES_FOLDER,
       },
     };
-    this.props.dispatch(reviewLoading(true));
+
+    this.setState({ addingImage: true });
 
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel || response.error) {
-        this.props.dispatch(reviewLoading(false));
+        this.setState({ addingImage: false });
       } else {
         this.navigateToImage(response);
       }
@@ -217,8 +199,11 @@ class AddReview extends Component {
 
   render() {
     const {
+      addingReview, navigation, region, categoriesList,
+    } = this.props;
+    const {
       short_description: shortDescription, information, place, categories,
-      pictures, status, link_1: link1, link_2: link2,
+      pictures, status, link_1: link1, link_2: link2, addingImage,
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
@@ -227,19 +212,22 @@ class AddReview extends Component {
       <LayoutView type="container">
         <LayoutView type="header">
           <LayoutView type="left">
-            <Button transparent onPress={() => this.props.navigation.goBack()} icon="arrow-back" header />
+            <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
           </LayoutView>
-          <LayoutView type="right" />
+          <LayoutView type="right">
+            <Button transparent onPress={this.onPublish}>
+              <Text>PUBLISH</Text>
+            </Button>
+          </LayoutView>
         </LayoutView>
         <Content style={styles.content}>
           <View style={styles.mapWrapper}>
             <Map
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
-              cacheEnabled
-              region={this.props.region}
+              region={region}
             >
-              <Marker place={place} />
+              <Marker place={{ ...place, reviews: place.reviews.map(review => review.id) }} />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
@@ -278,9 +266,9 @@ class AddReview extends Component {
               <View style={styles.tagWrapper}>
                 {categoriesList.map(categorie => (
                   <Tag
-                    key={categorie}
-                    text={categorie}
-                    selected={_.indexOf(categories, categorie) !== -1}
+                    key={shortid.generate()}
+                    text={categorie.name}
+                    selected={_.findIndex(categories, { id: categorie.id }) !== -1}
                     onPress={() => this.toggleCategorie(categorie)}
                   />
                 ))}
@@ -337,27 +325,17 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <Button
-          wrapped
-          onPress={this.onPublish}
-        >
-          <Text>Publish</Text>
-        </Button>
-
-        <Spinner overlay visible={this.props.reviewLoading} />
+        <Spinner overlay visible={addingReview || addingImage} />
       </LayoutView>
     );
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
-
 const mapStateToProps = state => ({
   region: state.home.region,
-  reviewLoading: state.home.reviewLoading,
-  public_default: state.auth.me.public_default,
+  categoriesList: _.map(state.entities.categories, categorie => categorie),
+  addingReview: state.home.addingReview,
+  me: state.auth.me,
 });
 
-export default connect(mapStateToProps, bindActions)(AddReview);
+export default connect(mapStateToProps)(AddReview);

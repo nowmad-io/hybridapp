@@ -1,83 +1,87 @@
-import {
-  NEARBY,
-  NEARBY_LOADING,
-  PLACES_SEARCH,
-  PLACES_SEARCH_ERROR,
-  PLACES_LOADING,
-  REVIEWS_SEARCH,
-  REVIEWS_SEARCH_ERROR,
-  REVIEWS_LOADING,
-  FRIENDS_SEARCH,
-  FRIENDS_SEARCH_ERROR,
-  FRIENDS_LOADING,
-} from '../constants/search';
+import { createSelector } from 'reselect';
+import Fuse from 'fuse.js';
+import _ from 'lodash';
 
+import {
+  PEOPLE_SEARCH,
+  REVIEWS_SEARCH,
+  PLACES_SEARCH,
+} from '../constants/search';
 import { LOGOUT } from '../constants/auth';
 
-const initialState = {
-  nearbyPlaces: [],
-  reviewsSearch: [],
-  friendsSearch: null,
-  placesSearch: [],
-  nearbyLoading: false,
-  reviewsLoading: false,
-  friendsLoading: false,
-  placesLoading: false,
-  searchType: null,
+import { getReviews } from './entities';
+
+const options = {
+  shouldSort: true,
+  keys: [
+    'short_description',
+    'information',
+    'categories.name',
+  ],
 };
 
-export default function SearchReducer(state = initialState, action) {
+const getFuse = createSelector(
+  [getReviews],
+  reviews => new Fuse(_.map(reviews, review => review), options),
+);
+
+const getQuery = state => state.search.query;
+
+export const selectFilteredReviews = createSelector(
+  [getFuse, getQuery],
+  (fuse, query) => fuse.search(query),
+);
+
+const initialState = {
+  reviews: [],
+  people: [],
+  places: [],
+  peopleLoading: true,
+  placesLoading: true,
+  query: '',
+};
+
+const searchReducer = (state = initialState, action) => {
   switch (action.type) {
-    case NEARBY:
+    case `${PEOPLE_SEARCH}_REQUEST`:
       return {
         ...state,
-        nearbyPlaces: action.places ? action.places.results : initialState.nearbyPlaces,
-        nearbyLoading: false,
+        peopleLoading: true,
       };
-    case PLACES_SEARCH_ERROR:
-    case PLACES_SEARCH:
+    case `${PEOPLE_SEARCH}_SUCCESS`:
       return {
         ...state,
-        placesSearch: action.error ? initialState.placesSearch : action.payload.predictions,
+        peopleLoading: false,
+        people: action.payload,
+      };
+    case `${PLACES_SEARCH}_REQUEST`:
+      return {
+        ...state,
+        placesLoading: true,
+      };
+    case `${PLACES_SEARCH}_SUCCESS`:
+      return {
+        ...state,
+        placesLoading: false,
+        places: action.payload,
+      };
+    case `${PEOPLE_SEARCH}_ERROR`:
+    case `${PLACES_SEARCH}_ERROR`:
+      return {
+        ...state,
+        peopleLoading: false,
         placesLoading: false,
       };
-    case REVIEWS_SEARCH_ERROR:
     case REVIEWS_SEARCH:
       return {
         ...state,
-        reviewsSearch: action.error ? initialState.reviewsSearch : action.payload,
-        reviewsLoading: false,
+        query: action.query,
       };
-    case FRIENDS_SEARCH_ERROR:
-    case FRIENDS_SEARCH:
-      return {
-        ...state,
-        friendsSearch: action.error ? initialState.friendsSearch : action.payload,
-        friendsLoading: false,
-      };
-    case NEARBY_LOADING:
-      return {
-        ...state,
-        nearbyLoading: action.loading,
-      };
-    case FRIENDS_LOADING:
-      return {
-        ...state,
-        friendsLoading: action.loading,
-      };
-    case REVIEWS_LOADING:
-      return {
-        ...state,
-        reviewsLoading: action.loading,
-      };
-    case PLACES_LOADING:
-      return {
-        ...state,
-        placesLoading: action.loading,
-      };
-    case LOGOUT:
+    case `${LOGOUT}_REQUEST`:
       return initialState;
     default:
       return state;
   }
-}
+};
+
+export default searchReducer;

@@ -3,12 +3,12 @@ package com.nowmad;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import io.sentry.RNSentryPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import io.sentry.RNSentryPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -20,7 +20,6 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -30,13 +29,18 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNSentryPackage(MainApplication.this),
-          new VectorIconsPackage(),
-          new MapsPackage(),
-          new ImagePickerPackage(),
-          new ReactNativeConfigPackage(),
-          new RNFetchBlobPackage()
+            new VectorIconsPackage(),
+            new RNSentryPackage(MainApplication.this),
+            new MapsPackage(),
+            new ImagePickerPackage(),
+            new RNFetchBlobPackage(),
+            new ReactNativeConfigPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 

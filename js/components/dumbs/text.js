@@ -9,6 +9,7 @@ export default class Text extends Component {
   static propTypes = {
     ...RNText.propTypes,
     uppercase: PropTypes.bool,
+    lowercase: PropTypes.bool,
     capitalize: PropTypes.bool,
     style: PropTypes.oneOfType([
       PropTypes.object,
@@ -20,14 +21,14 @@ export default class Text extends Component {
 
   render() {
     const {
-      uppercase, capitalize, style, children, note,
+      uppercase, lowercase, capitalize, style, children, note,
     } = this.props;
 
     let text;
-    if (uppercase || capitalize) {
+    if (uppercase || capitalize || lowercase) {
       text = React.Children.map(children, (child) => {
         if (_.isString(child)) {
-          return uppercase ? _.toUpper(child) : _.upperFirst(child);
+          return uppercase ? _.toUpper(child) : lowercase ? _.toLower(child) : _.upperFirst(child);
         }
         return child;
       });
