@@ -11,7 +11,7 @@
     "start": "react-native start",
     "link": "react-native link",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
-    "android:release": "cd android && ENVFILE=.env.development ./gradlew assembleRelease",
+    "android:release": "cd android && ENVFILE=.env.release ./gradlew assembleRelease",
     "ios": "ENVFILE=.env.development react-native run-ios -- --reset-cache",
     "ios:release": "npm run ios:prod",
     "test": "jest",
