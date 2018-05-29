@@ -44,7 +44,7 @@ class Marker extends PureComponent {
       text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
-    const avatarSize = (text === 'me') ? 40 : 46;
+    const avatarSize = (text === 'me') ? 36 : 40;
     const height = !selected ?
       (avatarSize + triangleHelper - 1) : (avatarSize + 2 * (triangleHelper + 1));
 
@@ -73,6 +73,7 @@ class Marker extends PureComponent {
             ]}
             textStyle={[
               selected && styles.avatar_text_selected,
+              (text === 'me') && styles.avatarMe,
             ]}
           />
           <View
@@ -122,6 +123,10 @@ const styles = StyleSheet.create({
   },
   avatar_text_selected: {
     color: colors.white,
+  },
+  avatarMe: {
+    fontSize: 18,
+    lineHeight: 20,
   },
   triangle: {
     position: 'absolute',
