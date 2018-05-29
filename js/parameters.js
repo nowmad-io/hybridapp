@@ -39,6 +39,7 @@ const plain = {
   blue: '#0076FF',
   blueDark: '#101172',
   yellow: '#FFC546',
+  yellowDark: '#FFB000',
 };
 
 export const colors = {

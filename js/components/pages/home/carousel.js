@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Animated, View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet, Share } from 'react-native';
 import _ from 'lodash';
 
 import Entry from '../../dumbs/entry';
+import EmptyEntry from '../../dumbs/emptyEntry';
 import PanController from '../../dumbs/panController';
 
 import { placeSelect } from '../../../actions/home';
@@ -33,7 +34,7 @@ class Carousel extends Component {
     this._carousel = React.createRef();
   }
 
-  componentWillReceiveProps({ selectedPlace, visiblePlaces, hidden }) {
+  componentWillReceiveProps({ selectedPlace, hidden }) {
     if (!_.isEqual(this.props.selectedPlace, selectedPlace)) {
       const index = selectedPlace
         ? _.compact([this.props.gPlace, ...this.props.visiblePlaces])
@@ -42,17 +43,8 @@ class Carousel extends Component {
       this.goToIndex(index);
     }
 
-    if (!hidden && this.props.hidden) {
-      this.toggleVisibility(this.props.visiblePlaces.length || this.props.gPlace);
-    }
-
-    if (!this.props.hidden) {
-      if ((this.props.visiblePlaces.length && !visiblePlaces.length && !this.props.gPlace)
-        || hidden) {
-        this.toggleVisibility(false, hidden);
-      } else if (!this.props.visiblePlaces.length && visiblePlaces.length || this.props.gPlace) {
-        this.toggleVisibility(true);
-      }
+    if (hidden !== this.props.hidden) {
+      this.toggleVisibility(!hidden);
     }
   }
 
@@ -90,10 +82,23 @@ class Carousel extends Component {
     this._carousel.current.toIndex(index, index < 0, index < 0);
   }
 
-  toggleVisibility = (visible = true, half = false) => {
+  _onAddLocationPress = () => {
+
+  }
+
+  _onSharePress = () => {
+    Share.share({
+      message: `Hi!
+Join me in Nowmad and lets start sharing the best places for travelling around the world !
+See you soon on Nowmad !
+https://play.google.com/store/apps/details?id=com.nowmad`,
+    });
+  }
+
+  toggleVisibility = (visible = true) => {
     Animated.timing(this.props.panY, {
       duration: 200,
-      toValue: visible ? -carousel.level2 : half ? -carousel.level1 : 0,
+      toValue: visible ? -carousel.level2 : -carousel.level1,
       useNativeDriver: true,
     }).start();
   }
@@ -114,6 +119,18 @@ class Carousel extends Component {
         onIndexChange={this._onIndexChange}
         onComponentDidUpdate={this._onCarouselDidUpdate}
       >
+        {(!visiblePlaces || !visiblePlaces.length) && !gPlace && (
+          <View
+            style={styles.entryWrapper}
+          >
+            <EmptyEntry
+              place={gPlace}
+              styles={styles.entry}
+              onAddLocationPress={this._onAddLocationPress}
+              onSharePress={this._onSharePress}
+            />
+          </View>
+        )}
         {gPlace && (
           <View
             style={styles.entryWrapper}

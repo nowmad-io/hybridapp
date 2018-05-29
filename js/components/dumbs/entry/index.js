@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   googleCard: {
     backgroundColor: colors.lightGreen,
+    borderColor: colors.lightGreen,
   },
   cta: {
     backgroundColor: colors.yellowTransparent,
