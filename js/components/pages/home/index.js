@@ -71,7 +71,9 @@ class Home extends Component {
     this.props.dispatch(regionChanged(region));
   }
 
-  onMapLongPress = () => {}
+  onMapLongPress = ({ coordinate: { longitude, latitude } }) => {
+    this._search.getWrappedInstance().searchCoordinates(`${latitude}, ${longitude}`);
+  }
 
   onPoiClick = (poi) => {
     this.onPlacePress(poiToPlace(poi));
@@ -145,6 +147,7 @@ class Home extends Component {
 
     return (
       <Search
+        ref={(s) => { this._search = s; }}
         onMenuPress={() => navigation.navigate('DrawerOpen')}
         onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}

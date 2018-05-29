@@ -128,6 +128,15 @@ class Search extends Component {
     }
   }
 
+  searchCoordinates(coordinatesQuery) {
+    this.searchDebounced(coordinatesQuery);
+    this.setState({ text: coordinatesQuery });
+    if (this._searchRouter) {
+      this._searchRouter._navigation.navigate('Places');
+    }
+    this.setState({ focused: true });
+  }
+
   focus() {
     this.setState({ focused: true });
     this.textInput.focus();
@@ -193,7 +202,9 @@ class Search extends Component {
             focused && { top: sizes.headerHeight },
           ]}
         >
-          <SearchRouter screenProps={{
+          <SearchRouter
+            ref={(r) => { this._searchRouter = r; }}
+            screenProps={{
               onReviewPress: this.onReviewPress,
               onFriendPress: this.onFriendPress,
               onAddFriendPress: this.onAddFriendPress,

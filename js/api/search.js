@@ -58,6 +58,19 @@ function autocompleteToPlace(autocomplete) {
   ];
 }
 
+function nearByToPlace(nearby) {
+  if (!nearby) {
+    return [];
+  }
+
+  return [
+    ...nearby.results.map(place => ({
+      ...place,
+      id: shortid.generate(),
+    })),
+  ];
+}
+
 export function reviewsSearch(query) {
   return {
     type: REVIEWS_SEARCH,
@@ -74,14 +87,16 @@ export function placesSearch(query) {
   const coord = COORD_REGEX.exec(query);
   let url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
   let params = `input=${query}`;
-  const parser = autocompleteToPlace;
+  let parser = autocompleteToPlace;
 
   if (coord && coord.length >= 3) {
     const location = `location=${coord[1]},${coord[2]}`;
-    const radius = 'radius=500';
+    const rankby = 'rankby=distance';
+    const type = 'type=point_of_interest';
 
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-    params = `${location}&${radius}`;
+    params = `${location}&${rankby}&${type}`;
+    parser = nearByToPlace;
   }
 
   return apiGet(PLACES_SEARCH, `${url}?${key}&${params}`, {}, null, parser);
