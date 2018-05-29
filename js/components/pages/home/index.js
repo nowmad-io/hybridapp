@@ -114,7 +114,7 @@ class Home extends Component {
   }
 
   onFriendPress = (friend) => {
-    this.onFiltersChange({ friend: friend.id });
+    this.onFiltersChange({ friend: friend.id || null });
   }
 
   onAddFriendPress = ({ id }) => {
