@@ -69,7 +69,7 @@ class Entry extends Component {
           onPress={this.addOrEditReview(myReview)}
         >
           <Icon
-            name={myReview ? 'edit' : 'playlist-add'}
+            name={(myReview || !google) ? 'edit' : 'playlist-add'}
             style={[
               styles.cta_icon,
               myReview && styles.cta_edit,
