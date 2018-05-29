@@ -11,7 +11,7 @@
     "start": "react-native start",
     "link": "react-native link",
     "android": "ENVFILE=.env.development react-native run-android -- --reset-cache",
-    "android:release": "cd android && ENVFILE=.env.development ./gradlew assembleRelease", 
+    "android:release": "cd android && ENVFILE=.env.development ./gradlew assembleRelease",
     "ios": "ENVFILE=.env.development react-native run-ios -- --reset-cache",
     "ios:release": "npm run ios:prod",
     "test": "jest",
@@ -62,7 +62,7 @@
     "eslint-plugin-react-native": "3.2.1",
     "read-json": "1.0.3",
     "rimraf": "2.6.2",
-    "simple-git": "1.92.0"
+    "simple-git": "1.95.0"
   },
   "rnpm": {
     "assets": [
