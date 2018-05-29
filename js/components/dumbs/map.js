@@ -60,6 +60,14 @@ export default class Map extends Component {
     }, 100);
   }
 
+  animateToRegion(region, duration = 500) {
+    this._ref.animateToRegion(region, duration);
+  }
+
+  animateToBearing(bearing) {
+    this._ref.animateToBearing(bearing);
+  }
+
   animateToCoordinate(place) {
     this._ref.animateToCoordinate(place);
   }

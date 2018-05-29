@@ -22,6 +22,7 @@ class Carousel extends Component {
     gPlace: PropTypes.object,
     panY: PropTypes.object,
     hidden: PropTypes.bool,
+    onAddLocationPress: PropTypes.func,
   };
 
   static defaultProps = {
@@ -108,7 +109,10 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
   }
 
   render() {
-    const { panY, visiblePlaces, gPlace } = this.props;
+    const {
+      panY, visiblePlaces, gPlace, onAddLocationPress,
+    } = this.props;
+
     return (
       <PanController
         ref={this._carousel}
@@ -126,7 +130,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             <EmptyEntry
               place={gPlace}
               styles={styles.entry}
-              onAddLocationPress={this._onAddLocationPress}
+              onAddLocationPress={onAddLocationPress}
               onSharePress={this._onSharePress}
             />
           </View>

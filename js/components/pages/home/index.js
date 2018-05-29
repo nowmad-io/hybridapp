@@ -46,19 +46,18 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.dispatch(getGeolocation());
+  }
 
   componentWillReceiveProps({ geolocation }) {
     if (geolocation && geolocation.location
         && !geolocation.loading && this.props.geolocation.loading) {
-      this._map.fitToCoordinates([geolocation.location], {
-        edgePadding: {
-          top: 20,
-          right: 20,
-          bottom: 20,
-          left: 20,
-        },
-      });
+      this._map.animateToRegion({
+        ...geolocation.location,
+        latitudeDelta: 0.0043,
+        longitudeDelta: 0.0034,
+      }, 1000);
       this.setState({ addThisPlace: true });
     }
   }
@@ -210,6 +209,7 @@ class Home extends Component {
           navigation={navigation}
           panY={panY}
           hidden={filtersVisible}
+          onAddLocationPress={this.onAddPlace}
         />
 
         <Animated.View

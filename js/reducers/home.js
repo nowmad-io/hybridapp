@@ -8,6 +8,8 @@ import {
   FILTERS_CHANGE,
   PLACE_SELECT,
   G_PLACE,
+  SET_GEOLOCATION,
+  GET_GEOLOCATION,
 } from '../constants/home';
 import { ADD_REVIEW, UPDATE_REVIEW } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
@@ -111,6 +113,23 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         gPlace: action.place,
         selectedPlace: action.place || {},
+      };
+    case GET_GEOLOCATION:
+      return {
+        ...state,
+        geolocation: {
+          ...state.geolocation,
+          loading: true,
+        },
+      };
+    case SET_GEOLOCATION:
+      return {
+        ...state,
+        geolocation: {
+          ...state.geolocation,
+          location: action.position,
+          loading: false,
+        },
       };
     case `${LOGOUT}_REQUEST`:
       return initialState;
