@@ -18,6 +18,7 @@ import Search from './search';
 import { getGeolocation, regionChanged, filtersChange, placeSelect, gPlace } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
 import { sendFriendship } from '../../../api/friends';
+import { poiToPlace, placeDetails } from '../../../api/search';
 
 import { sizes, carousel, colors } from '../../../parameters';
 
@@ -72,7 +73,13 @@ class Home extends Component {
 
   onMapLongPress = () => {}
 
-  onPoiClick = () => {}
+  onPoiClick = (poi) => {
+    this.onPlacePress(poiToPlace(poi));
+    placeDetails(poi.placeId)
+      .then((place) => {
+        this.onPlacePress(place);
+      });
+  }
 
   onPanDrag = () => {
     if (this.state.addThisPlace) {

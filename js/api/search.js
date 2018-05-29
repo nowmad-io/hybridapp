@@ -111,3 +111,16 @@ export function placeDetails(placeId) {
     }))
     .then(gPlace => gPlaceToPlace(gPlace));
 }
+
+export const poiToPlace = ({ name, coordinate }) => ({
+  latitude: coordinate.latitude,
+  longitude: coordinate.longitude,
+  google: true,
+  reviews: [{
+    created_by: {
+      first_name: name,
+    },
+    categories: [],
+    pictures: [],
+  }],
+});
