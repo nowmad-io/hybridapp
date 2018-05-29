@@ -64,12 +64,12 @@ export default class Map extends Component {
     this._ref.animateToRegion(region, duration);
   }
 
-  animateToBearing(bearing) {
-    this._ref.animateToBearing(bearing);
+  animateToBearing(bearing, duration = 500) {
+    this._ref.animateToBearing(bearing, duration);
   }
 
-  animateToCoordinate(place) {
-    this._ref.animateToCoordinate(place);
+  animateToCoordinate(place, duration = 500) {
+    this._ref.animateToCoordinate(place, duration);
   }
 
   fitToCoordinates(coordinates) {

@@ -107,7 +107,10 @@ class Home extends Component {
   onReviewPress = (place) => {
     this.onFiltersChange({ categories: [] });
     this.props.dispatch(placeSelect(place));
-    this._map.animateToCoordinate(place);
+    this._map.animateToCoordinate({
+      longitude: place.longitude,
+      latitude: place.latitude,
+    }, 1000);
   }
 
   onFriendPress = (friend) => {
@@ -123,6 +126,9 @@ class Home extends Component {
 
   onPlacePress = (place) => {
     this.props.dispatch(gPlace(place));
+    if (place && place.longitude && place.latitude) {
+      this._map.animateToCoordinate(place, 1000);
+    }
   }
 
   zoomOut = () => {
