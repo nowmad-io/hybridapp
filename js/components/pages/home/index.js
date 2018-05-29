@@ -71,6 +71,12 @@ class Home extends Component {
     this.props.dispatch(regionChanged(region));
   }
 
+  onMapPress = () => {
+    if (this.props.gPlace) {
+      this.onPlacePress(null);
+    }
+  }
+
   onMapLongPress = ({ coordinate: { longitude, latitude } }) => {
     this._search.getWrappedInstance().searchCoordinates(`${latitude}, ${longitude}`);
   }
@@ -166,6 +172,7 @@ class Home extends Component {
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
+          onPress={this.onMapPress}
           onLongPress={this.onMapLongPress}
           region={region}
           onRegionChangeComplete={this.onRegionChange}

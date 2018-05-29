@@ -13,6 +13,7 @@ export default class Map extends Component {
     onRegionChangeComplete: PropTypes.func,
     onPoiClick: PropTypes.func,
     onLongPress: PropTypes.func,
+    onPress: PropTypes.func,
     onLayout: PropTypes.func,
     onMapReady: PropTypes.func,
     onPanDrag: PropTypes.func,
@@ -74,8 +75,8 @@ export default class Map extends Component {
   render() {
     const {
       region, zoomEnabled, rotateEnabled, scrollEnabled, mapPadding, onLongPress,
-      onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout, onPanDrag,
-      cacheEnabled,
+      onPress, onRegionChangeComplete, moveOnMarkerPress, onPoiClick, onLayout,
+      onPanDrag, cacheEnabled,
     } = this.props;
 
     return (
@@ -83,6 +84,7 @@ export default class Map extends Component {
         ref={ref => this.onRef(ref)}
         onMapReady={() => this.onMapReady()}
         onRegionChangeComplete={newRegion => onRegionChangeComplete(newRegion)}
+        onPress={onPress}
         onLongPress={event => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
         style={[
