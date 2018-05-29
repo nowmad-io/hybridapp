@@ -99,7 +99,7 @@ export default class Review extends PureComponent {
                   )) }
                 </View>
               ) : (
-                <Text lowercase>was {google ? 'google' : `was ${status}`}</Text>
+                <Text lowercase={!google}>{google ? 'Google' : `was ${status}`}</Text>
               )}
             </View>
           </View>

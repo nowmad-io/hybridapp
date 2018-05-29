@@ -42,16 +42,14 @@ class Carousel extends Component {
       this.goToIndex(index);
     }
 
-    if (hidden && !this.props.hidden) {
-      this.toggleVisibility(false, true);
-    }
     if (!hidden && this.props.hidden) {
       this.toggleVisibility(this.props.visiblePlaces.length || this.props.gPlace);
     }
 
     if (!this.props.hidden) {
-      if (this.props.visiblePlaces.length && !visiblePlaces.length && !this.props.gPlace) {
-        this.toggleVisibility(false);
+      if ((this.props.visiblePlaces.length && !visiblePlaces.length && !this.props.gPlace)
+        || hidden) {
+        this.toggleVisibility(false, hidden);
       } else if (!this.props.visiblePlaces.length && visiblePlaces.length || this.props.gPlace) {
         this.toggleVisibility(true);
       }
