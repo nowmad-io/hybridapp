@@ -40,7 +40,6 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      addThisPlace: false,
       panY: new Animated.Value(-carousel.level2),
       filtersVisible: false,
     };
@@ -58,7 +57,6 @@ class Home extends Component {
         latitudeDelta: 0.0043,
         longitudeDelta: 0.0034,
       }, 1000);
-      this.setState({ addThisPlace: true });
     }
   }
 
@@ -88,11 +86,7 @@ class Home extends Component {
       });
   }
 
-  onPanDrag = () => {
-    if (this.state.addThisPlace) {
-      this.setState({ addThisPlace: false });
-    }
-  }
+  onPanDrag = () => {}
 
   onFiltersPress = () => {
     this.setState({ filtersVisible: !this.state.filtersVisible });
@@ -146,9 +140,7 @@ class Home extends Component {
       selectedPlace,
       gPlace: googlePlace,
     } = this.props;
-    const {
-      addThisPlace, panY, filtersVisible,
-    } = this.state;
+    const { panY, filtersVisible } = this.state;
 
     return (
       <Search
@@ -159,15 +151,6 @@ class Home extends Component {
         onAddFriendPress={this.onAddFriendPress}
         onPlacePress={this.onPlacePress}
       >
-        {addThisPlace && (
-          <Button
-            style={styles.addPlaceButton}
-            onPress={this.onAddPlace}
-            fab
-          >
-            <Text>Add this place</Text>
-          </Button>
-        )}
         <Map
           ref={(m) => { this._map = m; }}
           moveOnMarkerPress={false}
@@ -277,13 +260,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, bindActions)(Home);
 
 const styles = StyleSheet.create({
-  addPlaceButton: {
-    marginTop: 28,
-    borderRadius: 2,
-    height: 40,
-    alignSelf: 'center',
-    zIndex: 1,
-  },
   filters: {
     flexDirection: 'column',
     flex: 1,
