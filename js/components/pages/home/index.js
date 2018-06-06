@@ -46,7 +46,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getGeolocation());
+    // this.props.dispatch(getGeolocation());
   }
 
   componentWillReceiveProps({ geolocation }) {
