@@ -111,7 +111,7 @@ export function photoUrl(ref) {
   return `${url}?${key}&${maxwidth}&${photoreference}`;
 }
 
-export function placeDetails(placeId) {
+export function placeDetails(placeId, poiName = null) {
   const url = 'https://maps.googleapis.com/maps/api/place/details/json';
   const key = `key=${Config.PLACES_API_KEY}`;
   const placeid = `placeid=${placeId}`;
@@ -124,7 +124,10 @@ export function placeDetails(placeId) {
         source: photoUrl(ref),
       })) : [],
     }))
-    .then(gPlace => gPlaceToPlace(gPlace));
+    .then(gPlace => gPlaceToPlace({
+      ...gPlace,
+      name: poiName || gPlace.name,
+    }));
 }
 
 export const poiToPlace = ({ name, coordinate }) => ({

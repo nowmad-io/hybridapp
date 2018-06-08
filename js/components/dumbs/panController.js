@@ -65,7 +65,7 @@ export default class PanController extends PureComponent {
     yBounds: [-Infinity, null, Infinity],
     yMode: 'decay',
     xMode: 'snap',
-    snapSpacingX: sizes.width - 14,
+    snapSpacingX: sizes.width,
     overshootSpringConfig: { friction: 9, tension: 40 },
     momentumDecayConfig: { deceleration: 0.993 },
     springOriginConfig: { friction: 7, tension: 40 },
@@ -502,7 +502,6 @@ export default class PanController extends PureComponent {
             {
               backgroundColor: 'transparent',
               flexDirection: 'row',
-              paddingHorizontal: 12,
             }, {
               transform: [
                 { translateX: this.props.panX },

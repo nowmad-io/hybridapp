@@ -42,8 +42,8 @@ class Register extends Component {
     this.props.dispatch(apiRegister({
       email: this.state.email,
       password: this.state.password,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
+      first_name: this.state.firstName,
+      last_name: this.state.lastName,
     }));
   }
 
