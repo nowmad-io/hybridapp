@@ -74,7 +74,7 @@ export default class PanController extends PureComponent {
     onPanResponderGrant: () => true,
     onPanResponderMove: () => true,
     onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (__, { dx }) => (Math.abs(dx) > 5),
     onIndexChange: () => true,
     onLevelChange: () => true,
     onOvershoot: () => true,
