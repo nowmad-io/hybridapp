@@ -62,6 +62,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="mail" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -101,6 +102,7 @@ class Register extends Component {
             <View style={styles.item}>
               <Icon active name="lock-open" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}

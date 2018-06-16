@@ -71,6 +71,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="person" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -84,6 +85,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="lock-open" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
