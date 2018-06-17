@@ -92,7 +92,7 @@ class AddReview extends Component {
   onPublish = () => {
     const { place: { google, reviews, ...newPlace }, ...review } = this.state;
 
-    const action = (newPlace.id && !google) ? updateReview : addReview;
+    const action = (review.id && !google) ? updateReview : addReview;
     const newReview = {
       id: shortid.generate(),
       created_by: this.props.me.id,
