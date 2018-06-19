@@ -30,7 +30,7 @@ class Marker extends PureComponent {
   render() {
     const {
       place: {
-        reviews, latitude, longitude, google,
+        reviews, latitude, longitude, google, custom,
       },
       selected,
       review,
@@ -42,6 +42,8 @@ class Marker extends PureComponent {
       text = reviews.length;
     } else if (review && !google) {
       text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
+    } else if (custom) {
+      text = 'me';
     }
 
     const avatarSize = (text === 'me') ? 36 : 40;
@@ -66,7 +68,7 @@ class Marker extends PureComponent {
             size={avatarSize}
             text={text}
             set="FontAwesome"
-            icon={google ? 'google' : ''}
+            icon={(google && !custom) ? 'google' : ''}
             uppercase={(text !== 'me')}
             style={[
               selected && styles.avatar_selected,

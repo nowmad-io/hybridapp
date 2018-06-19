@@ -74,7 +74,7 @@ export default class PanController extends PureComponent {
     onPanResponderGrant: () => true,
     onPanResponderMove: () => true,
     onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (__, { dx }) => (Math.abs(dx) > 5),
     onIndexChange: () => true,
     onLevelChange: () => true,
     onOvershoot: () => true,
@@ -254,7 +254,12 @@ export default class PanController extends PureComponent {
     this.props.onIndexChange(Math.abs(Math.round(x / snapSpacingX)));
   }
 
-  childrenWidth = () => (-sizes.width * (Children.count(this.props.children) - 1));
+  childrenWidth = () => {
+    const count = Children.toArray(this.props.children)
+      .filter(child => React.isValidElement(child)).length;
+    return -sizes.width * (count - 1);
+  };
+
 
   handleResponderMove(anim, delta, min, max, overshoot) {
     let val = anim._offset + delta;

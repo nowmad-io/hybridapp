@@ -39,6 +39,7 @@ function handleAddEditReview(action) {
     reviews: [{
       ...review,
       place: place.id,
+      toSync: true,
     }],
   };
 
@@ -81,20 +82,9 @@ const entitiesReducer = (state = initialState, action) => {
         },
       };
     case `${UPDATE_REVIEW}_REQUEST`: {
-      const { places, reviews, result } = handleAddEditReview(action);
-      const { ...placeToUpdate } = state.places[result];
-      const newPlaces = {};
-      newPlaces[result] = {
-        ...places[result],
-        reviews: _.concat(places[result].reviews, placeToUpdate.reviews),
-      };
-
+      const { reviews } = handleAddEditReview(action);
       return {
         ...state,
-        places: {
-          ...state.places,
-          ...newPlaces,
-        },
         reviews: {
           ...state.reviews,
           ...reviews,
@@ -102,13 +92,20 @@ const entitiesReducer = (state = initialState, action) => {
       };
     }
     case `${ADD_REVIEW}_REQUEST`: {
-      const { reviews, places } = handleAddEditReview(action);
+      const { places, reviews, result } = handleAddEditReview(action);
+      const { ...placeToUpdate } = state.places[result];
+      const newPlaces = {};
+
+      newPlaces[result] = {
+        ...places[result],
+        reviews: _.concat(places[result].reviews, placeToUpdate.reviews || []),
+      };
 
       return {
         ...state,
         places: {
           ...state.places,
-          ...places,
+          ...newPlaces,
         },
         reviews: {
           ...state.reviews,

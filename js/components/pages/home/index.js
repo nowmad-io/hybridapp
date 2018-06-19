@@ -131,6 +131,23 @@ class Home extends Component {
     }
   }
 
+  onAddThisPlacePress = ({ latitude, longitude }) => {
+    this.props.navigation.navigate('AddReview', {
+      place: {
+        id: shortid.generate(),
+        google: true,
+        custom: true,
+        latitude: +latitude,
+        longitude: +longitude,
+        reviews: [],
+      },
+      review: {
+        user_type: 'me',
+        created_by: this.props.me,
+      },
+    });
+  }
+
   zoomOut = () => {
     this._map.zoomBy(-4);
   }
@@ -156,6 +173,7 @@ class Home extends Component {
         onFriendPress={this.onFriendPress}
         onAddFriendPress={this.onAddFriendPress}
         onPlacePress={this.onPlacePress}
+        onAddThisPlacePress={this.onAddThisPlacePress}
       >
         <Map
           ref={(m) => { this._map = m; }}

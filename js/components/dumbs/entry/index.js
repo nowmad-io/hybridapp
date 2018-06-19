@@ -39,7 +39,7 @@ class Entry extends Component {
   render() {
     const { place: { reviews, google }, me } = this.props;
 
-    const myReview = me ? _.find(reviews, r => r.created_by.id === me.id) : null;
+    const myReview = me ? _.find(reviews, r => (r.created_by && r.created_by.id === me.id)) : null;
     const review = myReview || reviews[0];
     const pictures = _.flatten(reviews.map(r => r.pictures));
     const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
@@ -69,7 +69,7 @@ class Entry extends Component {
           onPress={this.addOrEditReview(myReview)}
         >
           <Icon
-            name={(myReview || !google) ? 'edit' : 'playlist-add'}
+            name={(myReview && !google) ? 'edit' : 'playlist-add'}
             style={[
               styles.cta_icon,
               myReview && styles.cta_edit,

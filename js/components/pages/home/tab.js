@@ -7,8 +7,9 @@ import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
 import Spinner from '../../dumbs/spinner';
 import Button from '../../dumbs/button';
+import Text from '../../dumbs/text';
 
-import { placeDetails } from '../../../api/search';
+import { placeDetails, COORD_REGEX } from '../../../api/search';
 import { selectFilteredReviews } from '../../../reducers/search';
 
 import { sizes, colors } from '../../../parameters';
@@ -50,13 +51,24 @@ class Tab extends PureComponent {
       .then(place => this.props.screenProps.onPlacePress(place));
   }
 
+  onAddThisPlacePress = coord => () => {
+    this.props.screenProps.onAddThisPlacePress(coord);
+  }
+
   render() {
     const {
       navigation,
+      screenProps: { text },
       reviews,
       people, peopleLoading,
       places, placesLoading,
     } = this.props;
+
+    let coord = COORD_REGEX.exec(text);
+    coord = coord && coord.length >= 3 && {
+      latitude: coord[1],
+      longitude: coord[2],
+    };
 
     const allPage = navigation.state.routeName === 'All';
 
@@ -131,6 +143,19 @@ class Tab extends PureComponent {
                 onPress={this.onPlacePress(result)}
               />
             ))}
+            {!allPage && coord && (
+              <Button
+                style={[
+                  styles.button,
+                  (!places.length && !placesLoading) && { marginTop: 0 },
+                ]}
+                onPress={this.onAddThisPlacePress(coord)}
+              >
+                <Text uppercase={false}>
+                  Add this place
+                </Text>
+              </Button>
+            )}
           </List>
         )}
       </ScrollView>
@@ -181,5 +206,8 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 24,
     color: colors.green,
+  },
+  button: {
+    marginVertical: 16,
   },
 });

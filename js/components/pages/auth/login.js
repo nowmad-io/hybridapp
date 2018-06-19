@@ -33,8 +33,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: 'j@j.com',
+      password: 'j',
     };
 
     // Check if logged in and redirect to App if so
@@ -71,6 +71,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="person" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
@@ -84,6 +85,7 @@ class Login extends Component {
             <View style={styles.item}>
               <Icon name="lock-open" style={styles.inputIcon} />
               <TextInput
+                autoCapitalize="none"
                 underlineColorAndroid="transparent"
                 selectionColor={colors.whiteTransparent}
                 placeholderTextColor={colors.white}
