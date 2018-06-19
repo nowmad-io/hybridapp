@@ -24,7 +24,7 @@ setJSExceptionHandler((e, isFatal) => {
       onPress: onRestartPress,
     }],
   );
-}, true);
+});
 
 setNativeExceptionHandler((exceptionString) => {
   if (Config.NODE_ENV !== 'development') {

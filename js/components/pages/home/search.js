@@ -23,6 +23,7 @@ class Search extends Component {
     onFriendPress: PropTypes.func,
     onAddFriendPress: PropTypes.func,
     onPlacePress: PropTypes.func,
+    onAddThisPlacePress: PropTypes.func,
     onClear: PropTypes.func,
     onMenuPress: PropTypes.func,
   }
@@ -30,14 +31,6 @@ class Search extends Component {
   static defaultProps = {
     onClear: () => true,
   };
-
-  static coordinatesToString(coordinates) {
-    if (coordinates && coordinates.latitude && coordinates.longitude) {
-      return `${coordinates.latitude},${coordinates.longitude}`;
-    }
-
-    return '';
-  }
 
   constructor(props) {
     super(props);
@@ -118,21 +111,26 @@ class Search extends Component {
     this.props.onAddFriendPress(friend);
   }
 
+  onAddThisPlacePress = (coord) => {
+    this.blur();
+    this.props.onAddThisPlacePress(coord);
+  }
+
   search = _.debounce(this.searchDebounced, 300)
 
   searchDebounced(query) {
     this.props.dispatch(peopleSearch(query));
     this.props.dispatch(reviewsSearch(query));
-    if (query) {
-      this.props.dispatch(placesSearch(query));
-    }
+    this.props.dispatch(placesSearch(query));
   }
 
   searchCoordinates(coordinatesQuery) {
     this.searchDebounced(coordinatesQuery);
     this.setState({ text: coordinatesQuery });
     if (this._searchRouter) {
-      this._searchRouter._navigation.navigate('Places');
+      this._searchRouter._navigation.navigate('Places', {
+        coordinates: true,
+      });
     }
     this.setState({ focused: true });
   }
@@ -209,6 +207,8 @@ class Search extends Component {
               onFriendPress: this.onFriendPress,
               onAddFriendPress: this.onAddFriendPress,
               onPlacePress: this.onPlacePress,
+              onAddThisPlacePress: this.onAddThisPlacePress,
+              text,
             }}
           />
         </View>

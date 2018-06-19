@@ -9,7 +9,7 @@ import {
   PEOPLE_SEARCH,
 } from '../constants/search';
 
-const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
+export const COORD_REGEX = /^([-+]?[\d]{1,2}\.\d+),\s*([-+]?[\d]{1,3}\.\d+)?$/;
 
 const gPlaceToPlace = gPlace => ({
   ...gPlace,
