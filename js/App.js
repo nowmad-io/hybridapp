@@ -19,7 +19,7 @@ console.ignoredYellowBox = [
   'Remote debugger',
 ];
 
-export default class App extends Component {
+class App extends Component {
   static onBeforeLift() {
     sagaMiddleware.run(requestsSaga(new Api({
       basePath: Config.API_URL,
@@ -42,3 +42,8 @@ export default class App extends Component {
     );
   }
 }
+
+export {
+  persistor,
+  App,
+};
