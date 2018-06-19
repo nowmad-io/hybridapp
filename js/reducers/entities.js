@@ -39,6 +39,7 @@ function handleAddEditReview(action) {
     reviews: [{
       ...review,
       place: place.id,
+      toSync: true,
     }],
   };
 
