@@ -150,9 +150,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-sentry')
     compile project(':react-native-restart')
     compile project(':react-native-exception-handler')
-    compile project(':react-native-sentry')
     compile project(':react-native-vector-icons')
     compile project(':react-native-maps')
     compile project(':react-native-image-picker')
