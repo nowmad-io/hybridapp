@@ -3,7 +3,7 @@ import { take, all, call, fork, put, takeEvery, select, cancelled } from 'redux-
 import { eventChannel } from 'redux-saga';
 
 import { API_CALL } from './constants';
-import { connectionChange } from './actions';
+import { connectionChange, fetchOfflineMode, removeActionFromQueue } from './actions';
 
 function* handleConnectivityChange(hasInternetAccess) {
   yield put(connectionChange(hasInternetAccess));
@@ -26,7 +26,21 @@ function createNetInfoConnectionChangeChannel() {
   });
 }
 
+function* initialNetInfo() {
+  const channel = yield call(() => eventChannel((emit) => {
+    NetInfo.getConnectionInfo().then(({ type }) => {
+      emit((type !== 'none' && type !== 'unknown'));
+    });
+    return () => {};
+  }));
+
+  const isConnected = yield take(channel);
+  yield fork(handleConnectivityChange, isConnected);
+}
+
 function* netInfoChangeSaga() {
+  yield fork(initialNetInfo);
+
   const chan = yield call(createNetInfoConnectionChangeChannel);
   try {
     while (true) {
@@ -48,7 +62,10 @@ const apiGeneric = api =>
     const { options } = action.payload;
     const { request, success, failure } = action.meta;
 
-    const token = yield select(state => state.auth.token);
+    const { token, isConnected } = yield select(state => ({
+      token: state.auth.token,
+      isConnected: state.network.isConnected,
+    }));
 
     if (token) {
       options.headers = {
@@ -61,14 +78,21 @@ const apiGeneric = api =>
       type: request, params, data, schema,
     });
 
-    try {
-      const response = yield call(api[method], path, {
-        params, data, options, schema, parser,
-      });
-      yield put({ type: success, payload: response });
-    } catch (error) {
-      yield put({ type: failure, payload: error, error: true });
+    if (isConnected) {
+      yield put(removeActionFromQueue(action));
+
+      try {
+        const response = yield call(api[method], path, {
+          params, data, options, schema, parser,
+        });
+        yield put({ type: success, payload: response });
+      } catch (error) {
+        yield put({ type: failure, payload: error, error: true });
+      }
+      return;
     }
+
+    yield put(fetchOfflineMode(action));
   };
 
 const watchApiCall = api => function* _watchApiCall() {

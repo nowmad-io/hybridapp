@@ -27,7 +27,7 @@ export default () => {
   const rootPersistConfig = {
     key: 'root',
     storage,
-    blacklist: ['nav', 'search', 'home', 'search'],
+    blacklist: ['nav', 'search', 'home', 'search', 'network'],
   };
 
   const rootReducer = combineReducers({

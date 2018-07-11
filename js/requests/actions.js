@@ -1,4 +1,4 @@
-import { API_CALL, CONNECTION_CHANGE } from './constants';
+import { API_CALL, CONNECTION_CHANGE, FETCH_OFFLINE_MODE, REMOVE_FROM_ACTION_QUEUE } from './constants';
 
 function apiCall(type, method, path, params, data, schema, parser, options) {
   return {
@@ -40,5 +40,19 @@ export function connectionChange(isConnected) {
   return {
     type: CONNECTION_CHANGE,
     payload: isConnected,
+  };
+}
+
+export function fetchOfflineMode(action) {
+  return {
+    type: FETCH_OFFLINE_MODE,
+    payload: action,
+  };
+}
+
+export function removeActionFromQueue(action) {
+  return {
+    type: REMOVE_FROM_ACTION_QUEUE,
+    payload: action,
   };
 }
