@@ -1,4 +1,4 @@
-import { API_CALL } from './constants';
+import { API_CALL, CONNECTION_CHANGE } from './constants';
 
 function apiCall(type, method, path, params, data, schema, parser, options) {
   return {
@@ -34,4 +34,11 @@ export function apiPut(type, path, data = {}, schema = null, parser = null, opti
 
 export function apiDelete(type, path, schema = null, parser = null, options = {}) {
   return apiCall(type, 'delete', path, {}, {}, schema, parser, options);
+}
+
+export function connectionChange(isConnected) {
+  return {
+    type: CONNECTION_CHANGE,
+    payload: isConnected,
+  };
 }

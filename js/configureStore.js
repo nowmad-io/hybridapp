@@ -8,6 +8,7 @@ import {
 } from 'react-navigation-redux-helpers';
 import createSagaMiddleware from 'redux-saga';
 
+import { network } from './requests';
 import reducers from './reducers';
 
 export default () => {
@@ -29,7 +30,10 @@ export default () => {
     blacklist: ['nav', 'search', 'home', 'search'],
   };
 
-  const rootReducer = combineReducers({ ...reducers });
+  const rootReducer = combineReducers({
+    network,
+    ...reducers,
+  });
 
   const addListener = createReduxBoundAddListener('root');
 

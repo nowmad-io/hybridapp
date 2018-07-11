@@ -7,7 +7,7 @@ import MainRouter from './Routers/MainRouter';
 import SplashScreen from './components/pages/splashScreen';
 
 import configureStore from './configureStore';
-import { requestsSaga, Api } from './requests';
+import { sagas as requestsSaga, Api } from './requests';
 import sagas from './sagas';
 
 const {

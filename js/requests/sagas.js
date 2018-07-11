@@ -1,8 +1,46 @@
-import { all, call, fork, put, takeEvery, select } from 'redux-saga/effects';
+import { NetInfo } from 'react-native';
+import { take, all, call, fork, put, takeEvery, select, cancelled } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 
 import { API_CALL } from './constants';
+import { connectionChange } from './actions';
 
-export const apiGeneric = api =>
+function* handleConnectivityChange(hasInternetAccess) {
+  yield put(connectionChange(hasInternetAccess));
+  const actionQueue = yield select(state => state.network.actionQueue);
+
+  if (hasInternetAccess && actionQueue.length > 0) {
+    // eslint-disable-next-line
+    for (const action of actionQueue) {
+      yield put(action);
+    }
+  }
+}
+
+function createNetInfoConnectionChangeChannel() {
+  return eventChannel((emit) => {
+    NetInfo.isConnected.addEventListener('connectionChange', emit);
+    return () => {
+      NetInfo.isConnected.removeEventListener('connectionChange', emit);
+    };
+  });
+}
+
+function* netInfoChangeSaga() {
+  const chan = yield call(createNetInfoConnectionChangeChannel);
+  try {
+    while (true) {
+      const isConnected = yield take(chan);
+      yield fork(handleConnectivityChange, isConnected);
+    }
+  } finally {
+    if (yield cancelled()) {
+      chan.close();
+    }
+  }
+}
+
+const apiGeneric = api =>
   function* _apiGeneric(action) {
     const {
       method, path, params, data, schema, parser,
@@ -41,6 +79,7 @@ export default function requestsSaga(api) {
   return function* _requestsSaga() {
     yield all([
       fork(watchApiCall(api)),
+      fork(netInfoChangeSaga),
     ]);
   };
 }
