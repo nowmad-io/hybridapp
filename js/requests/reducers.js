@@ -10,7 +10,11 @@ export const initialState = {
 const networkReducer = (state = initialState, action) => {
   const apiRegex = new RegExp(API_CALL);
   if (apiRegex.test(action.type)) {
-    const similarActionQueued = _.find(state.actionQueue, a => _.isEqual(action.payload, a));
+    // Only compare type and payload since SAGAS may add other attribute
+    const similarActionQueued = _.find(state.actionQueue, ({ type, payload }) => _.isEqual({
+      type: action.type,
+      payload: action.payload,
+    }, { type, payload }));
 
     if (similarActionQueued) {
       return {
@@ -18,6 +22,7 @@ const networkReducer = (state = initialState, action) => {
         actionQueue: _.without(state.actionQueue, similarActionQueued),
       };
     }
+
     return state;
   }
 

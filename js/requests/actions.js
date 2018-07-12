@@ -23,7 +23,7 @@ function requestAction(type, method, path, params, data, schema, parser, options
 export function apiCall(request) {
   return {
     ...request,
-    type: request.originalType + API_CALL,
+    type: request.meta.originalType + API_CALL,
   };
 }
 

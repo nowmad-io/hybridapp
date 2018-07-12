@@ -83,12 +83,13 @@ const requestApi = api =>
 
 function* apiGeneric(action) {
   const isConnected = yield select(state => state.network.isConnected);
+  const apiAction = apiCall(action);
 
   if (isConnected) {
-    yield put(apiCall(action));
+    yield put(apiAction);
     return;
   }
-  yield put(fetchOfflineMode(action));
+  yield put(fetchOfflineMode(apiAction));
 }
 
 const watchApiCall = api => function* _watchApiCall() {
