@@ -52,11 +52,11 @@ function* reviewFlow() {
   yield put(NavigationActions.back());
 }
 
-function* updateReview(action) {
+function* updatePlaces(action) {
   const { type, payload } = action;
   const { friends: { all } } = yield select();
 
-  if (!type === `${FETCH_FRIENDS}_SUCCESS` || payload.length !== all.length) {
+  if (type === `${FETCH_FRIENDS}_SUCCESS` || payload.length !== all.length) {
     yield put(fetchPlaces());
   }
 }
@@ -65,5 +65,5 @@ export default function* root() {
   yield takeLatest(RUN_SAGAS, homeFlow);
   yield takeLatest(GET_GEOLOCATION, currentPosition);
   yield takeLatest([`${ADD_REVIEW}_REQUEST`, `${UPDATE_REVIEW}_REQUEST`], reviewFlow);
-  yield takeLatest([`${ACCEPT_FRIENDSHIP}_SUCCESS`, `${FETCH_FRIENDS}_SUCCESS`], updateReview);
+  yield takeLatest([`${ACCEPT_FRIENDSHIP}_SUCCESS`, `${FETCH_FRIENDS}_SUCCESS`], updatePlaces);
 }
