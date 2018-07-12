@@ -67,7 +67,6 @@ const initialState = {
     longitude: 5.266113225370649,
     latitude: 20.476854784243514,
   },
-  addingReview: false,
   selectedPlace: {},
   gPlace: null,
 };
@@ -79,15 +78,6 @@ const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         gPlace: null,
-        addingReview: true,
-      };
-    case `${ADD_REVIEW}_SUCCESS`:
-    case `${ADD_REVIEW}_ERROR`:
-    case `${UPDATE_REVIEW}_SUCCESS`:
-    case `${UPDATE_REVIEW}_ERROR`:
-      return {
-        ...state,
-        addingReview: false,
       };
     case REGION_CHANGE:
       return {

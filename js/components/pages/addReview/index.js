@@ -35,7 +35,6 @@ class AddReview extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     categoriesList: PropTypes.array,
-    addingReview: PropTypes.bool,
     me: PropTypes.object,
     region: PropTypes.object,
   }
@@ -198,9 +197,7 @@ class AddReview extends Component {
   }
 
   render() {
-    const {
-      addingReview, navigation, region, categoriesList,
-    } = this.props;
+    const { navigation, region, categoriesList } = this.props;
     const {
       short_description: shortDescription, information, place, categories,
       pictures, status, link_1: link1, link_2: link2, addingImage,
@@ -325,7 +322,7 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <Spinner overlay visible={addingReview || addingImage} />
+        <Spinner overlay visible={addingImage} />
       </LayoutView>
     );
   }
@@ -334,7 +331,6 @@ class AddReview extends Component {
 const mapStateToProps = state => ({
   region: state.home.region,
   categoriesList: _.map(state.entities.categories, categorie => categorie),
-  addingReview: state.home.addingReview,
   me: state.auth.me,
 });
 
