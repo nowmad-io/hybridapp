@@ -2,8 +2,8 @@ import { NetInfo } from 'react-native';
 import { take, all, call, fork, put, takeEvery, select, cancelled } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
-import { API_CALL } from './constants';
-import { connectionChange, fetchOfflineMode, removeActionFromQueue } from './actions';
+import { REQUEST, API_CALL } from './constants';
+import { connectionChange, fetchOfflineMode, apiCall } from './actions';
 
 function* handleConnectivityChange(hasInternetAccess) {
   yield put(connectionChange(hasInternetAccess));
@@ -12,7 +12,7 @@ function* handleConnectivityChange(hasInternetAccess) {
   if (hasInternetAccess && actionQueue.length > 0) {
     // eslint-disable-next-line
     for (const action of actionQueue) {
-      yield put(action);
+      yield put(apiCall(action));
     }
   }
 }
@@ -54,18 +54,15 @@ function* netInfoChangeSaga() {
   }
 }
 
-const apiGeneric = api =>
-  function* _apiGeneric(action) {
+const requestApi = api =>
+  function* _requestApi(action) {
     const {
       method, path, params, data, schema, parser,
     } = action.payload;
     const { options } = action.payload;
-    const { request, success, failure } = action.meta;
+    const { success, failure } = action.meta;
 
-    const { token, isConnected } = yield select(state => ({
-      token: state.auth.token,
-      isConnected: state.network.isConnected,
-    }));
+    const token = yield select(state => state.auth.token);
 
     if (token) {
       options.headers = {
@@ -74,29 +71,31 @@ const apiGeneric = api =>
       };
     }
 
-    yield put({
-      type: request, params, data, schema,
-    });
-
-    if (isConnected) {
-      yield put(removeActionFromQueue(action));
-
-      try {
-        const response = yield call(api[method], path, {
-          params, data, options, schema, parser,
-        });
-        yield put({ type: success, payload: response });
-      } catch (error) {
-        yield put({ type: failure, payload: error, error: true });
-      }
-      return;
+    try {
+      const response = yield call(api[method], path, {
+        params, data, options, schema, parser,
+      });
+      yield put({ type: success, payload: response });
+    } catch (error) {
+      yield put({ type: failure, payload: error, error: true });
     }
-
-    yield put(fetchOfflineMode(action));
   };
 
+function* apiGeneric(action) {
+  const isConnected = yield select(state => state.network.isConnected);
+
+  if (isConnected) {
+    yield put(apiCall(action));
+    return;
+  }
+  yield put(fetchOfflineMode(action));
+}
+
 const watchApiCall = api => function* _watchApiCall() {
-  yield takeEvery(API_CALL, apiGeneric(api));
+  const requestRegex = new RegExp(REQUEST);
+  const apiRegex = new RegExp(API_CALL);
+  yield takeEvery(action => requestRegex.test(action.type), apiGeneric);
+  yield takeEvery(action => apiRegex.test(action.type), requestApi(api));
 };
 
 export default function requestsSaga(api) {

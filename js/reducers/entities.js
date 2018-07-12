@@ -33,7 +33,7 @@ export const selectUser = userId => createSelector(
 );
 
 function handleAddEditReview(action) {
-  const { place, ...review } = action.params;
+  const { place, ...review } = action.payload.params;
   const newPlace = {
     ...place,
     reviews: [{
@@ -45,7 +45,7 @@ function handleAddEditReview(action) {
 
   const {
     entities: { places, reviews }, result,
-  } = normalize(newPlace, action.schema);
+  } = normalize(newPlace, action.payload.schema);
 
   return {
     places,
