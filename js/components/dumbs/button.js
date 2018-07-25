@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, StyleSheet, PixelRatio, View } from 'react-native';
+import {
+  TouchableOpacity, StyleSheet, PixelRatio, View,
+} from 'react-native';
 
 import Text from './text';
 import Icon from './icon';

@@ -120,14 +120,18 @@ class Register extends Component {
               style={styles.button}
               onPress={() => this._register()}
             >
-              <Text>register</Text>
+              <Text>
+                Register
+              </Text>
             </Button>
             <Button
               transparent
               style={styles.button}
               onPress={() => Register.backToLogin()}
             >
-              <Text>Login</Text>
+              <Text>
+                Login
+              </Text>
             </Button>
           </View>
         </Content>

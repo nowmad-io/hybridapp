@@ -45,10 +45,17 @@ export default class ReviewHeader extends PureComponent {
             </Text>
             {reviews.length > 1 ? ` and ${reviews.length - 1} more friend${reviews.length > 2 ? 's' : ''}` : ''}
           </Text>
-          <Text numberOfLines={1} note>- { reviews[0].short_description } -</Text>
+          <Text numberOfLines={1} note>
+-
+            { reviews[0].short_description }
+            {' '}
+-
+          </Text>
           { showcase && (
             <Text numberOfLines={1} style={styles.address}>
-              <Icon style={styles.addressIcon} name="location-on" /> {placeAddress}
+              <Icon style={styles.addressIcon} name="location-on" />
+              {' '}
+              {placeAddress}
             </Text>
           )}
         </View>

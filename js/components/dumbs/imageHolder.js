@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, Image, View, StyleSheet } from 'react-native';
+import {
+  TouchableOpacity, Image, View, StyleSheet,
+} from 'react-native';
 
 import Icon from './icon';
 

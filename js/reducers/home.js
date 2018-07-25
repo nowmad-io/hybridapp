@@ -23,8 +23,8 @@ export const selectPlaces = createSelector(
     reviews,
     review => (
       (filters.friend ? review.created_by === filters.friend : true)
-      && (filters.categories.length ?
-        _.intersection(review.categories, filters.categories).length : true)
+      && (filters.categories.length
+        ? _.intersection(review.categories, filters.categories).length : true)
     ),
   ).map(review => places[review.place]))),
 );

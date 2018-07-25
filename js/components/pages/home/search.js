@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, BackHandler, StyleSheet, View } from 'react-native';
+import {
+  TextInput, BackHandler, StyleSheet, View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -13,6 +15,8 @@ import LayoutView from '../../dumbs/layoutView';
 import { colors, sizes } from '../../../parameters';
 
 class Search extends Component {
+  search = _.debounce(this.searchDebounced, 300)
+
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.array,
@@ -51,7 +55,7 @@ class Search extends Component {
   }
 
   onBackPress = () => {
-    this.setState({ text: this.state.previousValue });
+    this.setState(prevState => ({ text: prevState.previousValue }));
     this.blur();
     return true;
   }
@@ -115,8 +119,6 @@ class Search extends Component {
     this.blur();
     this.props.onAddThisPlacePress(coord);
   }
-
-  search = _.debounce(this.searchDebounced, 300)
 
   searchDebounced(query) {
     this.props.dispatch(peopleSearch(query));

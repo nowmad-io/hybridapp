@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet, View, TouchableOpacity, Image,
+} from 'react-native';
 
 import Text from './text';
 import LayoutView from './layoutView';
@@ -50,9 +52,15 @@ export default class List extends PureComponent {
           />
         )}
         <LayoutView type="wrapper">
-          <Text style={[disabled && styles.secondaryText]}>{text}</Text>
+          <Text style={[disabled && styles.secondaryText]}>
+            {text}
+          </Text>
           {secondaryText && (
-            <Text style={styles.secondaryText}> - {secondaryText}</Text>
+            <Text style={styles.secondaryText}>
+              {' '}
+-
+              {secondaryText}
+            </Text>
           )}
         </LayoutView>
 

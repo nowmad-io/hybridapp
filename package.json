@@ -2,6 +2,7 @@
   "name": "Nowmad",
   "version": "0.0.17",
   "description": "Share your travel experiences with your friends",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/travelNetwork/hybridapp.git"

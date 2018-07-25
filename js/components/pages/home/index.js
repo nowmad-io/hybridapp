@@ -15,7 +15,9 @@ import Badge from '../../dumbs/badge';
 import Map from '../../dumbs/map';
 import Search from './search';
 
-import { getGeolocation, regionChanged, filtersChange, placeSelect, gPlace } from '../../../actions/home';
+import {
+  getGeolocation, regionChanged, filtersChange, placeSelect, gPlace,
+} from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
 import { sendFriendship } from '../../../api/friends';
 import { poiToPlace, placeDetails } from '../../../api/search';
@@ -89,7 +91,7 @@ class Home extends Component {
   onPanDrag = () => {}
 
   onFiltersPress = () => {
-    this.setState({ filtersVisible: !this.state.filtersVisible });
+    this.setState(prevState => ({ filtersVisible: !prevState.filtersVisible }));
   }
 
   onFiltersChange = (filters) => {
@@ -252,7 +254,9 @@ class Home extends Component {
               style={styles.filterButton}
               onPress={this.onFiltersPress}
             >
-              <Text>Filters</Text>
+              <Text>
+Filters
+              </Text>
               {filters.categories.length ? (
                 <Badge text={filters.categories.length} />
               ) : (

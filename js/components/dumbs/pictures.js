@@ -41,13 +41,13 @@ export default class Pictures extends PureComponent {
               <CachedImage
                 source={{ uri: pictures[2].source }}
                 style={[
-                styles.pictures,
-                {
-                  marginLeft: pictures.length > 1 ? 1 : 0,
-                  marginBottom: 0,
-                  marginTop: pictures.length > 2 ? 1 : 0,
-                },
-              ]}
+                  styles.pictures,
+                  {
+                    marginLeft: pictures.length > 1 ? 1 : 0,
+                    marginBottom: 0,
+                    marginTop: pictures.length > 2 ? 1 : 0,
+                  },
+                ]}
               />
             )}
           </View>

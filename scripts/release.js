@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const fs = require('fs');
 const path = require('path');
 /* eslint-disable-next-line import/no-extraneous-dependencies */
@@ -9,6 +11,7 @@ const packageJson = path.join(root, './package.json');
 const packageLockJson = path.join(root, './package-lock.json');
 const androidManifest = path.join(root, './android/app/src/main/AndroidManifest.xml');
 const buildGradle = path.join(root, './android/app/build.gradle');
+const loginComponent = path.join(root, './js/components/pages/auth/login.js');
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 const simpleGit = require('simple-git')(root);
 
@@ -70,6 +73,12 @@ function bumpVersion() {
 simpleGit.diffSummary((err, results) => {
   if (results.insertions || results.deletions) {
     console.log('There are uncommited changed. Commit all changes before bumping version');
+    return;
+  }
+
+  const loginFile = fs.readFileSync(loginComponent, 'utf8');
+  if (loginFile.find('@')) {
+    console.log('Remove dev credentials before bumping version !');
     return;
   }
 

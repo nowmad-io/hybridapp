@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 
-import Icon from '../dumbs/icon';
-import Text from '../dumbs/text';
+import Icon from './icon';
+import Text from './text';
 
 import { colors } from '../../parameters';
 
@@ -24,7 +24,9 @@ export default class RadioButton extends PureComponent {
             style={styles.icon}
             name={selected ? 'radio-button-checked' : 'radio-button-unchecked'}
           />
-          <Text style={styles.text}>{text}</Text>
+          <Text style={styles.text}>
+            {text}
+          </Text>
         </View>
       </TouchableOpacity>
     );

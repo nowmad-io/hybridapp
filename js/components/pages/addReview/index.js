@@ -154,21 +154,6 @@ class AddReview extends Component {
     this._map.updatePadding({ bottom: height });
   }
 
-  toggleCategorie(categorie) {
-    const { categories } = this.state;
-    let newCategories = [...categories];
-
-    const selected = _.findIndex(categories, { id: categorie.id });
-
-    if (selected !== -1) {
-      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
-    } else {
-      newCategories.push(categorie);
-    }
-
-    this.setState({ categories: newCategories });
-  }
-
   selectPictures = () => {
     const options = {
       quality: 1.0,
@@ -187,6 +172,21 @@ class AddReview extends Component {
         this.navigateToImage(response);
       }
     });
+  }
+
+  toggleCategorie(categorie) {
+    const { categories } = this.state;
+    let newCategories = [...categories];
+
+    const selected = _.findIndex(categories, { id: categorie.id });
+
+    if (selected !== -1) {
+      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
+    } else {
+      newCategories.push(categorie);
+    }
+
+    this.setState({ categories: newCategories });
   }
 
   navigateToImage(image) {
@@ -213,7 +213,9 @@ class AddReview extends Component {
           </LayoutView>
           <LayoutView type="right">
             <Button transparent onPress={this.onPublish}>
-              <Text>PUBLISH</Text>
+              <Text>
+PUBLISH
+              </Text>
             </Button>
           </LayoutView>
         </LayoutView>
@@ -228,11 +230,15 @@ class AddReview extends Component {
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
-              <Text style={styles.addressText}>{place.address}</Text>
+              <Text style={styles.addressText}>
+                {place.address}
+              </Text>
             </View>
           </View>
           <View style={styles.reviewWrapper}>
-            <Text style={styles.title}>My review</Text>
+            <Text style={styles.title}>
+My review
+            </Text>
             <View>
               <Label
                 text="Add a short description about this place"

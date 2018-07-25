@@ -78,7 +78,9 @@ class AddImage extends Component {
           </LayoutView>
           <LayoutView type="right">
             <Button transparent onPress={this.onSavePress}>
-              <Text>SAVE</Text>
+              <Text>
+SAVE
+              </Text>
             </Button>
           </LayoutView>
         </LayoutView>

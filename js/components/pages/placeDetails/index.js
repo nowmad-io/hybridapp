@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, BackHandler, View, ScrollView } from 'react-native';
+import {
+  StyleSheet, BackHandler, View, ScrollView,
+} from 'react-native';
 
 import Review from '../../dumbs/entry/review';
 import Button from '../../dumbs/button';

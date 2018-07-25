@@ -4,4 +4,6 @@ import Api from './api';
 
 export { sagas, Api, network };
 
-export { apiGet, apiPost, apiPut, apiDelete } from './actions';
+export {
+  apiGet, apiPost, apiPut, apiDelete,
+} from './actions';

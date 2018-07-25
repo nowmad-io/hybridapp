@@ -3,7 +3,9 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 
 import { placeSchema } from '../api/reviews';
-import { PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES } from '../constants/reviews';
+import {
+  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES,
+} from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getEntities = state => state.entities;

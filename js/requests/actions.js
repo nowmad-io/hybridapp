@@ -1,4 +1,6 @@
-import { REQUEST, API_CALL, CONNECTION_CHANGE, FETCH_OFFLINE_MODE } from './constants';
+import {
+  REQUEST, API_CALL, CONNECTION_CHANGE, FETCH_OFFLINE_MODE,
+} from './constants';
 
 function requestAction(type, method, path, params, data, schema, parser, options) {
   return {

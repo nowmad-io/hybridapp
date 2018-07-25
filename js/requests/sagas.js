@@ -1,5 +1,7 @@
 import { NetInfo } from 'react-native';
-import { take, all, call, fork, put, takeEvery, select, cancelled } from 'redux-saga/effects';
+import {
+  take, all, call, fork, put, takeEvery, select, cancelled,
+} from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import { REQUEST, API_CALL } from './constants';
@@ -54,32 +56,31 @@ function* netInfoChangeSaga() {
   }
 }
 
-const requestApi = api =>
-  function* _requestApi(action) {
-    const {
-      method, path, params, data, schema, parser,
-    } = action.payload;
-    const { options } = action.payload;
-    const { success, failure } = action.meta;
+const requestApi = api => function* _requestApi(action) {
+  const {
+    method, path, params, data, schema, parser,
+  } = action.payload;
+  const { options } = action.payload;
+  const { success, failure } = action.meta;
 
-    const token = yield select(state => state.auth.token);
+  const token = yield select(state => state.auth.token);
 
-    if (token) {
-      options.headers = {
-        ...options.headers,
-        Authorization: `Token ${token}`,
-      };
-    }
+  if (token) {
+    options.headers = {
+      ...options.headers,
+      Authorization: `Token ${token}`,
+    };
+  }
 
-    try {
-      const response = yield call(api[method], path, {
-        params, data, options, schema, parser,
-      });
-      yield put({ type: success, payload: response });
-    } catch (error) {
-      yield put({ type: failure, payload: error, error: true });
-    }
-  };
+  try {
+    const response = yield call(api[method], path, {
+      params, data, options, schema, parser,
+    });
+    yield put({ type: success, payload: response });
+  } catch (error) {
+    yield put({ type: failure, payload: error, error: true });
+  }
+};
 
 function* apiGeneric(action) {
   const isConnected = yield select(state => state.network.isConnected);

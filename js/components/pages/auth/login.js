@@ -101,7 +101,9 @@ class Login extends Component {
               style={styles.button}
               onPress={() => this._login()}
             >
-              <Text>Login</Text>
+              <Text>
+                Login
+              </Text>
             </Button>
             <Button
               rounded
@@ -109,7 +111,9 @@ class Login extends Component {
               style={styles.button}
               onPress={() => this._register()}
             >
-              <Text>Register</Text>
+              <Text>
+                Register
+              </Text>
             </Button>
           </View>
         </Content>

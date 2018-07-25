@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Image, View, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  Image, View, TouchableOpacity, StyleSheet,
+} from 'react-native';
 
 import Text from '../text';
 import Avatar from '../avatar';
@@ -8,6 +10,10 @@ import Avatar from '../avatar';
 import { font, colors } from '../../../parameters';
 
 export default class Review extends PureComponent {
+  static initials({ first_name: firstName, last_name: lastName }) {
+    return (firstName && lastName) ? firstName[0] + lastName[0] : '';
+  }
+
   static propTypes = {
     style: PropTypes.oneOfType([
       PropTypes.object,
@@ -19,10 +25,6 @@ export default class Review extends PureComponent {
     onPress: PropTypes.func,
     cover: PropTypes.bool,
     google: PropTypes.bool,
-  }
-
-  static initials({ first_name: firstName, last_name: lastName }) {
-    return (firstName && lastName) ? firstName[0] + lastName[0] : '';
   }
 
   constructor(props) {
@@ -60,9 +62,9 @@ export default class Review extends PureComponent {
 
     return (
       <View style={[
-          styles.review,
-          style && style,
-        ]}
+        styles.review,
+        style && style,
+      ]}
       >
         <TouchableOpacity
           onPress={onPress}
@@ -83,7 +85,9 @@ export default class Review extends PureComponent {
               onLayout={this._onLayout}
             >
               <Text>
-                <Text style={styles.user_text}>{userText}</Text>
+                <Text style={styles.user_text}>
+                  {userText}
+                </Text>
                 {othersText}
               </Text>
               {(others && others.length) ? (
@@ -99,7 +103,9 @@ export default class Review extends PureComponent {
                   )) }
                 </View>
               ) : (
-                <Text lowercase={!google}>{google ? 'Google' : `was ${status}`}</Text>
+                <Text lowercase={!google}>
+                  {google ? 'Google' : `was ${status}`}
+                </Text>
               )}
             </View>
           </View>

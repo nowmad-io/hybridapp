@@ -23,9 +23,9 @@ export default class Label extends PureComponent {
       ]}
       >
         <Text style={[
-            styles.label,
-            subtitle && styles.labelSubtitle,
-          ]}
+          styles.label,
+          subtitle && styles.labelSubtitle,
+        ]}
         >
           {text}
         </Text>
@@ -33,7 +33,7 @@ export default class Label extends PureComponent {
         <View style={styles.requiredWrapper}>
           <View style={styles.required} />
         </View>
-          )}
+        )}
       </View>
     );
   }
