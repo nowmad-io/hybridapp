@@ -168,7 +168,7 @@ class Home extends Component {
     return (
       <Search
         ref={(s) => { this._search = s; }}
-        onMenuPress={() => navigation.navigate('DrawerOpen')}
+        onMenuPress={() => navigation.openDrawer()}
         onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
         onAddFriendPress={this.onAddFriendPress}

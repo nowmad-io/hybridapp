@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { TabNavigator } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation';
 
 import Tab from '../components/pages/home/tab';
 import Text from '../components/dumbs/text';
 
 import { colors, font } from '../parameters';
 
-export default TabNavigator({
+export default createMaterialTopTabNavigator({
   All: Tab,
   People: Tab,
   Reviews: Tab,

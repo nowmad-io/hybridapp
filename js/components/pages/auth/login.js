@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+import NavigationService from '../../../navigationService';
 
 import { apiLogin } from '../../../api/auth';
 
@@ -36,16 +36,14 @@ class Login extends Component {
       email: 'j@j.com',
       password: 'j',
     };
+  }
 
+  componentDidMount() {
     // Check if logged in and redirect to App if so
-    const { loggedIn } = props;
+    const { loggedIn } = this.props;
 
     if (loggedIn) {
-      const actionToDispatch = NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'App' })],
-      });
-      this.props.navigation.dispatch(actionToDispatch);
+      this.props.navigation.dispatch(NavigationService.resetAction());
     }
   }
 

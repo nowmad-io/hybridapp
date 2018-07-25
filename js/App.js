@@ -4,19 +4,19 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Config from 'react-native-config';
 
 import MainRouter from './Routers/MainRouter';
+import NavigationService from './navigationService';
 import SplashScreen from './components/pages/splashScreen';
 
 import configureStore from './configureStore';
 import { sagas as requestsSaga, Api } from './requests';
 import sagas from './sagas';
 
-const {
-  persistor, store, addListener, sagaMiddleware,
-} = configureStore();
+const { persistor, store, sagaMiddleware } = configureStore();
 
 /* eslint-disable-next-line no-console */
 console.ignoredYellowBox = [
   'Remote debugger',
+  'Warning: isMounted(...) is deprecated',
 ];
 
 class App extends Component {
@@ -36,7 +36,9 @@ class App extends Component {
           persistor={persistor}
           onBeforeLift={App.onBeforeLift}
         >
-          <MainRouter addListener={addListener} />
+          <MainRouter
+            ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)}
+          />
         </PersistGate>
       </Provider>
     );

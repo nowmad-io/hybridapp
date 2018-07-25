@@ -1,6 +1,9 @@
-import { put, takeLatest, call, take, select, fork } from 'redux-saga/effects';
-import { NavigationActions } from 'react-navigation';
+import {
+  put, takeLatest, call, take, select, fork,
+} from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
+
+import NavigationService from '../navigationService';
 
 import {
   ADD_REVIEW,
@@ -49,7 +52,7 @@ export function* homeFlow() {
 }
 
 function* reviewFlow() {
-  yield put(NavigationActions.back());
+  yield call(NavigationService.back);
 }
 
 function* updatePlaces(action) {

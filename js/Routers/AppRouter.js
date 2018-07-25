@@ -1,4 +1,4 @@
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import HomeRouter from './HomeRouter';
 
@@ -8,7 +8,7 @@ import AddImage from '../components/pages/addImage';
 import AddFriend from '../components/pages/addFriend';
 import PlaceDetails from '../components/pages/placeDetails';
 
-const AppRouter = StackNavigator({
+export default createStackNavigator({
   Home: HomeRouter,
   AddReview,
   ReviewDetail,
@@ -20,5 +20,3 @@ const AppRouter = StackNavigator({
     header: null,
   },
 });
-
-export default AppRouter;
