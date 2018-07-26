@@ -77,7 +77,7 @@ simpleGit.diffSummary((err, results) => {
   }
 
   const loginFile = fs.readFileSync(loginComponent, 'utf8');
-  if (loginFile.find('@')) {
+  if (loginFile.search('@') !== -1) {
     console.log('Remove dev credentials before bumping version !');
     return;
   }
