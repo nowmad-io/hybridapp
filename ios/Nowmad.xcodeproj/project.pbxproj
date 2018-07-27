@@ -68,7 +68,7 @@
 		078E3364A70F4AE98CF2B94E /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7CEBA2B69DCF468AB7DD7383 /* Roboto-ThinItalic.ttf */; };
 		B7907B2D90504733AC26D1DC /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EB9653224094F3897120838 /* libRNSentry.a */; };
 		FB88B669242044E5B0CA96E8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3172D47338694D459F1E5DAB /* libz.tbd */; };
-		994EE7D13A0942898D429EFA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B425312CAAFF40CCB11FDCA0 /* libAirMaps.a */; };
+		D2AC22CCE08C4A3FAC20F07D /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0202DC7B380402FB6037284 /* libAirMaps.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -412,8 +412,8 @@
 		19803D04AF46406C9340239A /* RNSentry.xcodeproj */ = {isa = PBXFileReference; name = "RNSentry.xcodeproj"; path = "../node_modules/react-native-sentry/ios/RNSentry.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2EB9653224094F3897120838 /* libRNSentry.a */ = {isa = PBXFileReference; name = "libRNSentry.a"; path = "libRNSentry.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		3172D47338694D459F1E5DAB /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
-		C4DF4D35807E4C4485602764 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; name = "AirMaps.xcodeproj"; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		B425312CAAFF40CCB11FDCA0 /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		AA9ACE4729F346118D2760F1 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; name = "AirMaps.xcodeproj"; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C0202DC7B380402FB6037284 /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -450,7 +450,7 @@
 				ACC003C9629A47E7B82789F9 /* libRCTRestart.a in Frameworks */,
 				B7907B2D90504733AC26D1DC /* libRNSentry.a in Frameworks */,
 				FB88B669242044E5B0CA96E8 /* libz.tbd in Frameworks */,
-				994EE7D13A0942898D429EFA /* libAirMaps.a in Frameworks */,
+				D2AC22CCE08C4A3FAC20F07D /* libAirMaps.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,7 +645,7 @@
 				78EA7370FAF840289FC4514C /* ReactNativeExceptionHandler.xcodeproj */,
 				278A4C8E48ED47B493732445 /* RCTRestart.xcodeproj */,
 				19803D04AF46406C9340239A /* RNSentry.xcodeproj */,
-				C4DF4D35807E4C4485602764 /* AirMaps.xcodeproj */,
+				AA9ACE4729F346118D2760F1 /* AirMaps.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
