@@ -51,8 +51,13 @@ function* syncReviews() {
   const { reviews } = entities;
 
   yield all(_.filter(reviews, { toSync: true }).map((review) => {
-    const { place, ...reviewToUpdate } = denormalize(review, simpleReviewSchema, entities);
-    return put(apiCall(addReview(reviewToUpdate)));
+    const {
+      place: { reviews: list, ...place }, ...reviewToUpdate
+    } = denormalize(review, simpleReviewSchema, entities);
+    return put(apiCall(addReview({
+      ...reviewToUpdate,
+      place,
+    })));
   }));
 }
 
