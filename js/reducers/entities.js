@@ -42,7 +42,7 @@ function handleAddEditReview(action) {
       ...review,
       place: place.id,
       toSync: true,
-      synced: false,
+      partial: true,
     }],
   };
 
@@ -95,7 +95,34 @@ const entitiesReducer = (state = initialState, action) => {
       };
     }
     case `${ADD_REVIEW}_SUCCESS`: {
-      return state;
+      const { entities: { places }, result } = action.payload;
+      const { place, ...review } = places[result];
+
+      const updatedReview = {};
+      updatedReview[result] = {
+        ...state.reviews[result],
+        ...review,
+        toSync: false,
+        partial: false,
+      };
+
+      const updatedPlace = {};
+      updatedPlace[place.id] = {
+        ...state.places[place.id],
+        ...place,
+      };
+
+      return {
+        ...state,
+        places: {
+          ...state.places,
+          ...updatedPlace,
+        },
+        reviews: {
+          ...state.reviews,
+          ...updatedReview,
+        },
+      };
     }
     case `${ADD_REVIEW}_REQUEST`: {
       const { places, reviews, result } = handleAddEditReview(action);
