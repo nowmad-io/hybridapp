@@ -5,5 +5,5 @@ import Api from './api';
 export { sagas, Api, network };
 
 export {
-  apiGet, apiPost, apiPut, apiDelete,
+  apiCall, apiGet, apiPost, apiPut, apiDelete,
 } from './actions';

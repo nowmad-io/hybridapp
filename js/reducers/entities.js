@@ -42,6 +42,7 @@ function handleAddEditReview(action) {
       ...review,
       place: place.id,
       toSync: true,
+      synced: false,
     }],
   };
 
@@ -92,6 +93,9 @@ const entitiesReducer = (state = initialState, action) => {
           ...reviews,
         },
       };
+    }
+    case `${ADD_REVIEW}_SUCCESS`: {
+      return state;
     }
     case `${ADD_REVIEW}_REQUEST`: {
       const { places, reviews, result } = handleAddEditReview(action);
