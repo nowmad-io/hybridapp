@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
+import NavigationService from '../../../navigationService';
 import { apiRegister } from '../../../api/auth';
 
 import Icon from '../../dumbs/icon';
@@ -21,6 +21,10 @@ class Register extends Component {
   static navigationOptions = {
     header: null,
   };
+
+  static backToLogin() {
+    NavigationService.back();
+  }
 
   static propTypes = {
     dispatch: PropTypes.func,
@@ -45,10 +49,6 @@ class Register extends Component {
       first_name: this.state.firstName,
       last_name: this.state.lastName,
     }));
-  }
-
-  _backToLogin() {
-    this.props.dispatch(NavigationActions.back());
   }
 
   render() {
@@ -120,14 +120,18 @@ class Register extends Component {
               style={styles.button}
               onPress={() => this._register()}
             >
-              <Text>register</Text>
+              <Text>
+                Register
+              </Text>
             </Button>
             <Button
               transparent
               style={styles.button}
-              onPress={() => this._backToLogin()}
+              onPress={() => Register.backToLogin()}
             >
-              <Text>Login</Text>
+              <Text>
+                Login
+              </Text>
             </Button>
           </View>
         </Content>

@@ -1,4 +1,6 @@
-import { take, put, race, call } from 'redux-saga/effects';
+import {
+  take, put, race, call,
+} from 'redux-saga/effects';
 
 // Utility function to delay effects
 export function delay(millis) {
@@ -9,23 +11,21 @@ export function delay(millis) {
 }
 
 // Fetch data every 5 seconds
-export const fetchSaga = api =>
-  function* _fetchSagas() {
-    yield call(delay, 8000);
-    yield put(api());
-  };
+export const fetchSaga = api => function* _fetchSagas() {
+  yield call(delay, 8000);
+  yield put(api());
+};
 
 // Wait for successful response, then fire another request
 // Cancel polling if user logs out
-export const pollSaga = (api, success, stop) =>
-  function* _watchFetch() {
-    yield put(api());
+export const pollSaga = (api, success, stop) => function* _watchFetch() {
+  yield put(api());
 
-    while (true) {
-      yield take(success);
-      yield race([
-        call(fetchSaga(api)),
-        take(stop),
-      ]);
-    }
-  };
+  while (true) {
+    yield take(success);
+    yield race([
+      call(fetchSaga(api)),
+      take(stop),
+    ]);
+  }
+};

@@ -1,3 +1,4 @@
+export const SEARCH_FRIENDS = 'friends/SEARCH_FRIENDS';
 export const FETCH_FRIENDS = 'friends/FETCH_FRIENDS';
 export const FETCH_FRIENDSINCOMING = 'friends/FETCH_FRIENDSINCOMING';
 export const FETCH_FRIENDSOUTGOING = 'friends/FETCH_FRIENDSOUTGOING';

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView, Share } from 'react-native';
+import {
+  StyleSheet, View, ScrollView, Share,
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import Icon from '../../dumbs/icon';
@@ -19,19 +21,19 @@ class DrawBar extends React.Component {
     header: null,
   };
 
-  static propTypes = {
-    dispatch: PropTypes.func,
-    me: PropTypes.object,
-    all: PropTypes.array,
-    incomings: PropTypes.array,
-  };
-
   static initials({ first_name: firstName, last_name: lastName }) {
     if (!firstName && !lastName) {
       return '';
     }
     return `${firstName[0]}${lastName[0]}`;
   }
+
+  static propTypes = {
+    dispatch: PropTypes.func,
+    me: PropTypes.object,
+    all: PropTypes.array,
+    incomings: PropTypes.array,
+  };
 
   componentWillMount() {
     this.props.dispatch(runSagas());
@@ -71,7 +73,9 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
       <View style={styles.container}>
         <View style={styles.profileWrapper}>
           <View style={styles.info}>
-            <Text style={styles.title}>{me.first_name}</Text>
+            <Text style={styles.title}>
+              {me.first_name}
+            </Text>
             <Text style={styles.subtitle}>
               {`${all.length} friend${all.length > 0 ? 's' : ''}`}
             </Text>
@@ -83,7 +87,9 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
         </View>
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.pending}>Pending friend request</Text>
+            <Text style={styles.pending}>
+Pending friend request
+            </Text>
             { incomings.length > 0 && incomings.map(({ id, from_user: fromUser }) => (
               <View
                 key={fromUser.id}

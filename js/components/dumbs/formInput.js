@@ -64,7 +64,8 @@ export default class FormInput extends Component {
         </View>
         {this.props.maxLength && (
           <Text style={styles.length}>
-            {this.state.length ? `${this.state.length}/` : ''}{this.props.maxLength}
+            {this.state.length ? `${this.state.length}/` : ''}
+            {this.props.maxLength}
           </Text>
         )}
       </View>

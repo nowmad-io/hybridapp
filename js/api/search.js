@@ -1,7 +1,7 @@
 import Config from 'react-native-config';
 import shortid from 'shortid';
 
-import { apiGet } from '../requests';
+import { apiCall, apiGet } from '../requests';
 
 import {
   REVIEWS_SEARCH,
@@ -79,7 +79,7 @@ export function reviewsSearch(query) {
 }
 
 export function peopleSearch(query) {
-  return apiGet(PEOPLE_SEARCH, 'friends/search/', { query }, null, peopleParser);
+  return apiCall(apiGet(PEOPLE_SEARCH, 'friends/search/', { query }, null, peopleParser));
 }
 
 export function placesSearch(query) {
@@ -99,7 +99,7 @@ export function placesSearch(query) {
     parser = nearByToPlace;
   }
 
-  return apiGet(PLACES_SEARCH, `${url}?${key}&${params}`, {}, null, parser);
+  return apiCall(apiGet(PLACES_SEARCH, `${url}?${key}&${params}`, {}, null, parser));
 }
 
 export function photoUrl(ref) {

@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from '../requests';
+import { apiCall, apiGet, apiPost } from '../requests';
 
 import {
   FETCH_FRIENDS,
@@ -11,29 +11,29 @@ import {
 } from '../constants/friends';
 
 export function fetchFriends() {
-  return apiGet(FETCH_FRIENDS, 'friends/');
+  return apiCall(apiGet(FETCH_FRIENDS, 'friends/'));
 }
 
 export function fetchIncomingRequests() {
-  return apiGet(FETCH_FRIENDSINCOMING, 'friendships/incoming/');
+  return apiCall(apiGet(FETCH_FRIENDSINCOMING, 'friendships/incoming/'));
 }
 
 export function fetchOutgoingRequests() {
-  return apiGet(FETCH_FRIENDSOUTGOING, 'friendships/outgoing/');
+  return apiCall(apiGet(FETCH_FRIENDSOUTGOING, 'friendships/outgoing/'));
 }
 
 export function sendFriendship(friendship) {
-  return apiPost(SEND_FRIENDSHIP, 'friendships/', { ...friendship });
+  return apiCall(apiPost(SEND_FRIENDSHIP, 'friendships/', { ...friendship }));
 }
 
 export function acceptFriendship(id) {
-  return apiGet(ACCEPT_FRIENDSHIP, `friendships/accept/${id}/`);
+  return apiCall(apiGet(ACCEPT_FRIENDSHIP, `friendships/accept/${id}/`));
 }
 
 export function rejectFriendship(id) {
-  return apiGet(REJECT_FRIENDSHIP, `friendships/reject/${id}/`);
+  return apiCall(apiGet(REJECT_FRIENDSHIP, `friendships/reject/${id}/`));
 }
 
 export function cancelFriendship(id) {
-  return apiGet(CANCEL_FRIENDSHIP, `friendships/cancel/${id}/`);
+  return apiCall(apiGet(CANCEL_FRIENDSHIP, `friendships/cancel/${id}/`));
 }

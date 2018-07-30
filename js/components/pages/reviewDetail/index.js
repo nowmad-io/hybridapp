@@ -34,7 +34,9 @@ export default class ReviewDetail extends Component {
           <LayoutView type="left">
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon style={styles.icon} name="arrow-back" />
-              <Text>Return to map</Text>
+              <Text>
+Return to map
+              </Text>
             </Button>
           </LayoutView>
           <LayoutView type="right" />

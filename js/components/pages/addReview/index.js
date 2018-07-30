@@ -35,7 +35,6 @@ class AddReview extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     categoriesList: PropTypes.array,
-    addingReview: PropTypes.bool,
     me: PropTypes.object,
     region: PropTypes.object,
   }
@@ -155,21 +154,6 @@ class AddReview extends Component {
     this._map.updatePadding({ bottom: height });
   }
 
-  toggleCategorie(categorie) {
-    const { categories } = this.state;
-    let newCategories = [...categories];
-
-    const selected = _.findIndex(categories, { id: categorie.id });
-
-    if (selected !== -1) {
-      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
-    } else {
-      newCategories.push(categorie);
-    }
-
-    this.setState({ categories: newCategories });
-  }
-
   selectPictures = () => {
     const options = {
       quality: 1.0,
@@ -190,6 +174,21 @@ class AddReview extends Component {
     });
   }
 
+  toggleCategorie(categorie) {
+    const { categories } = this.state;
+    let newCategories = [...categories];
+
+    const selected = _.findIndex(categories, { id: categorie.id });
+
+    if (selected !== -1) {
+      newCategories = _.filter(newCategories, ({ id }) => id !== categorie.id);
+    } else {
+      newCategories.push(categorie);
+    }
+
+    this.setState({ categories: newCategories });
+  }
+
   navigateToImage(image) {
     this.props.navigation.navigate('AddImage', {
       onImageEditBack: this.onImageEditBack,
@@ -198,9 +197,7 @@ class AddReview extends Component {
   }
 
   render() {
-    const {
-      addingReview, navigation, region, categoriesList,
-    } = this.props;
+    const { navigation, region, categoriesList } = this.props;
     const {
       short_description: shortDescription, information, place, categories,
       pictures, status, link_1: link1, link_2: link2, addingImage,
@@ -216,7 +213,9 @@ class AddReview extends Component {
           </LayoutView>
           <LayoutView type="right">
             <Button transparent onPress={this.onPublish}>
-              <Text>PUBLISH</Text>
+              <Text>
+PUBLISH
+              </Text>
             </Button>
           </LayoutView>
         </LayoutView>
@@ -231,11 +230,15 @@ class AddReview extends Component {
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
-              <Text style={styles.addressText}>{place.address}</Text>
+              <Text style={styles.addressText}>
+                {place.address}
+              </Text>
             </View>
           </View>
           <View style={styles.reviewWrapper}>
-            <Text style={styles.title}>My review</Text>
+            <Text style={styles.title}>
+My review
+            </Text>
             <View>
               <Label
                 text="Add a short description about this place"
@@ -325,7 +328,7 @@ class AddReview extends Component {
             </View>
           </View>
         </Content>
-        <Spinner overlay visible={addingReview || addingImage} />
+        <Spinner overlay visible={addingImage} />
       </LayoutView>
     );
   }
@@ -334,7 +337,6 @@ class AddReview extends Component {
 const mapStateToProps = state => ({
   region: state.home.region,
   categoriesList: _.map(state.entities.categories, categorie => categorie),
-  addingReview: state.home.addingReview,
   me: state.auth.me,
 });
 

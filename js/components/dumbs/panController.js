@@ -10,6 +10,32 @@ const OvershootPropType = PropTypes.oneOf(['spring', 'clamp']);
 const AnimatedPropType = PropTypes.any;
 
 export default class PanController extends PureComponent {
+  static handleResponderGrant(anim, mode, spacing) {
+    switch (mode) {
+      case 'spring-origin':
+        anim.setValue(0);
+        break;
+      case 'snap':
+      case 'decay':
+        anim.setOffset(PanController.closestCenter(anim._value, spacing));
+        anim.setValue(0);
+        break;
+      default:
+        break;
+    }
+  }
+
+  static closestCenter(x, spacing) {
+    const plus = (x % spacing) < spacing / 2 ? 0 : spacing;
+    return Math.round(x / spacing) * spacing + plus;
+  }
+
+  _responder = null;
+
+  _listener = null;
+
+  _direction = null;
+
   static propTypes = {
     // Component Config
     children: PropTypes.oneOfType([
@@ -79,26 +105,6 @@ export default class PanController extends PureComponent {
     onLevelChange: () => true,
     onOvershoot: () => true,
     onDirectionChange: () => true,
-  }
-
-  static handleResponderGrant(anim, mode, spacing) {
-    switch (mode) {
-      case 'spring-origin':
-        anim.setValue(0);
-        break;
-      case 'snap':
-      case 'decay':
-        anim.setOffset(PanController.closestCenter(anim._value, spacing));
-        anim.setValue(0);
-        break;
-      default:
-        break;
-    }
-  }
-
-  static closestCenter(x, spacing) {
-    const plus = (x % spacing) < spacing / 2 ? 0 : spacing;
-    return Math.round(x / spacing) * spacing + plus;
   }
 
   constructor(props) {
@@ -243,10 +249,6 @@ export default class PanController extends PureComponent {
   componentDidUpdate() {
     this.props.onComponentDidUpdate();
   }
-
-  _responder = null;
-  _listener = null;
-  _direction = null;
 
   _onIndexChange = (x) => {
     const { snapSpacingX } = this.props;

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Animated, View, StyleSheet, Share } from 'react-native';
+import {
+  Animated, View, StyleSheet, Share,
+} from 'react-native';
 import _ from 'lodash';
 
 import Entry from '../../dumbs/entry';
@@ -71,8 +73,8 @@ class Carousel extends Component {
   }
 
   _onLayout = () => {
-    const index = this.props.selectedPlace ?
-      this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace.id) : 0;
+    const index = this.props.selectedPlace
+      ? this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace.id) : 0;
 
     if (index !== -1) {
       this.goToIndex(index);

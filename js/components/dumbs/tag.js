@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
-import Text from '../dumbs/text';
+import Text from './text';
 
 import { colors } from '../../parameters';
 
@@ -27,13 +27,13 @@ export default class Tag extends PureComponent {
         >
           {text ? (
             <Text style={[
-                styles.text,
-                selected && styles.textSelected,
-              ]}
+              styles.text,
+              selected && styles.textSelected,
+            ]}
             >
               {text}
             </Text>
-            ) : null}
+          ) : null}
         </View>
       </TouchableOpacity>
     );

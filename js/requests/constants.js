@@ -1,2 +1,4 @@
-/* eslint-disable-next-line import/prefer-default-export */
-export const API_CALL = 'request/API_CALL';
+export const REQUEST = '_REQUEST';
+export const API_CALL = '_API_CALL';
+export const CONNECTION_CHANGE = 'requests/CONNECTION_CHANGE';
+export const FETCH_OFFLINE_MODE = 'requests/FETCH_OFFLINE_MODE';

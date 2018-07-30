@@ -10,8 +10,10 @@ import Text from '../../dumbs/text';
 import Label from '../../dumbs/label';
 import FormInput from '../../dumbs/formInput';
 
-import { acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
-import { reviewsSearchByUser } from '../../../api/reviews';
+import {
+  acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship,
+} from '../../../api/friends';
+import { fetchPlaces } from '../../../api/reviews';
 
 
 import styles from './styles';
@@ -59,7 +61,7 @@ class AddFriend extends Component {
 
   onAcceptRequest(request) {
     this.props.dispatch(acceptFriendship(request.id));
-    this.props.dispatch(reviewsSearchByUser(this.state.user.email));
+    this.props.dispatch(fetchPlaces());
     this.props.navigation.goBack();
   }
 
@@ -106,8 +108,12 @@ class AddFriend extends Component {
               />
             </View>
             <View>
-              <Text style={styles.title}>{this.state.user.first_name}</Text>
-              <Text>{this.state.user.last_name}</Text>
+              <Text style={styles.title}>
+                {this.state.user.first_name}
+              </Text>
+              <Text>
+                {this.state.user.last_name}
+              </Text>
             </View>
           </View>
           <View>
@@ -125,13 +131,17 @@ class AddFriend extends Component {
                   style={styles.requestButton}
                   onPress={() => this.onRejectRequest(request)}
                 >
-                  <Text>Reject</Text>
+                  <Text>
+                    Reject
+                  </Text>
                 </Button>
                 <Button
                   style={styles.requestButton}
                   onPress={() => this.onAcceptRequest(request)}
                 >
-                  <Text>Accept request</Text>
+                  <Text>
+                    Accept request
+                  </Text>
                 </Button>
               </View>
             )}
@@ -140,7 +150,9 @@ class AddFriend extends Component {
                 style={styles.requestButton}
                 onPress={() => this.onCancelRequest(request)}
               >
-                <Text>Cancel request</Text>
+                <Text>
+                  Cancel request
+                </Text>
               </Button>
             )}
             {!incoming && !outgoing && (
@@ -148,7 +160,9 @@ class AddFriend extends Component {
                 style={styles.requestButton}
                 onPress={() => this.onSendRequest()}
               >
-                <Text>Send request</Text>
+                <Text>
+                  Send request
+                </Text>
               </Button>
             )}
           </View>

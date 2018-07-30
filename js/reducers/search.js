@@ -43,7 +43,7 @@ const initialState = {
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
-    case `${PEOPLE_SEARCH}_REQUEST`:
+    case PEOPLE_SEARCH:
       return {
         ...state,
         peopleLoading: true,
@@ -54,7 +54,7 @@ const searchReducer = (state = initialState, action) => {
         peopleLoading: false,
         people: action.payload,
       };
-    case `${PLACES_SEARCH}_REQUEST`:
+    case PLACES_SEARCH:
       return {
         ...state,
         placesLoading: true,

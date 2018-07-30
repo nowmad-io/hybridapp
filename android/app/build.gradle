@@ -105,8 +105,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         multiDexEnabled true
-        versionCode 17
-        versionName "0.0.17"
+        versionCode 18
+        versionName "0.0.18"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -150,11 +150,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
+    compile project(':react-native-sentry')
     compile project(':react-native-restart')
     compile project(':react-native-exception-handler')
-    compile project(':react-native-sentry')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-maps')
     compile project(':react-native-image-picker')
     compile project(':react-native-config')
     compile project(':react-native-fetch-blob')

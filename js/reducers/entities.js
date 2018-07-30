@@ -3,7 +3,9 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 
 import { placeSchema } from '../api/reviews';
-import { PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES } from '../constants/reviews';
+import {
+  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES,
+} from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
 const getEntities = state => state.entities;
@@ -33,19 +35,20 @@ export const selectUser = userId => createSelector(
 );
 
 function handleAddEditReview(action) {
-  const { place, ...review } = action.params;
+  const { place, ...review } = action.payload.params;
   const newPlace = {
     ...place,
     reviews: [{
       ...review,
       place: place.id,
       toSync: true,
+      partial: true,
     }],
   };
 
   const {
     entities: { places, reviews }, result,
-  } = normalize(newPlace, action.schema);
+  } = normalize(newPlace, action.payload.schema);
 
   return {
     places,
@@ -88,6 +91,36 @@ const entitiesReducer = (state = initialState, action) => {
         reviews: {
           ...state.reviews,
           ...reviews,
+        },
+      };
+    }
+    case `${ADD_REVIEW}_SUCCESS`: {
+      const { entities: { places }, result } = action.payload;
+      const { place, ...review } = places[result];
+
+      const updatedReview = {};
+      updatedReview[result] = {
+        ...state.reviews[result],
+        ...review,
+        toSync: false,
+        partial: false,
+      };
+
+      const updatedPlace = {};
+      updatedPlace[place.id] = {
+        ...state.places[place.id],
+        ...place,
+      };
+
+      return {
+        ...state,
+        places: {
+          ...state.places,
+          ...updatedPlace,
+        },
+        reviews: {
+          ...state.reviews,
+          ...updatedReview,
         },
       };
     }

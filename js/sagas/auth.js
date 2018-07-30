@@ -1,5 +1,5 @@
-import { put, takeLatest } from 'redux-saga/effects';
-import { NavigationActions } from 'react-navigation';
+import { put, takeLatest, call } from 'redux-saga/effects';
+import NavigationService from '../navigationService';
 
 import {
   LOGIN,
@@ -13,10 +13,7 @@ import { STOP_SAGAS } from '../constants/utils';
  * Log in saga
  */
 function* authenticateFlow() {
-  yield put(NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: 'App' })],
-  }));
+  yield call(NavigationService.reset);
 }
 
 export function* logoutFlow() {

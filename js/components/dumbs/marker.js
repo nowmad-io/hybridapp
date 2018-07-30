@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
 
 import { selectReview, selectUser } from '../../reducers/entities';
-import Avatar from '../dumbs/avatar';
+import Avatar from './avatar';
 
 import { colors } from '../../parameters';
 
@@ -47,8 +47,8 @@ class Marker extends PureComponent {
     }
 
     const avatarSize = (text === 'me') ? 36 : 40;
-    const height = !selected ?
-      (avatarSize + triangleHelper - 1) : (avatarSize + 2 * (triangleHelper + 1));
+    const height = !selected
+      ? (avatarSize + triangleHelper - 1) : (avatarSize + 2 * (triangleHelper + 1));
 
     return (
       <MapView.Marker
