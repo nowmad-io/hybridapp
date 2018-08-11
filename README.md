@@ -9,7 +9,7 @@
 <h4 align="center">A React Native App to share your best travel experiences with your friends on <a href="https://nowmad.io">Nowmad.io</a></h4>
 
 <p align="center">
-  <a href="#key-features">Librairies</a> •
+  <a href="#librairies">Librairies</a> •
   <a href="#installation">Installation</a> •
   <a href="#android">Android</a> •
   <a href="#ios">IOS</a> •
