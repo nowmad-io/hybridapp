@@ -1,10 +1,28 @@
-# Nowmad Hybrid App
+<h1 align="center">
+  <br>
+  <a href="https://nowmad.io"><img src="https://github.com/nowmad-io/hybridapp/blob/master/assets/images/logos/full_logo_horizontal.png?raw=true" alt="Nowmad" width="350"></a>
+  <br>
+  React Native App
+  <br>
+</h1>
 
-<img src="https://github.com/nowmad-io/hybridapp/blob/master/assets/images/logos/logo.png" align="right" title="Nowmad logo by Julien Rougeron and Shandra Menendez" width="120" height="120">
-     
-> Source of [nowmad.io](https://nowmad.io) mobile app
+<h4 align="center">A React Native App to share your best travel experiences with your friends on <a href="https://nowmad.io">Nowmad.io</a></h4>
 
-Nowmad is a mobile app to share your best travel experiences with your friends.
+<p align="center">
+  <a href="#key-features">Librairies</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#android">Android</a> •
+  <a href="#ios">IOS</a> •
+  <a href="#license">License</a> •
+  <a href="#authors">Authors</a>
+</p>
+
+## Librairies
+
+* React Native
+* Redux
+* Saga
+* [Google Maps](https://github.com/react-community/react-native-maps)
 
 ## Installation
 
@@ -45,9 +63,7 @@ Try the release version first
 * Unknown plugin module-resolver or x.match is not a function -> [https://github.com/airbnb/react-native-maps/issues/795#issuecomment-294302935](https://github.com/airbnb/react-native-maps/issues/795#issuecomment-294302935)
 * Install react-native-maps IOS [https://gist.github.com/heron2014/e60fa003e9b117ce80d56bb1d5bfe9e0](https://gist.github.com/heron2014/e60fa003e9b117ce80d56bb1d5bfe9e0)
 
----
-
-## IOs
+## IOS
 
 ### Start Developing
 
@@ -58,10 +74,14 @@ Run `react-native run-ios` to start an Iphone simulator and run the app
 `Print: Entry, ":CFBundleIdentifier", Does Not Exist`
 Probably du to last react-native version. Check for more info https://github.com/facebook/react-native/issues/7308
 
-## Meta
+## License
 
-Julien Rougeron – [Portoflio](https://julienr2.github.io) – julien.rougeron@gmail.com
+Distributed under the MIT license.
 
-Distributed under the MIT license. See ``LICENSE`` for more information.
+## Authors
 
-[https://github.com/julienr2/](https://github.com/julienr2/)
+UX/UI Design
+[Shandra Menendez Aich](https://www.behance.net/Shandraich) – shandra.aich@gmail.com
+
+Fullstack
+[Julien Rougeron](https://github.com/julienr2) – [Portoflio](https://julienr2.github.io) – julien.rougeron@gmail.com
