@@ -1,7 +1,6 @@
-<img src="https://github.com/nowmad-io/hybridapp/blob/master/assets/images/logos/logo.png" align="right"
-     title="Nowmad logo by Julien Rougeron and Shandra Menendez" width="120" height="120">
-     
 # Nowmad Hybrid App
+
+<img src="https://github.com/nowmad-io/hybridapp/blob/master/assets/images/logos/logo.png" align="right" title="Nowmad logo by Julien Rougeron and Shandra Menendez" width="120" height="120">
      
 > Source of [nowmad.io](https://nowmad.io) mobile app
 
