@@ -1,19 +1,15 @@
-# TravelNetwork Hybrid App
-> Share your travel experiences with your friends
+# Nowmad Hybrid App
+<img src="https://github.com/nowmad-io/hybridapp/blob/master/assets/images/logos/logo.png" align="right"
+     title="Nowmad logo by Julien Rougeron and Shandra Menendez" width="120" height="120">
+     
+> Source of [nowmad.io](https://nowmad.io) mobile app
+
+Nowmad is a mobile app to share your best travel experiences with your friends.
 
 ## Installation
 
 * `npm install`
 * `react-native link`
-
----
-
-## Utils
-
-* Change name of the app running `npm run changename -- <newName>` or using `react-native-rename -- <newName> -b <bundleIdentifier>` to change also the Android bundleIdentifier.
-> E.g. `react-native-rename "TravelNetwork" -b com.travelnetwork.travelnetworkapp`
-
----
 
 ## Android
 
@@ -61,3 +57,11 @@ Run `react-native run-ios` to start an Iphone simulator and run the app
 
 `Print: Entry, ":CFBundleIdentifier", Does Not Exist`
 Probably du to last react-native version. Check for more info https://github.com/facebook/react-native/issues/7308
+
+## Meta
+
+Julien Rougeron – [Portoflio](https://julienr2.github.io) – julien.rougeron@gmail.com
+
+Distributed under the MIT license. See ``LICENSE`` for more information.
+
+[https://github.com/julienr2/](https://github.com/julienr2/)
