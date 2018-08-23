@@ -51,8 +51,7 @@
     "redux-saga": "0.16.0",
     "remote-redux-devtools": "0.5.13",
     "reselect": "3.0.1",
-    "shortid": "2.2.13",
-    "why-did-you-update": "^0.1.1"
+    "shortid": "2.2.13"
   },
   "devDependencies": {
     "babel-eslint": "8.2.6",
