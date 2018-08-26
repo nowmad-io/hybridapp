@@ -193,7 +193,6 @@ class Home extends Component {
         >
           {googlePlace && (
             <Marker
-              key={shortid.generate()}
               place={googlePlace}
               selected={selectedPlace && selectedPlace.id === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
@@ -201,7 +200,7 @@ class Home extends Component {
           )}
           {places.map(place => (
             <Marker
-              key={shortid.generate()}
+              key={`marker-${place.id}`}
               place={place}
               selected={selectedPlace && selectedPlace.id === place.id}
               onMarkerPress={this.onMarkerPress}
