@@ -2,7 +2,7 @@ import { denormalize, normalize } from 'normalizr';
 import { createSelector } from 'reselect';
 import _ from 'lodash';
 
-import { placeSchema } from '../api/reviews';
+import { placeSchema, reviewSchema } from '../api/reviews';
 import {
   PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES,
 } from '../constants/reviews';
@@ -10,6 +10,7 @@ import { LOGOUT } from '../constants/auth';
 
 const getEntities = state => state.entities;
 const getUsers = state => state.entities.users;
+const getReview = (state, id) => state.entities.reviews[id];
 export const getReviews = state => state.entities.reviews;
 export const getPlaces = state => state.entities.places;
 const getPlace = (state, id) => state.entities.places[id];
@@ -24,9 +25,9 @@ export const selectThumbnail = () => createSelector(
   (place, users, reviews) => users[reviews[place.reviews[0]].created_by].picture,
 );
 
-export const selectReview = reviewId => createSelector(
-  [getReviews],
-  reviews => reviews[reviewId],
+export const selectReview = () => createSelector(
+  [getReview, getEntities],
+  (review, entities) => denormalize(review, reviewSchema, entities),
 );
 
 export const selectUser = userId => createSelector(
