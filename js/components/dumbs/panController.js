@@ -259,7 +259,7 @@ export default class PanController extends PureComponent {
   childrenWidth = () => {
     const count = Children.toArray(this.props.children)
       .filter(child => React.isValidElement(child)).length;
-    return -sizes.width * (count - 1);
+    return -this.props.snapSpacingX * (count - 1);
   };
 
 

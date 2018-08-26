@@ -131,6 +131,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
         panY={panY}
         onIndexChange={this._onIndexChange}
         onComponentDidUpdate={this._onCarouselDidUpdate}
+        snapSpacingX={entryWidth}
       >
         {(!visiblePlaces || !visiblePlaces.length) && !gPlace && (
           <View
@@ -138,7 +139,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
           >
             <EmptyEntry
               place={gPlace}
-              styles={styles.entry}
               onAddLocationPress={onAddLocationPress}
               onSharePress={this._onSharePress}
             />
@@ -150,7 +150,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
           >
             <Entry
               place={gPlace}
-              styles={styles.entry}
               navigation={this.props.navigation}
             />
           </View>
@@ -162,7 +161,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
           >
             <Entry
               place={place}
-              styles={styles.entry}
               navigation={this.props.navigation}
             />
           </View>
@@ -184,11 +182,15 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, bindActions, null, { withRef: true })(Carousel);
 
+const entryMargin = 8;
+const entryWidth = sizes.width - (entryMargin * 2);
+
 const styles = StyleSheet.create({
   carousel: {
     position: 'absolute',
     top: sizes.height,
     alignItems: 'center',
+    paddingLeft: 8,
   },
   buttonWrapper: {
     position: 'relative',
@@ -198,10 +200,8 @@ const styles = StyleSheet.create({
     width: sizes.width,
   },
   entryWrapper: {
-    width: sizes.width,
-    padding: 8,
-  },
-  entry: {
-    width: sizes.width - 16,
+    width: entryWidth,
+    paddingVertical: 8,
+    paddingHorizontal: (entryMargin / 2),
   },
 });
