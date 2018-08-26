@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Image, View, TouchableOpacity, StyleSheet,
 } from 'react-native';
-import _ from 'lodash';
+import memoize from 'fast-memoize';
 
 import Text from '../text';
 import Avatar from '../avatar';
@@ -162,7 +162,7 @@ export default class Review extends PureComponent {
     );
   }
 }
-const googleAvatar = _.memoize(google => (google ? styles.googleAvatar : {}));
+const googleAvatar = memoize(google => (google ? styles.googleAvatar : {}));
 
 const styles = StyleSheet.create({
   review: {

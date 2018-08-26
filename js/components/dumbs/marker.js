@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
-import _ from 'lodash';
+import memoize from 'fast-memoize';
 
 import { selectReview } from '../../reducers/entities';
 import Avatar from './avatar';
@@ -100,7 +100,7 @@ const makeMapStateToProps = () => {
 
 export default connect(makeMapStateToProps)(Marker);
 
-const markerAvatar = _.memoize((selected, me) => [
+const markerAvatar = memoize((selected, me) => [
   selected && styles.avatar_text_selected,
   me && styles.avatarMe,
 ]);
