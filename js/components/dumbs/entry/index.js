@@ -36,7 +36,19 @@ class Entry extends Component {
     });
   }
 
+  UNSAFE_componentWillReceiveProps({ me, place }) {
+    console.log('this.props.me', this.props.me);
+    console.log('me', me);
+    console.log('this.props.me === me', this.props.me === me);
+    console.log('--');
+    console.log('this.props.place', this.props.place);
+    console.log('place', place);
+    console.log('this.props.place === place', this.props.place === place);
+    console.log('----------------------------------------');
+  }
+
   render() {
+    console.count(`entry ${this.props.place.id}`);
     const { place: { reviews, google }, me } = this.props;
 
     const myReview = me ? _.find(reviews, r => (r.created_by && r.created_by.id === me.id)) : null;
@@ -81,17 +93,16 @@ class Entry extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const { google } = props.place;
+const makeMapStateToProps = () => {
   const placeSelector = selectFullPlace();
 
-  return {
-    place: google ? props.place : placeSelector(state, props.place.id),
+  return (state, props) => ({
+    place: props.place.google ? props.place : placeSelector(state, props.place.id),
     me: state.auth.me,
-  };
+  });
 };
 
-export default connect(mapStateToProps)(Entry);
+export default connect(makeMapStateToProps)(Entry);
 
 const styles = StyleSheet.create({
   card: {
