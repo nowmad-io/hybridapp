@@ -98,10 +98,7 @@ export default class Map extends Component {
         onPress={onPress}
         onLongPress={event => onLongPress(event.nativeEvent)}
         provider={PROVIDER_GOOGLE}
-        style={[
-          styles.map,
-          { marginBottom: 1 },
-        ]}
+        style={styles.map}
         showsMyLocationButton={false}
         initialRegion={region}
         zoomEnabled={zoomEnabled}
@@ -123,5 +120,6 @@ export default class Map extends Component {
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+    marginBottom: 1,
   },
 });

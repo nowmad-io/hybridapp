@@ -18,7 +18,7 @@ export default class Badge extends PureComponent {
     const { text } = this.props;
 
     return (
-      <View style={[styles.badge]}>
+      <View style={styles.badge}>
         <Text style={styles.text}>
           {text}
         </Text>

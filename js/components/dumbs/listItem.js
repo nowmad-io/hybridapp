@@ -52,7 +52,7 @@ export default class List extends PureComponent {
           />
         )}
         <LayoutView type="wrapper">
-          <Text style={[disabled && styles.secondaryText]}>
+          <Text style={disabled && styles.secondaryText}>
             {text}
           </Text>
           {secondaryText && (
