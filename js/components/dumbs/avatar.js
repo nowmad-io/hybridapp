@@ -9,16 +9,8 @@ import { colors } from '../../parameters';
 
 export default class Avatar extends PureComponent {
   static propTypes = {
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
-    textStyle: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
+    style: PropTypes.any,
+    textStyle: PropTypes.any,
     text: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,

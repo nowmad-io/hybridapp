@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from 'react-native-maps';
+import _ from 'lodash';
 
-import { selectReview, selectUser } from '../../reducers/entities';
+import { selectReview } from '../../reducers/entities';
 import Avatar from './avatar';
 
 import { colors } from '../../parameters';
@@ -70,13 +71,8 @@ class Marker extends PureComponent {
             set="FontAwesome"
             icon={(google && !custom) ? 'google' : ''}
             uppercase={(text !== 'me')}
-            style={[
-              selected && styles.avatar_selected,
-            ]}
-            textStyle={[
-              selected && styles.avatar_text_selected,
-              (text === 'me') && styles.avatarMe,
-            ]}
+            style={selected && styles.avatar_selected}
+            textStyle={markerAvatar(selected, text === 'me')}
           />
           <View
             style={[
@@ -90,20 +86,24 @@ class Marker extends PureComponent {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const { place: { google, reviews } } = props;
+const makeMapStateToProps = () => {
+  const reviewSelector = selectReview();
 
-  const review = google ? reviews[0] : selectReview(reviews[0])(state);
+  return (state, props) => {
+    const { place: { reviews } } = props;
 
-  return {
-    review: {
-      ...review,
-      ...(!google ? { created_by: review && selectUser(review.created_by)(state) } : {}),
-    },
+    return {
+      review: reviewSelector(state, reviews[0]),
+    };
   };
 };
 
-export default connect(mapStateToProps)(Marker);
+export default connect(makeMapStateToProps)(Marker);
+
+const markerAvatar = _.memoize((selected, me) => [
+  selected && styles.avatar_text_selected,
+  me && styles.avatarMe,
+]);
 
 const styles = StyleSheet.create({
   wrapper: {

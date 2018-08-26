@@ -11,7 +11,7 @@ import {
 const userSchema = new schema.Entity('users');
 const categorySchema = new schema.Entity('categories');
 const pictureSchema = new schema.Entity('pictures');
-const reviewSchema = new schema.Entity('reviews', {
+export const reviewSchema = new schema.Entity('reviews', {
   categories: [categorySchema],
   pictures: [pictureSchema],
   created_by: userSchema,
