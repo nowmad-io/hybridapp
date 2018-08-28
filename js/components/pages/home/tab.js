@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 
 import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
@@ -10,9 +10,10 @@ import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 
 import { placeDetails, COORD_REGEX } from '../../../api/search';
-import { selectFilteredReviews } from '../../../reducers/search';
+import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
+import { selectFilteredReviews, selectPeople } from '../../../reducers/search';
 
-import { sizes, colors } from '../../../parameters';
+import { sizes, colors, font } from '../../../parameters';
 
 const MAX_LIST = 3;
 
@@ -21,6 +22,7 @@ const placeImage = require('../../../../assets/images/icons/place.png');
 
 class Tab extends PureComponent {
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     screenProps: PropTypes.object,
     reviews: PropTypes.array,
@@ -37,6 +39,18 @@ class Tab extends PureComponent {
 
   onAddFriendPress = friend => () => {
     this.props.screenProps.onAddFriendPress(friend);
+  }
+
+  onAcceptPress = id => () => {
+    this.props.dispatch(acceptFriendship(id));
+  }
+
+  onRejectPress = id => () => {
+    this.props.dispatch(rejectFriendship(id));
+  }
+
+  onCancelPress = id => () => {
+    this.props.dispatch(cancelFriendship(id));
   }
 
   onReviewPress = review => () => {
@@ -95,7 +109,8 @@ class Tab extends PureComponent {
                 disabled={result.type === 'other'}
                 onPress={() => (result.type !== 'other') && this.onFriendPress(result)}
               >
-                {(result.type === 'friends_friends' || result.type === 'other') && (
+                {(result.type === 'friends_friends' || result.type === 'other')
+                  && (!result.outgoing && !result.incoming) && (
                   <Button
                     transparent
                     style={{ height: 24, padding: 0 }}
@@ -103,6 +118,35 @@ class Tab extends PureComponent {
                     onPress={this.onAddFriendPress(result)}
                     icon="person-add"
                   />
+                )}
+                {(result.type === 'friends_friends' || result.type === 'other')
+                  && result.outgoing && (
+                    <Button
+                      transparent
+                      style={{ height: 24, padding: 0 }}
+                      onPress={this.onCancelPress(result.outgoing.id)}
+                    >
+                      <Text style={styles.text}>Cancel</Text>
+                    </Button>
+                )}
+                {(result.type === 'friends_friends' || result.type === 'other')
+                  && result.incoming && (
+                    <View style={{ flexDirection: 'row' }}>
+                      <Button
+                        transparent
+                        icon="close"
+                        style={styles.requestButton}
+                        iconStyle={styles.requestIcon}
+                        onPress={this.onRejectPress(result.incoming.id)}
+                      />
+                      <Button
+                        transparent
+                        icon="check"
+                        style={styles.requestButton}
+                        iconStyle={styles.requestIcon}
+                        onPress={this.onAcceptPress(result.incoming.id)}
+                      />
+                    </View>
                 )}
               </ListItem>
             ))}
@@ -163,34 +207,35 @@ class Tab extends PureComponent {
   }
 }
 
-const bindActions = dispatch => ({
-  dispatch,
-});
+const makeMapStateToProps = () => {
+  const filteredReviewsSelector = selectFilteredReviews();
+  const peopleSelector = selectPeople();
 
-const mapStateToProps = (state, props) => {
-  const { routeName } = props.navigation.state;
+  return (state, props) => {
+    const { routeName } = props.navigation.state;
 
-  const reviews = {
-    placesEntities: state.entities.places,
-    reviews: selectFilteredReviews(state),
-  };
-  const people = {
-    people: state.search.people,
-    peopleLoading: state.search.peopleLoading,
-  };
-  const places = {
-    places: state.search.places,
-    placesLoading: state.search.placesLoading,
-  };
+    const reviews = {
+      placesEntities: state.entities.places,
+      reviews: filteredReviewsSelector(state),
+    };
+    const people = {
+      people: peopleSelector(state),
+      peopleLoading: state.search.peopleLoading,
+    };
+    const places = {
+      places: state.search.places,
+      placesLoading: state.search.placesLoading,
+    };
 
-  return {
-    ...((routeName === 'All' || routeName === 'Reviews') ? reviews : {}),
-    ...((routeName === 'All' || routeName === 'People') ? people : {}),
-    ...((routeName === 'All' || routeName === 'Places') ? places : {}),
+    return {
+      ...((routeName === 'All' || routeName === 'Reviews') ? reviews : {}),
+      ...((routeName === 'All' || routeName === 'People') ? people : {}),
+      ...((routeName === 'All' || routeName === 'Places') ? places : {}),
+    };
   };
 };
 
-export default connect(mapStateToProps, bindActions)(Tab);
+export default connect(makeMapStateToProps)(Tab);
 
 const styles = StyleSheet.create({
   container: {
@@ -206,6 +251,27 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 24,
     color: colors.green,
+  },
+  text: {
+    fontSize: 14,
+    fontWeight: font.fontWeight.light,
+    color: colors.green,
+  },
+  requestButton: {
+    height: 20,
+    width: 20,
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: colors.green,
+    borderRadius: 50,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  requestIcon: {
+    color: colors.green,
+    fontSize: 14,
   },
   button: {
     marginVertical: 16,

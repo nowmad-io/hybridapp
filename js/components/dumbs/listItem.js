@@ -57,8 +57,7 @@ export default class List extends PureComponent {
           </Text>
           {secondaryText && (
             <Text style={styles.secondaryText}>
-              {' '}
--
+              {' - '}
               {secondaryText}
             </Text>
           )}

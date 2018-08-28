@@ -10,6 +10,7 @@ import {
 import { LOGOUT } from '../constants/auth';
 
 import { getReviews } from './entities';
+import { getOutgoings, getIncomings } from './friends';
 
 const options = {
   shouldSort: true,
@@ -20,16 +21,32 @@ const options = {
   ],
 };
 
+const getQuery = state => state.search.query;
+const getPeople = state => state.search.people;
+
 const getFuse = createSelector(
   [getReviews],
   reviews => new Fuse(_.map(reviews, review => review), options),
 );
 
-const getQuery = state => state.search.query;
-
-export const selectFilteredReviews = createSelector(
+export const selectFilteredReviews = () => createSelector(
   [getFuse, getQuery],
   (fuse, query) => fuse.search(query),
+);
+
+export const selectPeople = () => createSelector(
+  [getPeople, getOutgoings, getIncomings],
+  (people, outgoings, incomings) => people.map(ppl => ({
+    ...ppl,
+    outgoing: (ppl.type === 'friends_friends' || ppl.type === 'other') && _.find(
+      outgoings,
+      ({ to_user: { id } }) => id === ppl.id,
+    ),
+    incoming: (ppl.type === 'friends_friends' || ppl.type === 'other') && _.find(
+      incomings,
+      ({ from_user: { id } }) => id === ppl.id,
+    ),
+  })),
 );
 
 const initialState = {
@@ -43,7 +60,7 @@ const initialState = {
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
-    case PEOPLE_SEARCH:
+    case `${PEOPLE_SEARCH}_API_CALL`:
       return {
         ...state,
         peopleLoading: true,
@@ -54,7 +71,7 @@ const searchReducer = (state = initialState, action) => {
         peopleLoading: false,
         people: action.payload,
       };
-    case PLACES_SEARCH:
+    case `${PLACES_SEARCH}_API_CALL`:
       return {
         ...state,
         placesLoading: true,
