@@ -9,6 +9,7 @@ import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import Avatar from '../../dumbs/avatar';
+import Spinner from '../../dumbs/spinner';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
 import { apiLogout } from '../../../api/auth';
@@ -29,6 +30,7 @@ class DrawBar extends React.Component {
   }
 
   static propTypes = {
+    navigation: PropTypes.object,
     dispatch: PropTypes.func,
     me: PropTypes.object,
     all: PropTypes.array,
@@ -54,6 +56,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
 
   onLogoutPress = () => {
     this.props.dispatch(apiLogout());
+    this.props.navigation.navigate('Login');
   }
 
   onAcceptPress = id => () => {
@@ -88,9 +91,9 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.pending}>
-Pending friend request
+              Pending friend request
             </Text>
-            { incomings.length > 0 && incomings.map(({ id, from_user: fromUser }) => (
+            { incomings.length > 0 ? incomings.map(({ id, from_user: fromUser, loading }) => (
               <View
                 key={fromUser.id}
                 style={styles.request}
@@ -118,23 +121,16 @@ Pending friend request
                   iconStyle={styles.requestIcon}
                   onPress={this.onAcceptPress(id)}
                 />
+                <Spinner overlay visible={loading} />
               </View>
-            ))}
+            )) : (
+              <Text style={styles.noRequest}>
+                No friend request
+              </Text>
+            )}
           </ScrollView>
         </View>
         <View style={styles.footer}>
-          {/* <Button
-            light
-            style={styles.addFriendsButton}
-            buttonStyle={{ justifyContent: 'flex-start' }}
-          >
-            <Text
-              style={styles.addFriendsLabel}
-              uppercase={false}
-            >
-              Add friends
-            </Text>
-          </Button> */}
           <View style={styles.subFooter}>
             <Button
               transparent
@@ -214,6 +210,9 @@ const styles = StyleSheet.create({
     fontWeight: font.fontWeight.medium,
     marginBottom: 20,
   },
+  noRequest: {
+    color: colors.grey,
+  },
   contentWrapper: {
     paddingTop: 32,
     paddingHorizontal: 20,
@@ -272,6 +271,7 @@ const styles = StyleSheet.create({
   },
   footerIcon: {
     marginRight: 8,
+    fontSize: 26,
   },
   footerLabel: {
     fontSize: 12,
