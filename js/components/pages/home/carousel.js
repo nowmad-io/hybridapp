@@ -92,10 +92,6 @@ class Carousel extends Component {
     this._carousel.current.toIndex(index, index < 0, index < 0);
   }
 
-  _onAddLocationPress = () => {
-
-  }
-
   _onSharePress = () => {
     Share.share({
       message: `Hi!

@@ -99,7 +99,9 @@ class Home extends Component {
   }
 
   onAddPlace = () => {
-    this.onMapLongPress({ coordinate: this.props.geolocation.location });
+    if (this.props.geolocation.location) {
+      this.onMapLongPress({ coordinate: this.props.geolocation.location });
+    }
   }
 
   onLocationPress = () => {
