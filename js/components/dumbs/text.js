@@ -11,11 +11,7 @@ export default class Text extends Component {
     uppercase: PropTypes.bool,
     lowercase: PropTypes.bool,
     capitalize: PropTypes.bool,
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
+    style: PropTypes.any,
     note: PropTypes.bool,
   };
 
