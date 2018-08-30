@@ -9,7 +9,6 @@ import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -37,7 +36,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativeExceptionHandlerPackage(),
             new VectorIconsPackage(),
             new ImagePickerPackage(),
-            new RNFetchBlobPackage(),
             new ReactNativeConfigPackage()
       );
     }
