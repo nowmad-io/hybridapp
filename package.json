@@ -34,6 +34,7 @@
     "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-native": "0.55.3",
+    "react-native-background-upload": "4.4.0",
     "react-native-cached-image": "1.4.3",
     "react-native-config": "0.11.5",
     "react-native-exception-handler": "2.9.0",

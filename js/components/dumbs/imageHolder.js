@@ -5,13 +5,15 @@ import {
 } from 'react-native';
 
 import Icon from './icon';
+import Spinner from './spinner';
 
 import { colors } from '../../parameters';
 
 export default class ImageHolder extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
-    source: PropTypes.string,
+    uri: PropTypes.string,
+    loading: PropTypes.bool,
     style: PropTypes.oneOfType([
       PropTypes.object,
       PropTypes.number,
@@ -20,21 +22,26 @@ export default class ImageHolder extends PureComponent {
   };
 
   render() {
-    const { onPress, style, source } = this.props;
+    const {
+      onPress, style, uri, loading,
+    } = this.props;
 
     return (
       <TouchableOpacity onPress={onPress} style={style}>
         <View style={[
           styles.wrapper,
-          !source && styles.empty,
+          !uri && styles.empty,
         ]}
         >
-          {source ? (
-            <Image
-              style={styles.image}
-              resizeMethod="resize"
-              source={{ uri: source }}
-            />
+          {uri ? (
+            <View style={styles.image}>
+              <Image
+                style={styles.image}
+                resizeMethod="resize"
+                source={{ uri }}
+              />
+              <Spinner overlay visible={loading} />
+            </View>
           ) : (
             <Icon name="add-a-photo" style={styles.icon} />
           )}
