@@ -100,7 +100,7 @@ SAVE
             <Image
               style={styles.image}
               resizeMethod="resize"
-              source={{ uri: this.state.image.source || this.state.image.uri }}
+              source={{ uri: this.state.image.uri }}
             />
           </View>
           <View
