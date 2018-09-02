@@ -144,7 +144,6 @@ class AddReview extends Component {
       newPictures.push({
         ...image,
         loading: true,
-        progress: 0,
       });
 
       this.startUpload(image, {
@@ -177,7 +176,7 @@ class AddReview extends Component {
         Upload.addListener('completed', uploadId, ({ responseBody: url, responseCode: status }) => {
           if (status < 400) {
             this.setState(({ pictures }) => ({
-              pictures: pictures.map(({ loading, progress, ...pic }) => (image.uri === pic.uri ? {
+              pictures: pictures.map(({ loading, ...pic }) => (image.uri === pic.uri ? {
                 ...pic,
                 url,
               } : pic)),
