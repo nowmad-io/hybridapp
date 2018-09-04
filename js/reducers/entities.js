@@ -37,6 +37,7 @@ export const selectUser = userId => createSelector(
 
 function handleAddEditReview(action) {
   const { place, ...review } = action.payload.params;
+
   const newPlace = {
     ...place,
     reviews: [{
@@ -62,7 +63,6 @@ const initialState = {
   places: {},
   reviews: {},
   categories: {},
-  pictures: {},
   users: {},
 };
 
@@ -74,7 +74,6 @@ const entitiesReducer = (state = initialState, action) => {
         places: { ...state.places, ...action.payload.entities.places },
         reviews: { ...state.reviews, ...action.payload.entities.reviews },
         categories: { ...state.categories, ...action.payload.entities.categories },
-        pictures: { ...state.pictures, ...action.payload.entities.pictures },
         users: { ...state.users, ...action.payload.entities.users },
       };
     case `${CATEGORIES}_SUCCESS`:
@@ -87,6 +86,7 @@ const entitiesReducer = (state = initialState, action) => {
       };
     case `${UPDATE_REVIEW}_REQUEST`: {
       const { reviews } = handleAddEditReview(action);
+
       return {
         ...state,
         reviews: {

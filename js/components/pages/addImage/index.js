@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, BackHandler, View } from 'react-native';
+import shortid from 'shortid';
 
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -39,6 +40,7 @@ class AddImage extends Component {
     navigation.goBack();
     navigation.state.params.onImageEditBack({
       image: {
+        id: shortid.generate(),
         ...this.state.image,
         caption: navigation.state.params.image.caption || '',
       },

@@ -114,7 +114,7 @@ export default class Review extends PureComponent {
                 <Image
                   resizeMode="cover"
                   resizeMethode="resize"
-                  source={{ uri: pictures[0].source }}
+                  source={{ uri: pictures[0].uri }}
                   style={styles.picture}
                 />
               )}

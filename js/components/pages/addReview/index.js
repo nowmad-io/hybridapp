@@ -5,7 +5,6 @@ import {
   BackHandler, Keyboard, View, Platform,
 } from 'react-native';
 import _ from 'lodash';
-import Upload from 'react-native-background-upload';
 import shortid from 'shortid';
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
@@ -107,15 +106,8 @@ class AddReview extends Component {
         ...newPlace,
         ...((newPlace.id && !google) ? { reviews } : {}),
       },
-      pictures: this.state.pictures.map((image) => {
-        const picture = image.id ? { pictureId: image.id } : { source: image.data };
-
-        return {
-          ...picture,
-          caption: image.caption,
-        };
-      }),
     };
+
     Keyboard.dismiss();
     this.props.dispatch(action(newReview));
   }
@@ -130,28 +122,18 @@ class AddReview extends Component {
     }
 
     if (image && remove) {
-      this.setState({ pictures: _.filter(pictures, img => (img.uri !== image.uri)) });
+      this.setState({ pictures: _.filter(pictures, img => (img.id !== image.id)) });
       return;
     }
 
-    const index = _.findIndex(pictures, img => (img.uri === image.uri));
+    const index = _.findIndex(pictures, img => (img.id === image.id));
 
     const newPictures = [...pictures];
 
     if (index > -1) {
       newPictures[index] = image;
     } else {
-      newPictures.push({
-        ...image,
-        loading: true,
-      });
-
-      this.startUpload(image, {
-        path: image.path,
-        url: Config.IMAGE_UPLOAD_URL,
-        type: 'raw',
-        headers: { Authorization: `Token ${Config.IMAGE_UPLOAD_TOKEN}` },
-      });
+      newPictures.push(image);
     }
 
     this.setState({ pictures: newPictures });
@@ -160,39 +142,6 @@ class AddReview extends Component {
   onAddressLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     this._map.updatePadding({ bottom: height });
-  }
-
-  startUpload = (image, opts) => {
-    Upload.getFileInfo(image.path).then((metadata) => {
-      const options = _.merge({
-        method: 'POST',
-        headers: {
-          'content-type': metadata.mimeType,
-        },
-        notification: { enabled: false },
-      }, opts);
-
-      Upload.startUpload(options).then((uploadId) => {
-        Upload.addListener('completed', uploadId, ({ responseBody: url, responseCode: status }) => {
-          if (status < 400) {
-            this.setState(({ pictures }) => ({
-              pictures: pictures.map(({ loading, ...pic }) => (image.uri === pic.uri ? {
-                ...pic,
-                url,
-              } : pic)),
-            }));
-          } else {
-            this.setState(({ pictures }) => ({
-              pictures: _.filter(pictures, pic => image.uri !== pic.uri),
-            }));
-          }
-        });
-      }).catch(() => {
-        this.setState(({ pictures }) => ({
-          pictures: _.filter(pictures, pic => image.uri !== pic.uri),
-        }));
-      });
-    });
   }
 
   selectPictures = () => {
