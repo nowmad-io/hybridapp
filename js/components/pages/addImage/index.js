@@ -28,25 +28,11 @@ class AddImage extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onSavePress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  onBackPress = () => {
-    const { navigation } = this.props;
-    navigation.goBack();
-    navigation.state.params.onImageEditBack({
-      image: {
-        id: shortid.generate(),
-        ...this.state.image,
-        caption: navigation.state.params.image.caption || '',
-      },
-    });
-
-    return true;
+    BackHandler.removeEventListener('hardwareBackPress', this.onSavePress);
   }
 
   onSavePress = () => {
@@ -55,10 +41,13 @@ class AddImage extends Component {
     navigation.goBack();
     navigation.state.params.onImageEditBack({
       image: {
+        id: shortid.generate(),
         ...this.state.image,
         caption: this.state.caption,
       },
     });
+
+    return true;
   }
 
   onDeletePress = () => {

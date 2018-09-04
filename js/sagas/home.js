@@ -23,7 +23,8 @@ import {
 } from '../api/reviews';
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
 
-import { setGeolocation, updatePicture } from '../actions/home';
+import { setGeolocation } from '../actions/home';
+import { updatePicture } from '../actions/reviews';
 
 import { pollSaga } from './utils';
 
@@ -73,12 +74,12 @@ function* homeFlow() {
   yield fork(pollSaga(fetchFriends, `${FETCH_FRIENDS}_SUCCESS`, STOP_SAGAS));
 }
 
-function* uploadPicture(picture) {
+function* uploadPicture(picture, reviewId) {
   if (picture.uri.startsWith('http')) {
     return picture;
   }
 
-  put(updatePicture({ loading: true }));
+  yield put(updatePicture(reviewId, { ...picture, loading: true }));
 
   const channel = yield call(() => eventChannel((emit) => {
     PictureUpload(
@@ -94,20 +95,22 @@ function* uploadPicture(picture) {
   const updatedPicture = {
     ...picture,
     uri: uri || picture.uri,
+    loading: false,
     error,
   };
 
-  put(updatePicture(updatedPicture));
+  yield put(updatePicture(reviewId, updatedPicture));
 
-  return updatePicture;
+  return updatedPicture;
 }
 
 function* reviewFlow(action) {
-  const { pictures } = action.payload.params;
+  console.log('data', action.payload.params);
+  const { id, pictures } = action.payload.params;
 
   yield call(NavigationService.back);
 
-  const uploadedPictures = yield all(pictures.map(picture => call(uploadPicture, picture)));
+  const uploadedPictures = yield all(pictures.map(picture => call(uploadPicture, picture, id)));
 
   put(updatePictures(_.filter(uploadedPictures, pic => !pic.error)));
 }

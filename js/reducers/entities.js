@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { placeSchema, reviewSchema } from '../api/reviews';
 import {
-  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES,
+  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES, UPDATE_PICTURE,
 } from '../constants/reviews';
 import { LOGOUT } from '../constants/auth';
 
@@ -141,6 +141,32 @@ const entitiesReducer = (state = initialState, action) => {
           ...state.places,
           ...newPlaces,
         },
+        reviews: {
+          ...state.reviews,
+          ...reviews,
+        },
+      };
+    }
+    case UPDATE_PICTURE: {
+      const { reviewId, picture } = action;
+      const review = state.reviews[reviewId];
+      console.log('UPDATE_PICTURE reviewId', reviewId);
+      console.log('UPDATE_PICTURE picture', picture);
+      const reviews = {};
+
+      reviews[reviewId] = {
+        ...review,
+        pictures: review.pictures.map((pic) => {
+          if (pic.id === picture.id) {
+            return picture;
+          }
+
+          return pic;
+        }),
+      };
+
+      return {
+        ...state,
         reviews: {
           ...state.reviews,
           ...reviews,

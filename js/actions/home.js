@@ -5,7 +5,6 @@ import {
   PLACE_SELECT,
   FILTERS_CHANGE,
   G_PLACE,
-  UPDATE_PICTURE,
 } from '../constants/home';
 
 export function getGeolocation() {
@@ -45,12 +44,5 @@ export function gPlace(place) {
   return {
     type: G_PLACE,
     place,
-  };
-}
-
-export function updatePicture(picture) {
-  return {
-    type: UPDATE_PICTURE,
-    picture,
   };
 }

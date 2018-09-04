@@ -209,7 +209,7 @@ class AddReview extends Component {
           <LayoutView type="right">
             <Button transparent onPress={this.onPublish}>
               <Text>
-PUBLISH
+                PUBLISH
               </Text>
             </Button>
           </LayoutView>
@@ -232,7 +232,7 @@ PUBLISH
           </View>
           <View style={styles.reviewWrapper}>
             <Text style={styles.title}>
-My review
+              My review
             </Text>
             <View>
               <Label
@@ -297,7 +297,7 @@ My review
                     uri={image.uri}
                     loading={image.loading}
                   />
-                )) }
+                ))}
               </View>
               <Text style={styles.imagesCaption}>
                 E.g: A water mirror in Bordeaux !

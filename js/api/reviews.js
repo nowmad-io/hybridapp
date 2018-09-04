@@ -41,6 +41,6 @@ export function updateReview(data) {
   return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, placeSchema);
 }
 
-export function updatePictures(data) {
-  return apiPut(UPDATE_PICTURES, `reviews/${data.id}/pictures`, data);
+export function updatePictures(reviewId, data) {
+  return apiPut(UPDATE_PICTURES, `reviews/${reviewId}/pictures`, data);
 }
