@@ -134,7 +134,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <EmptyEntry
-              place={gPlace}
               onAddLocationPress={onAddLocationPress}
               onSharePress={this._onSharePress}
             />
