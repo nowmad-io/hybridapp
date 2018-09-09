@@ -124,9 +124,9 @@ class AddReview extends Component {
     }
 
     if (image && remove) {
-      this.setState(({ review: oldReview }) => ({
+      this.setState(({ review }) => ({
         review: {
-          ...oldReview,
+          ...review,
           pictures: _.filter(pictures, img => (img.id !== image.id)),
         },
       }));
@@ -143,9 +143,9 @@ class AddReview extends Component {
       newPictures.push(image);
     }
 
-    this.setState(({ review: oldReview }) => ({
+    this.setState(({ review }) => ({
       review: {
-        ...oldReview,
+        ...review,
         pictures: newPictures,
       },
     }));
@@ -182,7 +182,7 @@ class AddReview extends Component {
   }
 
   toggleCategorie(categorie) {
-    const { categories } = this.state;
+    const { review: { categories } } = this.state;
     let newCategories = [...categories];
 
     const selected = _.findIndex(categories, { id: categorie.id });
@@ -193,7 +193,12 @@ class AddReview extends Component {
       newCategories.push(categorie);
     }
 
-    this.setState({ categories: newCategories });
+    this.setState(({ review }) => ({
+      review: {
+        ...review,
+        categories: newCategories,
+      },
+    }));
   }
 
   navigateToImage(image) {
