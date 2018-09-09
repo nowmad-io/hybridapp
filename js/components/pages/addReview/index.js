@@ -25,6 +25,7 @@ import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
 import { addReview, updateReview } from '../../../api/reviews';
+import { selectFullReview } from '../../../reducers/entities';
 
 import styles from './styles';
 
@@ -42,17 +43,26 @@ class AddReview extends Component {
     categoriesList: PropTypes.array,
     me: PropTypes.object,
     region: PropTypes.object,
+    place: PropTypes.object,
+    review: PropTypes.object,
+  }
+
+  static defaultProps = {
+    place: {},
+    review: {},
   }
 
   constructor(props) {
     super(props);
 
-    const { place, review: reviewfromProps } = props.navigation.state.params;
-    const review = reviewfromProps || {};
+    const { place, review, me } = props;
+    console.log('place', place);
+    console.log('review', review);
+    console.log('me', me);
 
     const defaultReview = {
-      created_by: props.me,
-      public: props.me.public_default,
+      created_by: me,
+      public: me.public_default,
       short_description: '',
       information: '',
       status: STATUS_LIST[0],
@@ -64,14 +74,25 @@ class AddReview extends Component {
 
     this.state = {
       addingImage: false,
-      ...defaultReview,
-      ...review,
+      review: {
+        ...defaultReview,
+        ...review,
+      },
       place,
     };
   }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillReceiveProps({ review }) {
+    this.setState(({ review: oldReview }) => ({
+      review: {
+        review,
+        ...oldReview,
+      },
+    }));
   }
 
   componentWillUnmount() {
@@ -94,7 +115,7 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
-    const { place: { google, reviews, ...newPlace }, ...review } = this.state;
+    const { place: { google, reviews, ...newPlace }, review } = this.state;
 
     const action = (review.id && !google) ? updateReview : addReview;
     const newReview = {
@@ -194,8 +215,17 @@ class AddReview extends Component {
   render() {
     const { navigation, region, categoriesList } = this.props;
     const {
-      short_description: shortDescription, information, place, categories,
-      pictures, status, link_1: link1, link_2: link2, addingImage,
+      place,
+      review: {
+        short_description: shortDescription,
+        information,
+        categories,
+        pictures,
+        status,
+        link_1: link1,
+        link_2: link2,
+      },
+      addingImage,
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
@@ -221,7 +251,7 @@ class AddReview extends Component {
               onMapReady={this.onMapReady}
               region={region}
             >
-              <Marker place={{ ...place, reviews: place.reviews.map(review => review.id) }} />
+              <Marker place={place} />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
@@ -243,7 +273,12 @@ class AddReview extends Component {
                 defaultValue={shortDescription}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={
-                  short => this.setState({ short_description: short })
+                  short => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      short_description: short,
+                    },
+                  }))
                 }
                 maxLength={50}
               />
@@ -255,7 +290,12 @@ class AddReview extends Component {
                   key={shortid.generate()}
                   selected={status === stat}
                   text={stat}
-                  onPress={() => this.setState({ status: stat })}
+                  onPress={() => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      status: stat,
+                    },
+                  }))}
                 />
               ))}
             </View>
@@ -278,7 +318,12 @@ class AddReview extends Component {
                 defaultValue={information}
                 multiline
                 placeholder="What made that experience mad awesome ?"
-                onChangeText={info => this.setState({ information: info })}
+                onChangeText={info => this.setState(({ review }) => ({
+                  review: {
+                    ...review,
+                    information: info,
+                  },
+                }))}
                 maxLength={300}
               />
             </View>
@@ -310,7 +355,12 @@ class AddReview extends Component {
                 icon="link"
                 defaultValue={link1}
                 placeholder="http://..."
-                onChangeText={link => this.setState({ link_1: link })}
+                onChangeText={link => this.setState(({ review }) => ({
+                  review: {
+                    ...review,
+                    link_1: link,
+                  },
+                }))}
               />
               {!!link1 && (
                 <FormInput
@@ -318,7 +368,12 @@ class AddReview extends Component {
                   icon="link"
                   defaultValue={link2}
                   placeholder="http://..."
-                  onChangeText={link => this.setState({ link_2: link })}
+                  onChangeText={link => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      link_2: link,
+                    },
+                  }))}
                 />
               )}
             </View>
@@ -330,10 +385,15 @@ class AddReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  region: state.home.region,
-  categoriesList: _.map(state.entities.categories, categorie => categorie),
-  me: state.auth.me,
-});
+const makeMapStateToProps = () => {
+  const reviewSelector = selectFullReview();
 
-export default connect(mapStateToProps)(AddReview);
+  return (state, props) => ({
+    region: state.home.region,
+    categoriesList: _.map(state.entities.categories, categorie => categorie),
+    me: state.auth.me,
+    ...reviewSelector(state, props.placeId),
+  });
+};
+
+export default connect(makeMapStateToProps)(AddReview);

@@ -144,7 +144,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={gPlace}
+              gPlace
               navigation={this.props.navigation}
             />
           </View>
@@ -155,7 +155,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={place}
+              placeId={place.id}
               navigation={this.props.navigation}
             />
           </View>

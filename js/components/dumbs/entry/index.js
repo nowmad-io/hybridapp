@@ -2,77 +2,66 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
-import { selectFullPlace } from '../../../reducers/entities';
+import { selectFullReview, selectGPlaceReview } from '../../../reducers/entities';
 import Review from './review';
 import Icon from '../icon';
 
+import { colors, carousel, userTypes } from '../../../parameters';
 
-import { colors, carousel } from '../../../parameters';
+const isOwn = type => type === userTypes.me;
 
 class Entry extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    me: PropTypes.object,
-    place: PropTypes.object.isRequired,
+    gPlace: PropTypes.bool,
+    placeId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    review: PropTypes.object,
+    others: PropTypes.array,
+    place: PropTypes.object,
   };
 
-  addOrEditReview = (myReview = false) => () => {
-    const { place } = this.props;
-
-    this.props.navigation.navigate('AddReview', {
-      place,
-      review: myReview && {
-        ...myReview,
-        pictures: !place.google ? myReview.pictures : [],
-      },
-    });
-  }
+  addOrEditReview = () => this.props.navigation.navigate('AddReview', {
+    place: this.props.place,
+    review: this.props.review,
+  });
 
   placeDetails = () => {
     this.props.navigation.navigate('PlaceDetails', {
-      place: this.props.place,
+      placeId: this.props.placeId,
     });
   }
 
   render() {
-    const { place: { reviews, google }, me } = this.props;
-
-    const myReview = me ? _.find(reviews, r => (r.created_by && r.created_by.id === me.id)) : null;
-    const review = myReview || reviews[0];
-    const pictures = _.flatten(reviews.map(r => r.pictures));
-    const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
-    const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
+    const { gPlace, review, others } = this.props;
 
     return (
       <View
         style={[
           styles.card,
-          google && styles.googleCard,
+          gPlace && styles.gPlace,
         ]}
       >
         <Review
-          onPress={() => (!google && this.placeDetails())}
-          review={{
-            ...review,
-            categories,
-            pictures,
-          }}
+          onPress={() => (!gPlace && this.placeDetails())}
+          review={review}
           others={others}
-          google={!!google}
+          gPlace={gPlace}
           cover
         />
         <TouchableOpacity
           style={styles.cta}
           activeOpacity={0.8}
-          onPress={this.addOrEditReview(myReview)}
+          onPress={this.addOrEditReview}
         >
           <Icon
-            name={(myReview && !google) ? 'edit' : 'playlist-add'}
+            name={isOwn(review.user_type) ? 'edit' : 'playlist-add'}
             style={[
               styles.cta_icon,
-              myReview && styles.cta_edit,
+              isOwn(review.user_type) && styles.cta_edit,
             ]}
           />
         </TouchableOpacity>
@@ -82,12 +71,12 @@ class Entry extends Component {
 }
 
 const makeMapStateToProps = () => {
-  const placeSelector = selectFullPlace();
+  const reviewSelector = selectFullReview();
+  const gPlaceSelector = selectGPlaceReview();
 
-  return (state, props) => ({
-    place: props.place.google ? props.place : placeSelector(state, props.place.id),
-    me: state.auth.me,
-  });
+  return (state, props) => (
+    props.gPlace ? gPlaceSelector(state) : reviewSelector(state, props.placeId)
+  );
 };
 
 export default connect(makeMapStateToProps)(Entry);

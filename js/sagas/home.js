@@ -105,7 +105,6 @@ function* uploadPicture(picture, reviewId) {
 }
 
 function* reviewFlow(action) {
-  console.log('data', action.payload.params);
   const { id, pictures } = action.payload.params;
 
   yield call(NavigationService.back);

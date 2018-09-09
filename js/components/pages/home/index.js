@@ -139,8 +139,6 @@ class Home extends Component {
     this.props.navigation.navigate('AddReview', {
       place: {
         id: shortid.generate(),
-        google: true,
-        custom: true,
         latitude: +latitude,
         longitude: +longitude,
         reviews: [],

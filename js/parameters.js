@@ -86,3 +86,10 @@ export const carousel = {
   level3: sizes.height - HELPER - PADDING_TOP,
   border: 4,
 };
+
+export const userTypes = {
+  google: 'google',
+  me: 'me',
+  friend: 'friend',
+  friendOfFriend: 'friends_friend',
+};
