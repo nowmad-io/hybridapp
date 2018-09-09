@@ -137,8 +137,8 @@ export const poiToPlace = ({ name, coordinate }) => ({
   reviews: [{
     created_by: {
       first_name: name,
-      user_type: userTypes.google,
     },
+    user_type: userTypes.google,
     categories: [],
     pictures: [],
   }],

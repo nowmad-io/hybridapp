@@ -196,6 +196,7 @@ class Home extends Component {
               place={googlePlace}
               selected={selectedPlace && selectedPlace.id === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
+              gPlace
             />
           )}
           {places.map(place => (

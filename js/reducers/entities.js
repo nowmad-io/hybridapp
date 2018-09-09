@@ -38,11 +38,10 @@ export const selectFullReview = () => createSelector(
       reviews,
       r => r.user_type === userTypes.me,
     );
-    console.log('others bef', others);
     const review = myReview.length ? myReview[0] : _.pullAt(others, 0)[0];
     const pictures = _.flatten(reviews.map(r => r.pictures));
     const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
-    console.log('others aft', others);
+
     return {
       place,
       review: {
