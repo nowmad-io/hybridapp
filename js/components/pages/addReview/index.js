@@ -25,7 +25,6 @@ import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
 import { addReview, updateReview } from '../../../api/reviews';
-import { selectFullReview } from '../../../reducers/entities';
 
 import styles from './styles';
 
@@ -43,26 +42,17 @@ class AddReview extends Component {
     categoriesList: PropTypes.array,
     me: PropTypes.object,
     region: PropTypes.object,
-    place: PropTypes.object,
-    review: PropTypes.object,
-  }
-
-  static defaultProps = {
-    place: {},
-    review: {},
   }
 
   constructor(props) {
     super(props);
 
-    const { place, review, me } = props;
-    console.log('place', place);
-    console.log('review', review);
-    console.log('me', me);
+    const { place, review: reviewfromProps } = props.navigation.state.params;
+    const review = reviewfromProps || {};
 
     const defaultReview = {
-      created_by: me,
-      public: me.public_default,
+      created_by: props.me,
+      public: props.me.public_default,
       short_description: '',
       information: '',
       status: STATUS_LIST[0],
@@ -84,15 +74,6 @@ class AddReview extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  componentWillReceiveProps({ review }) {
-    this.setState(({ review: oldReview }) => ({
-      review: {
-        review,
-        ...oldReview,
-      },
-    }));
   }
 
   componentWillUnmount() {
@@ -134,7 +115,7 @@ class AddReview extends Component {
   }
 
   onImageEditBack = ({ image, remove }) => {
-    const { pictures } = this.state;
+    const { review: { pictures } } = this.state;
 
     this.setState({ addingImage: false });
 
@@ -143,12 +124,17 @@ class AddReview extends Component {
     }
 
     if (image && remove) {
-      this.setState({ pictures: _.filter(pictures, img => (img.id !== image.id)) });
+      this.setState(({ review: oldReview }) => ({
+        review: {
+          ...oldReview,
+          pictures: _.filter(pictures, img => (img.id !== image.id)),
+        },
+      }));
+
       return;
     }
 
     const index = _.findIndex(pictures, img => (img.id === image.id));
-
     const newPictures = [...pictures];
 
     if (index > -1) {
@@ -157,7 +143,12 @@ class AddReview extends Component {
       newPictures.push(image);
     }
 
-    this.setState({ pictures: newPictures });
+    this.setState(({ review: oldReview }) => ({
+      review: {
+        ...oldReview,
+        pictures: newPictures,
+      },
+    }));
   }
 
   onAddressLayout = (event) => {
@@ -385,15 +376,10 @@ class AddReview extends Component {
   }
 }
 
-const makeMapStateToProps = () => {
-  const reviewSelector = selectFullReview();
+const mapStateToProps = state => ({
+  region: state.home.region,
+  categoriesList: _.map(state.entities.categories, categorie => categorie),
+  me: state.auth.me,
+});
 
-  return (state, props) => ({
-    region: state.home.region,
-    categoriesList: _.map(state.entities.categories, categorie => categorie),
-    me: state.auth.me,
-    ...reviewSelector(state, props.placeId),
-  });
-};
-
-export default connect(makeMapStateToProps)(AddReview);
+export default connect(mapStateToProps)(AddReview);
