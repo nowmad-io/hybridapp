@@ -145,13 +145,13 @@ export default class Review extends PureComponent {
                   >
                     {shortDescription}
                   </Text>
-                  <View style={styles.categories}>
+                  <Text style={styles.categories}>
                     {categories.map(({ id, name }, index) => (
                       <Text key={id} style={styles.categorie}>
                         {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
                       </Text>
                     ))}
-                  </View>
+                  </Text>
                 </View>
               )}
             </View>
