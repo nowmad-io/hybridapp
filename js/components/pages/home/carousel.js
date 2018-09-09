@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
   },
   entryWrapper: {
     width: entryWidth,
-    paddingVertical: 8,
     paddingHorizontal: (entryMargin / 2),
   },
 });
