@@ -133,7 +133,7 @@ export default class Review extends PureComponent {
                   style={[
                     styles.body_right,
                     cover && (!pictures || !pictures.length) && {
-                      left: xHeaderRight - 14,
+                      paddingLeft: xHeaderRight,
                     },
                   ]}
                 >
