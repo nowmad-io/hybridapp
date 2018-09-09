@@ -111,7 +111,7 @@ function* reviewFlow(action) {
 
   const uploadedPictures = yield all(pictures.map(picture => call(uploadPicture, picture, id)));
 
-  put(updatePictures(_.filter(uploadedPictures, pic => !pic.error)));
+  yield put(updatePictures(id, { pictures: _.filter(uploadedPictures, pic => !pic.error) }));
 }
 
 function* updatePlaces(action) {

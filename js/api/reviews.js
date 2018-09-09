@@ -42,5 +42,5 @@ export function updateReview(data) {
 }
 
 export function updatePictures(reviewId, data) {
-  return apiPut(UPDATE_PICTURES, `reviews/${reviewId}/pictures`, data);
+  return apiPut(UPDATE_PICTURES, `reviews/${reviewId}/pictures/`, data);
 }
