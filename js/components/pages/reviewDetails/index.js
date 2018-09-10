@@ -59,58 +59,61 @@ export default class ReviewDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <ScrollView style={styles.content}>
-          <View style={styles.wrapper}>
-            <View style={styles.infoWrapper}>
-              <Review
-                review={review}
-                style={styles.review}
-                detail
-              />
-              <Text style={styles.information}>
-                {review.information}
-              </Text>
-              {review.link_1 !== '' && (
-                <TouchableOpacity
-                  onPress={() => this.openUrl(review.link_1)}
-                  style={styles.links}
-                >
-                  <Icon name="link" rotate={-40} style={styles.linkIcon} />
-                  <Text style={styles.information}>
-                    {review.link_1}
-                  </Text>
-                </TouchableOpacity>
-              )}
-              {review.link_2 !== '' && (
-                <TouchableOpacity
-                  onPress={() => this.openUrl(review.link_2)}
-                  style={styles.links}
-                >
-                  <Icon name="link" rotate={-40} style={styles.linkIcon} />
-                  <Text
-                    style={[
-                      styles.information,
-                      styles.link2,
-                    ]}
-                  >
-                    {review.link_2}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-            <View style={styles.mapWrapper}>
-              <Map
-                ref={(ref) => { this._map = ref; }}
-                onMapReady={this.onMapReady}
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.infoWrapper}>
+            <Review
+              review={review}
+              style={styles.review}
+              detail
+            />
+            <Text
+              style={[
+                styles.text,
+                styles.information,
+              ]}
+            >
+              {review.information}
+            </Text>
+            {review.link_1 !== '' && (
+              <TouchableOpacity
+                onPress={() => this.openUrl(review.link_1)}
+                style={styles.links}
               >
-                <Marker place={place} />
-              </Map>
-              <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
-                <Icon style={styles.addressIcon} name="location-on" />
-                <Text style={styles.addressText}>
-                  {place.address}
+                <Icon name="link" rotate={-40} style={styles.linkIcon} />
+                <Text style={styles.text}>
+                  {review.link_1}
                 </Text>
-              </View>
+              </TouchableOpacity>
+            )}
+            {review.link_2 !== '' && (
+              <TouchableOpacity
+                onPress={() => this.openUrl(review.link_2)}
+                style={[
+                  styles.links,
+                  styles.link_2,
+                ]}
+              >
+                <Icon name="link" rotate={-40} style={styles.linkIcon} />
+                <Text
+                  style={styles.text}
+                >
+                  {review.link_2}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={styles.mapWrapper}>
+            <Map
+              ref={(ref) => { this._map = ref; }}
+              onMapReady={this.onMapReady}
+            >
+              <Marker place={place} />
+            </Map>
+            <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
+              <Icon style={styles.addressIcon} name="location-on" />
+              <Text style={styles.addressText}>
+                {place.address}
+              </Text>
             </View>
           </View>
         </ScrollView>
@@ -122,42 +125,40 @@ export default class ReviewDetails extends Component {
 
 const styles = StyleSheet.create({
   content: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  wrapper: {
     minHeight: sizes.height - sizes.toolbarHeight,
+    backgroundColor: colors.white,
   },
   infoWrapper: {
     flex: 1,
     paddingTop: 10,
     paddingBottom: 16,
     paddingHorizontal: 16,
+    justifyContent: 'flex-start',
   },
   review: {
     paddingTop: 0,
     marginBottom: 0,
     marginHorizontal: 0,
+    flex: 0,
   },
-  otherDetails: {
-    marginTop: 12,
-    flex: -1,
-  },
-  information: {
+  text: {
     fontSize: 14,
     lineHeight: 22,
+  },
+  information: {
+    marginTop: 12,
   },
   links: {
     flexDirection: 'row',
     marginTop: 22,
   },
+  link_2: {
+    marginTop: 12,
+  },
   linkIcon: {
     fontSize: 24,
     color: colors.grey,
     marginRight: 4,
-  },
-  link2: {
-    marginBottom: 12,
   },
   mapWrapper: {
     height: 178,

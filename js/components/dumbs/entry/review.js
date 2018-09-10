@@ -210,8 +210,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   picture_detail: {
-    height: '100%',
-    maxHeight: 150,
+    height: 150,
     marginBottom: 12,
   },
   body_right: {
