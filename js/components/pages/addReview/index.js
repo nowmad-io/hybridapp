@@ -247,7 +247,10 @@ class AddReview extends Component {
               onMapReady={this.onMapReady}
               region={region}
             >
-              <Marker place={place} />
+              <Marker
+                place={place}
+                gPlace={navigation.state.params.gPlace}
+              />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />

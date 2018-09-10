@@ -22,7 +22,9 @@ import { selectPlaces } from '../../../reducers/home';
 import { sendFriendship } from '../../../api/friends';
 import { poiToPlace, placeDetails } from '../../../api/search';
 
-import { sizes, carousel, colors } from '../../../parameters';
+import {
+  sizes, carousel, colors, userTypes,
+} from '../../../parameters';
 
 class Home extends Component {
   static propTypes = {
@@ -144,9 +146,10 @@ class Home extends Component {
         reviews: [],
       },
       review: {
-        user_type: 'me',
+        user_type: userTypes.google,
         created_by: this.props.me,
       },
+      gPlace: true,
     });
   }
 

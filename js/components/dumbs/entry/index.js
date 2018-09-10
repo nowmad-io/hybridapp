@@ -27,6 +27,7 @@ class Entry extends Component {
   addOrEditReview = () => this.props.navigation.navigate('AddReview', {
     place: this.props.place,
     review: isOwn(this.props.review.user_type) ? this.props.review : null,
+    gPlace: this.props.gPlace,
   });
 
   placeDetails = () => {
