@@ -26,6 +26,7 @@ export default class Review extends PureComponent {
     onPress: PropTypes.func,
     cover: PropTypes.bool,
     gPlace: PropTypes.bool,
+    detail: PropTypes.bool,
   }
 
   constructor(props) {
@@ -56,6 +57,7 @@ export default class Review extends PureComponent {
       others,
       gPlace,
       cover,
+      detail,
     } = this.props;
     const userText = userType === userTypes.me ? 'Me' : `${createdBy.first_name} ${!gPlace ? createdBy.last_name[0] : ''}`;
     const othersText = others && others.length ? ` and ${others.length} more friend${others.length > 2 ? 's' : ''}` : '';
@@ -107,14 +109,14 @@ export default class Review extends PureComponent {
               )}
             </View>
           </View>
-          <View style={styles.body}>
-            <View style={styles.body_wrapper}>
+          <View style={!detail && styles.body}>
+            <View style={!detail && styles.body_wrapper}>
               { (pictures && pictures.length > 0) && (
                 <Image
                   resizeMode="cover"
                   resizeMethode="resize"
                   source={{ uri: pictures[0].uri }}
-                  style={styles.picture}
+                  style={detail ? styles.picture_detail : styles.picture}
                 />
               )}
               { (gPlace && pictures.length > 1) && (
@@ -131,7 +133,7 @@ export default class Review extends PureComponent {
               { !gPlace && (
                 <View
                   style={[
-                    styles.body_right,
+                    !detail && styles.body_right,
                     cover && (!pictures || !pictures.length) && {
                       paddingLeft: xHeaderRight,
                     },
@@ -140,7 +142,8 @@ export default class Review extends PureComponent {
                   <Text
                     style={[
                       styles.description,
-                      (!pictures || !pictures.length) && styles.description_noimage,
+                      (detail || !pictures || !pictures.length) && styles.description_noimage,
+                      detail && styles.description_detail,
                     ]}
                   >
                     {shortDescription}
@@ -169,6 +172,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginHorizontal: 16,
     flex: 1,
+    borderColor: colors.black,
+    borderWidth: 1,
   },
   header: {
     marginBottom: 12,
@@ -204,20 +209,28 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 12,
   },
+  picture_detail: {
+    height: '100%',
+    maxHeight: 150,
+    marginBottom: 12,
+  },
   body_right: {
-    paddingLeft: 12,
     flex: 1,
     justifyContent: 'space-between',
   },
   description: {
     fontSize: 18,
-    lineHeight: 20,
+    lineHeight: 24,
     fontWeight: font.fontWeight.medium,
+    color: colors.greyDark,
   },
   description_noimage: {
     fontSize: 22,
-    lineHeight: 24,
+    lineHeight: 28,
     fontWeight: font.fontWeight.regular,
+  },
+  description_detail: {
+    marginBottom: 12,
   },
   categories: {
     flexDirection: 'row',

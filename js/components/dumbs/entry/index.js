@@ -15,11 +15,14 @@ class Entry extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     gPlace: PropTypes.bool,
+    // eslint-disable-next-line
     placeId: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
     ]),
     review: PropTypes.object,
+    allPictures: PropTypes.array,
+    allCategories: PropTypes.array,
     others: PropTypes.array,
     place: PropTypes.object,
   };
@@ -30,14 +33,29 @@ class Entry extends Component {
     gPlace: this.props.gPlace,
   });
 
-  placeDetails = () => {
-    this.props.navigation.navigate('PlaceDetails', {
-      placeId: this.props.placeId,
-    });
+  goToDetails = () => {
+    const {
+      navigation, place, review, others,
+    } = this.props;
+
+    if (place.reviews.length > 1) {
+      navigation.navigate('PlaceDetails', {
+        place,
+        review,
+        others,
+      });
+    } else {
+      navigation.navigate('ReviewDetails', {
+        place,
+        review,
+      });
+    }
   }
 
   render() {
-    const { gPlace, review, others } = this.props;
+    const {
+      gPlace, review, allPictures, allCategories, others,
+    } = this.props;
 
     return (
       <View
@@ -47,8 +65,12 @@ class Entry extends Component {
         ]}
       >
         <Review
-          onPress={() => (!gPlace && this.placeDetails())}
-          review={review}
+          onPress={() => (!gPlace && this.goToDetails())}
+          review={{
+            ...review,
+            pictures: allPictures,
+            categories: allCategories,
+          }}
           others={others}
           gPlace={gPlace}
           cover

@@ -13,15 +13,6 @@ import { colors } from '../../../parameters';
 export default class PlaceDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    place: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      place: props.navigation.state.params.place,
-    };
   }
 
   componentDidMount() {
@@ -37,8 +28,17 @@ export default class PlaceDetails extends Component {
     return true;
   }
 
+  goToDetails = (review) => {
+    const { place } = this.props.navigation;
+
+    this.props.navigation.navigate('ReviewDetails', {
+      place,
+      review,
+    });
+  }
+
   render() {
-    const { place: { reviews } } = this.state;
+    const { review: firstReview, others } = this.props.navigation.state.params;
 
     return (
       <LayoutView type="container">
@@ -48,13 +48,16 @@ export default class PlaceDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <ScrollView style={styles.content}>
-          {reviews.map(review => (
+        <ScrollView contentContainerStyle={styles.content}>
+          {[firstReview, ...others].map(review => (
             <View
               key={review.id}
               style={styles.review}
             >
-              <Review review={review} />
+              <Review
+                review={review}
+                onPress={() => this.goToDetails(review)}
+              />
             </View>
           ))}
         </ScrollView>
@@ -67,11 +70,12 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.white,
+    paddingVertical: 4,
   },
   review: {
     flex: 0,
-    minHeight: 162,
-    marginTop: 8,
+    minHeight: 164,
+    marginVertical: 4,
     marginHorizontal: 8,
     borderColor: colors.transparent,
     backgroundColor: colors.white,
