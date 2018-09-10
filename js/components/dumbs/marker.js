@@ -8,7 +8,7 @@ import memoize from 'fast-memoize';
 import { selectReview } from '../../reducers/entities';
 import Avatar from './avatar';
 
-import { colors } from '../../parameters';
+import { colors, userTypes } from '../../parameters';
 
 const triangleHelper = 10;
 
@@ -18,6 +18,7 @@ class Marker extends PureComponent {
     onMarkerPress: PropTypes.func,
     place: PropTypes.object,
     review: PropTypes.object,
+    gPlace: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -31,20 +32,18 @@ class Marker extends PureComponent {
   render() {
     const {
       place: {
-        reviews, latitude, longitude, google, custom,
+        reviews, latitude, longitude,
       },
       selected,
       review,
+      gPlace,
     } = this.props;
-
     let text = '';
 
     if (reviews && reviews.length > 1) {
       text = reviews.length;
-    } else if (review && !google) {
-      text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
-    } else if (custom) {
-      text = 'me';
+    } else if (!gPlace) {
+      text = review.user_type === userTypes.me ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
     const avatarSize = (text === 'me') ? 36 : 40;
@@ -69,7 +68,7 @@ class Marker extends PureComponent {
             size={avatarSize}
             text={text}
             set="FontAwesome"
-            icon={(google && !custom) ? 'google' : ''}
+            icon={gPlace ? 'google' : ''}
             uppercase={(text !== 'me')}
             style={selected && styles.avatar_selected}
             textStyle={markerAvatar(selected, text === 'me')}

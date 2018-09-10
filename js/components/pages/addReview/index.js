@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { BackHandler, Keyboard, View } from 'react-native';
+import {
+  BackHandler, Keyboard, View, Platform,
+} from 'react-native';
 import _ from 'lodash';
 import shortid from 'shortid';
-
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 
@@ -23,12 +24,16 @@ import Icon from '../../dumbs/icon';
 import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
-import { statusList } from '../../../lists';
 import { addReview, updateReview } from '../../../api/reviews';
 
 import styles from './styles';
 
 const MAX_LENGTH_PICTURES = 5;
+const STATUS_LIST = [
+  'Travelling here',
+  'Living here',
+  'Local',
+];
 
 class AddReview extends Component {
   static propTypes = {
@@ -50,7 +55,7 @@ class AddReview extends Component {
       public: props.me.public_default,
       short_description: '',
       information: '',
-      status: statusList[0],
+      status: STATUS_LIST[0],
       categories: [],
       pictures: [],
       links_1: '',
@@ -59,8 +64,10 @@ class AddReview extends Component {
 
     this.state = {
       addingImage: false,
-      ...defaultReview,
-      ...review,
+      review: {
+        ...defaultReview,
+        ...review,
+      },
       place,
     };
   }
@@ -89,7 +96,7 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
-    const { place: { google, reviews, ...newPlace }, ...review } = this.state;
+    const { place: { google, reviews, ...newPlace }, review } = this.state;
 
     const action = (review.id && !google) ? updateReview : addReview;
     const newReview = {
@@ -101,21 +108,14 @@ class AddReview extends Component {
         ...newPlace,
         ...((newPlace.id && !google) ? { reviews } : {}),
       },
-      pictures: this.state.pictures.map((image) => {
-        const picture = image.id ? { pictureId: image.id } : { source: image.data };
-
-        return {
-          ...picture,
-          caption: image.caption,
-        };
-      }),
     };
+
     Keyboard.dismiss();
     this.props.dispatch(action(newReview));
   }
 
   onImageEditBack = ({ image, remove }) => {
-    const { pictures } = this.state;
+    const { review: { pictures } } = this.state;
 
     this.setState({ addingImage: false });
 
@@ -124,29 +124,31 @@ class AddReview extends Component {
     }
 
     if (image && remove) {
-      this.setState({ pictures: _.filter(pictures, img => (img.uri !== image.uri)) });
+      this.setState(({ review }) => ({
+        review: {
+          ...review,
+          pictures: _.filter(pictures, img => (img.id !== image.id)),
+        },
+      }));
+
       return;
     }
 
-    let index = 0;
-    const exist = _.some(pictures, (img, i) => {
-      if (img.uri === image.uri) {
-        index = i;
-        return true;
-      }
-
-      return false;
-    });
-
+    const index = _.findIndex(pictures, img => (img.id === image.id));
     const newPictures = [...pictures];
 
-    if (exist) {
+    if (index > -1) {
       newPictures[index] = image;
     } else {
       newPictures.push(image);
     }
 
-    this.setState({ pictures: newPictures });
+    this.setState(({ review }) => ({
+      review: {
+        ...review,
+        pictures: newPictures,
+      },
+    }));
   }
 
   onAddressLayout = (event) => {
@@ -165,17 +167,22 @@ class AddReview extends Component {
 
     this.setState({ addingImage: true });
 
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel || response.error) {
+    ImagePicker.showImagePicker(options, ({
+      didCancel, error, path, uri,
+    }) => {
+      if (didCancel || error) {
         this.setState({ addingImage: false });
       } else {
-        this.navigateToImage(response);
+        this.navigateToImage({
+          uri,
+          path: Platform.OS === 'android' ? path : { path: uri },
+        });
       }
     });
   }
 
   toggleCategorie(categorie) {
-    const { categories } = this.state;
+    const { review: { categories } } = this.state;
     let newCategories = [...categories];
 
     const selected = _.findIndex(categories, { id: categorie.id });
@@ -186,7 +193,12 @@ class AddReview extends Component {
       newCategories.push(categorie);
     }
 
-    this.setState({ categories: newCategories });
+    this.setState(({ review }) => ({
+      review: {
+        ...review,
+        categories: newCategories,
+      },
+    }));
   }
 
   navigateToImage(image) {
@@ -199,8 +211,17 @@ class AddReview extends Component {
   render() {
     const { navigation, region, categoriesList } = this.props;
     const {
-      short_description: shortDescription, information, place, categories,
-      pictures, status, link_1: link1, link_2: link2, addingImage,
+      place,
+      review: {
+        short_description: shortDescription,
+        information,
+        categories,
+        pictures,
+        status,
+        link_1: link1,
+        link_2: link2,
+      },
+      addingImage,
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
@@ -214,7 +235,7 @@ class AddReview extends Component {
           <LayoutView type="right">
             <Button transparent onPress={this.onPublish}>
               <Text>
-PUBLISH
+                PUBLISH
               </Text>
             </Button>
           </LayoutView>
@@ -226,7 +247,10 @@ PUBLISH
               onMapReady={this.onMapReady}
               region={region}
             >
-              <Marker place={{ ...place, reviews: place.reviews.map(review => review.id) }} />
+              <Marker
+                place={place}
+                gPlace={navigation.state.params.gPlace}
+              />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
@@ -237,7 +261,7 @@ PUBLISH
           </View>
           <View style={styles.reviewWrapper}>
             <Text style={styles.title}>
-My review
+              My review
             </Text>
             <View>
               <Label
@@ -248,19 +272,29 @@ My review
                 defaultValue={shortDescription}
                 placeholder="E.g: Beautiful water mirror ! Chill and peaceful..."
                 onChangeText={
-                  short => this.setState({ short_description: short })
+                  short => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      short_description: short,
+                    },
+                  }))
                 }
                 maxLength={50}
               />
             </View>
             <View style={styles.group}>
               <Label text="You were..." required />
-              {statusList.map(stat => (
+              {STATUS_LIST.map(stat => (
                 <RadioButton
                   key={shortid.generate()}
                   selected={status === stat}
                   text={stat}
-                  onPress={() => this.setState({ status: stat })}
+                  onPress={() => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      status: stat,
+                    },
+                  }))}
                 />
               ))}
             </View>
@@ -283,7 +317,12 @@ My review
                 defaultValue={information}
                 multiline
                 placeholder="What made that experience mad awesome ?"
-                onChangeText={info => this.setState({ information: info })}
+                onChangeText={info => this.setState(({ review }) => ({
+                  review: {
+                    ...review,
+                    information: info,
+                  },
+                }))}
                 maxLength={300}
               />
             </View>
@@ -299,9 +338,10 @@ My review
                     key={shortid.generate()}
                     style={styles.image(full, index)}
                     onPress={() => this.navigateToImage(image)}
-                    source={image.source || image.uri}
+                    uri={image.uri}
+                    loading={image.loading}
                   />
-                )) }
+                ))}
               </View>
               <Text style={styles.imagesCaption}>
                 E.g: A water mirror in Bordeaux !
@@ -314,7 +354,12 @@ My review
                 icon="link"
                 defaultValue={link1}
                 placeholder="http://..."
-                onChangeText={link => this.setState({ link_1: link })}
+                onChangeText={link => this.setState(({ review }) => ({
+                  review: {
+                    ...review,
+                    link_1: link,
+                  },
+                }))}
               />
               {!!link1 && (
                 <FormInput
@@ -322,7 +367,12 @@ My review
                   icon="link"
                   defaultValue={link2}
                   placeholder="http://..."
-                  onChangeText={link => this.setState({ link_2: link })}
+                  onChangeText={link => this.setState(({ review }) => ({
+                    review: {
+                      ...review,
+                      link_2: link,
+                    },
+                  }))}
                 />
               )}
             </View>

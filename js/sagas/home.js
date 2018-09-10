@@ -5,6 +5,7 @@ import { eventChannel } from 'redux-saga';
 import { denormalize } from 'normalizr';
 import _ from 'lodash';
 
+import PictureUpload from '../pictureUpload';
 import NavigationService from '../navigationService';
 import { apiCall } from '../requests/actions';
 
@@ -18,11 +19,12 @@ import { FETCH_FRIENDSINCOMING, ACCEPT_FRIENDSHIP, FETCH_FRIENDS } from '../cons
 
 import { apiMe } from '../api/auth';
 import {
-  fetchPlaces, fetchCategories, addReview, simpleReviewSchema,
+  fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures,
 } from '../api/reviews';
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
 
 import { setGeolocation } from '../actions/home';
+import { updatePicture } from '../actions/reviews';
 
 import { pollSaga } from './utils';
 
@@ -72,8 +74,44 @@ function* homeFlow() {
   yield fork(pollSaga(fetchFriends, `${FETCH_FRIENDS}_SUCCESS`, STOP_SAGAS));
 }
 
-function* reviewFlow() {
+function* uploadPicture(picture, reviewId) {
+  if (picture.uri.startsWith('http')) {
+    return picture;
+  }
+
+  yield put(updatePicture(reviewId, { ...picture, loading: true }));
+
+  const channel = yield call(() => eventChannel((emit) => {
+    PictureUpload(
+      picture.path,
+      uri => emit({ uri }),
+      error => emit({ error }),
+    );
+    return () => {};
+  }));
+
+  const { uri, error } = yield take(channel);
+
+  const updatedPicture = {
+    ...picture,
+    uri: uri || picture.uri,
+    loading: false,
+    error,
+  };
+
+  yield put(updatePicture(reviewId, updatedPicture));
+
+  return updatedPicture;
+}
+
+function* reviewFlow(action) {
+  const { id, pictures } = action.payload.params;
+
   yield call(NavigationService.back);
+
+  const uploadedPictures = yield all(pictures.map(picture => call(uploadPicture, picture, id)));
+
+  yield put(updatePictures(id, { pictures: _.filter(uploadedPictures, pic => !pic.error) }));
 }
 
 function* updatePlaces(action) {

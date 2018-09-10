@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, BackHandler, View } from 'react-native';
+import shortid from 'shortid';
 
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -27,24 +28,11 @@ class AddImage extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+    BackHandler.addEventListener('hardwareBackPress', this.onSavePress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  onBackPress = () => {
-    const { navigation } = this.props;
-    navigation.goBack();
-    navigation.state.params.onImageEditBack({
-      image: {
-        ...this.state.image,
-        caption: navigation.state.params.image.caption || '',
-      },
-    });
-
-    return true;
+    BackHandler.removeEventListener('hardwareBackPress', this.onSavePress);
   }
 
   onSavePress = () => {
@@ -53,10 +41,13 @@ class AddImage extends Component {
     navigation.goBack();
     navigation.state.params.onImageEditBack({
       image: {
+        id: shortid.generate(),
         ...this.state.image,
         caption: this.state.caption,
       },
     });
+
+    return true;
   }
 
   onDeletePress = () => {
@@ -100,7 +91,7 @@ SAVE
             <Image
               style={styles.image}
               resizeMethod="resize"
-              source={{ uri: this.state.image.source || this.state.image.uri }}
+              source={{ uri: this.state.image.uri }}
             />
           </View>
           <View

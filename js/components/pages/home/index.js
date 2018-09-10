@@ -22,7 +22,9 @@ import { selectPlaces } from '../../../reducers/home';
 import { sendFriendship } from '../../../api/friends';
 import { poiToPlace, placeDetails } from '../../../api/search';
 
-import { sizes, carousel, colors } from '../../../parameters';
+import {
+  sizes, carousel, colors, userTypes,
+} from '../../../parameters';
 
 class Home extends Component {
   static propTypes = {
@@ -139,16 +141,15 @@ class Home extends Component {
     this.props.navigation.navigate('AddReview', {
       place: {
         id: shortid.generate(),
-        google: true,
-        custom: true,
         latitude: +latitude,
         longitude: +longitude,
         reviews: [],
       },
       review: {
-        user_type: 'me',
+        user_type: userTypes.google,
         created_by: this.props.me,
       },
+      gPlace: true,
     });
   }
 
@@ -198,6 +199,7 @@ class Home extends Component {
               place={googlePlace}
               selected={selectedPlace && selectedPlace.id === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
+              gPlace
             />
           )}
           {places.map(place => (

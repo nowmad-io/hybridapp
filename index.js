@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppRegistry, Alert } from 'react-native';
 import Config from 'react-native-config';
 import { Sentry } from 'react-native-sentry';

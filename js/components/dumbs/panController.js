@@ -27,7 +27,7 @@ export default class PanController extends PureComponent {
 
   static closestCenter(x, spacing) {
     const plus = (x % spacing) < spacing / 2 ? 0 : spacing;
-    return Math.round(x / spacing) * spacing + plus;
+    return Math.floor(x / spacing) * spacing + plus;
   }
 
   _responder = null;

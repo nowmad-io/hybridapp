@@ -134,7 +134,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <EmptyEntry
-              place={gPlace}
               onAddLocationPress={onAddLocationPress}
               onSharePress={this._onSharePress}
             />
@@ -145,7 +144,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={gPlace}
+              gPlace
               navigation={this.props.navigation}
             />
           </View>
@@ -156,7 +155,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={place}
+              placeId={place.id}
               navigation={this.props.navigation}
             />
           </View>
@@ -197,7 +196,6 @@ const styles = StyleSheet.create({
   },
   entryWrapper: {
     width: entryWidth,
-    paddingVertical: 8,
     paddingHorizontal: (entryMargin / 2),
   },
 });

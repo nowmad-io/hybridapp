@@ -8,7 +8,7 @@ import memoize from 'fast-memoize';
 import Text from '../text';
 import Avatar from '../avatar';
 
-import { font, colors } from '../../../parameters';
+import { font, colors, userTypes } from '../../../parameters';
 
 export default class Review extends PureComponent {
   static initials({ first_name: firstName, last_name: lastName }) {
@@ -25,7 +25,7 @@ export default class Review extends PureComponent {
     others: PropTypes.array,
     onPress: PropTypes.func,
     cover: PropTypes.bool,
-    google: PropTypes.bool,
+    gPlace: PropTypes.bool,
   }
 
   constructor(props) {
@@ -53,12 +53,11 @@ export default class Review extends PureComponent {
         pictures,
         status,
       },
-      google,
       others,
+      gPlace,
       cover,
     } = this.props;
-
-    const userText = userType === 'me' ? 'Me' : `${createdBy.first_name} ${!google ? createdBy.last_name[0] : ''}`;
+    const userText = userType === userTypes.me ? 'Me' : `${createdBy.first_name} ${!gPlace ? createdBy.last_name[0] : ''}`;
     const othersText = others && others.length ? ` and ${others.length} more friend${others.length > 2 ? 's' : ''}` : '';
 
     return (
@@ -75,9 +74,9 @@ export default class Review extends PureComponent {
           <View style={styles.header}>
             <Avatar
               text={Review.initials(createdBy)}
-              icon={google ? 'google' : ''}
+              icon={gPlace ? 'google' : ''}
               set="FontAwesome"
-              textStyle={googleAvatar(google)}
+              textStyle={googleAvatar(gPlace)}
             />
             <View
               style={styles.header_right}
@@ -91,7 +90,7 @@ export default class Review extends PureComponent {
               </Text>
               {(others && others.length) ? (
                 <View style={styles.others}>
-                  { others.map(user => (
+                  { others.map(({ created_by: user }) => (
                     <Avatar
                       key={user.id}
                       style={styles.others_avatar}
@@ -102,8 +101,8 @@ export default class Review extends PureComponent {
                   )) }
                 </View>
               ) : (
-                <Text lowercase={!google}>
-                  {google ? 'Google' : `was ${status}`}
+                <Text lowercase={!gPlace}>
+                  {gPlace ? 'Google' : `was ${status}`}
                 </Text>
               )}
             </View>
@@ -114,11 +113,11 @@ export default class Review extends PureComponent {
                 <Image
                   resizeMode="cover"
                   resizeMethode="resize"
-                  source={{ uri: pictures[0].source }}
+                  source={{ uri: pictures[0].uri }}
                   style={styles.picture}
                 />
               )}
-              { (google && pictures.length > 1) && (
+              { (gPlace && pictures.length > 1) && (
                 <Image
                   resizeMode="cover"
                   resizeMethode="resize"
@@ -129,7 +128,7 @@ export default class Review extends PureComponent {
                   ]}
                 />
               )}
-              { !google && (
+              { !gPlace && (
                 <View
                   style={[
                     styles.body_right,
@@ -146,13 +145,13 @@ export default class Review extends PureComponent {
                   >
                     {shortDescription}
                   </Text>
-                  <View style={styles.categories}>
+                  <Text style={styles.categories}>
                     {categories.map(({ id, name }, index) => (
                       <Text key={id} style={styles.categorie}>
                         {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
                       </Text>
                     ))}
-                  </View>
+                  </Text>
                 </View>
               )}
             </View>
@@ -162,7 +161,7 @@ export default class Review extends PureComponent {
     );
   }
 }
-const googleAvatar = memoize(google => (google ? styles.googleAvatar : {}));
+const googleAvatar = memoize(gPlace => (gPlace ? styles.googleAvatar : {}));
 
 const styles = StyleSheet.create({
   review: {

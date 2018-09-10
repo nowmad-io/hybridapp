@@ -82,7 +82,14 @@ export const carousel = {
   itemSpacing: ITEM_SPACING,
   itemWidth: sizes.width - (ITEM_SPACING * 2),
   level1: LEVEL1,
-  level2: 164,
+  level2: 166,
   level3: sizes.height - HELPER - PADDING_TOP,
   border: 4,
+};
+
+export const userTypes = {
+  google: 'google',
+  me: 'me',
+  friend: 'friend',
+  friendOfFriend: 'friends_friend',
 };

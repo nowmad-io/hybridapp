@@ -5,6 +5,8 @@ import {
   ME,
 } from '../constants/auth';
 
+export const getMe = state => state.auth.me;
+
 const initialState = {
   authLoading: false,
   token: null,
