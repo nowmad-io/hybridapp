@@ -53,9 +53,15 @@ export default class ReviewDetails extends Component {
 
     return (
       <LayoutView type="container">
-        <LayoutView type="header">
+        <LayoutView type="header" style={styles.header}>
           <LayoutView type="left">
-            <Button transparent onPress={this.onBackPress} icon="arrow-back" header />
+            <Button
+              transparent
+              onPress={this.onBackPress}
+              icon="close"
+              header
+              iconStyle={styles.headerButton}
+            />
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
@@ -124,6 +130,13 @@ export default class ReviewDetails extends Component {
 
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: colors.white,
+  },
+  headerButton: {
+    color: colors.green,
+    fontSize: 24,
+  },
   content: {
     minHeight: sizes.height - sizes.toolbarHeight,
     backgroundColor: colors.white,
