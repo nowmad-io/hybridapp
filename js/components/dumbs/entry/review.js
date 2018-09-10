@@ -109,55 +109,58 @@ export default class Review extends PureComponent {
               )}
             </View>
           </View>
-          <View style={!detail && styles.body}>
-            <View style={!detail && styles.body_wrapper}>
-              { (pictures && pictures.length > 0) && (
-                <Image
-                  resizeMode="cover"
-                  resizeMethode="resize"
-                  source={{ uri: pictures[0].uri }}
-                  style={detail ? styles.picture_detail : styles.picture}
-                />
-              )}
-              { (gPlace && pictures.length > 1) && (
-                <Image
-                  resizeMode="cover"
-                  resizeMethode="resize"
-                  source={{ uri: pictures[1].source }}
+          <View
+            style={[
+              styles.body,
+              !detail && styles.bodyNoDetail,
+            ]}
+          >
+            { (pictures && pictures.length > 0) && (
+              <Image
+                resizeMode="cover"
+                resizeMethode="resize"
+                source={{ uri: pictures[0].uri }}
+                style={detail ? styles.picture_detail : styles.picture}
+              />
+            )}
+            { (gPlace && pictures.length > 1) && (
+              <Image
+                resizeMode="cover"
+                resizeMethode="resize"
+                source={{ uri: pictures[1].source }}
+                style={[
+                  styles.picture,
+                  { marginRight: 0 },
+                ]}
+              />
+            )}
+            { !gPlace && (
+              <View
+                style={[
+                  !detail && styles.body_right,
+                  cover && (!pictures || !pictures.length) && {
+                    paddingLeft: xHeaderRight,
+                  },
+                ]}
+              >
+                <Text
                   style={[
-                    styles.picture,
-                    { marginRight: 0 },
-                  ]}
-                />
-              )}
-              { !gPlace && (
-                <View
-                  style={[
-                    !detail && styles.body_right,
-                    cover && (!pictures || !pictures.length) && {
-                      paddingLeft: xHeaderRight,
-                    },
+                    styles.description,
+                    (detail || !pictures || !pictures.length) && styles.description_noimage,
+                    detail && styles.description_detail,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.description,
-                      (detail || !pictures || !pictures.length) && styles.description_noimage,
-                      detail && styles.description_detail,
-                    ]}
-                  >
-                    {shortDescription}
-                  </Text>
-                  <Text style={styles.categories}>
-                    {categories.map(({ id, name }, index) => (
-                      <Text key={id} style={styles.categorie}>
-                        {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
-                      </Text>
-                    ))}
-                  </Text>
-                </View>
-              )}
-            </View>
+                  {shortDescription}
+                </Text>
+                <Text style={styles.categories}>
+                  {categories.map(({ id, name }, index) => (
+                    <Text key={id} style={styles.categorie}>
+                      {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
+                    </Text>
+                  ))}
+                </Text>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       </View>
@@ -172,8 +175,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginHorizontal: 16,
     flex: 1,
-    borderColor: colors.black,
-    borderWidth: 1,
   },
   header: {
     marginBottom: 12,
@@ -199,11 +200,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    maxHeight: 84,
   },
-  body_wrapper: {
+  bodyNoDetail: {
+    maxHeight: 84,
     flexDirection: 'row',
-    flex: 1,
   },
   picture: {
     flex: 1,

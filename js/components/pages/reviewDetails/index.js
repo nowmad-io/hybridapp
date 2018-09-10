@@ -7,10 +7,12 @@ import PropTypes from 'prop-types';
 import LayoutView from '../../dumbs/layoutView';
 import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
+import Map from '../../dumbs/map';
+import Marker from '../../dumbs/marker';
 import Icon from '../../dumbs/icon';
 import Review from '../../dumbs/entry/review';
 
-import { colors } from '../../../parameters';
+import { colors, sizes } from '../../../parameters';
 
 export default class ReviewDetails extends Component {
   static propTypes = {
@@ -30,6 +32,20 @@ export default class ReviewDetails extends Component {
     return true;
   }
 
+  onMapReady = () => {
+    const { place } = this.props.navigation.state.params;
+
+    this._map.animateToCoordinate({
+      longitude: place.longitude,
+      latitude: place.latitude,
+    });
+  }
+
+  onAddressLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    this._map.updatePadding({ top: height });
+  }
+
   openUrl = url => Linking.openURL(url);
 
   render() {
@@ -43,43 +59,59 @@ export default class ReviewDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <ScrollView contentContainerStyle={styles.content}>
-          <Review
-            review={review}
-            style={styles.review}
-            detail
-          />
-          <View style={styles.otherDetails}>
-            <Text style={styles.information}>
-              {review.information}
-            </Text>
-            {review.link_1 !== '' && (
-              <TouchableOpacity
-                onPress={() => this.openUrl(review.link_1)}
-                style={styles.links}
-              >
-                <Icon name="link" rotate={-40} style={styles.linkIcon} />
-                <Text style={styles.information}>
-                  {review.link_1}
-                </Text>
-              </TouchableOpacity>
-            )}
-            {review.link_2 !== '' && (
-              <TouchableOpacity
-                onPress={() => this.openUrl(review.link_2)}
-                style={styles.links}
-              >
-                <Icon name="link" rotate={-40} style={styles.linkIcon} />
-                <Text
-                  style={[
-                    styles.information,
-                    styles.link2,
-                  ]}
+        <ScrollView style={styles.content}>
+          <View style={styles.wrapper}>
+            <View style={styles.infoWrapper}>
+              <Review
+                review={review}
+                style={styles.review}
+                detail
+              />
+              <Text style={styles.information}>
+                {review.information}
+              </Text>
+              {review.link_1 !== '' && (
+                <TouchableOpacity
+                  onPress={() => this.openUrl(review.link_1)}
+                  style={styles.links}
                 >
-                  {review.link_2}
+                  <Icon name="link" rotate={-40} style={styles.linkIcon} />
+                  <Text style={styles.information}>
+                    {review.link_1}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {review.link_2 !== '' && (
+                <TouchableOpacity
+                  onPress={() => this.openUrl(review.link_2)}
+                  style={styles.links}
+                >
+                  <Icon name="link" rotate={-40} style={styles.linkIcon} />
+                  <Text
+                    style={[
+                      styles.information,
+                      styles.link2,
+                    ]}
+                  >
+                    {review.link_2}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={styles.mapWrapper}>
+              <Map
+                ref={(ref) => { this._map = ref; }}
+                onMapReady={this.onMapReady}
+              >
+                <Marker place={place} />
+              </Map>
+              <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
+                <Icon style={styles.addressIcon} name="location-on" />
+                <Text style={styles.addressText}>
+                  {place.address}
                 </Text>
-              </TouchableOpacity>
-            )}
+              </View>
+            </View>
           </View>
         </ScrollView>
       </LayoutView>
@@ -92,11 +124,15 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingVertical: 4,
+  },
+  wrapper: {
+    minHeight: sizes.height - sizes.toolbarHeight,
+  },
+  infoWrapper: {
+    flex: 1,
     paddingTop: 10,
     paddingBottom: 16,
     paddingHorizontal: 16,
-    justifyContent: 'flex-start',
   },
   review: {
     paddingTop: 0,
@@ -105,7 +141,7 @@ const styles = StyleSheet.create({
   },
   otherDetails: {
     marginTop: 12,
-    flex: 1,
+    flex: -1,
   },
   information: {
     fontSize: 14,
@@ -122,5 +158,27 @@ const styles = StyleSheet.create({
   },
   link2: {
     marginBottom: 12,
+  },
+  mapWrapper: {
+    height: 178,
+  },
+  addressWrapper: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignItems: 'center',
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: colors.whiteTransparent,
+  },
+  addressIcon: {
+    fontSize: 14,
+    color: colors.grey,
+  },
+  addressText: {
+    fontSize: 10,
+    marginLeft: 8,
   },
 });

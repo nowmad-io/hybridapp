@@ -29,7 +29,7 @@ export default class PlaceDetails extends Component {
   }
 
   goToDetails = (review) => {
-    const { place } = this.props.navigation;
+    const { place } = this.props.navigation.state.params;
 
     this.props.navigation.navigate('ReviewDetails', {
       place,
