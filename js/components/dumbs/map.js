@@ -4,6 +4,8 @@ import { StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 export default class Map extends Component {
+  timeout = null
+
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.array,
@@ -39,6 +41,12 @@ export default class Map extends Component {
     scrollEnabled: true,
   }
 
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  }
+
   onRef(ref) {
     this._ref = ref;
     this.props.onRef(ref);
@@ -58,9 +66,11 @@ export default class Map extends Component {
     }
     this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 1 }] });
     this._ref.map.setNativeProps({ mapPadding });
-    setTimeout(() => {
-      this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 0 }] });
-    }, 100);
+
+    this.timeout = setTimeout(
+      () => this._ref.map.setNativeProps({ style: [styles.map, { marginBottom: 0 }] }),
+      100,
+    );
   }
 
   animateToRegion(region, duration = 500) {
