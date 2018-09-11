@@ -6,9 +6,12 @@ import {
 
 import Review from '../../dumbs/entry/review';
 import Button from '../../dumbs/button';
+import Text from '../../dumbs/text';
 import LayoutView from '../../dumbs/layoutView';
 
-import { colors } from '../../../parameters';
+import { colors, userTypes } from '../../../parameters';
+
+const isOwn = type => type === userTypes.me;
 
 export default class PlaceDetails extends Component {
   static propTypes = {
@@ -37,6 +40,14 @@ export default class PlaceDetails extends Component {
     });
   }
 
+  addOrEditReview = () => {
+    const { place, review } = this.props.navigation.state.params;
+    this.props.navigation.navigate('AddReview', {
+      place,
+      review: isOwn(review.user_type) ? review : null,
+    });
+  }
+
   render() {
     const { review: firstReview, others } = this.props.navigation.state.params;
 
@@ -61,6 +72,9 @@ export default class PlaceDetails extends Component {
             </View>
           ))}
         </ScrollView>
+        <Button light style={styles.actionButton} onPress={this.addOrEditReview}>
+          <Text>{isOwn(firstReview.user_type) ? 'Edit My Review' : 'Add Review'}</Text>
+        </Button>
       </LayoutView>
     );
   }
@@ -71,6 +85,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     paddingVertical: 4,
+  },
+  actionButton: {
+    elevation: 8,
   },
   review: {
     flex: 0,

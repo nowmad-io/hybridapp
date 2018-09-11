@@ -12,7 +12,9 @@ import Marker from '../../dumbs/marker';
 import Icon from '../../dumbs/icon';
 import Review from '../../dumbs/entry/review';
 
-import { colors, sizes } from '../../../parameters';
+import { colors, sizes, userTypes } from '../../../parameters';
+
+const isOwn = type => type === userTypes.me;
 
 export default class ReviewDetails extends Component {
   static propTypes = {
@@ -47,6 +49,15 @@ export default class ReviewDetails extends Component {
   }
 
   openUrl = url => Linking.openURL(url);
+
+  addOrEditReview = () => {
+    const { place, review } = this.props.navigation.state.params;
+
+    this.props.navigation.navigate('AddReview', {
+      place,
+      review: isOwn(review.user_type) ? review : null,
+    });
+  }
 
   render() {
     const { place, review } = this.props.navigation.state.params;
@@ -123,22 +134,27 @@ export default class ReviewDetails extends Component {
             </View>
           </View>
         </ScrollView>
+        <Button light style={styles.actionButton} onPress={this.addOrEditReview}>
+          <Text>{isOwn(review.user_type) ? 'Edit My Review' : 'Add Review'}</Text>
+        </Button>
       </LayoutView>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.white,
+  },
+  actionButton: {
+    elevation: 8,
   },
   headerButton: {
     color: colors.green,
     fontSize: 24,
   },
   content: {
-    minHeight: sizes.height - sizes.toolbarHeight,
+    minHeight: sizes.height - sizes.toolbarHeight - 48,
     backgroundColor: colors.white,
   },
   infoWrapper: {
