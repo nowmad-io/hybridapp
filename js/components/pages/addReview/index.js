@@ -100,15 +100,16 @@ class AddReview extends Component {
   onPublish = () => {
     const { place: { google, reviews, ...newPlace }, review } = this.state;
 
-    const action = (review.id && !google) ? updateReview : addReview;
+    const action = review.id ? updateReview : addReview;
     const newReview = {
       id: shortid.generate(),
       created_by: this.props.me.id,
       user_type: 'me',
       ...review,
       place: {
+        id: shortid.generate(),
         ...newPlace,
-        ...((newPlace.id && !google) ? { reviews } : {}),
+        ...(newPlace.id ? { reviews } : {}),
       },
     };
 
@@ -383,10 +384,10 @@ class AddReview extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const { placeId, reviewId } = props.navigation.state.params;
-
+  const { place, placeId, reviewId } = props.navigation.state.params;
+  console.log('place', place)
   return {
-    place: state.entities.places[placeId] || state.home.gPlace,
+    place: place || state.entities.places[placeId] || state.home.gPlace,
     review: selectFullReview(state, reviewId),
     categoriesList: selectCategories(state),
     me: state.auth.me,

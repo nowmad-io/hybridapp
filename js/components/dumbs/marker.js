@@ -90,7 +90,7 @@ const makeMapStateToProps = () => {
     const { place: { reviews } } = props;
 
     return {
-      review: reviewSelector(state, reviews[0]),
+      review: reviews && reviewSelector(state, reviews[0]),
     };
   };
 };

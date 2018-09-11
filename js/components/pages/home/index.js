@@ -140,16 +140,9 @@ class Home extends Component {
   onAddThisPlacePress = ({ latitude, longitude }) => {
     this.props.navigation.navigate('AddReview', {
       place: {
-        id: shortid.generate(),
         latitude: +latitude,
         longitude: +longitude,
-        reviews: [],
       },
-      review: {
-        user_type: userTypes.google,
-        created_by: this.props.me,
-      },
-      gPlace: true,
     });
   }
 
