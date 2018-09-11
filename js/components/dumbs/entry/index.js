@@ -29,7 +29,7 @@ class Entry extends Component {
 
   addOrEditReview = () => this.props.navigation.navigate('AddReview', {
     placeId: this.props.place.id,
-    reviewId: this.props.review.id,
+    reviewId: isOwn(this.props.review.user_type) ? this.props.review.id : null,
   });
 
   goToDetails = () => {
