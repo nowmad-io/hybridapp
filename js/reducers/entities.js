@@ -20,11 +20,12 @@ const getGPlace = state => state.home.gPlace;
 
 export const selectGPlaceReview = () => createSelector(
   [getGPlace],
-  ({ reviews, ...place }) => ({
+  ({ reviews, pictures, ...place }) => ({
     place: {
       ...place,
       reviews,
     },
+    allPictures: reviews[0].pictures,
     review: reviews[0],
     others: [],
   }),
