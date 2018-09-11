@@ -385,7 +385,7 @@ class AddReview extends Component {
 
 const mapStateToProps = (state, props) => {
   const { place, placeId, reviewId } = props.navigation.state.params;
-  console.log('place', place)
+
   return {
     place: place || state.entities.places[placeId] || state.home.gPlace,
     review: selectFullReview(state, reviewId),
