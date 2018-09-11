@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   StyleSheet, BackHandler, View, ScrollView,
 } from 'react-native';
@@ -9,13 +10,17 @@ import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 import LayoutView from '../../dumbs/layoutView';
 
+import { selectFullPlace } from '../../../reducers/entities';
+
 import { colors, userTypes } from '../../../parameters';
 
 const isOwn = type => type === userTypes.me;
 
-export default class PlaceDetails extends Component {
+class PlaceDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    review: PropTypes.object,
+    others: PropTypes.array,
   }
 
   componentDidMount() {
@@ -31,25 +36,17 @@ export default class PlaceDetails extends Component {
     return true;
   }
 
-  goToDetails = (review) => {
-    const { place } = this.props.navigation.state.params;
-
-    this.props.navigation.navigate('ReviewDetails', {
-      place,
-      review,
-    });
+  goToDetails = (reviewId) => {
+    this.props.navigation.navigate('ReviewDetails', { reviewId });
   }
 
   addOrEditReview = () => {
-    const { place, review } = this.props.navigation.state.params;
-    this.props.navigation.navigate('AddReview', {
-      place,
-      review: isOwn(review.user_type) ? review : null,
-    });
+    // const { placeId } = this.props.navigation.state.params;
+    // this.props.navigation.navigate('AddReview', { placeId });
   }
 
   render() {
-    const { review: firstReview, others } = this.props.navigation.state.params;
+    const { review: firstReview, others } = this.props;
 
     return (
       <LayoutView type="container">
@@ -67,7 +64,7 @@ export default class PlaceDetails extends Component {
             >
               <Review
                 review={review}
-                onPress={() => this.goToDetails(review)}
+                onPress={() => this.goToDetails(review.id)}
               />
             </View>
           ))}
@@ -79,6 +76,24 @@ export default class PlaceDetails extends Component {
     );
   }
 }
+
+const makeMapStateToProps = () => {
+  const placeSelector = selectFullPlace();
+
+  const mapStateToProps = (state, props) => {
+    const { placeId } = props.navigation.state.params;
+    const { review, others } = placeSelector(state, placeId);
+
+    return {
+      review,
+      others,
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default connect(makeMapStateToProps)(PlaceDetails);
 
 const styles = StyleSheet.create({
   content: {

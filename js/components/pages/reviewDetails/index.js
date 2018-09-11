@@ -3,6 +3,7 @@ import {
   StyleSheet, View, ScrollView, BackHandler, TouchableOpacity, Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import LayoutView from '../../dumbs/layoutView';
 import Button from '../../dumbs/button';
@@ -14,15 +15,29 @@ import Review from '../../dumbs/entry/review';
 
 import { colors, sizes, userTypes } from '../../../parameters';
 
+import { selectFullReview } from '../../../reducers/entities';
+
 const isOwn = type => type === userTypes.me;
 
-export default class ReviewDetails extends Component {
+class ReviewDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    place: PropTypes.object,
+    review: PropTypes.object,
   }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillReceiveProps({ place, review }) {
+    console.log('this.props.review', this.props.review);
+    console.log('review', review);
+    console.log('this.props.review === review', this.props.review === review);
+    console.log('============================================');
+    console.log('this.props.place', this.props.place);
+    console.log('place', place);
+    console.log('this.props.place === place', this.props.place === place);
   }
 
   componentWillUnmount() {
@@ -35,7 +50,7 @@ export default class ReviewDetails extends Component {
   }
 
   onMapReady = () => {
-    const { place } = this.props.navigation.state.params;
+    const { place } = this.props;
 
     this._map.animateToCoordinate({
       longitude: place.longitude,
@@ -51,16 +66,14 @@ export default class ReviewDetails extends Component {
   openUrl = url => Linking.openURL(url);
 
   addOrEditReview = () => {
-    const { place, review } = this.props.navigation.state.params;
+    const { place, review } = this.props;
 
-    this.props.navigation.navigate('AddReview', {
-      place,
-      review: isOwn(review.user_type) ? review : null,
-    });
+    this.props.navigation.navigate('AddReview', {});
   }
 
   render() {
-    const { place, review } = this.props.navigation.state.params;
+    const { place, review } = this.props;
+    console.count('rendering reviewDetails');
 
     return (
       <LayoutView type="container">
@@ -141,6 +154,18 @@ export default class ReviewDetails extends Component {
     );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const { reviewId } = props.navigation.state.params;
+  const review = selectFullReview(state, reviewId);
+
+  return {
+    review,
+    place: state.entities.places[review.place],
+  };
+};
+
+export default connect(mapStateToProps)(ReviewDetails);
 
 const styles = StyleSheet.create({
   header: {

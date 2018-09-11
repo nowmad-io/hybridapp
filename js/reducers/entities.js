@@ -12,6 +12,7 @@ import { userTypes } from '../parameters';
 
 const getEntities = state => state.entities;
 const getUsers = state => state.entities.users;
+const getCategories = state => state.entities.categories;
 const getReview = (state, id) => state.entities.reviews[id];
 export const getReviews = state => state.entities.reviews;
 export const getPlaces = state => state.entities.places;
@@ -31,7 +32,12 @@ export const selectGPlaceReview = () => createSelector(
   }),
 );
 
-export const selectFullReview = () => createSelector(
+export const selectFullReview = createSelector(
+  [getReview, getCategories, getUsers],
+  (review, categories, users) => denormalize(review, reviewSchema, { categories, users }),
+);
+
+export const selectFullPlace = () => createSelector(
   [getMe, getPlace, getEntities],
   (me, place, entities) => {
     const { reviews } = denormalize(place, placeSchema, entities);

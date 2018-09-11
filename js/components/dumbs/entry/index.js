@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
-import { selectFullReview, selectGPlaceReview } from '../../../reducers/entities';
+import { selectFullPlace, selectGPlaceReview } from '../../../reducers/entities';
 import Review from './review';
 import Icon from '../icon';
 
@@ -35,20 +35,13 @@ class Entry extends Component {
 
   goToDetails = () => {
     const {
-      navigation, place, review, others,
+      navigation, place, review,
     } = this.props;
 
     if (place.reviews.length > 1) {
-      navigation.navigate('PlaceDetails', {
-        place,
-        review,
-        others,
-      });
+      navigation.navigate('PlaceDetails', { placeId: place.id });
     } else {
-      navigation.navigate('ReviewDetails', {
-        place,
-        review,
-      });
+      navigation.navigate('ReviewDetails', { reviewId: review.id });
     }
   }
 
@@ -94,11 +87,11 @@ class Entry extends Component {
 }
 
 const makeMapStateToProps = () => {
-  const reviewSelector = selectFullReview();
+  const placeSelector = selectFullPlace();
   const gPlaceSelector = selectGPlaceReview();
 
   return (state, props) => (
-    props.gPlace ? gPlaceSelector(state) : reviewSelector(state, props.placeId)
+    props.gPlace ? gPlaceSelector(state) : placeSelector(state, props.placeId)
   );
 };
 
