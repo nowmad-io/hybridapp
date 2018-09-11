@@ -25,6 +25,7 @@ import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
 import { addReview, updateReview } from '../../../api/reviews';
+import { selectFullReview, selectCategories } from '../../../reducers/entities';
 
 import styles from './styles';
 
@@ -39,15 +40,16 @@ class AddReview extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
+    place: PropTypes.object,
+    review: PropTypes.object,
     categoriesList: PropTypes.array,
     me: PropTypes.object,
-    region: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
 
-    const { place, review: reviewfromProps } = props.navigation.state.params;
+    const { place, review: reviewfromProps } = props;
     const review = reviewfromProps || {};
 
     const defaultReview = {
@@ -209,7 +211,7 @@ class AddReview extends Component {
   }
 
   render() {
-    const { navigation, region, categoriesList } = this.props;
+    const { navigation, categoriesList } = this.props;
     const {
       place,
       review: {
@@ -245,7 +247,6 @@ class AddReview extends Component {
             <Map
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
-              region={region}
             >
               <Marker
                 place={place}
@@ -384,10 +385,15 @@ class AddReview extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  region: state.home.region,
-  categoriesList: _.map(state.entities.categories, categorie => categorie),
-  me: state.auth.me,
-});
+const mapStateToProps = (state, props) => {
+  const { placeId, reviewId } = props.navigation.state.params;
+
+  return {
+    place: state.entities.places[placeId],
+    review: selectFullReview(state, reviewId),
+    categoriesList: selectCategories(state),
+    me: state.auth.me,
+  };
+};
 
 export default connect(mapStateToProps)(AddReview);

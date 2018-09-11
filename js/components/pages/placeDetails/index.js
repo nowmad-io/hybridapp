@@ -41,8 +41,11 @@ class PlaceDetails extends Component {
   }
 
   addOrEditReview = () => {
-    // const { placeId } = this.props.navigation.state.params;
-    // this.props.navigation.navigate('AddReview', { placeId });
+    const { review: { place, user_type: userType, id } } = this.props;
+    this.props.navigation.navigate('AddReview', {
+      placeId: place,
+      reviewId: isOwn(userType) ? id : null,
+    });
   }
 
   render() {

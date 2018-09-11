@@ -32,6 +32,11 @@ export const selectGPlaceReview = () => createSelector(
   }),
 );
 
+export const selectCategories = createSelector(
+  [getCategories],
+  categories => _.map(categories, cat => cat),
+);
+
 export const selectFullReview = createSelector(
   [getReview, getCategories, getUsers],
   (review, categories, users) => denormalize(review, reviewSchema, { categories, users }),

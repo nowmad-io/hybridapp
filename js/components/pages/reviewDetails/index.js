@@ -30,16 +30,6 @@ class ReviewDetails extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
-  componentWillReceiveProps({ place, review }) {
-    console.log('this.props.review', this.props.review);
-    console.log('review', review);
-    console.log('this.props.review === review', this.props.review === review);
-    console.log('============================================');
-    console.log('this.props.place', this.props.place);
-    console.log('place', place);
-    console.log('this.props.place === place', this.props.place === place);
-  }
-
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
   }
@@ -68,12 +58,14 @@ class ReviewDetails extends Component {
   addOrEditReview = () => {
     const { place, review } = this.props;
 
-    this.props.navigation.navigate('AddReview', {});
+    this.props.navigation.navigate('AddReview', {
+      placeId: place.id,
+      reviewId: isOwn(review.user_type) ? review.id : null,
+    });
   }
 
   render() {
     const { place, review } = this.props;
-    console.count('rendering reviewDetails');
 
     return (
       <LayoutView type="container">
