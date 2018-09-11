@@ -18,7 +18,6 @@ class Marker extends PureComponent {
     onMarkerPress: PropTypes.func,
     place: PropTypes.object,
     review: PropTypes.object,
-    gPlace: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -36,13 +35,12 @@ class Marker extends PureComponent {
       },
       selected,
       review,
-      gPlace,
     } = this.props;
     let text = '';
 
     if (reviews && reviews.length > 1) {
       text = reviews.length;
-    } else if (!gPlace) {
+    } else if (review && review.user_type !== userTypes.google) {
       text = review.user_type === userTypes.me ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
@@ -68,7 +66,7 @@ class Marker extends PureComponent {
             size={avatarSize}
             text={text}
             set="FontAwesome"
-            icon={gPlace ? 'google' : ''}
+            icon={!review || review.user_type === userTypes.google ? 'google' : ''}
             uppercase={(text !== 'me')}
             style={selected && styles.avatar_selected}
             textStyle={markerAvatar(selected, text === 'me')}

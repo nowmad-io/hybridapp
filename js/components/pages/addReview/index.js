@@ -248,10 +248,7 @@ class AddReview extends Component {
               ref={(ref) => { this._map = ref; }}
               onMapReady={this.onMapReady}
             >
-              <Marker
-                place={place}
-                gPlace={navigation.state.params.gPlace}
-              />
+              <Marker place={place} />
             </Map>
             <View style={styles.addressWrapper} onLayout={this.onAddressLayout}>
               <Icon style={styles.addressIcon} name="location-on" />
@@ -389,7 +386,7 @@ const mapStateToProps = (state, props) => {
   const { placeId, reviewId } = props.navigation.state.params;
 
   return {
-    place: state.entities.places[placeId],
+    place: state.entities.places[placeId] || state.home.gPlace,
     review: selectFullReview(state, reviewId),
     categoriesList: selectCategories(state),
     me: state.auth.me,
