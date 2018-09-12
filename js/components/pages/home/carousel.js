@@ -20,7 +20,10 @@ class Carousel extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     visiblePlaces: PropTypes.array,
-    selectedPlace: PropTypes.object,
+    selectedPlace: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     gPlace: PropTypes.object,
     panY: PropTypes.object,
     hidden: PropTypes.bool,
@@ -39,10 +42,10 @@ class Carousel extends Component {
 
   componentWillReceiveProps({ selectedPlace, hidden }) {
     if (selectedPlace && !selectedPlace.noCarouselUpdate
-      && !_.isEqual(this.props.selectedPlace, selectedPlace)) {
+      && !this.props.selectedPlace !== selectedPlace) {
       const index = selectedPlace
         ? _.compact([this.props.gPlace, ...this.props.visiblePlaces])
-          .findIndex(d => d.id === selectedPlace.id)
+          .findIndex(d => d.id === selectedPlace)
         : 0;
 
       this.goToIndex(index);
@@ -74,7 +77,7 @@ class Carousel extends Component {
 
   _onLayout = () => {
     const index = this.props.selectedPlace
-      ? this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace.id) : 0;
+      ? this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace) : 0;
 
     if (index !== -1) {
       this.goToIndex(index);
@@ -85,8 +88,8 @@ class Carousel extends Component {
 
   _onCarouselDidUpdate = () => {
     const { selectedPlace, visiblePlaces, gPlace } = this.props;
-    const index = (selectedPlace && selectedPlace.id)
-      ? _.compact([gPlace, ...visiblePlaces]).findIndex(d => d.id === selectedPlace.id)
+    const index = selectedPlace
+      ? _.compact([gPlace, ...visiblePlaces]).findIndex(d => d.id === selectedPlace)
       : -1;
 
     this._carousel.current.toIndex(index, index < 0, index < 0);

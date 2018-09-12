@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import shortid from 'shortid';
 
 import Carousel from './carousel';
 import Marker from '../../dumbs/marker';
@@ -22,15 +21,16 @@ import { selectPlaces } from '../../../reducers/home';
 import { sendFriendship } from '../../../api/friends';
 import { poiToPlace, placeDetails } from '../../../api/search';
 
-import {
-  sizes, carousel, colors, userTypes,
-} from '../../../parameters';
+import { sizes, carousel, colors } from '../../../parameters';
 
 class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    selectedPlace: PropTypes.object,
+    selectedPlace: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     places: PropTypes.array,
     geolocation: PropTypes.object,
     region: PropTypes.object,
@@ -190,7 +190,7 @@ class Home extends Component {
           {googlePlace && (
             <Marker
               place={googlePlace}
-              selected={selectedPlace && selectedPlace.id === googlePlace.id}
+              selected={selectedPlace === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
             />
           )}
@@ -198,7 +198,7 @@ class Home extends Component {
             <Marker
               key={`marker-${place.id}`}
               place={place}
-              selected={selectedPlace && selectedPlace.id === place.id}
+              selected={selectedPlace === place.id}
               onMarkerPress={this.onMarkerPress}
             />
           ))}
