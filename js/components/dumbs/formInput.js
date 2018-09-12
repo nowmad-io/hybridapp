@@ -9,11 +9,8 @@ import { colors } from '../../parameters';
 
 export default class FormInput extends Component {
   static propTypes = {
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
+    style: PropTypes.any,
+    inputStyle: PropTypes.any,
     onChangeText: PropTypes.func,
     placeholder: PropTypes.string,
     maxLength: PropTypes.number,
@@ -44,7 +41,7 @@ export default class FormInput extends Component {
   }
 
   render() {
-    const { style, icon } = this.props;
+    const { style, icon, inputStyle } = this.props;
 
     return (
       <View style={[styles.wrapper, style]}>
@@ -54,7 +51,10 @@ export default class FormInput extends Component {
           )}
           <TextInput
             underlineColorAndroid="transparent"
-            style={styles.input}
+            style={[
+              styles.input,
+              inputStyle,
+            ]}
             multiline={this.props.multiline}
             maxLength={this.props.maxLength}
             placeholder={this.props.placeholder}
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: 'row',
-    flex: 1,
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: colors.grey,
