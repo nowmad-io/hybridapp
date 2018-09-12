@@ -13,7 +13,7 @@ import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
 import Spinner from '../../dumbs/spinner';
 
-import styles, { colors } from './styles';
+import styles, { colors } from './stylesOld';
 
 const logo = require('../../../../assets/images/logos/full_logo_horizontal.png');
 

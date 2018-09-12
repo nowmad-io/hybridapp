@@ -17,6 +17,9 @@ export default class FormInput extends Component {
     multiline: PropTypes.bool,
     defaultValue: PropTypes.string,
     icon: PropTypes.string,
+    underlineColor: PropTypes.string,
+    placeholderColor: PropTypes.string,
+    selectionColor: PropTypes.string,
   }
 
   static defaultProps = {
@@ -25,6 +28,7 @@ export default class FormInput extends Component {
     maxLength: null,
     multiline: false,
     defaultValue: '',
+    underlineColor: colors.grey,
   }
 
   constructor(props) {
@@ -41,11 +45,18 @@ export default class FormInput extends Component {
   }
 
   render() {
-    const { style, icon, inputStyle } = this.props;
+    const {
+      style, icon, inputStyle, underlineColor, placeholderColor, selectionColor,
+    } = this.props;
 
     return (
       <View style={[styles.wrapper, style]}>
-        <View style={styles.inputWrapper}>
+        <View
+          style={[
+            styles.inputWrapper,
+            { borderColor: underlineColor },
+          ]}
+        >
           {icon && (
             <Icon name={icon} style={styles.icon} />
           )}
@@ -60,6 +71,8 @@ export default class FormInput extends Component {
             placeholder={this.props.placeholder}
             defaultValue={this.props.defaultValue}
             onChangeText={text => this.onChangeText(text)}
+            placeholderTextColor={placeholderColor}
+            selectionColor={selectionColor}
           />
         </View>
         {this.props.maxLength && (
@@ -81,7 +94,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.grey,
   },
   icon: {
     fontSize: 24,

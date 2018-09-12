@@ -5,8 +5,8 @@ import Register from '../components/pages/auth/register';
 import AppRouter from './AppRouter';
 
 export default createStackNavigator({
-  Login,
   Register,
+  Login,
   App: AppRouter,
 }, {
   navigationOptions: {
