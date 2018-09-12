@@ -124,8 +124,10 @@ class Register extends Component {
               onChangeText={text => this.setState({ email: text })}
             />
             <FormInput
+              password
               style={styles.formField}
               inputStyle={styles.formFieldInput}
+              showPasswordStyle={styles.showPasswordStyle}
               underlineColor={colors.white}
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
@@ -206,6 +208,9 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     color: colors.white,
     fontWeight: font.fontWeight.medium,
+  },
+  showPasswordStyle: {
+    color: colors.white,
   },
   actionsWrapper: {
     marginHorizontal: 24,

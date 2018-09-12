@@ -11,6 +11,7 @@ export default class FormInput extends Component {
   static propTypes = {
     style: PropTypes.any,
     inputStyle: PropTypes.any,
+    showPasswordStyle: PropTypes.any,
     onChangeText: PropTypes.func,
     placeholder: PropTypes.string,
     maxLength: PropTypes.number,
@@ -20,6 +21,7 @@ export default class FormInput extends Component {
     underlineColor: PropTypes.string,
     placeholderColor: PropTypes.string,
     selectionColor: PropTypes.string,
+    password: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -36,6 +38,7 @@ export default class FormInput extends Component {
 
     this.state = {
       length: 0,
+      showPassword: false,
     };
   }
 
@@ -44,10 +47,27 @@ export default class FormInput extends Component {
     this.props.onChangeText(text);
   }
 
+  onShowPasswordPress = () => this.setState(
+    ({ showPassword }) => ({ showPassword: !showPassword }),
+  );
+
   render() {
     const {
-      style, icon, inputStyle, underlineColor, placeholderColor, selectionColor,
+      style,
+      icon,
+      inputStyle,
+      showPasswordStyle,
+      underlineColor,
+      placeholderColor,
+      selectionColor,
+      password,
+      multiline,
+      maxLength,
+      placeholder,
+      defaultValue,
     } = this.props;
+
+    const { length, showPassword } = this.state;
 
     return (
       <View style={[styles.wrapper, style]}>
@@ -66,19 +86,32 @@ export default class FormInput extends Component {
               styles.input,
               inputStyle,
             ]}
-            multiline={this.props.multiline}
-            maxLength={this.props.maxLength}
-            placeholder={this.props.placeholder}
-            defaultValue={this.props.defaultValue}
+            multiline={multiline}
+            maxLength={maxLength}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
             onChangeText={text => this.onChangeText(text)}
             placeholderTextColor={placeholderColor}
             selectionColor={selectionColor}
+            secureTextEntry={password && !showPassword}
+            textContentType={password && 'none' || null}
           />
+          {password && length > 0 && (
+            <Text
+              style={[
+                styles.showPassword,
+                showPasswordStyle,
+              ]}
+              onPress={this.onShowPasswordPress}
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </Text>
+          )}
         </View>
-        {this.props.maxLength && (
+        {maxLength && (
           <Text style={styles.length}>
-            {this.state.length ? `${this.state.length}/` : ''}
-            {this.props.maxLength}
+            {length ? `${length}/` : ''}
+            {maxLength}
           </Text>
         )}
       </View>
@@ -111,5 +144,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '500',
     color: colors.greyDark,
+  },
+  showPassword: {
+    fontSize: 10,
   },
 });
