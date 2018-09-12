@@ -117,6 +117,7 @@ class Search extends Component {
 
   onAddThisPlacePress = (coord) => {
     this.blur();
+    this.onClearPress();
     this.props.onAddThisPlacePress(coord);
   }
 
