@@ -1,12 +1,11 @@
 import { createStackNavigator } from 'react-navigation';
 
-import Login from '../components/pages/auth/login';
-import Register from '../components/pages/auth/register';
+import Auth from '../components/pages/auth';
 import AppRouter from './AppRouter';
 
 export default createStackNavigator({
-  Register,
-  Login,
+  Register: Auth,
+  Login: Auth,
   App: AppRouter,
 }, {
   navigationOptions: {

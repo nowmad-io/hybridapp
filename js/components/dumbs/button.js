@@ -37,6 +37,7 @@ export default class Button extends PureComponent {
     header: PropTypes.bool,
     fab: PropTypes.bool,
     icon: PropTypes.string,
+    disable: PropTypes.bool,
   };
 
   render() {
@@ -52,6 +53,7 @@ export default class Button extends PureComponent {
       fab,
       icon,
       header,
+      disable,
     } = this.props;
 
     const children = React.Children.map(
@@ -97,47 +99,52 @@ export default class Button extends PureComponent {
     );
 
     return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={onPress}
-        style={[
-          styles.wrapper,
-          (fab || rounded) && styles.rounded,
-          fab && styles.fab,
-          (fab && icon) && { width: 56 },
-          wrapped && styles.wrapped,
-          (light || fab) && styles.light_button,
-          transparent && styles.transparent_button,
-          header && { paddingHorizontal: 8 },
-          style && style,
-        ]}
-      >
-        <View
+      <View style={disable && styles.disable}>
+        <TouchableOpacity
+          activeOpacity={disable ? 1 : 0.8}
+          onPress={!disable && onPress || null}
           style={[
-            styles.button,
-            wrapped && styles.wrapped_button,
-            buttonStyle && buttonStyle,
+            styles.wrapper,
+            (fab || rounded) && styles.rounded,
+            fab && styles.fab,
+            (fab && icon) && { width: 56 },
+            wrapped && styles.wrapped,
+            (light || fab) && styles.light_button,
+            transparent && styles.transparent_button,
+            header && { paddingHorizontal: 8 },
+            style && style,
           ]}
         >
-          {children}
-          {icon && (
-            <Icon
-              name={icon}
-              style={[
-                styles.text,
-                { fontSize: 22 },
-                fab && styles.fab_icon,
-                iconStyle && iconStyle,
-              ]}
-            />
-          )}
-        </View>
-      </TouchableOpacity>
+          <View
+            style={[
+              styles.button,
+              wrapped && styles.wrapped_button,
+              buttonStyle && buttonStyle,
+            ]}
+          >
+            {children}
+            {icon && (
+              <Icon
+                name={icon}
+                style={[
+                  styles.text,
+                  { fontSize: 22 },
+                  fab && styles.fab_icon,
+                  iconStyle && iconStyle,
+                ]}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  disable: {
+    opacity: 0.6,
+  },
   wrapper: {
     height: 48,
     backgroundColor: colors.green,
