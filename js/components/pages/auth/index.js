@@ -30,8 +30,10 @@ class Register extends Component {
   constructor(props) {
     super(props);
 
+    const { params } = this.props.navigation.state;
+
     this.state = {
-      email: '',
+      email: params && params.email || '',
       password: '',
       firstName: '',
       lastName: '',
@@ -55,7 +57,10 @@ class Register extends Component {
   }
 
   onLoginPress = () => {
-    this.props.navigation.navigate('Login', { login: true });
+    this.props.navigation.navigate('Login', {
+      login: true,
+      email: this.state.email,
+    });
   }
 
   render() {
@@ -114,6 +119,7 @@ class Register extends Component {
               underlineColor={colors.white}
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
+              defaultValue={email}
               placeholder="Email"
               onChangeText={text => this.setState({ email: text })}
             />
