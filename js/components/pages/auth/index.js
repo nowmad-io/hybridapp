@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Image, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
+import NavigationService from '../../../libs/navigationService';
+import { apiLogin } from '../../../actions/auth';
+
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -20,8 +23,10 @@ class Auth extends Component {
   };
 
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     authLoading: PropTypes.bool,
+    loggedIn: PropTypes.bool,
   };
 
   constructor(props) {
@@ -30,11 +35,19 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || 'd',
-      password: 'd',
-      firstName: 'd',
-      lastName: 'd',
+      email: params && params.email || '',
+      password: '',
+      firstName: '',
+      lastName: '',
     };
+  }
+
+  componentDidMount() {
+    const { loggedIn } = this.props;
+
+    if (loggedIn) {
+      this.props.navigation.dispatch(NavigationService.resetAction());
+    }
   }
 
   onRegisterPress = () => {
@@ -47,17 +60,27 @@ class Auth extends Component {
       this.props.navigation.navigate('Profile', {
         email: this.state.email,
         password: this.state.password,
-        first_name: this.state.firstName,
-        last_name: this.state.lastName,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
       });
     }
   }
 
   onLoginPress = () => {
-    this.props.navigation.navigate('Login', {
-      login: true,
-      email: this.state.email,
-    });
+    const { params } = this.props.navigation.state;
+    const login = params && params.login;
+
+    if (!login) {
+      this.props.navigation.navigate('Login', {
+        login: true,
+        email: this.state.email,
+      });
+    } else {
+      this.props.dispatch(apiLogin({
+        email: this.state.email,
+        password: this.state.password,
+      }));
+    }
   }
 
   render() {
@@ -158,6 +181,7 @@ class Auth extends Component {
 }
 
 const mapStateToProps = state => ({
+  loggedIn: !!state.auth.token,
   error: state.auth.error,
   authLoading: state.auth.authLoading,
 });

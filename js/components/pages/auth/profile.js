@@ -9,7 +9,7 @@ import Button from '../../dumbs/button';
 import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
 
-import { apiRegister } from '../../../actions/auth';
+import { register } from '../../../actions/auth';
 
 import { colors, font } from '../../../parameters';
 
@@ -38,12 +38,12 @@ class Profile extends Component {
     } = this.props.navigation.state.params;
     const { picture } = this.state;
 
-    this.props.dispatch(apiRegister({
+    this.props.dispatch(register({
       email,
       password,
-      first_name: firstName,
-      last_name: lastName,
-      picture,
+      firstName,
+      lastName,
+      picture: picture.path,
     }));
   }
 
