@@ -79,6 +79,7 @@ class Profile extends Component {
         <View style={styles.actionWrapper}>
           <Button
             light
+            disabled={!uri}
             onPress={this.onActionPress}
           >
             <Text style={styles.mainText}>Enter to Nowmad</Text>

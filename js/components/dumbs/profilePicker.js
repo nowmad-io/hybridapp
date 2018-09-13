@@ -8,6 +8,7 @@ import Config from 'react-native-config';
 
 import Icon from './icon';
 import Spinner from './spinner';
+import Button from './button';
 
 import { colors } from '../../parameters';
 
@@ -66,52 +67,59 @@ export default class ProfilePicker extends PureComponent {
     const { addingImage } = this.state;
 
     return (
-      <View
-        style={[
-          styles.wrapper,
-          style,
-        ]}
-      >
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={styles.touchableOpacity}
-          onPress={this.onPress}
+      <View style={styles.helper}>
+        <View
+          style={[
+            styles.wrapper,
+            uri && styles.pictureSelected,
+            style,
+          ]}
         >
-          {uri ? (
-            <Image
-              style={styles.image}
-              resizeMode="cover"
-              resizeMethod="resize"
-              source={{ uri }}
-            />
-          ) : (
-            <View style={styles.noPicture}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.touchableOpacity}
+            onPress={this.onPress}
+          >
+            {uri ? (
+              <Image
+                style={styles.image}
+                resizeMode="cover"
+                resizeMethod="resize"
+                source={{ uri }}
+              />
+            ) : (
               <Icon name="camera-alt" style={styles.icon} />
-            </View>
-          )}
-        </TouchableOpacity>
-        <Spinner overlay visible={addingImage} />
+            )}
+          </TouchableOpacity>
+          <Spinner overlay visible={addingImage} />
+        </View>
+        {uri && (
+          <Button fab style={styles.button} onPress={this.onPress}>
+            <Icon name="camera-alt" style={styles.iconPictureSelected} />
+          </Button>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  helper: {
+    padding: 4,
+  },
   wrapper: {
     height: 152,
     width: 152,
     overflow: 'hidden',
     borderRadius: 100,
-  },
-  touchableOpacity: {
-    width: '100%',
-    height: '100%',
-  },
-  noPicture: {
-    borderRadius: 100,
     borderWidth: 2,
     borderColor: colors.white,
     backgroundColor: colors.greenLight,
+  },
+  pictureSelected: {
+    borderWidth: 0,
+  },
+  touchableOpacity: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
@@ -124,5 +132,19 @@ const styles = StyleSheet.create({
   icon: {
     color: colors.green,
     fontSize: 48,
+  },
+  button: {
+    position: 'absolute',
+    bottom: -4,
+    right: 14,
+    elevation: 0,
+    width: 41,
+    height: 41,
+    paddingHorizontal: 0,
+    borderWidth: 0,
+  },
+  iconPictureSelected: {
+    color: colors.green,
+    fontSize: 24,
   },
 });

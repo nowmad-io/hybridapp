@@ -135,14 +135,14 @@ class Auth extends Component {
 
           <View style={styles.actionsWrapper}>
             <Button
-              disable={!login && !valid}
+              disabled={!login && !valid}
               light={!login}
               onPress={this.onRegisterPress}
             >
               <Text style={!login && styles.mainText}>Create an account</Text>
             </Button>
             <Button
-              disable={login && !valid}
+              disabled={login && !valid}
               light={login}
               style={styles.loginButton}
               onPress={this.onLoginPress}

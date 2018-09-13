@@ -37,7 +37,7 @@ export default class Button extends PureComponent {
     header: PropTypes.bool,
     fab: PropTypes.bool,
     icon: PropTypes.string,
-    disable: PropTypes.bool,
+    disabled: PropTypes.bool,
   };
 
   render() {
@@ -53,7 +53,7 @@ export default class Button extends PureComponent {
       fab,
       icon,
       header,
-      disable,
+      disabled,
     } = this.props;
 
     const children = React.Children.map(
@@ -99,10 +99,10 @@ export default class Button extends PureComponent {
     );
 
     return (
-      <View style={disable && styles.disable}>
+      <View style={disabled && styles.disabled}>
         <TouchableOpacity
-          activeOpacity={disable ? 1 : 0.8}
-          onPress={!disable && onPress || null}
+          activeOpacity={disabled ? 1 : 0.8}
+          onPress={!disabled && onPress || null}
           style={[
             styles.wrapper,
             (fab || rounded) && styles.rounded,
@@ -142,7 +142,7 @@ export default class Button extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-  disable: {
+  disabled: {
     opacity: 0.6,
   },
   wrapper: {
