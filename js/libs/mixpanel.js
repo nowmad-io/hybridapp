@@ -22,6 +22,7 @@ class MixpanelService {
         ? Mixpanel.sharedInstanceWithToken(Config.MIXPANEL_KEY)
         : Promise.resolve(true))
       .then(() => callback())
+      // eslint-disable-next-line no-console
       .catch(error => console.log('Failed to initialize Mixpanel: ', error));
 
     Object.getOwnPropertyNames(Mixpanel)
