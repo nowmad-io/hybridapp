@@ -18,8 +18,8 @@ import {
   getGeolocation, regionChanged, filtersChange, placeSelect, gPlace,
 } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
-import { sendFriendship } from '../../../api/friends';
-import { poiToPlace, placeDetails } from '../../../api/search';
+import { sendFriendship } from '../../../actions/friends';
+import { poiToPlace, placeDetails } from '../../../actions/search';
 
 import { sizes, carousel, colors } from '../../../parameters';
 

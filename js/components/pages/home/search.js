@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { peopleSearch, reviewsSearch, placesSearch } from '../../../api/search';
+import { peopleSearch, reviewsSearch, placesSearch } from '../../../actions/search';
 
 import SearchRouter from '../../../Routers/SearchRouter';
 import Button from '../../dumbs/button';

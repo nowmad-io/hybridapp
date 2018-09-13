@@ -17,11 +17,11 @@ import { GET_GEOLOCATION } from '../constants/home';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 import { FETCH_FRIENDSINCOMING, ACCEPT_FRIENDSHIP, FETCH_FRIENDS } from '../constants/friends';
 
-import { apiMe } from '../api/auth';
+import { apiMe } from '../actions/auth';
 import {
   fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures,
-} from '../api/reviews';
-import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
+} from '../actions/reviews';
+import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../actions/friends';
 
 import { setGeolocation } from '../actions/home';
 import { updatePicture } from '../actions/reviews';

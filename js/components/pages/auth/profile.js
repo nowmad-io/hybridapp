@@ -9,7 +9,7 @@ import Button from '../../dumbs/button';
 import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
 
-import { apiRegister } from '../../../api/auth';
+import { apiRegister } from '../../../actions/auth';
 
 import { colors, font } from '../../../parameters';
 

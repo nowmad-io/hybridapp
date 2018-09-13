@@ -12,8 +12,8 @@ import Avatar from '../../dumbs/avatar';
 import Spinner from '../../dumbs/spinner';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
-import { apiLogout } from '../../../api/auth';
-import { acceptFriendship, rejectFriendship } from '../../../api/friends';
+import { apiLogout } from '../../../actions/auth';
+import { acceptFriendship, rejectFriendship } from '../../../actions/friends';
 
 import { colors, font } from '../../../parameters';
 
