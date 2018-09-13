@@ -80,16 +80,7 @@ function* uploadPicture(picture, reviewId) {
 
   yield put(updatePicture(reviewId, { ...picture, loading: true }));
 
-  const channel = yield call(() => eventChannel((emit) => {
-    PictureUpload(
-      picture.path,
-      uri => emit({ uri }),
-      error => emit({ error }),
-    );
-    return () => {};
-  }));
-
-  const { uri, error } = yield take(channel);
+  const { uri, error } = yield PictureUpload(picture.path);
 
   const updatedPicture = {
     ...picture,
