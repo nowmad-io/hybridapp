@@ -4,7 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 
-import { network } from './requests';
+import { network } from './libs/requests';
 import reducers from './reducers';
 
 export default () => {

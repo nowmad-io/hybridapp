@@ -1,5 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import NavigationService from '../navigationService';
+import NavigationService from '../libs/navigationService';
 
 import {
   LOGIN,

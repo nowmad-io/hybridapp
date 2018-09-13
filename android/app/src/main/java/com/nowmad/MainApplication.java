@@ -3,6 +3,7 @@ package com.nowmad;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.kevinejohn.RNMixpanel.RNMixpanel;
 import com.vydia.RNUploader.UploaderReactPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import io.sentry.RNSentryPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNMixpanel(),
             new UploaderReactPackage(),
             new MapsPackage(),
             new RNSentryPackage(),
