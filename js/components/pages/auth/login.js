@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import NavigationService from '../../../navigationService';
+import Mixpanel from 'react-native-mixpanel';
 
+import NavigationService from '../../../navigationService';
 import { apiLogin } from '../../../api/auth';
 
 import Icon from '../../dumbs/icon';
