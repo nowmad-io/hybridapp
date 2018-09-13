@@ -1,6 +1,6 @@
 import { schema } from 'normalizr';
 
-import { apiGet, apiPost, apiPut } from '../requests';
+import { apiGet, apiPost, apiPut } from '../libs/requests';
 import {
   PLACES,
   CATEGORIES,

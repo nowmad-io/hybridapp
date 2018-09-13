@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Mixpanel from 'react-native-mixpanel';
+
+import Mixpanel from '../../../libs/mixpanel';
 
 import Carousel from './carousel';
 import Marker from '../../dumbs/marker';
@@ -52,7 +53,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.dispatch(getGeolocation());
-    console.log('this.props.me.id', this.props.me.id);
+
     Mixpanel.identify(`${this.props.me.id}`);
 
     Mixpanel.set({
@@ -74,6 +75,7 @@ class Home extends Component {
   }
 
   onMarkerPress = (place) => {
+    Mixpanel.trackWithProperties('Maker Pressed', { place: place.id });
     this.props.dispatch(placeSelect(place));
   }
 

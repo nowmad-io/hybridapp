@@ -6,8 +6,8 @@ import { denormalize } from 'normalizr';
 import _ from 'lodash';
 
 import PictureUpload from '../pictureUpload';
-import NavigationService from '../navigationService';
-import { apiCall } from '../requests/actions';
+import NavigationService from '../libs/navigationService';
+import { apiCall } from '../libs/requests/actions';
 
 import {
   ADD_REVIEW,

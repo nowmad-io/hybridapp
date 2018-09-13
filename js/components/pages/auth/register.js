@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 
-import NavigationService from '../../../navigationService';
+import NavigationService from '../../../libs/navigationService';
 import { apiRegister } from '../../../api/auth';
 
 import Icon from '../../dumbs/icon';

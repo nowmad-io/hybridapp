@@ -1,7 +1,7 @@
 import Config from 'react-native-config';
 import shortid from 'shortid';
 
-import { apiCall, apiGet } from '../requests';
+import { apiCall, apiGet } from '../libs/requests';
 import { userTypes } from '../parameters';
 
 import {

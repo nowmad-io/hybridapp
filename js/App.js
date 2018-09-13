@@ -4,11 +4,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Config from 'react-native-config';
 
 import MainRouter from './Routers/MainRouter';
-import NavigationService from './navigationService';
+import NavigationService from './libs/navigationService';
 import SplashScreen from './components/pages/splashScreen';
 
 import configureStore from './configureStore';
-import { sagas as requestsSaga, Api } from './requests';
+import { sagas as requestsSaga, Api } from './libs/requests';
 import sagas from './sagas';
 
 const { persistor, store, sagaMiddleware } = configureStore();

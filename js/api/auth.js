@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from '../requests';
+import { apiGet, apiPost } from '../libs/requests';
 
 import {
   LOGIN,

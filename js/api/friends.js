@@ -1,4 +1,4 @@
-import { apiCall, apiGet, apiPost } from '../requests';
+import { apiCall, apiGet, apiPost } from '../libs/requests';
 
 import {
   FETCH_FRIENDS,
