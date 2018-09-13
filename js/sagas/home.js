@@ -19,12 +19,11 @@ import { FETCH_FRIENDSINCOMING, ACCEPT_FRIENDSHIP, FETCH_FRIENDS } from '../cons
 
 import { apiMe } from '../actions/auth';
 import {
-  fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures,
+  fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures, updatePicture,
 } from '../actions/reviews';
 import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../actions/friends';
 
 import { setGeolocation } from '../actions/home';
-import { updatePicture } from '../actions/reviews';
 
 import { pollSaga } from './utils';
 
