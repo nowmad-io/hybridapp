@@ -10,20 +10,17 @@ import Button from '../../dumbs/button';
 import FormInput from '../../dumbs/formInput';
 import Spinner from '../../dumbs/spinner';
 
-import { apiRegister } from '../../../api/auth';
-
 import { colors, font } from '../../../parameters';
 
 const logo = require('../../../../assets/images/logos/logo_white.png');
 
-class Register extends Component {
+class Auth extends Component {
   static navigationOptions = {
     header: null,
   };
 
   static propTypes = {
     navigation: PropTypes.object,
-    dispatch: PropTypes.func,
     authLoading: PropTypes.bool,
   };
 
@@ -33,10 +30,10 @@ class Register extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || '',
-      password: '',
-      firstName: '',
-      lastName: '',
+      email: params && params.email || 'd',
+      password: 'd',
+      firstName: 'd',
+      lastName: 'd',
     };
   }
 
@@ -47,12 +44,12 @@ class Register extends Component {
     if (login) {
       this.props.navigation.goBack();
     } else {
-      this.props.dispatch(apiRegister({
+      this.props.navigation.navigate('Profile', {
         email: this.state.email,
         password: this.state.password,
         first_name: this.state.firstName,
         last_name: this.state.lastName,
-      }));
+      });
     }
   }
 
@@ -70,7 +67,7 @@ class Register extends Component {
 
     const { params } = this.props.navigation.state;
     const login = params && params.login;
-    const valid = email && password && (login || (firstName && lastName));
+    const valid = email && password && (login || (firstName.replace(/\s/g, '') && lastName.replace(/\s/g, '')));
 
     return (
       <Content>
@@ -165,7 +162,7 @@ const mapStateToProps = state => ({
   authLoading: state.auth.authLoading,
 });
 
-export default connect(mapStateToProps)(Register);
+export default connect(mapStateToProps)(Auth);
 
 const styles = StyleSheet.create({
   container: {
