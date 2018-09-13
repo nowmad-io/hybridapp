@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
+import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
 
 import { apiRegister } from '../../../api/auth';
@@ -27,7 +28,7 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      picture: null,
+      picture: {},
     };
   }
 
@@ -46,7 +47,11 @@ class Profile extends Component {
     }));
   }
 
+  onPictureSelected = picture => this.setState({ picture });
+
   render() {
+    const { picture: { uri } } = this.state;
+
     return (
       <LayoutView type="container" style={styles.container}>
         <View style={styles.skipWrapper}>
@@ -57,9 +62,23 @@ class Profile extends Component {
             Skip
           </Text>
         </View>
+        <View style={styles.pictureWrapper}>
+          <Text style={styles.title}>
+            Choose your
+          </Text>
+          <Text style={styles.title}>
+            profile picture
+          </Text>
+          <ProfilePicker
+            style={styles.profilePicker}
+            uri={uri}
+            onPictureSelected={this.onPictureSelected}
+          />
+        </View>
 
         <View style={styles.actionWrapper}>
           <Button
+            light
             onPress={this.onActionPress}
           >
             <Text style={styles.mainText}>Enter to Nowmad</Text>
@@ -98,5 +117,22 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: colors.black,
+  },
+  title: {
+    color: colors.white,
+    marginHorizontal: 80,
+    fontSize: 24,
+    lineHeight: 34,
+    fontWeight: font.fontWeight.medium,
+    textAlign: 'center',
+  },
+  pictureWrapper: {
+    marginTop: 24,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  profilePicker: {
+    marginTop: 48,
   },
 });
