@@ -67,6 +67,10 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
     this.props.dispatch(rejectFriendship(id));
   }
 
+  onEditPicture = () => {
+    this.props.navigation.navigate('EditProfile');
+  }
+
   render() {
     const {
       me, all, incomings,
@@ -83,11 +87,26 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
               {`${all.length} friend${all.length > 0 ? 's' : ''}`}
             </Text>
           </View>
-          <Avatar
-            uri={me.picture}
-            text={DrawBar.initials(me)}
-            size={50}
-          />
+          <View style={styles.avatarWrapper}>
+            <Avatar
+              uri={me.picture}
+              text={DrawBar.initials(me)}
+              size={50}
+            />
+            <Button
+              onPress={this.onEditPicture}
+              style={[
+                styles.editProfile,
+                !me.picture && styles.noPicture,
+              ]}
+              iconStyle={[
+                styles.editProfileIcon,
+                !me.picture && styles.noPictureIcon,
+              ]}
+              icon={me.picture ? 'edit' : 'camera-alt'}
+              fab
+            />
+          </View>
         </View>
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
@@ -190,6 +209,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: colors.grey,
     borderBottomWidth: 0.5,
+  },
+  avatarWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editProfile: {
+    position: 'absolute',
+    bottom: -4,
+    right: 0,
+    borderWidth: 0,
+    elevation: 0,
+    height: 25,
+    width: 25,
+    paddingHorizontal: 0,
+  },
+  noPicture: {
+    backgroundColor: colors.green,
+  },
+  editProfileIcon: {
+    fontSize: 15,
+  },
+  noPictureIcon: {
+    color: colors.white,
   },
   info: {
     flex: 1,

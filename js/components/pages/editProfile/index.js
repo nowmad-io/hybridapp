@@ -8,27 +8,29 @@ import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
-
-import { register } from '../../../actions/auth';
+import FormInput from '../../dumbs/formInput';
 
 import { colors, font } from '../../../parameters';
 
-class Profile extends Component {
+class EditProfile extends Component {
   static navigationOptions = {
     header: null,
   };
 
   static propTypes = {
-    dispatch: PropTypes.func,
     navigation: PropTypes.object,
+    me: PropTypes.object,
     authLoading: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
+    const { me } = props;
 
     this.state = {
-      picture: {},
+      firstName: me.first_name || '',
+      lastName: me.last_name || '',
+      picture: me.picture || null,
     };
   }
 
@@ -48,71 +50,55 @@ class Profile extends Component {
     return true;
   }
 
-  onRegisterPress = () => {
-    const {
-      email, password, firstName, lastName,
-    } = this.props.navigation.state.params;
-    const { picture } = this.state;
-
-    this.props.dispatch(register({
-      email,
-      password,
-      firstName,
-      lastName,
-      picture: picture.path,
-    }));
-  }
-
-  onSkipPress = () => {
-    const {
-      email, password, firstName, lastName,
-    } = this.props.navigation.state.params;
-
-    this.props.dispatch(register({
-      email,
-      password,
-      firstName,
-      lastName,
-    }));
-  }
-
   onPictureSelected = picture => this.setState({ picture });
 
   render() {
-    const { picture: { uri } } = this.state;
+    const { navigation } = this.props;
+    const { firstName, lastName, picture } = this.state;
 
     return (
       <LayoutView type="container" style={styles.container}>
-        <View style={styles.skipWrapper}>
-          <Text
-            style={styles.skip}
-            onPress={this.onSkipPress}
-          >
-            Skip
-          </Text>
-        </View>
+        <LayoutView type="header">
+          <LayoutView type="left">
+            <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
+          </LayoutView>
+        </LayoutView>
         <View style={styles.pictureWrapper}>
           <Text style={styles.title}>
-            Choose your
+            Edit your
           </Text>
           <Text style={styles.title}>
-            profile picture
+            profile information
           </Text>
           <ProfilePicker
             style={styles.profilePicker}
-            uri={uri}
+            uri={picture}
             onPictureSelected={this.onPictureSelected}
           />
         </View>
-
-        <View style={styles.actionWrapper}>
-          <Button
-            light
-            disabled={!uri}
-            onPress={this.onRegisterPress}
-          >
-            <Text style={styles.mainText}>Enter to Nowmad</Text>
-          </Button>
+        <View style={styles.formWrapper}>
+          <FormInput
+            style={styles.formField}
+            inputStyle={styles.formFieldInput}
+            underlineColor={colors.white}
+            selectionColor={colors.white}
+            placeholderColor={colors.greenLight}
+            defaultValue={firstName}
+            placeholder="Firstname"
+            onChangeText={text => this.setState({ firstName: text })}
+          />
+          <FormInput
+            password
+            style={styles.formField}
+            inputStyle={styles.formFieldInput}
+            showPasswordStyle={styles.showPasswordStyle}
+            underlineColor={colors.white}
+            selectionColor={colors.white}
+            placeholderColor={colors.greenLight}
+            defaultValue={lastName}
+            placeholder="Lastname"
+            onChangeText={text => this.setState({ lastName: text })}
+          />
         </View>
         <Spinner overlay visible={this.props.authLoading} />
       </LayoutView>
@@ -121,32 +107,15 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.auth.error,
+  me: state.auth.me,
   authLoading: state.auth.authLoading,
 });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(EditProfile);
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 12,
-    paddingBottom: 100,
     backgroundColor: colors.green,
-  },
-  skip: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: font.fontWeight.regular,
-  },
-  skipWrapper: {
-    marginHorizontal: 24,
-    alignItems: 'flex-end',
-  },
-  actionWrapper: {
-    marginHorizontal: 24,
-  },
-  mainText: {
-    color: colors.black,
   },
   title: {
     color: colors.white,
@@ -158,11 +127,23 @@ const styles = StyleSheet.create({
   },
   pictureWrapper: {
     marginTop: 24,
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  formWrapper: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+    flex: 1,
+  },
   profilePicker: {
     marginTop: 48,
+  },
+  formField: {
+    marginBottom: 22,
+  },
+  formFieldInput: {
+    marginVertical: 2,
+    color: colors.white,
+    fontWeight: font.fontWeight.medium,
   },
 });
