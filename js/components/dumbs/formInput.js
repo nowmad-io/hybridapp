@@ -17,7 +17,10 @@ export default class FormInput extends Component {
     maxLength: PropTypes.number,
     multiline: PropTypes.bool,
     defaultValue: PropTypes.string,
-    icon: PropTypes.string,
+    prefixIcon: PropTypes.string,
+    prefixIconStyle: PropTypes.any,
+    suffixIcon: PropTypes.string,
+    suffixIconStyle: PropTypes.any,
     underlineColor: PropTypes.string,
     placeholderColor: PropTypes.string,
     selectionColor: PropTypes.string,
@@ -37,7 +40,7 @@ export default class FormInput extends Component {
     super(props);
 
     this.state = {
-      length: 0,
+      length: props.defaultValue && props.defaultValue.length || 0,
       showPassword: false,
     };
   }
@@ -54,7 +57,10 @@ export default class FormInput extends Component {
   render() {
     const {
       style,
-      icon,
+      prefixIcon,
+      prefixIconStyle,
+      suffixIcon,
+      suffixIconStyle,
       inputStyle,
       showPasswordStyle,
       underlineColor,
@@ -77,8 +83,14 @@ export default class FormInput extends Component {
             { borderColor: underlineColor },
           ]}
         >
-          {icon && (
-            <Icon name={icon} style={styles.icon} />
+          {prefixIcon && (
+            <Icon
+              name={prefixIcon}
+              style={[
+                styles.icon,
+                prefixIcon && prefixIconStyle,
+              ]}
+            />
           )}
           <TextInput
             underlineColorAndroid="transparent"
@@ -100,12 +112,22 @@ export default class FormInput extends Component {
             <Text
               style={[
                 styles.showPassword,
+                suffixIcon && styles.suffixes,
                 showPasswordStyle,
               ]}
               onPress={this.onShowPasswordPress}
             >
               {showPassword ? 'Hide' : 'Show'}
             </Text>
+          )}
+          {suffixIcon && (
+            <Icon
+              name={suffixIcon}
+              style={[
+                styles.icon,
+                suffixIcon && suffixIconStyle,
+              ]}
+            />
           )}
         </View>
         {maxLength && (
@@ -147,5 +169,8 @@ const styles = StyleSheet.create({
   },
   showPassword: {
     fontSize: 10,
+  },
+  suffixes: {
+    marginRight: 8,
   },
 });

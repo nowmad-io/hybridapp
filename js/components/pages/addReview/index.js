@@ -350,7 +350,7 @@ class AddReview extends Component {
               <Label text="Add some links related" />
               <FormInput
                 style={styles.linkInput}
-                icon="link"
+                prefixIcon="link"
                 defaultValue={link1}
                 placeholder="http://..."
                 onChangeText={link => this.setState(({ review }) => ({
@@ -363,7 +363,7 @@ class AddReview extends Component {
               {!!link1 && (
                 <FormInput
                   style={styles.linkInput}
-                  icon="link"
+                  prefixIcon="link"
                   defaultValue={link2}
                   placeholder="http://..."
                   onChangeText={link => this.setState(({ review }) => ({

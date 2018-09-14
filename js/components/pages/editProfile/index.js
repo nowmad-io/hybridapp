@@ -80,24 +80,26 @@ class EditProfile extends Component {
           <FormInput
             style={styles.formField}
             inputStyle={styles.formFieldInput}
+            suffixIconStyle={styles.suffixIconStyle}
             underlineColor={colors.white}
             selectionColor={colors.white}
             placeholderColor={colors.greenLight}
             defaultValue={firstName}
             placeholder="Firstname"
             onChangeText={text => this.setState({ firstName: text })}
+            suffixIcon="edit"
           />
           <FormInput
-            password
             style={styles.formField}
             inputStyle={styles.formFieldInput}
-            showPasswordStyle={styles.showPasswordStyle}
+            suffixIconStyle={styles.suffixIconStyle}
             underlineColor={colors.white}
             selectionColor={colors.white}
             placeholderColor={colors.greenLight}
             defaultValue={lastName}
             placeholder="Lastname"
             onChangeText={text => this.setState({ lastName: text })}
+            suffixIcon="edit"
           />
         </View>
         <Spinner overlay visible={this.props.authLoading} />
@@ -145,5 +147,8 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     color: colors.white,
     fontWeight: font.fontWeight.medium,
+  },
+  suffixIconStyle: {
+    color: colors.whiteTransparentLight,
   },
 });
