@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
+import Content from '../../dumbs/content';
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
@@ -57,53 +58,55 @@ class EditProfile extends Component {
     const { firstName, lastName, picture } = this.state;
 
     return (
-      <LayoutView type="container" style={styles.container}>
-        <LayoutView type="header">
-          <LayoutView type="left">
-            <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
+      <Content>
+        <LayoutView type="container" style={styles.container}>
+          <LayoutView type="header">
+            <LayoutView type="left">
+              <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
+            </LayoutView>
           </LayoutView>
+          <View style={styles.pictureWrapper}>
+            <Text style={styles.title}>
+              Edit your
+            </Text>
+            <Text style={styles.title}>
+              profile information
+            </Text>
+            <ProfilePicker
+              style={styles.profilePicker}
+              uri={picture}
+              onPictureSelected={this.onPictureSelected}
+            />
+          </View>
+          <View style={styles.formWrapper}>
+            <FormInput
+              style={styles.formField}
+              inputStyle={styles.formFieldInput}
+              suffixIconStyle={styles.suffixIconStyle}
+              underlineColor={colors.white}
+              selectionColor={colors.white}
+              placeholderColor={colors.greenLight}
+              defaultValue={firstName}
+              placeholder="Firstname"
+              onChangeText={text => this.setState({ firstName: text })}
+              suffixIcon="edit"
+            />
+            <FormInput
+              style={styles.formField}
+              inputStyle={styles.formFieldInput}
+              suffixIconStyle={styles.suffixIconStyle}
+              underlineColor={colors.white}
+              selectionColor={colors.white}
+              placeholderColor={colors.greenLight}
+              defaultValue={lastName}
+              placeholder="Lastname"
+              onChangeText={text => this.setState({ lastName: text })}
+              suffixIcon="edit"
+            />
+          </View>
+          <Spinner overlay visible={this.props.authLoading} />
         </LayoutView>
-        <View style={styles.pictureWrapper}>
-          <Text style={styles.title}>
-            Edit your
-          </Text>
-          <Text style={styles.title}>
-            profile information
-          </Text>
-          <ProfilePicker
-            style={styles.profilePicker}
-            uri={picture}
-            onPictureSelected={this.onPictureSelected}
-          />
-        </View>
-        <View style={styles.formWrapper}>
-          <FormInput
-            style={styles.formField}
-            inputStyle={styles.formFieldInput}
-            suffixIconStyle={styles.suffixIconStyle}
-            underlineColor={colors.white}
-            selectionColor={colors.white}
-            placeholderColor={colors.greenLight}
-            defaultValue={firstName}
-            placeholder="Firstname"
-            onChangeText={text => this.setState({ firstName: text })}
-            suffixIcon="edit"
-          />
-          <FormInput
-            style={styles.formField}
-            inputStyle={styles.formFieldInput}
-            suffixIconStyle={styles.suffixIconStyle}
-            underlineColor={colors.white}
-            selectionColor={colors.white}
-            placeholderColor={colors.greenLight}
-            defaultValue={lastName}
-            placeholder="Lastname"
-            onChangeText={text => this.setState({ lastName: text })}
-            suffixIcon="edit"
-          />
-        </View>
-        <Spinner overlay visible={this.props.authLoading} />
-      </LayoutView>
+      </Content>
     );
   }
 }
