@@ -63,12 +63,16 @@ class Marker extends PureComponent {
           ]}
         >
           <Avatar
+            uri={review && review.created_by.picture}
             size={avatarSize}
             text={text}
             set="FontAwesome"
             icon={!review || review.user_type === userTypes.google ? 'google' : ''}
             uppercase={(text !== 'me')}
-            style={selected && styles.avatar_selected}
+            style={[
+              styles.avatar,
+              selected && styles.avatar_selected,
+            ]}
             textStyle={markerAvatar(selected, text === 'me')}
           />
           <View
@@ -115,6 +119,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.greenShadow,
     borderRadius: 50,
+  },
+  avatar: {
+    borderWidth: 2,
   },
   avatar_selected: {
     backgroundColor: colors.green,

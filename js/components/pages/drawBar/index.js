@@ -84,6 +84,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             </Text>
           </View>
           <Avatar
+            uri={me.picture}
             text={DrawBar.initials(me)}
             size={50}
           />
@@ -99,6 +100,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
                 style={styles.request}
               >
                 <Avatar
+                  uri={fromUser.picture}
                   text={DrawBar.initials(fromUser)}
                   size={40}
                 />
