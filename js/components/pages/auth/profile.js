@@ -32,7 +32,7 @@ class Profile extends Component {
     };
   }
 
-  onActionPress = () => {
+  onRegisterPress = () => {
     const {
       email, password, firstName, lastName,
     } = this.props.navigation.state.params;
@@ -47,6 +47,19 @@ class Profile extends Component {
     }));
   }
 
+  onSkipPress = () => {
+    const {
+      email, password, firstName, lastName,
+    } = this.props.navigation.state.params;
+
+    this.props.dispatch(register({
+      email,
+      password,
+      firstName,
+      lastName,
+    }));
+  }
+
   onPictureSelected = picture => this.setState({ picture });
 
   render() {
@@ -57,7 +70,7 @@ class Profile extends Component {
         <View style={styles.skipWrapper}>
           <Text
             style={styles.skip}
-            onPress={this.onActionPress}
+            onPress={this.onSkipPress}
           >
             Skip
           </Text>
@@ -80,7 +93,7 @@ class Profile extends Component {
           <Button
             light
             disabled={!uri}
-            onPress={this.onActionPress}
+            onPress={this.onRegisterPress}
           >
             <Text style={styles.mainText}>Enter to Nowmad</Text>
           </Button>
