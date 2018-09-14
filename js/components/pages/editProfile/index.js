@@ -31,7 +31,9 @@ class EditProfile extends Component {
     this.state = {
       firstName: me.first_name || '',
       lastName: me.last_name || '',
-      picture: me.picture || null,
+      picture: {
+        uri: me.picture,
+      } || null,
     };
   }
 
@@ -54,8 +56,12 @@ class EditProfile extends Component {
   onPictureSelected = picture => this.setState({ picture });
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, me } = this.props;
     const { firstName, lastName, picture } = this.state;
+
+    const valid = ((firstName !== me.first_name) && !!firstName)
+      || ((lastName !== me.last_name) && !!lastName)
+      || ((picture !== me.picture) && !!picture);
 
     return (
       <Content>
@@ -74,7 +80,7 @@ class EditProfile extends Component {
             </Text>
             <ProfilePicker
               style={styles.profilePicker}
-              uri={picture}
+              uri={picture.uri}
               onPictureSelected={this.onPictureSelected}
             />
           </View>
@@ -103,6 +109,15 @@ class EditProfile extends Component {
               onChangeText={text => this.setState({ lastName: text })}
               suffixIcon="edit"
             />
+          </View>
+          <View style={styles.actionWrapper}>
+            <Button
+              light
+              disabled={!valid}
+              onPress={this.onSavePress}
+            >
+              <Text style={styles.mainText}>Save changes</Text>
+            </Button>
           </View>
           <Spinner overlay visible={this.props.authLoading} />
         </LayoutView>
@@ -151,7 +166,14 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: font.fontWeight.medium,
   },
+  actionWrapper: {
+    paddingBottom: 52,
+    paddingHorizontal: 24,
+  },
   suffixIconStyle: {
     color: colors.whiteTransparentLight,
+  },
+  mainText: {
+    color: colors.black,
   },
 });
