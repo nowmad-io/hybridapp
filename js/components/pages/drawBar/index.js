@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, View, ScrollView, Share,
+  StyleSheet, View, ScrollView, Share, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -78,7 +78,11 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
 
     return (
       <View style={styles.container}>
-        <View style={styles.profileWrapper}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={styles.profileWrapper}
+          onPress={this.onEditPicture}
+        >
           <View style={styles.info}>
             <Text style={styles.title}>
               {me.first_name}
@@ -93,21 +97,14 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
               text={DrawBar.initials(me)}
               size={50}
             />
-            <Button
-              onPress={this.onEditPicture}
-              style={[
-                styles.editProfile,
-                !me.picture && styles.noPicture,
-              ]}
-              iconStyle={[
-                styles.editProfileIcon,
-                !me.picture && styles.noPictureIcon,
-              ]}
-              icon={me.picture ? 'edit' : 'camera-alt'}
-              fab
-            />
+            <View style={styles.editProfile}>
+              <Icon
+                style={styles.editProfileIcon}
+                name="camera-alt"
+              />
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.pending}>
@@ -215,20 +212,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editProfile: {
+    backgroundColor: colors.white,
     position: 'absolute',
     bottom: -4,
-    right: 0,
+    left: -4,
     borderWidth: 0,
     elevation: 0,
     height: 25,
     width: 25,
     paddingHorizontal: 0,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   noPicture: {
     backgroundColor: colors.green,
   },
   editProfileIcon: {
     fontSize: 15,
+    color: colors.green,
   },
   noPictureIcon: {
     color: colors.white,
