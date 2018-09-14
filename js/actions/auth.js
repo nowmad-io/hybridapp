@@ -1,10 +1,11 @@
-import { apiGet, apiPost } from '../libs/requests';
+import { apiGet, apiPost, apiPut } from '../libs/requests';
 
 import {
   LOGIN,
   REGISTER,
   LOGOUT,
   ME,
+  UPDATE_PROFILE,
 } from '../constants/auth';
 
 export function apiLogin(data) {
@@ -28,4 +29,15 @@ export function apiLogout() {
 
 export function apiMe() {
   return apiGet(ME, 'auth/me/');
+}
+
+export function updateProfile(data) {
+  return {
+    type: UPDATE_PROFILE,
+    data,
+  };
+}
+
+export function apiUpdateProfile(data) {
+  return apiPut(UPDATE_PROFILE, 'auth/me/', data);
 }

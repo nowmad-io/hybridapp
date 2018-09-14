@@ -11,6 +11,8 @@ import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
 import FormInput from '../../dumbs/formInput';
 
+import { updateProfile } from '../../../actions/auth';
+
 import { colors, font } from '../../../parameters';
 
 class EditProfile extends Component {
@@ -19,6 +21,7 @@ class EditProfile extends Component {
   };
 
   static propTypes = {
+    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     me: PropTypes.object,
     authLoading: PropTypes.bool,
@@ -32,13 +35,23 @@ class EditProfile extends Component {
       firstName: me.first_name || '',
       lastName: me.last_name || '',
       picture: {
-        uri: me.picture,
-      } || null,
+        uri: me.picture || null,
+      },
     };
   }
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillReceiveProps({ me }) {
+    this.setState({
+      firstName: me.first_name || '',
+      lastName: me.last_name || '',
+      picture: {
+        uri: me.picture || null,
+      },
+    });
   }
 
   componentWillUnmount() {
@@ -55,13 +68,19 @@ class EditProfile extends Component {
 
   onPictureSelected = picture => this.setState({ picture });
 
+  onSavePress = () => this.props.dispatch(updateProfile({
+    firstName: this.state.firstName,
+    lastName: this.state.lastName,
+    picture: this.state.picture.path || this.state.picture.uri,
+  }));
+
   render() {
     const { navigation, me } = this.props;
-    const { firstName, lastName, picture } = this.state;
+    const { firstName, lastName, picture: { uri } } = this.state;
 
     const valid = ((firstName !== me.first_name) && !!firstName)
       || ((lastName !== me.last_name) && !!lastName)
-      || ((picture !== me.picture) && !!picture);
+      || (uri !== me.picture);
 
     return (
       <Content>
@@ -80,7 +99,7 @@ class EditProfile extends Component {
             </Text>
             <ProfilePicker
               style={styles.profilePicker}
-              uri={picture.uri}
+              uri={uri}
               onPictureSelected={this.onPictureSelected}
             />
           </View>
@@ -146,7 +165,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pictureWrapper: {
-    marginTop: 24,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
