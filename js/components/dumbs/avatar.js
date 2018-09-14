@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { CachedImage } from 'react-native-cached-image';
 
 import Text from './text';
@@ -55,7 +55,7 @@ export default class Avatar extends PureComponent {
             ]}
           />
         ) : uri ? (
-          <Image
+          <CachedImage
             source={{ uri }}
             style={styles.image}
             resizeMode="cover"

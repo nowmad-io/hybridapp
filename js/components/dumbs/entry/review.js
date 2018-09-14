@@ -75,6 +75,7 @@ export default class Review extends PureComponent {
         >
           <View style={styles.header}>
             <Avatar
+              uri={createdBy.picture}
               text={Review.initials(createdBy)}
               icon={gPlace ? 'google' : ''}
               set="FontAwesome"
@@ -95,6 +96,7 @@ export default class Review extends PureComponent {
                   { others.map(({ created_by: user }) => (
                     <Avatar
                       key={user.id}
+                      uri={user.picture}
                       style={styles.others_avatar}
                       textStyle={styles.others_avatar_text}
                       text={Review.initials(user)}
