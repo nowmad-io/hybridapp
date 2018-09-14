@@ -9,8 +9,8 @@ import Spinner from '../../dumbs/spinner';
 import Button from '../../dumbs/button';
 import Text from '../../dumbs/text';
 
-import { placeDetails, COORD_REGEX } from '../../../api/search';
-import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../api/friends';
+import { placeDetails, COORD_REGEX } from '../../../actions/search';
+import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../actions/friends';
 import { selectFilteredReviews, selectPeople } from '../../../reducers/search';
 
 import { sizes, colors, font } from '../../../parameters';

@@ -24,7 +24,7 @@ import Icon from '../../dumbs/icon';
 import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
-import { addReview, updateReview } from '../../../api/reviews';
+import { addReview, updateReview } from '../../../actions/reviews';
 import { selectFullReview, selectCategories } from '../../../reducers/entities';
 
 import styles from './styles';

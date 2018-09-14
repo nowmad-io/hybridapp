@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 
 import { getMe } from './auth';
-import { placeSchema, reviewSchema } from '../api/reviews';
+import { placeSchema, reviewSchema } from '../actions/reviews';
 import {
   PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES, UPDATE_PICTURE,
 } from '../constants/reviews';

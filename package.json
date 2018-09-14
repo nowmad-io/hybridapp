@@ -41,7 +41,7 @@
     "react-native-image-picker": "0.26.10",
     "react-native-keyboard-aware-scroll-view": "0.7.0",
     "react-native-maps": "github:nowmad-io/react-native-maps#map-controls",
-    "react-native-mixpanel": "^1.1.1",
+    "react-native-mixpanel": "1.1.1",
     "react-native-modalbox": "1.6.0",
     "react-native-restart": "0.0.6",
     "react-native-sentry": "0.39.0",

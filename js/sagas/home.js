@@ -17,14 +17,13 @@ import { GET_GEOLOCATION } from '../constants/home';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
 import { FETCH_FRIENDSINCOMING, ACCEPT_FRIENDSHIP, FETCH_FRIENDS } from '../constants/friends';
 
-import { apiMe } from '../api/auth';
+import { apiMe } from '../actions/auth';
 import {
-  fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures,
-} from '../api/reviews';
-import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../api/friends';
+  fetchPlaces, fetchCategories, addReview, simpleReviewSchema, updatePictures, updatePicture,
+} from '../actions/reviews';
+import { fetchFriends, fetchIncomingRequests, fetchOutgoingRequests } from '../actions/friends';
 
 import { setGeolocation } from '../actions/home';
-import { updatePicture } from '../actions/reviews';
 
 import { pollSaga } from './utils';
 
@@ -81,16 +80,7 @@ function* uploadPicture(picture, reviewId) {
 
   yield put(updatePicture(reviewId, { ...picture, loading: true }));
 
-  const channel = yield call(() => eventChannel((emit) => {
-    PictureUpload(
-      picture.path,
-      uri => emit({ uri }),
-      error => emit({ error }),
-    );
-    return () => {};
-  }));
-
-  const { uri, error } = yield take(channel);
+  const { uri, error } = yield PictureUpload(picture.path);
 
   const updatedPicture = {
     ...picture,

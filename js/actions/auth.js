@@ -15,6 +15,13 @@ export function apiRegister(data) {
   return apiPost(REGISTER, 'auth/register/', data);
 }
 
+export function register(data) {
+  return {
+    type: REGISTER,
+    data,
+  };
+}
+
 export function apiLogout() {
   return apiPost(LOGOUT, 'auth/token/destroy/');
 }

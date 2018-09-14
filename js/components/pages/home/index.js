@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import shortid from 'shortid';
 
 import Carousel from './carousel';
 import Marker from '../../dumbs/marker';
@@ -18,8 +19,8 @@ import {
   getGeolocation, regionChanged, filtersChange, placeSelect, gPlace,
 } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
-import { sendFriendship } from '../../../api/friends';
-import { poiToPlace, placeDetails } from '../../../api/search';
+import { sendFriendship } from '../../../actions/friends';
+import { poiToPlace, placeDetails } from '../../../actions/search';
 
 import { sizes, carousel, colors } from '../../../parameters';
 
@@ -196,7 +197,8 @@ class Home extends Component {
           )}
           {places.map(place => (
             <Marker
-              key={`marker-${place.id}`}
+              style={styles.marker}
+              key={shortid.generate()}
               place={place}
               selected={selectedPlace === place.id}
               onMarkerPress={this.onMarkerPress}
@@ -293,6 +295,9 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     paddingTop: 20,
+  },
+  marker: {
+    borderWidth: 2,
   },
   zoomOut: {
     alignSelf: 'flex-end',

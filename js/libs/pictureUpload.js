@@ -1,7 +1,9 @@
+import { call, take } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 import Upload from 'react-native-background-upload';
 import Config from 'react-native-config';
 
-const PictureUpload = (uri, success, error) => Upload.getFileInfo(uri)
+const uploadPicture = (uri, success, error) => Upload.getFileInfo(uri)
   .then((metadata) => {
     const options = {
       method: 'POST',
@@ -29,4 +31,17 @@ const PictureUpload = (uri, success, error) => Upload.getFileInfo(uri)
       .catch(error);
   });
 
-export default PictureUpload;
+export default function* PictureUpload(path) {
+  const channel = yield call(() => eventChannel((emit) => {
+    uploadPicture(
+      path,
+      uri => emit({ uri }),
+      error => emit({ error }),
+    );
+    return () => {};
+  }));
+
+  const { uri, error } = yield take(channel);
+
+  return { uri, error };
+}

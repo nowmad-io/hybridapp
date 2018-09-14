@@ -12,8 +12,8 @@ import Avatar from '../../dumbs/avatar';
 import Spinner from '../../dumbs/spinner';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
-import { apiLogout } from '../../../api/auth';
-import { acceptFriendship, rejectFriendship } from '../../../api/friends';
+import { apiLogout } from '../../../actions/auth';
+import { acceptFriendship, rejectFriendship } from '../../../actions/friends';
 
 import { colors, font } from '../../../parameters';
 
@@ -84,6 +84,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             </Text>
           </View>
           <Avatar
+            uri={me.picture}
             text={DrawBar.initials(me)}
             size={50}
           />
@@ -99,6 +100,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
                 style={styles.request}
               >
                 <Avatar
+                  uri={fromUser.picture}
                   text={DrawBar.initials(fromUser)}
                   size={40}
                 />

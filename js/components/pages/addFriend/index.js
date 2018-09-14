@@ -12,8 +12,8 @@ import FormInput from '../../dumbs/formInput';
 
 import {
   acceptFriendship, sendFriendship, rejectFriendship, cancelFriendship,
-} from '../../../api/friends';
-import { fetchPlaces } from '../../../api/reviews';
+} from '../../../actions/friends';
+import { fetchPlaces } from '../../../actions/reviews';
 
 
 import styles from './styles';

@@ -31,6 +31,7 @@ export const font = {
 const plain = {
   lightGreen: '#C4D6D1',
   green: '#1DA07F',
+  greenLight: '#BBE2D8',
   white: '#FFFFFF',
   black: '#000000',
   grey: '#BCB9B9',
