@@ -1,34 +1,31 @@
 import { normalize } from 'normalizr';
+import Config from 'react-native-config';
 
 class Api {
-  constructor(passedConfig) {
-    const baseConfig = {
-      bodyEncoder: JSON.stringify,
-      credentials: 'same-origin',
-      format: 'json',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      methods: ['get', 'post', 'put', 'delete'],
-    };
+  baseConfig = {
+    bodyEncoder: JSON.stringify,
+    credentials: 'same-origin',
+    format: 'json',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    methods: ['get', 'post', 'put', 'delete'],
+    basePath: Config.API_URL,
+  };
 
-    if (!passedConfig.basePath) {
-      throw new Error('You must pass a base path to the ApiClient');
-    }
-
-    const methods = passedConfig.methods || baseConfig.methods;
+  constructor() {
+    const { methods } = this.baseConfig;
 
     methods.forEach((method) => {
-      this[method] = (path, {
-        params, data, options, schema, parser,
+      this[method] = (path = '', {
+        params = {}, data = {}, options = {}, schema, parser,
       } = {}) => {
         const config = {
-          ...baseConfig,
-          ...passedConfig,
+          ...this.baseConfig,
           ...options,
           headers: {
-            ...baseConfig.headers,
+            ...this.baseConfig.headers,
             ...(options ? options.headers : {}),
           },
         };
@@ -62,6 +59,23 @@ class Api {
     });
   }
 
+  initialize(basePath) {
+    this.baseConfig = {
+      ...this.baseConfig,
+      basePath,
+    };
+  }
+
+  setAuthorisation(token) {
+    this.baseConfig = {
+      ...this.baseConfig,
+      headers: {
+        ...this.baseConfig.headers,
+        Authorization: `Token ${token}`,
+      },
+    };
+  }
+
   // thanks http://stackoverflow.com/a/12040639/5332286
   static queryString(params) {
     const s = Object.keys(params).map(key => (
@@ -82,4 +96,4 @@ class Api {
   }
 }
 
-export default Api;
+export default new Api();

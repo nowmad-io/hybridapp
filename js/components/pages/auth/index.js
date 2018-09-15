@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
+import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
 import { apiLogin } from '../../../actions/auth';
 
@@ -12,7 +13,9 @@ import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import FormInput from '../../dumbs/formInput';
 import Spinner from '../../dumbs/spinner';
+import Modal from '../../dumbs/modal';
 
+import { registerFailed } from '../../../modals';
 import { colors, font } from '../../../parameters';
 
 const logo = require('../../../../assets/images/logos/logo_white.png');
@@ -26,7 +29,8 @@ class Auth extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     authLoading: PropTypes.bool,
-    loggedIn: PropTypes.bool,
+    token: PropTypes.string,
+    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -35,17 +39,19 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || '',
-      password: '',
+      email: params && params.email || 'j@j.com',
+      password: 'j',
       firstName: '',
       lastName: '',
+      modalVisible: false,
     };
   }
 
   componentDidMount() {
-    const { loggedIn } = this.props;
+    const { token } = this.props;
 
-    if (loggedIn) {
+    if (token) {
+      Api.setAuthorisation(token);
       this.props.navigation.dispatch(NavigationService.resetAction());
     }
   }
@@ -83,9 +89,11 @@ class Auth extends Component {
     }
   }
 
+  closeModal = () => this.setState({ modalVisible: false });
+
   render() {
     const {
-      email, password, firstName, lastName,
+      email, password, firstName, lastName, modalVisible,
     } = this.state;
 
     const { params } = this.props.navigation.state;
@@ -175,15 +183,20 @@ class Auth extends Component {
           </View>
           <Spinner overlay visible={this.props.authLoading} />
         </LayoutView>
+        <Modal
+          {...registerFailed}
+          visible={modalVisible}
+          onRequestClose={this.closeModal}
+          onPrimaryAction={this.closeModal}
+        />
       </Content>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  loggedIn: !!state.auth.token,
-  error: state.auth.error,
-  authLoading: state.auth.authLoading,
+  token: state.auth.token,
+  isConnected: state.network.isConnected,
 });
 
 export default connect(mapStateToProps)(Auth);

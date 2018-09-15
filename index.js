@@ -5,7 +5,11 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 import RNRestart from 'react-native-restart';
 import Mixpanel from 'react-native-mixpanel';
 
+import { Api } from './js/libs/requests';
+
 import { persistor, App } from './js/App';
+
+Api.initialize(Config.API_URL);
 
 Mixpanel.sharedInstanceWithToken(Config.MIXPANEL_KEY);
 
