@@ -60,6 +60,7 @@ export const colors = {
   whiteTransparentLight: rgba(plain.white, 0.8),
   transparent: rgba(plain.black, 0),
   yellowTransparent: rgba(plain.yellow, 0.95),
+  blackTransparent: rgba(plain.black, 0.2),
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);
