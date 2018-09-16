@@ -38,8 +38,8 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || 'j@j.com',
-      password: 'j',
+      email: params && params.email || '',
+      password: '',
       firstName: '',
       lastName: '',
       loading: false,
@@ -57,6 +57,9 @@ class Auth extends Component {
   }
 
   onRegisterPress = () => {
+    const {
+      email, password, firstName, lastName,
+    } = this.state;
     const { params } = this.props.navigation.state;
     const login = params && params.login;
 
@@ -64,10 +67,10 @@ class Auth extends Component {
       this.props.navigation.goBack();
     } else {
       this.props.navigation.navigate('Profile', {
-        email: this.state.email,
-        password: this.state.password,
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
+        email,
+        password,
+        firstName,
+        lastName,
       });
     }
   }
@@ -82,6 +85,7 @@ class Auth extends Component {
       navigation.navigate('Login', {
         login: true,
         email,
+        setEmail: this.setEmail,
       });
     } else {
       if (!isConnected) {
@@ -108,7 +112,19 @@ class Auth extends Component {
     }
   }
 
+  setEmail = (email) => {
+    this.setState({ email });
+  }
+
   closeModal = () => this.setState({ error: null });
+
+  onSecondaryAction = () => this.setState(
+    { error: null },
+    () => {
+      this.props.navigation.state.params.setEmail(this.state.email);
+      this.props.navigation.goBack();
+    },
+  );
 
   render() {
     const {
@@ -207,6 +223,7 @@ class Auth extends Component {
           visible={!!error}
           onRequestClose={this.closeModal}
           onPrimaryAction={this.closeModal}
+          onSecondaryAction={this.onSecondaryAction}
         />
       </Content>
     );
@@ -215,7 +232,7 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
-  isConnected: !state.network.isConnected,
+  isConnected: state.network.isConnected,
 });
 
 export default connect(mapStateToProps)(Auth);
