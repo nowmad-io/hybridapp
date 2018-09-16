@@ -28,7 +28,6 @@ class Auth extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    authLoading: PropTypes.bool,
     token: PropTypes.string,
   };
 
