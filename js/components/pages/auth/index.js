@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
-import { apiLogin } from '../../../actions/auth';
+import { apiLogin, loginAction } from '../../../actions/auth';
 
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
@@ -15,7 +15,7 @@ import FormInput from '../../dumbs/formInput';
 import Spinner from '../../dumbs/spinner';
 import Modal from '../../dumbs/modal';
 
-import { registerFailed } from '../../../modals';
+import { loginFailed, loginNoNetwork } from '../../../modals';
 import { colors, font } from '../../../parameters';
 
 const logo = require('../../../../assets/images/logos/logo_white.png');
@@ -30,7 +30,6 @@ class Auth extends Component {
     navigation: PropTypes.object,
     authLoading: PropTypes.bool,
     token: PropTypes.string,
-    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -43,7 +42,8 @@ class Auth extends Component {
       password: 'j',
       firstName: '',
       lastName: '',
-      modalVisible: false,
+      loading: false,
+      error: null,
     };
   }
 
@@ -73,27 +73,46 @@ class Auth extends Component {
   }
 
   onLoginPress = () => {
+    const { email, password } = this.state;
+    const { navigation, dispatch, isConnected } = this.props;
     const { params } = this.props.navigation.state;
     const login = params && params.login;
 
     if (!login) {
-      this.props.navigation.navigate('Login', {
+      navigation.navigate('Login', {
         login: true,
-        email: this.state.email,
+        email,
       });
     } else {
-      this.props.dispatch(apiLogin({
-        email: this.state.email,
-        password: this.state.password,
-      }));
+      if (!isConnected) {
+        this.setState({
+          error: loginNoNetwork,
+        });
+        return;
+      }
+
+      this.setState({ loading: true });
+
+      apiLogin({
+        email,
+        password,
+      }).then(({ auth_token: authToken }) => {
+        dispatch(loginAction(authToken));
+        navigation.dispatch(NavigationService.resetAction());
+      }).catch(() => {
+        this.setState({
+          loading: false,
+          error: loginFailed,
+        });
+      });
     }
   }
 
-  closeModal = () => this.setState({ modalVisible: false });
+  closeModal = () => this.setState({ error: null });
 
   render() {
     const {
-      email, password, firstName, lastName, modalVisible,
+      email, password, firstName, lastName, loading, error,
     } = this.state;
 
     const { params } = this.props.navigation.state;
@@ -181,11 +200,11 @@ class Auth extends Component {
               <Text style={login && styles.mainText}>Log in</Text>
             </Button>
           </View>
-          <Spinner overlay visible={this.props.authLoading} />
+          <Spinner overlay visible={loading} />
         </LayoutView>
         <Modal
-          {...registerFailed}
-          visible={modalVisible}
+          {...(error || {})}
+          visible={!!error}
           onRequestClose={this.closeModal}
           onPrimaryAction={this.closeModal}
         />
@@ -196,7 +215,7 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
-  isConnected: state.network.isConnected,
+  isConnected: !state.network.isConnected,
 });
 
 export default connect(mapStateToProps)(Auth);

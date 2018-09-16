@@ -1,6 +1,6 @@
 export const registerNoNetwork = {
   title: 'Unable to register',
-  information: 'Sorry, unable to Register. Please check your internet connection.',
+  information: 'Please check your internet connection or try again later.',
   primaryAction: 'Ok',
 };
 
@@ -13,11 +13,11 @@ export const registerFailed = {
 
 export const loginNoNetwork = {
   title: 'Unable to Log-in',
-  information: 'Sorry, unable to Log-in. Please check your internet connection.',
+  information: 'Please check your internet connection or try again later.',
   primaryAction: 'Ok',
 };
 
-export const LoginFailed = {
+export const loginFailed = {
   title: 'Log-in failed',
   information: 'Sorry, the email address and/or the password are incorrect. Please enter the right details or create a new account.',
   primaryAction: 'Ok',

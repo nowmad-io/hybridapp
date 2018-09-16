@@ -1,15 +1,24 @@
-import { apiGet, apiPost, apiPut } from '../libs/requests';
+import {
+  Api, apiGet, apiPost, apiPut,
+} from '../libs/requests';
 
 import {
-  LOGIN,
   REGISTER,
   LOGOUT,
   ME,
   UPDATE_PROFILE,
+  LOGIN,
 } from '../constants/auth';
 
 export function apiLogin(data) {
-  return apiPost(LOGIN, 'auth/token/create/', data);
+  return Api.post('auth/token/create/', { params: data });
+}
+
+export function loginAction(token) {
+  return {
+    type: LOGIN,
+    token,
+  };
 }
 
 export function apiRegister(data) {

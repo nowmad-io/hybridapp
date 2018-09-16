@@ -11,23 +11,21 @@ import {
 export const getMe = state => state.auth.me;
 
 const initialState = {
-  authLoading: false,
   token: null,
   me: {},
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case `${LOGIN}_SUCCESS`:
-    case `${REGISTER}_SUCCESS`: {
-      const token = action.payload.auth_token;
+    case LOGIN:
+    case REGISTER: {
+      const { token } = action;
       Api.setAuthorisation(token);
-      return { ...state, token, authLoading: false };
+      return {
+        ...state,
+        token,
+      };
     }
-    case `${LOGIN}_REQUEST`:
-    case REGISTER:
-    case UPDATE_PROFILE:
-      return { ...state, authLoading: true };
     case `${UPDATE_PROFILE}_REQUEST`:
       return {
         ...state,
