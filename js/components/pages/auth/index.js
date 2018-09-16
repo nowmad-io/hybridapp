@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
-import { apiLogin, loginAction } from '../../../actions/auth';
+import { apiLogin, authenticate } from '../../../actions/auth';
 
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
@@ -37,10 +37,10 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || '',
-      password: '',
-      firstName: '',
-      lastName: '',
+      email: params && params.email || 'a@d.com',
+      password: 'a',
+      firstName: 'a',
+      lastName: 'a',
       loading: false,
       error: null,
     };
@@ -100,7 +100,7 @@ class Auth extends Component {
         email,
         password,
       }).then(({ auth_token: authToken }) => {
-        dispatch(loginAction(authToken));
+        dispatch(authenticate(authToken));
         navigation.dispatch(NavigationService.resetAction());
       }).catch(() => {
         this.setState({

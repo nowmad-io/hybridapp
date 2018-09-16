@@ -3,7 +3,7 @@ import { eventChannel } from 'redux-saga';
 import Upload from 'react-native-background-upload';
 import Config from 'react-native-config';
 
-const uploadPicture = (uri, success, error) => Upload.getFileInfo(uri)
+export const uploadPicture = (uri, success, error) => Upload.getFileInfo(uri)
   .then((metadata) => {
     const options = {
       method: 'POST',

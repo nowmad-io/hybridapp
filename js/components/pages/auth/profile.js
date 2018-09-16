@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 
+import { uploadPicture } from '../../../libs/pictureUpload';
+import NavigationService from '../../../libs/navigationService';
+
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import ProfilePicker from '../../dumbs/profilePicker';
 import Spinner from '../../dumbs/spinner';
+import Modal from '../../dumbs/modal';
 
-import { register } from '../../../actions/auth';
+import { apiRegister, authenticate } from '../../../actions/auth';
 
 import { colors, font } from '../../../parameters';
 
@@ -21,7 +25,6 @@ class Profile extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    authLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -29,6 +32,7 @@ class Profile extends Component {
 
     this.state = {
       picture: {},
+      loading: false,
     };
   }
 
@@ -49,44 +53,48 @@ class Profile extends Component {
   }
 
   onRegisterPress = () => {
-    const {
-      email, password, firstName, lastName,
-    } = this.props.navigation.state.params;
     const { picture } = this.state;
 
-    this.props.dispatch(register({
-      email,
-      password,
-      firstName,
-      lastName,
-      picture: picture.path,
-    }));
+    this.setState({ loading: true });
+
+    uploadPicture(picture.path, this.register(), this.register(true));
   }
 
-  onSkipPress = () => {
+  register = (err = false) => (uri = null) => {
     const {
       email, password, firstName, lastName,
     } = this.props.navigation.state.params;
-
-    this.props.dispatch(register({
+    console.log('uri', uri);
+    apiRegister({
       email,
       password,
       firstName,
       lastName,
-    }));
+      picture: !err ? uri : null,
+    }).then(({ auth_token: authToken }) => {
+      this.props.dispatch(authenticate(authToken));
+      this.props.navigation.dispatch(NavigationService.resetAction());
+    });
   }
 
   onPictureSelected = picture => this.setState({ picture });
 
+  closeModal = () => this.setState({ error: null });
+
+  onSecondaryAction = () => this.setState(
+    { error: null },
+    () => this.props.navigation.goBack(),
+  );
+
   render() {
-    const { picture: { uri } } = this.state;
+    const { picture: { uri }, loading, error } = this.state;
 
     return (
       <LayoutView type="container" style={styles.container}>
         <View style={styles.skipWrapper}>
           <Text
             style={styles.skip}
-            onPress={this.onSkipPress}
+            onPress={this.register(true)}
           >
             Skip
           </Text>
@@ -114,7 +122,14 @@ class Profile extends Component {
             <Text style={styles.mainText}>Enter to Nowmad</Text>
           </Button>
         </View>
-        <Spinner overlay visible={this.props.authLoading} />
+        <Spinner overlay visible={loading} />
+        <Modal
+          {...(error || {})}
+          visible={!!error}
+          onRequestClose={this.closeModal}
+          onPrimaryAction={this.closeModal}
+          onSecondaryAction={this.onSecondaryAction}
+        />
       </LayoutView>
     );
   }

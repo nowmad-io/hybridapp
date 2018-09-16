@@ -1,8 +1,7 @@
 import { Api } from '../libs/requests';
 
 import {
-  LOGIN,
-  REGISTER,
+  AUTHENTICATE,
   LOGOUT,
   ME,
   UPDATE_PROFILE,
@@ -17,9 +16,9 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN:
-    case REGISTER: {
+    case AUTHENTICATE: {
       const { token } = action;
+      console.log('token', token);
       Api.setAuthorisation(token);
       return {
         ...state,
@@ -35,10 +34,6 @@ const authReducer = (state = initialState, action) => {
         },
       };
     case `${UPDATE_PROFILE}_SUCCESS`:
-      return { ...state, authLoading: false };
-    case `${LOGIN}_ERROR`:
-    case `${REGISTER}_ERROR`:
-    case `${UPDATE_PROFILE}_ERROR`:
       return { ...state, authLoading: false };
     case `${ME}_SUCCESS`:
       return { ...state, me: action.payload };

@@ -3,32 +3,24 @@ import {
 } from '../libs/requests';
 
 import {
-  REGISTER,
   LOGOUT,
   ME,
   UPDATE_PROFILE,
-  LOGIN,
+  AUTHENTICATE,
 } from '../constants/auth';
 
 export function apiLogin(data) {
   return Api.post('auth/token/create/', { params: data });
 }
 
-export function loginAction(token) {
-  return {
-    type: LOGIN,
-    token,
-  };
-}
-
 export function apiRegister(data) {
-  return apiPost(REGISTER, 'auth/register/', data);
+  return Api.post('auth/register/', { params: data });
 }
 
-export function register(data) {
+export function authenticate(token) {
   return {
-    type: REGISTER,
-    data,
+    type: AUTHENTICATE,
+    token,
   };
 }
 
