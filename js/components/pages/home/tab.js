@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, ScrollView, View } from 'react-native';
 
+import { addFriendsEvent } from '../../../libs/mixpanel';
+
 import LayoutView from '../../dumbs/layoutView';
 import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
@@ -29,6 +31,9 @@ class Tab extends PureComponent {
     peopleLoading: PropTypes.bool,
     places: PropTypes.array,
     placesLoading: PropTypes.bool,
+    nbFriends: PropTypes.number,
+    nbIncomings: PropTypes.number,
+    nbOutgoings: PropTypes.number,
   };
 
   onFriendPress = (friend) => {
@@ -36,6 +41,14 @@ class Tab extends PureComponent {
   }
 
   onAddFriendPress = friend => () => {
+    const { nbFriends, nbIncomings, nbOutgoings } = this.props;
+
+    addFriendsEvent({
+      nbFriends,
+      nbIncomings,
+      nbOutgoings,
+    });
+
     this.props.screenProps.onAddFriendPress(friend);
   }
 
@@ -168,7 +181,7 @@ class Tab extends PureComponent {
           <Button
             style={styles.button}
             onPress={this.onAddThisPlacePress(coord)}
-            >
+          >
             <Text uppercase={false} style={styles.buttonText}>
               None of the above,
             </Text>
@@ -191,6 +204,9 @@ const makeMapStateToProps = () => {
     const people = {
       people: peopleSelector(state),
       peopleLoading: state.search.peopleLoading,
+      nbFriends: state.friends.all.length,
+      nbIncomings: state.friends.incomings.length,
+      nbOutgoings: state.friends.outgoings.length,
     };
     const places = {
       places: state.search.places,
