@@ -1,19 +1,32 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
-import NavigationService from '../navigationService';
+import { put, takeLatest } from 'redux-saga/effects';
+
+import PictureUpload from '../libs/pictureUpload';
 
 import {
-  LOGIN,
-  REGISTER,
   LOGOUT,
+  UPDATE_PROFILE,
 } from '../constants/auth';
-
 import { STOP_SAGAS } from '../constants/utils';
 
-/**
- * Log in saga
- */
-function* authenticateFlow() {
-  yield call(NavigationService.reset);
+import { apiUpdateProfile } from '../actions/auth';
+
+function* profileFlow(action) {
+  const { firstName, lastName } = action.data;
+  let { picture } = action.data;
+
+  if (picture) {
+    const { uri, error } = yield PictureUpload(picture);
+
+    if (!error) {
+      picture = uri;
+    }
+  }
+
+  yield put(apiUpdateProfile({
+    first_name: firstName,
+    last_name: lastName,
+    picture,
+  }));
 }
 
 export function* logoutFlow() {
@@ -22,6 +35,6 @@ export function* logoutFlow() {
 
 // Bootstrap sagas
 export default function* root() {
-  yield takeLatest([`${LOGIN}_SUCCESS`, `${REGISTER}_SUCCESS`], authenticateFlow);
+  yield takeLatest(UPDATE_PROFILE, profileFlow);
   yield takeLatest(`${LOGOUT}_REQUEST`, logoutFlow);
 }

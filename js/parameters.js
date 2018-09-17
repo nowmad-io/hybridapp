@@ -31,6 +31,7 @@ export const font = {
 const plain = {
   lightGreen: '#C4D6D1',
   green: '#1DA07F',
+  greenLight: '#BBE2D8',
   white: '#FFFFFF',
   black: '#000000',
   grey: '#BCB9B9',
@@ -59,6 +60,7 @@ export const colors = {
   whiteTransparentLight: rgba(plain.white, 0.8),
   transparent: rgba(plain.black, 0),
   yellowTransparent: rgba(plain.yellow, 0.95),
+  blackTransparent: rgba(plain.black, 0.2),
 };
 
 const toolbarHelper = (isIphoneX ? 88 : 64);
@@ -82,7 +84,14 @@ export const carousel = {
   itemSpacing: ITEM_SPACING,
   itemWidth: sizes.width - (ITEM_SPACING * 2),
   level1: LEVEL1,
-  level2: 164,
+  level2: 166,
   level3: sizes.height - HELPER - PADDING_TOP,
   border: 4,
+};
+
+export const userTypes = {
+  google: 'google',
+  me: 'me',
+  friend: 'friend',
+  friendOfFriend: 'friends_friend',
 };

@@ -67,18 +67,22 @@ const initialState = {
     longitude: 5.266113225370649,
     latitude: 20.476854784243514,
   },
-  selectedPlace: {},
+  selectedPlace: null,
   gPlace: null,
 };
 
 const homeReducer = (state = initialState, action) => {
   switch (action.type) {
     case `${ADD_REVIEW}_REQUEST`:
-    case `${UPDATE_REVIEW}_REQUEST`:
+    case `${UPDATE_REVIEW}_REQUEST`: {
+      const { place: { id } } = action.payload.params;
+
       return {
         ...state,
         gPlace: null,
+        selectedPlace: id,
       };
+    }
     case REGION_CHANGE:
       return {
         ...state,
@@ -96,13 +100,13 @@ const homeReducer = (state = initialState, action) => {
     case PLACE_SELECT:
       return {
         ...state,
-        selectedPlace: action.place,
+        selectedPlace: action.place.id,
       };
     case G_PLACE:
       return {
         ...state,
         gPlace: action.place,
-        selectedPlace: action.place || {},
+        selectedPlace: action.place && action.place.id || null,
       };
     case GET_GEOLOCATION:
       return {
@@ -117,7 +121,7 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         geolocation: {
           ...state.geolocation,
-          location: action.position,
+          coords: action.coords,
           loading: false,
         },
       };

@@ -1,19 +1,19 @@
 import { schema } from 'normalizr';
 
-import { apiGet, apiPost, apiPut } from '../requests';
+import { apiGet, apiPost, apiPut } from '../libs/requests';
 import {
   PLACES,
   CATEGORIES,
   ADD_REVIEW,
   UPDATE_REVIEW,
+  UPDATE_PICTURE,
+  UPDATE_PICTURES,
 } from '../constants/reviews';
 
 const userSchema = new schema.Entity('users');
 const categorySchema = new schema.Entity('categories');
-const pictureSchema = new schema.Entity('pictures');
 export const reviewSchema = new schema.Entity('reviews', {
   categories: [categorySchema],
-  pictures: [pictureSchema],
   created_by: userSchema,
 });
 export const placeSchema = new schema.Entity('places', {
@@ -22,7 +22,6 @@ export const placeSchema = new schema.Entity('places', {
 
 export const simpleReviewSchema = new schema.Entity('reviews', {
   categories: [categorySchema],
-  pictures: [pictureSchema],
   created_by: userSchema,
   place: placeSchema,
 });
@@ -41,4 +40,16 @@ export function addReview(data) {
 
 export function updateReview(data) {
   return apiPut(UPDATE_REVIEW, `reviews/${data.id}/`, data, placeSchema);
+}
+
+export function updatePicture(reviewId, picture) {
+  return {
+    type: UPDATE_PICTURE,
+    reviewId,
+    picture,
+  };
+}
+
+export function updatePictures(reviewId, data) {
+  return apiPut(UPDATE_PICTURES, `reviews/${reviewId}/pictures/`, data);
 }

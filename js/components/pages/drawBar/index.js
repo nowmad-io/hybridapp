@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, View, ScrollView, Share,
+  StyleSheet, View, ScrollView, Share, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+
+import { inviteFriendsEvent } from '../../../libs/mixpanel';
 
 import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import Avatar from '../../dumbs/avatar';
+import Spinner from '../../dumbs/spinner';
 
 import { runSagas, stopSagas } from '../../../actions/utils';
-import { apiLogout } from '../../../api/auth';
-import { acceptFriendship, rejectFriendship } from '../../../api/friends';
+import { apiLogout } from '../../../actions/auth';
+import { acceptFriendship, rejectFriendship } from '../../../actions/friends';
 
 import { colors, font } from '../../../parameters';
 
@@ -29,6 +32,7 @@ class DrawBar extends React.Component {
   }
 
   static propTypes = {
+    navigation: PropTypes.object,
     dispatch: PropTypes.func,
     me: PropTypes.object,
     all: PropTypes.array,
@@ -50,10 +54,12 @@ Join me in Nowmad and lets start sharing the best places for travelling around t
 See you soon on Nowmad !
 https://play.google.com/store/apps/details?id=com.nowmad`,
     });
+    inviteFriendsEvent({ sharedFrom: 'Side bar' });
   }
 
   onLogoutPress = () => {
     this.props.dispatch(apiLogout());
+    this.props.navigation.navigate('Login');
   }
 
   onAcceptPress = id => () => {
@@ -64,6 +70,10 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
     this.props.dispatch(rejectFriendship(id));
   }
 
+  onEditPicture = () => {
+    this.props.navigation.navigate('EditProfile');
+  }
+
   render() {
     const {
       me, all, incomings,
@@ -71,7 +81,11 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
 
     return (
       <View style={styles.container}>
-        <View style={styles.profileWrapper}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={styles.profileWrapper}
+          onPress={this.onEditPicture}
+        >
           <View style={styles.info}>
             <Text style={styles.title}>
               {me.first_name}
@@ -80,22 +94,32 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
               {`${all.length} friend${all.length > 0 ? 's' : ''}`}
             </Text>
           </View>
-          <Avatar
-            text={DrawBar.initials(me)}
-            size={50}
-          />
-        </View>
+          <View style={styles.avatarWrapper}>
+            <Avatar
+              uri={me.picture}
+              text={DrawBar.initials(me)}
+              size={50}
+            />
+            <View style={styles.editProfile}>
+              <Icon
+                style={styles.editProfileIcon}
+                name="camera-alt"
+              />
+            </View>
+          </View>
+        </TouchableOpacity>
         <View style={styles.contentWrapper}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.pending}>
-Pending friend request
+              Pending friend request
             </Text>
-            { incomings.length > 0 && incomings.map(({ id, from_user: fromUser }) => (
+            { incomings.length > 0 ? incomings.map(({ id, from_user: fromUser, loading }) => (
               <View
                 key={fromUser.id}
                 style={styles.request}
               >
                 <Avatar
+                  uri={fromUser.picture}
                   text={DrawBar.initials(fromUser)}
                   size={40}
                 />
@@ -118,23 +142,16 @@ Pending friend request
                   iconStyle={styles.requestIcon}
                   onPress={this.onAcceptPress(id)}
                 />
+                <Spinner overlay visible={loading} />
               </View>
-            ))}
+            )) : (
+              <Text style={styles.noRequest}>
+                No friend request
+              </Text>
+            )}
           </ScrollView>
         </View>
         <View style={styles.footer}>
-          {/* <Button
-            light
-            style={styles.addFriendsButton}
-            buttonStyle={{ justifyContent: 'flex-start' }}
-          >
-            <Text
-              style={styles.addFriendsLabel}
-              uppercase={false}
-            >
-              Add friends
-            </Text>
-          </Button> */}
           <View style={styles.subFooter}>
             <Button
               transparent
@@ -193,6 +210,34 @@ const styles = StyleSheet.create({
     borderColor: colors.grey,
     borderBottomWidth: 0.5,
   },
+  avatarWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editProfile: {
+    backgroundColor: colors.white,
+    position: 'absolute',
+    bottom: -4,
+    left: -4,
+    borderWidth: 0,
+    elevation: 0,
+    height: 25,
+    width: 25,
+    paddingHorizontal: 0,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noPicture: {
+    backgroundColor: colors.green,
+  },
+  editProfileIcon: {
+    fontSize: 15,
+    color: colors.green,
+  },
+  noPictureIcon: {
+    color: colors.white,
+  },
   info: {
     flex: 1,
     justifyContent: 'space-between',
@@ -213,6 +258,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: font.fontWeight.medium,
     marginBottom: 20,
+  },
+  noRequest: {
+    color: colors.grey,
   },
   contentWrapper: {
     paddingTop: 32,
@@ -272,6 +320,7 @@ const styles = StyleSheet.create({
   },
   footerIcon: {
     marginRight: 8,
+    fontSize: 26,
   },
   footerLabel: {
     fontSize: 12,

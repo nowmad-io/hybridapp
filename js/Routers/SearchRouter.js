@@ -10,7 +10,6 @@ import { colors, font } from '../parameters';
 export default createMaterialTopTabNavigator({
   All: Tab,
   People: Tab,
-  Reviews: Tab,
   Places: Tab,
 }, {
   navigationOptions: ({ navigation }) => ({

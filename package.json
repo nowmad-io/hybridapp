@@ -1,6 +1,6 @@
 {
   "name": "Nowmad",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Share your travel experiences with your friends",
   "license": "MIT",
   "repository": {
@@ -26,7 +26,7 @@
     "preset": "react-native"
   },
   "dependencies": {
-    "fast-memoize": "^2.5.1",
+    "fast-memoize": "2.5.1",
     "fuse.js": "3.2.1",
     "hex-rgb": "3.0.0",
     "lodash": "4.17.10",
@@ -34,13 +34,14 @@
     "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-native": "0.55.3",
+    "react-native-background-upload": "4.4.0",
     "react-native-cached-image": "1.4.3",
     "react-native-config": "0.11.5",
     "react-native-exception-handler": "2.9.0",
-    "react-native-fetch-blob": "0.10.8",
     "react-native-image-picker": "0.26.10",
     "react-native-keyboard-aware-scroll-view": "0.7.0",
     "react-native-maps": "github:nowmad-io/react-native-maps#map-controls",
+    "react-native-mixpanel": "1.1.1",
     "react-native-modalbox": "1.6.0",
     "react-native-restart": "0.0.6",
     "react-native-sentry": "0.39.0",

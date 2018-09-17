@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { peopleSearch, reviewsSearch, placesSearch } from '../../../api/search';
+import { peopleSearch, reviewsSearch, placesSearch } from '../../../actions/search';
 
 import SearchRouter from '../../../Routers/SearchRouter';
 import Button from '../../dumbs/button';
@@ -23,7 +23,6 @@ class Search extends Component {
       PropTypes.object,
     ]),
     dispatch: PropTypes.func,
-    onReviewPress: PropTypes.func,
     onFriendPress: PropTypes.func,
     onAddFriendPress: PropTypes.func,
     onPlacePress: PropTypes.func,
@@ -89,14 +88,6 @@ class Search extends Component {
     this.props.onClear();
   }
 
-  onReviewPress = ({ short_description: shortDescription, place }) => {
-    this.blur();
-    this.props.onPlacePress(null);
-    this.props.onFriendPress({});
-    this.props.onReviewPress(place);
-    this.onChangeText(shortDescription, true);
-  }
-
   onFriendPress = (friend) => {
     this.blur();
     this.props.onPlacePress(null);
@@ -117,6 +108,7 @@ class Search extends Component {
 
   onAddThisPlacePress = (coord) => {
     this.blur();
+    this.onClearPress();
     this.props.onAddThisPlacePress(coord);
   }
 
@@ -166,7 +158,7 @@ class Search extends Component {
             ref={(c) => { this.textInput = c; }}
             underlineColorAndroid={focused ? colors.white : colors.transparent}
             autoCorrect={false}
-            placeholder="Search friends, reviews & places"
+            placeholder="Search for people and places"
             selectionColor={colors.whiteTransparent}
             placeholderTextColor={colors.white}
             style={styles.searchInput}
@@ -205,7 +197,6 @@ class Search extends Component {
           <SearchRouter
             ref={(r) => { this._searchRouter = r; }}
             screenProps={{
-              onReviewPress: this.onReviewPress,
               onFriendPress: this.onFriendPress,
               onAddFriendPress: this.onAddFriendPress,
               onPlacePress: this.onPlacePress,

@@ -9,17 +9,23 @@ import { colors } from '../../parameters';
 
 export default class FormInput extends Component {
   static propTypes = {
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
+    style: PropTypes.any,
+    inputStyle: PropTypes.any,
+    showPasswordStyle: PropTypes.any,
     onChangeText: PropTypes.func,
     placeholder: PropTypes.string,
     maxLength: PropTypes.number,
     multiline: PropTypes.bool,
+    autoCapitalize: PropTypes.oneOf(['none', 'sentences', 'words', 'characters']),
     defaultValue: PropTypes.string,
-    icon: PropTypes.string,
+    prefixIcon: PropTypes.string,
+    prefixIconStyle: PropTypes.any,
+    suffixIcon: PropTypes.string,
+    suffixIconStyle: PropTypes.any,
+    underlineColor: PropTypes.string,
+    placeholderColor: PropTypes.string,
+    selectionColor: PropTypes.string,
+    password: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -28,13 +34,15 @@ export default class FormInput extends Component {
     maxLength: null,
     multiline: false,
     defaultValue: '',
+    underlineColor: colors.grey,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      length: 0,
+      length: props.defaultValue && props.defaultValue.length || 0,
+      showPassword: false,
     };
   }
 
@@ -43,29 +51,92 @@ export default class FormInput extends Component {
     this.props.onChangeText(text);
   }
 
+  onShowPasswordPress = () => this.setState(
+    ({ showPassword }) => ({ showPassword: !showPassword }),
+  );
+
   render() {
-    const { style, icon } = this.props;
+    const {
+      style,
+      prefixIcon,
+      prefixIconStyle,
+      suffixIcon,
+      suffixIconStyle,
+      inputStyle,
+      showPasswordStyle,
+      underlineColor,
+      placeholderColor,
+      selectionColor,
+      password,
+      multiline,
+      maxLength,
+      placeholder,
+      defaultValue,
+      autoCapitalize,
+    } = this.props;
+
+    const { length, showPassword } = this.state;
 
     return (
       <View style={[styles.wrapper, style]}>
-        <View style={styles.inputWrapper}>
-          {icon && (
-            <Icon name={icon} style={styles.icon} />
+        <View
+          style={[
+            styles.inputWrapper,
+            { borderColor: underlineColor },
+          ]}
+        >
+          {prefixIcon && (
+            <Icon
+              name={prefixIcon}
+              style={[
+                styles.icon,
+                prefixIcon && prefixIconStyle,
+              ]}
+            />
           )}
           <TextInput
             underlineColorAndroid="transparent"
-            style={styles.input}
-            multiline={this.props.multiline}
-            maxLength={this.props.maxLength}
-            placeholder={this.props.placeholder}
-            defaultValue={this.props.defaultValue}
+            style={[
+              styles.input,
+              inputStyle,
+            ]}
+            autoCapitalize={autoCapitalize}
+            multiline={multiline}
+            maxLength={maxLength}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
             onChangeText={text => this.onChangeText(text)}
+            placeholderTextColor={placeholderColor}
+            selectionColor={selectionColor}
+            secureTextEntry={password && !showPassword}
+            textContentType={password && 'none' || null}
           />
+          {password && length > 0 && (
+            <Text
+              style={[
+                styles.showPassword,
+                suffixIcon && styles.suffixes,
+                showPasswordStyle,
+              ]}
+              onPress={this.onShowPasswordPress}
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </Text>
+          )}
+          {suffixIcon && (
+            <Icon
+              name={suffixIcon}
+              style={[
+                styles.icon,
+                suffixIcon && suffixIconStyle,
+              ]}
+            />
+          )}
         </View>
-        {this.props.maxLength && (
+        {maxLength && (
           <Text style={styles.length}>
-            {this.state.length ? `${this.state.length}/` : ''}
-            {this.props.maxLength}
+            {length ? `${length}/` : ''}
+            {maxLength}
           </Text>
         )}
       </View>
@@ -79,10 +150,8 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     flexDirection: 'row',
-    flex: 1,
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderColor: colors.grey,
   },
   icon: {
     fontSize: 24,
@@ -100,5 +169,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '500',
     color: colors.greyDark,
+  },
+  showPassword: {
+    fontSize: 10,
+  },
+  suffixes: {
+    marginRight: 8,
   },
 });

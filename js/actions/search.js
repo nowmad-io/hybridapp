@@ -1,7 +1,8 @@
 import Config from 'react-native-config';
 import shortid from 'shortid';
 
-import { apiCall, apiGet } from '../requests';
+import { apiCall, apiGet } from '../libs/requests';
+import { userTypes } from '../parameters';
 
 import {
   REVIEWS_SEARCH,
@@ -16,13 +17,13 @@ const gPlaceToPlace = gPlace => ({
   address: gPlace.formatted_address,
   latitude: gPlace.geometry.location.lat,
   longitude: gPlace.geometry.location.lng,
-  google: true,
   reviews: [{
     created_by: {
       first_name: gPlace.name,
     },
     categories: [],
     pictures: gPlace.photos,
+    user_type: userTypes.google,
   }],
 });
 
@@ -133,11 +134,11 @@ export function placeDetails(placeId, poiName = null) {
 export const poiToPlace = ({ name, coordinate }) => ({
   latitude: coordinate.latitude,
   longitude: coordinate.longitude,
-  google: true,
   reviews: [{
     created_by: {
       first_name: name,
     },
+    user_type: userTypes.google,
     categories: [],
     pictures: [],
   }],

@@ -18,7 +18,7 @@ export default class Pictures extends PureComponent {
     return (
       <LayoutView type="wrapper">
         <CachedImage
-          source={pictures.length ? { uri: pictures[0].source } : pictureHolder}
+          source={pictures.length ? { uri: pictures[0].uri } : pictureHolder}
           style={[
             styles.mainPicture,
             { marginRight: pictures.length ? 1 : 0 },
@@ -27,7 +27,7 @@ export default class Pictures extends PureComponent {
         {pictures.length > 1 && (
           <View style={styles.wrapperRight}>
             <CachedImage
-              source={{ uri: pictures[1].source }}
+              source={{ uri: pictures[1].uri }}
               style={[
                 styles.pictures,
                 {
@@ -39,7 +39,7 @@ export default class Pictures extends PureComponent {
             />
             {pictures.length > 2 && (
               <CachedImage
-                source={{ uri: pictures[2].source }}
+                source={{ uri: pictures[2].uri }}
                 style={[
                   styles.pictures,
                   {

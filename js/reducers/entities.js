@@ -2,22 +2,66 @@ import { denormalize, normalize } from 'normalizr';
 import { createSelector } from 'reselect';
 import _ from 'lodash';
 
-import { placeSchema, reviewSchema } from '../api/reviews';
+import { getMe } from './auth';
+import { placeSchema, reviewSchema } from '../actions/reviews';
 import {
-  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES,
+  PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES, UPDATE_PICTURE,
 } from '../constants/reviews';
-import { LOGOUT } from '../constants/auth';
+import { ME, LOGOUT } from '../constants/auth';
+import { userTypes } from '../parameters';
 
 const getEntities = state => state.entities;
 const getUsers = state => state.entities.users;
+const getCategories = state => state.entities.categories;
 const getReview = (state, id) => state.entities.reviews[id];
 export const getReviews = state => state.entities.reviews;
 export const getPlaces = state => state.entities.places;
 const getPlace = (state, id) => state.entities.places[id];
+const getGPlace = state => state.home.gPlace;
+
+export const selectGPlaceReview = () => createSelector(
+  [getGPlace],
+  ({ reviews, pictures, ...place }) => ({
+    place: {
+      ...place,
+      reviews,
+    },
+    allPictures: reviews[0].pictures,
+    review: reviews[0],
+    others: [],
+  }),
+);
+
+export const selectCategories = createSelector(
+  [getCategories],
+  categories => _.map(categories, cat => cat),
+);
+
+export const selectFullReview = createSelector(
+  [getReview, getCategories, getUsers],
+  (review, categories, users) => denormalize(review, reviewSchema, { categories, users }),
+);
 
 export const selectFullPlace = () => createSelector(
-  [getPlace, getEntities],
-  (place, entities) => denormalize(place, placeSchema, entities),
+  [getMe, getPlace, getEntities],
+  (me, place, entities) => {
+    const { reviews } = denormalize(place, placeSchema, entities);
+    const [myReview, others] = _.partition(
+      reviews,
+      r => r.user_type === userTypes.me,
+    );
+    const review = myReview.length ? myReview[0] : _.pullAt(others, 0)[0];
+    const allPictures = _.flatten(reviews.map(r => r.pictures));
+    const allCategories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
+
+    return {
+      place,
+      review,
+      allPictures,
+      allCategories,
+      others,
+    };
+  },
 );
 
 export const selectThumbnail = () => createSelector(
@@ -37,6 +81,7 @@ export const selectUser = userId => createSelector(
 
 function handleAddEditReview(action) {
   const { place, ...review } = action.payload.params;
+
   const newPlace = {
     ...place,
     reviews: [{
@@ -62,7 +107,6 @@ const initialState = {
   places: {},
   reviews: {},
   categories: {},
-  pictures: {},
   users: {},
 };
 
@@ -74,7 +118,6 @@ const entitiesReducer = (state = initialState, action) => {
         places: { ...state.places, ...action.payload.entities.places },
         reviews: { ...state.reviews, ...action.payload.entities.reviews },
         categories: { ...state.categories, ...action.payload.entities.categories },
-        pictures: { ...state.pictures, ...action.payload.entities.pictures },
         users: { ...state.users, ...action.payload.entities.users },
       };
     case `${CATEGORIES}_SUCCESS`:
@@ -87,6 +130,7 @@ const entitiesReducer = (state = initialState, action) => {
       };
     case `${UPDATE_REVIEW}_REQUEST`: {
       const { reviews } = handleAddEditReview(action);
+
       return {
         ...state,
         reviews: {
@@ -101,8 +145,7 @@ const entitiesReducer = (state = initialState, action) => {
 
       const updatedReview = {};
       updatedReview[result] = {
-        ...state.reviews[result],
-        ...review,
+        ..._.merge(state.reviews[result], review),
         toSync: false,
         partial: false,
       };
@@ -144,6 +187,42 @@ const entitiesReducer = (state = initialState, action) => {
         reviews: {
           ...state.reviews,
           ...reviews,
+        },
+      };
+    }
+    case UPDATE_PICTURE: {
+      const { reviewId, picture } = action;
+      const review = state.reviews[reviewId];
+      const reviews = {};
+
+      reviews[reviewId] = {
+        ...review,
+        pictures: review.pictures.map((pic) => {
+          if (pic.id === picture.id) {
+            return picture;
+          }
+
+          return pic;
+        }),
+      };
+
+      return {
+        ...state,
+        reviews: {
+          ...state.reviews,
+          ...reviews,
+        },
+      };
+    }
+    case `${ME}_SUCCESS`: {
+      const { users } = state;
+      const user = action.payload;
+      users[user.id] = user;
+      return {
+        ...state,
+        user: {
+          ...state.users,
+          ...users,
         },
       };
     }

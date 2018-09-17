@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
+import { inviteFriendsEvent } from '../../../libs/mixpanel';
+
 import Entry from '../../dumbs/entry';
 import EmptyEntry from '../../dumbs/emptyEntry';
 import PanController from '../../dumbs/panController';
@@ -20,7 +22,10 @@ class Carousel extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     visiblePlaces: PropTypes.array,
-    selectedPlace: PropTypes.object,
+    selectedPlace: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     gPlace: PropTypes.object,
     panY: PropTypes.object,
     hidden: PropTypes.bool,
@@ -39,10 +44,10 @@ class Carousel extends Component {
 
   componentWillReceiveProps({ selectedPlace, hidden }) {
     if (selectedPlace && !selectedPlace.noCarouselUpdate
-      && !_.isEqual(this.props.selectedPlace, selectedPlace)) {
+      && !this.props.selectedPlace !== selectedPlace) {
       const index = selectedPlace
         ? _.compact([this.props.gPlace, ...this.props.visiblePlaces])
-          .findIndex(d => d.id === selectedPlace.id)
+          .findIndex(d => d.id === selectedPlace)
         : 0;
 
       this.goToIndex(index);
@@ -74,7 +79,7 @@ class Carousel extends Component {
 
   _onLayout = () => {
     const index = this.props.selectedPlace
-      ? this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace.id) : 0;
+      ? this.props.visiblePlaces.findIndex(place => place.id === this.props.selectedPlace) : 0;
 
     if (index !== -1) {
       this.goToIndex(index);
@@ -85,15 +90,11 @@ class Carousel extends Component {
 
   _onCarouselDidUpdate = () => {
     const { selectedPlace, visiblePlaces, gPlace } = this.props;
-    const index = (selectedPlace && selectedPlace.id)
-      ? _.compact([gPlace, ...visiblePlaces]).findIndex(d => d.id === selectedPlace.id)
+    const index = selectedPlace
+      ? _.compact([gPlace, ...visiblePlaces]).findIndex(d => d.id === selectedPlace)
       : -1;
 
     this._carousel.current.toIndex(index, index < 0, index < 0);
-  }
-
-  _onAddLocationPress = () => {
-
   }
 
   _onSharePress = () => {
@@ -103,6 +104,7 @@ Join me in Nowmad and lets start sharing the best places for travelling around t
 See you soon on Nowmad !
 https://play.google.com/store/apps/details?id=com.nowmad`,
     });
+    inviteFriendsEvent({ sharedFrom: 'Empty State' });
   }
 
   toggleVisibility = (visible = true) => {
@@ -138,7 +140,6 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <EmptyEntry
-              place={gPlace}
               onAddLocationPress={onAddLocationPress}
               onSharePress={this._onSharePress}
             />
@@ -149,7 +150,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={gPlace}
+              gPlace
               navigation={this.props.navigation}
             />
           </View>
@@ -160,7 +161,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             style={styles.entryWrapper}
           >
             <Entry
-              place={place}
+              placeId={place.id}
               navigation={this.props.navigation}
             />
           </View>
@@ -201,7 +202,6 @@ const styles = StyleSheet.create({
   },
   entryWrapper: {
     width: entryWidth,
-    paddingVertical: 8,
     paddingHorizontal: (entryMargin / 2),
   },
 });

@@ -19,8 +19,8 @@ import {
   getGeolocation, regionChanged, filtersChange, placeSelect, gPlace,
 } from '../../../actions/home';
 import { selectPlaces } from '../../../reducers/home';
-import { sendFriendship } from '../../../api/friends';
-import { poiToPlace, placeDetails } from '../../../api/search';
+import { sendFriendship } from '../../../actions/friends';
+import { poiToPlace, placeDetails } from '../../../actions/search';
 
 import { sizes, carousel, colors } from '../../../parameters';
 
@@ -28,7 +28,10 @@ class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    selectedPlace: PropTypes.object,
+    selectedPlace: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     places: PropTypes.array,
     geolocation: PropTypes.object,
     region: PropTypes.object,
@@ -52,10 +55,10 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({ geolocation }) {
-    if (geolocation && geolocation.location
+    if (geolocation && geolocation.coords
         && !geolocation.loading && this.props.geolocation.loading) {
       this._map.animateToRegion({
-        ...geolocation.location,
+        ...geolocation.coords,
         latitudeDelta: 0.0043,
         longitudeDelta: 0.0034,
       }, 1000);
@@ -73,6 +76,7 @@ class Home extends Component {
   onMapPress = () => {
     if (this.props.gPlace) {
       this.onPlacePress(null);
+      this._search.getWrappedInstance().onClearPress();
     }
   }
 
@@ -85,6 +89,7 @@ class Home extends Component {
     placeDetails(poi.placeId, poi.name)
       .then((place) => {
         this.onPlacePress(place);
+        this._search.getWrappedInstance().onChangeText(place.name);
       });
   }
 
@@ -99,20 +104,17 @@ class Home extends Component {
   }
 
   onAddPlace = () => {
-    this.onMapLongPress({ coordinate: this.props.geolocation.location });
+    if (this.props.geolocation.coords) {
+      this._map.animateToCoordinate(this.props.geolocation.coords, 1000);
+      setTimeout(
+        () => this.onMapLongPress({ coordinate: this.props.geolocation.coords }),
+        1000,
+      );
+    }
   }
 
   onLocationPress = () => {
     this.props.dispatch(getGeolocation());
-  }
-
-  onReviewPress = (place) => {
-    this.onFiltersChange({ categories: [] });
-    this.props.dispatch(placeSelect(place));
-    this._map.animateToCoordinate({
-      longitude: place.longitude,
-      latitude: place.latitude,
-    }, 1000);
   }
 
   onFriendPress = (friend) => {
@@ -136,16 +138,8 @@ class Home extends Component {
   onAddThisPlacePress = ({ latitude, longitude }) => {
     this.props.navigation.navigate('AddReview', {
       place: {
-        id: shortid.generate(),
-        google: true,
-        custom: true,
         latitude: +latitude,
         longitude: +longitude,
-        reviews: [],
-      },
-      review: {
-        user_type: 'me',
-        created_by: this.props.me,
       },
     });
   }
@@ -171,7 +165,6 @@ class Home extends Component {
       <Search
         ref={(s) => { this._search = s; }}
         onMenuPress={() => navigation.openDrawer()}
-        onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
         onAddFriendPress={this.onAddFriendPress}
         onPlacePress={this.onPlacePress}
@@ -194,22 +187,23 @@ class Home extends Component {
           {googlePlace && (
             <Marker
               place={googlePlace}
-              selected={selectedPlace && selectedPlace.id === googlePlace.id}
+              selected={selectedPlace === googlePlace.id}
               onMarkerPress={this.onMarkerPress}
             />
           )}
           {places.map(place => (
             <Marker
-              key={`marker-${place.id}`}
+              style={styles.marker}
+              key={shortid.generate()}
               place={place}
-              selected={selectedPlace && selectedPlace.id === place.id}
+              selected={selectedPlace === place.id}
               onMarkerPress={this.onMarkerPress}
             />
           ))}
-          {geolocation && geolocation.location && (
+          {geolocation && geolocation.coords && (
             <MarkerPosition
-              location={geolocation.location}
-              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
+              location={geolocation.coords}
+              onMarkerPress={coords => this.onMapLongPress({ coordinate: coords })}
             />
           )}
         </Map>
@@ -254,7 +248,7 @@ class Home extends Component {
               onPress={this.onFiltersPress}
             >
               <Text>
-Filters
+                Filters
               </Text>
               {filters.categories.length ? (
                 <Badge text={filters.categories.length} />
@@ -297,6 +291,9 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     paddingTop: 20,
+  },
+  marker: {
+    borderWidth: 2,
   },
   zoomOut: {
     alignSelf: 'flex-end',

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 
 import Text from './text';
 import Icon from './icon';
@@ -15,6 +15,7 @@ export default class Avatar extends PureComponent {
       PropTypes.string,
       PropTypes.number,
     ]),
+    uri: PropTypes.string,
     uppercase: PropTypes.bool,
     size: PropTypes.number,
     icon: PropTypes.string,
@@ -28,18 +29,19 @@ export default class Avatar extends PureComponent {
 
   render() {
     const {
-      style, textStyle, size, text, uppercase, icon, set,
+      style, textStyle, size, text, uppercase, icon, set, uri,
     } = this.props;
 
     return (
       <View
         style={[
           styles.avatar,
+          uri && styles.avatarWithImage,
           {
             width: size,
             height: size,
           },
-          style && style,
+          style,
         ]}
       >
         {icon ? (
@@ -48,14 +50,21 @@ export default class Avatar extends PureComponent {
             name={icon}
             style={[
               styles.text,
-              textStyle && textStyle,
+              textStyle,
             ]}
+          />
+        ) : uri ? (
+          <Image
+            source={{ uri }}
+            style={styles.image}
+            resizeMode="cover"
+            resizeMethode="resize"
           />
         ) : (
           <Text
             style={[
               styles.text,
-              textStyle && textStyle,
+              textStyle,
             ]}
             uppercase={uppercase}
           >
@@ -75,10 +84,18 @@ const styles = StyleSheet.create({
     borderColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  avatarWithImage: {
+    borderWidth: 0,
   },
   text: {
     color: colors.green,
     fontSize: 20,
     lineHeight: 26,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

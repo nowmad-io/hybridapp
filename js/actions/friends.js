@@ -1,4 +1,4 @@
-import { apiCall, apiGet, apiPost } from '../requests';
+import { apiCall, apiGet, apiPost } from '../libs/requests';
 
 import {
   FETCH_FRIENDS,
@@ -27,13 +27,13 @@ export function sendFriendship(friendship) {
 }
 
 export function acceptFriendship(id) {
-  return apiCall(apiGet(ACCEPT_FRIENDSHIP, `friendships/accept/${id}/`));
+  return apiCall(apiGet(ACCEPT_FRIENDSHIP, `friendships/accept/${id}/`, {}, null, null, {}, { id }));
 }
 
 export function rejectFriendship(id) {
-  return apiCall(apiGet(REJECT_FRIENDSHIP, `friendships/reject/${id}/`));
+  return apiCall(apiGet(REJECT_FRIENDSHIP, `friendships/reject/${id}/`, {}, null, null, {}, { id }));
 }
 
 export function cancelFriendship(id) {
-  return apiCall(apiGet(CANCEL_FRIENDSHIP, `friendships/cancel/${id}/`));
+  return apiCall(apiGet(CANCEL_FRIENDSHIP, `friendships/cancel/${id}/`, {}, null, null, {}, { id }));
 }

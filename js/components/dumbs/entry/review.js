@@ -8,7 +8,7 @@ import memoize from 'fast-memoize';
 import Text from '../text';
 import Avatar from '../avatar';
 
-import { font, colors } from '../../../parameters';
+import { font, colors, userTypes } from '../../../parameters';
 
 export default class Review extends PureComponent {
   static initials({ first_name: firstName, last_name: lastName }) {
@@ -25,7 +25,8 @@ export default class Review extends PureComponent {
     others: PropTypes.array,
     onPress: PropTypes.func,
     cover: PropTypes.bool,
-    google: PropTypes.bool,
+    gPlace: PropTypes.bool,
+    detail: PropTypes.bool,
   }
 
   constructor(props) {
@@ -53,12 +54,12 @@ export default class Review extends PureComponent {
         pictures,
         status,
       },
-      google,
       others,
+      gPlace,
       cover,
+      detail,
     } = this.props;
-
-    const userText = userType === 'me' ? 'Me' : `${createdBy.first_name} ${!google ? createdBy.last_name[0] : ''}`;
+    const userText = userType === userTypes.me ? 'Me' : `${createdBy.first_name} ${!gPlace ? createdBy.last_name[0] : ''}`;
     const othersText = others && others.length ? ` and ${others.length} more friend${others.length > 2 ? 's' : ''}` : '';
 
     return (
@@ -74,10 +75,11 @@ export default class Review extends PureComponent {
         >
           <View style={styles.header}>
             <Avatar
+              uri={createdBy.picture}
               text={Review.initials(createdBy)}
-              icon={google ? 'google' : ''}
+              icon={gPlace ? 'google' : ''}
               set="FontAwesome"
-              textStyle={googleAvatar(google)}
+              textStyle={googleAvatar(gPlace)}
             />
             <View
               style={styles.header_right}
@@ -91,9 +93,10 @@ export default class Review extends PureComponent {
               </Text>
               {(others && others.length) ? (
                 <View style={styles.others}>
-                  { others.map(user => (
+                  { others.map(({ created_by: user }) => (
                     <Avatar
                       key={user.id}
+                      uri={user.picture}
                       style={styles.others_avatar}
                       textStyle={styles.others_avatar_text}
                       text={Review.initials(user)}
@@ -102,67 +105,71 @@ export default class Review extends PureComponent {
                   )) }
                 </View>
               ) : (
-                <Text lowercase={!google}>
-                  {google ? 'Google' : `was ${status}`}
+                <Text lowercase={!gPlace}>
+                  {gPlace ? 'Google' : `was ${status}`}
                 </Text>
               )}
             </View>
           </View>
-          <View style={styles.body}>
-            <View style={styles.body_wrapper}>
-              { (pictures && pictures.length > 0) && (
-                <Image
-                  resizeMode="cover"
-                  resizeMethode="resize"
-                  source={{ uri: pictures[0].source }}
-                  style={styles.picture}
-                />
-              )}
-              { (google && pictures.length > 1) && (
-                <Image
-                  resizeMode="cover"
-                  resizeMethode="resize"
-                  source={{ uri: pictures[1].source }}
+          <View
+            style={[
+              styles.body,
+              !detail && styles.bodyNoDetail,
+            ]}
+          >
+            { (pictures && pictures.length > 0) && (
+              <Image
+                resizeMode="cover"
+                resizeMethode="resize"
+                source={{ uri: pictures[0].uri }}
+                style={detail ? styles.picture_detail : styles.picture}
+              />
+            )}
+            { (gPlace && pictures.length > 1) && (
+              <Image
+                resizeMode="cover"
+                resizeMethode="resize"
+                source={{ uri: pictures[1].source }}
+                style={[
+                  styles.picture,
+                  { marginRight: 0 },
+                ]}
+              />
+            )}
+            { !gPlace && (
+              <View
+                style={[
+                  !detail && styles.body_right,
+                  cover && (!pictures || !pictures.length) && {
+                    paddingLeft: xHeaderRight,
+                  },
+                ]}
+              >
+                <Text
                   style={[
-                    styles.picture,
-                    { marginRight: 0 },
-                  ]}
-                />
-              )}
-              { !google && (
-                <View
-                  style={[
-                    styles.body_right,
-                    cover && (!pictures || !pictures.length) && {
-                      left: xHeaderRight - 14,
-                    },
+                    styles.description,
+                    (detail || !pictures || !pictures.length) && styles.description_noimage,
+                    detail && styles.description_detail,
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.description,
-                      (!pictures || !pictures.length) && styles.description_noimage,
-                    ]}
-                  >
-                    {shortDescription}
-                  </Text>
-                  <View style={styles.categories}>
-                    {categories.map(({ id, name }, index) => (
-                      <Text key={id} style={styles.categorie}>
-                        {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
-                      </Text>
-                    ))}
-                  </View>
-                </View>
-              )}
-            </View>
+                  {shortDescription}
+                </Text>
+                <Text style={styles.categories}>
+                  {categories.map(({ id, name }, index) => (
+                    <Text key={id} style={styles.categorie}>
+                      {`${name}${(index !== categories.length - 1) ? ' · ' : ''}`}
+                    </Text>
+                  ))}
+                </Text>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       </View>
     );
   }
 }
-const googleAvatar = memoize(google => (google ? styles.googleAvatar : {}));
+const googleAvatar = memoize(gPlace => (gPlace ? styles.googleAvatar : {}));
 
 const styles = StyleSheet.create({
   review: {
@@ -195,30 +202,36 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    maxHeight: 84,
   },
-  body_wrapper: {
+  bodyNoDetail: {
+    maxHeight: 84,
     flexDirection: 'row',
-    flex: 1,
   },
   picture: {
     flex: 1,
     marginRight: 12,
   },
+  picture_detail: {
+    height: 150,
+    marginBottom: 12,
+  },
   body_right: {
-    paddingLeft: 12,
     flex: 1,
     justifyContent: 'space-between',
   },
   description: {
     fontSize: 18,
-    lineHeight: 20,
+    lineHeight: 24,
     fontWeight: font.fontWeight.medium,
+    color: colors.greyDark,
   },
   description_noimage: {
     fontSize: 22,
-    lineHeight: 24,
+    lineHeight: 28,
     fontWeight: font.fontWeight.regular,
+  },
+  description_detail: {
+    marginBottom: 12,
   },
   categories: {
     flexDirection: 'row',

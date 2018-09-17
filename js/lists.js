@@ -1,10 +1,4 @@
-export const categoriesList = [
-  'Adventure',
-  'City',
-  'Nature shows',
-  'Culture',
-];
-
+// eslint-disable-next-line import/prefer-default-export
 export const statusList = [
   'Travelling here',
   'Living here',

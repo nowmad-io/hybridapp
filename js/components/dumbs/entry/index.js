@@ -2,77 +2,81 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
-import { selectFullPlace } from '../../../reducers/entities';
+import { selectFullPlace, selectGPlaceReview } from '../../../reducers/entities';
 import Review from './review';
 import Icon from '../icon';
 
+import { colors, carousel, userTypes } from '../../../parameters';
 
-import { colors, carousel } from '../../../parameters';
+const isOwn = type => type === userTypes.me;
 
 class Entry extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    me: PropTypes.object,
-    place: PropTypes.object.isRequired,
+    gPlace: PropTypes.bool,
+    // eslint-disable-next-line
+    placeId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    review: PropTypes.object,
+    allPictures: PropTypes.array,
+    allCategories: PropTypes.array,
+    others: PropTypes.array,
+    place: PropTypes.object,
   };
 
-  addOrEditReview = (myReview = false) => () => {
-    const { place } = this.props;
+  addOrEditReview = () => this.props.navigation.navigate('AddReview', {
+    placeId: this.props.place.id,
+    reviewId: isOwn(this.props.review.user_type) ? this.props.review.id : null,
+  });
 
-    this.props.navigation.navigate('AddReview', {
-      place,
-      review: myReview && {
-        ...myReview,
-        pictures: !place.google ? myReview.pictures : [],
-      },
-    });
-  }
+  goToDetails = () => {
+    const {
+      navigation, place, review,
+    } = this.props;
 
-  placeDetails = () => {
-    this.props.navigation.navigate('PlaceDetails', {
-      place: this.props.place,
-    });
+    if (place.reviews.length > 1) {
+      navigation.navigate('PlaceDetails', { placeId: place.id });
+    } else {
+      navigation.navigate('ReviewDetails', { reviewId: review.id });
+    }
   }
 
   render() {
-    const { place: { reviews, google }, me } = this.props;
-
-    const myReview = me ? _.find(reviews, r => (r.created_by && r.created_by.id === me.id)) : null;
-    const review = myReview || reviews[0];
-    const pictures = _.flatten(reviews.map(r => r.pictures));
-    const categories = _.uniqWith(_.flatten(reviews.map(r => r.categories)), _.isEqual);
-    const others = _.compact(reviews.map(r => (r.id !== review.id ? r.created_by : null)));
+    const {
+      gPlace, review, allPictures, allCategories, others,
+    } = this.props;
 
     return (
       <View
         style={[
           styles.card,
-          google && styles.googleCard,
+          gPlace && styles.googleCard,
         ]}
       >
         <Review
-          onPress={() => (!google && this.placeDetails())}
+          onPress={() => (!gPlace && this.goToDetails())}
           review={{
             ...review,
-            categories,
-            pictures,
+            pictures: allPictures,
+            categories: allCategories,
           }}
           others={others}
-          google={!!google}
+          gPlace={gPlace}
           cover
         />
         <TouchableOpacity
           style={styles.cta}
           activeOpacity={0.8}
-          onPress={this.addOrEditReview(myReview)}
+          onPress={this.addOrEditReview}
         >
           <Icon
-            name={(myReview && !google) ? 'edit' : 'playlist-add'}
+            name={isOwn(review.user_type) ? 'edit' : 'playlist-add'}
             style={[
               styles.cta_icon,
-              myReview && styles.cta_edit,
+              isOwn(review.user_type) && styles.cta_edit,
             ]}
           />
         </TouchableOpacity>
@@ -83,11 +87,11 @@ class Entry extends Component {
 
 const makeMapStateToProps = () => {
   const placeSelector = selectFullPlace();
+  const gPlaceSelector = selectGPlaceReview();
 
-  return (state, props) => ({
-    place: props.place.google ? props.place : placeSelector(state, props.place.id),
-    me: state.auth.me,
-  });
+  return (state, props) => (
+    props.gPlace ? gPlaceSelector(state) : placeSelector(state, props.placeId)
+  );
 };
 
 export default connect(makeMapStateToProps)(Entry);

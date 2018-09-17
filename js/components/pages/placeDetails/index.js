@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   StyleSheet, BackHandler, View, ScrollView,
 } from 'react-native';
 
 import Review from '../../dumbs/entry/review';
 import Button from '../../dumbs/button';
+import Text from '../../dumbs/text';
 import LayoutView from '../../dumbs/layoutView';
 
-import { colors } from '../../../parameters';
+import { selectFullPlace } from '../../../reducers/entities';
 
-export default class PlaceDetails extends Component {
+import { colors, userTypes } from '../../../parameters';
+
+const isOwn = type => type === userTypes.me;
+
+class PlaceDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    place: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      place: props.navigation.state.params.place,
-    };
+    review: PropTypes.object,
+    others: PropTypes.array,
   }
 
   componentDidMount() {
@@ -37,8 +36,20 @@ export default class PlaceDetails extends Component {
     return true;
   }
 
+  goToDetails = (reviewId) => {
+    this.props.navigation.navigate('ReviewDetails', { reviewId });
+  }
+
+  addOrEditReview = () => {
+    const { review: { place, user_type: userType, id } } = this.props;
+    this.props.navigation.navigate('AddReview', {
+      placeId: place,
+      reviewId: isOwn(userType) ? id : null,
+    });
+  }
+
   render() {
-    const { place: { reviews } } = this.state;
+    const { review: firstReview, others } = this.props;
 
     return (
       <LayoutView type="container">
@@ -48,30 +59,58 @@ export default class PlaceDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <ScrollView style={styles.content}>
-          {reviews.map(review => (
+        <ScrollView contentContainerStyle={styles.content}>
+          {[firstReview, ...others].map(review => (
             <View
               key={review.id}
               style={styles.review}
             >
-              <Review review={review} />
+              <Review
+                review={review}
+                onPress={() => this.goToDetails(review.id)}
+              />
             </View>
           ))}
         </ScrollView>
+        <Button light style={styles.actionButton} onPress={this.addOrEditReview}>
+          <Text>{isOwn(firstReview.user_type) ? 'Edit My Review' : 'Add Review'}</Text>
+        </Button>
       </LayoutView>
     );
   }
 }
 
+const makeMapStateToProps = () => {
+  const placeSelector = selectFullPlace();
+
+  const mapStateToProps = (state, props) => {
+    const { placeId } = props.navigation.state.params;
+    const { review, others } = placeSelector(state, placeId);
+
+    return {
+      review,
+      others,
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default connect(makeMapStateToProps)(PlaceDetails);
+
 const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: colors.white,
+    paddingVertical: 4,
+  },
+  actionButton: {
+    elevation: 8,
   },
   review: {
     flex: 0,
-    minHeight: 162,
-    marginTop: 8,
+    minHeight: 164,
+    marginVertical: 4,
     marginHorizontal: 8,
     borderColor: colors.transparent,
     backgroundColor: colors.white,

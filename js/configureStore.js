@@ -4,8 +4,10 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 
-import { network } from './requests';
+import { network } from './libs/requests';
+
 import reducers from './reducers';
+import sagas from './sagas';
 
 export default () => {
   const sagaMiddleware = createSagaMiddleware();
@@ -14,14 +16,10 @@ export default () => {
     sagaMiddleware,
   ];
 
-  const enhancers = [
-    applyMiddleware(...middlewares),
-  ];
-
   const rootPersistConfig = {
     key: 'root',
     storage,
-    blacklist: ['nav', 'search', 'home', 'search'],
+    blacklist: ['home', 'search'],
   };
 
   const rootReducer = combineReducers({
@@ -31,12 +29,14 @@ export default () => {
 
   const store = createStore(
     persistReducer(rootPersistConfig, rootReducer),
-    composeWithDevTools(...enhancers),
+    composeWithDevTools(applyMiddleware(...middlewares)),
   );
+
+  sagas.map(saga => sagaMiddleware.run(saga));
 
   const persistor = persistStore(store);
 
   return {
-    store, persistor, sagaMiddleware,
+    store, persistor,
   };
 };

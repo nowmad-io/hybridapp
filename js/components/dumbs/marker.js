@@ -8,7 +8,7 @@ import memoize from 'fast-memoize';
 import { selectReview } from '../../reducers/entities';
 import Avatar from './avatar';
 
-import { colors } from '../../parameters';
+import { colors, userTypes } from '../../parameters';
 
 const triangleHelper = 10;
 
@@ -31,20 +31,17 @@ class Marker extends PureComponent {
   render() {
     const {
       place: {
-        reviews, latitude, longitude, google, custom,
+        reviews, latitude, longitude,
       },
       selected,
       review,
     } = this.props;
-
     let text = '';
 
     if (reviews && reviews.length > 1) {
       text = reviews.length;
-    } else if (review && !google) {
-      text = review.user_type === 'me' ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
-    } else if (custom) {
-      text = 'me';
+    } else if (review && review.user_type !== userTypes.google) {
+      text = review.user_type === userTypes.me ? 'me' : `${review.created_by.first_name[0]}${review.created_by.last_name[0]}`;
     }
 
     const avatarSize = (text === 'me') ? 36 : 40;
@@ -66,12 +63,16 @@ class Marker extends PureComponent {
           ]}
         >
           <Avatar
+            uri={review && review.created_by.picture}
             size={avatarSize}
             text={text}
             set="FontAwesome"
-            icon={(google && !custom) ? 'google' : ''}
+            icon={!review || review.user_type === userTypes.google ? 'google' : ''}
             uppercase={(text !== 'me')}
-            style={selected && styles.avatar_selected}
+            style={[
+              styles.avatar,
+              selected && styles.avatar_selected,
+            ]}
             textStyle={markerAvatar(selected, text === 'me')}
           />
           <View
@@ -93,7 +94,7 @@ const makeMapStateToProps = () => {
     const { place: { reviews } } = props;
 
     return {
-      review: reviewSelector(state, reviews[0]),
+      review: reviews && reviewSelector(state, reviews[0]),
     };
   };
 };
@@ -118,6 +119,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.greenShadow,
     borderRadius: 50,
+  },
+  avatar: {
+    borderWidth: 2,
   },
   avatar_selected: {
     backgroundColor: colors.green,

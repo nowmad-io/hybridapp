@@ -12,6 +12,9 @@ import {
 } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
 
+export const getOutgoings = state => state.friends.outgoings;
+export const getIncomings = state => state.friends.incomings;
+
 function addNewFriend(state, action) {
   const all = state.all.concat([action.payload]);
   const outgoings = _.filter(
@@ -46,10 +49,57 @@ const friendsReducer = (state = initialState, action) => {
       return { ...state, incomings: action.payload };
     case `${FETCH_FRIENDSOUTGOING}_SUCCESS`:
       return { ...state, outgoings: action.payload };
+    case `${ACCEPT_FRIENDSHIP}_ERROR`:
+    case `${CANCEL_FRIENDSHIP}_ERROR`:
+    case `${REJECT_FRIENDSHIP}_ERROR`:
+      return {
+        ...state,
+        incomings: state.incomings.map(request => ({
+          ...request,
+          loading: false,
+        })),
+      };
+    case `${ACCEPT_FRIENDSHIP}_API_CALL`:
+    case `${CANCEL_FRIENDSHIP}_API_CALL`:
+    case `${REJECT_FRIENDSHIP}_API_CALL`:
+      return {
+        ...state,
+        incomings: state.incomings.map(request => ({
+          ...request,
+          loading: request.id !== action.payload.extra.id,
+        })),
+      };
     case `${ACCEPT_FRIENDSHIP}_SUCCESS`:
       return addNewFriend(state, action);
+    case `${SEND_FRIENDSHIP}_API_CALL`:
+      return {
+        ...state,
+        outgoings: [
+          ...state.outgoings,
+          {
+            from_user: { id: action.payload.params.from_user_id },
+            to_user: { id: action.payload.params.to_user_id },
+          },
+        ],
+      };
     case `${SEND_FRIENDSHIP}_SUCCESS`:
-      return { ...state, outgoings: state.outgoings.concat([action.payload]) };
+      return {
+        ...state,
+        outgoings: state.outgoings.map((request) => {
+          if (request.to_user.id === action.payload.to_user.id) {
+            return action.payload;
+          }
+          return request;
+        }),
+      };
+    case `${SEND_FRIENDSHIP}_ERROR`:
+      return {
+        ...state,
+        outgoings: _.filter(
+          state.outgoings,
+          request => (request.to_user.id !== action.payload.to_user.id),
+        ),
+      };
     case `${CANCEL_FRIENDSHIP}_SUCCESS`:
       return {
         ...state,
