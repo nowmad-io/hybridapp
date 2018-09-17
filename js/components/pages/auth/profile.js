@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { uploadPicture } from '../../../libs/pictureUpload';
-import { resetAction } from '../../../libs/navigationService';
+import NavigationService from '../../../libs/navigationService';
 
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
@@ -77,7 +77,7 @@ class Profile extends Component {
       picture: !err ? uri : null,
     }).then(({ auth_token: authToken }) => {
       this.props.dispatch(authenticate(authToken));
-      this.props.navigation.dispatch(resetAction());
+      this.props.navigation.dispatch(NavigationService.resetAction());
     }).catch(() => {
       this.setState({
         loading: false,

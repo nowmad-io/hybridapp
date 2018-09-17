@@ -1,33 +1,37 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 
-export const resetAction = (routeName = 'App', params = {}) => StackActions.reset({
+let _navigator;
+const resetAction = (routeName = 'App', params = {}) => StackActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({ routeName, params })],
 });
 
-class NavigationService {
-  navigator = null;
-
-  setTopLevelNavigator(navigatorRef) {
-    this.navigator = navigatorRef;
-  }
-
-  navigate(routeName, params) {
-    this.navigator.dispatch(
-      NavigationActions.navigate({
-        routeName,
-        params,
-      }),
-    );
-  }
-
-  back() {
-    this.navigator.dispatch(NavigationActions.back());
-  }
-
-  reset(routeName, params) {
-    this.navigator.dispatch(resetAction(routeName, params));
-  }
+function setTopLevelNavigator(navigatorRef) {
+  _navigator = navigatorRef;
 }
 
-export default new NavigationService();
+function navigate(routeName, params) {
+  _navigator.dispatch(
+    NavigationActions.navigate({
+      routeName,
+      params,
+    }),
+  );
+}
+
+function back() {
+  _navigator.dispatch(NavigationActions.back());
+}
+
+function reset(routeName, params) {
+  _navigator.dispatch(resetAction(routeName, params));
+}
+
+
+export default {
+  setTopLevelNavigator,
+  navigate,
+  back,
+  resetAction,
+  reset,
+};

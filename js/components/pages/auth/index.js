@@ -4,7 +4,7 @@ import { Image, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Api } from '../../../libs/requests';
-import { resetAction } from '../../../libs/navigationService';
+import NavigationService from '../../../libs/navigationService';
 import { apiLogin, authenticate } from '../../../actions/auth';
 
 import LayoutView from '../../dumbs/layoutView';
@@ -52,7 +52,7 @@ class Auth extends Component {
 
     if (token) {
       Api.setAuthorisation(token);
-      this.props.navigation.dispatch(resetAction());
+      this.props.navigation.dispatch(NavigationService.resetAction());
     }
   }
 
@@ -103,7 +103,7 @@ class Auth extends Component {
         password,
       }).then(({ auth_token: authToken }) => {
         dispatch(authenticate(authToken));
-        navigation.dispatch(resetAction());
+        navigation.dispatch(NavigationService.resetAction());
       }).catch(() => {
         this.setState({
           loading: false,
@@ -183,7 +183,6 @@ class Auth extends Component {
               underlineColor={colors.white}
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
-              autoCapitalize="none"
               defaultValue={email}
               placeholder="Email"
               onChangeText={text => this.setState({ email: text })}
@@ -196,7 +195,6 @@ class Auth extends Component {
               underlineColor={colors.white}
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
-              autoCapitalize="none"
               placeholder="Password"
               onChangeText={text => this.setState({ password: text })}
             />
