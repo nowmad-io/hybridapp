@@ -55,10 +55,10 @@ class Home extends Component {
   }
 
   componentWillReceiveProps({ geolocation }) {
-    if (geolocation && geolocation.location
+    if (geolocation && geolocation.coords
         && !geolocation.loading && this.props.geolocation.loading) {
       this._map.animateToRegion({
-        ...geolocation.location,
+        ...geolocation.coords,
         latitudeDelta: 0.0043,
         longitudeDelta: 0.0034,
       }, 1000);
@@ -76,6 +76,7 @@ class Home extends Component {
   onMapPress = () => {
     if (this.props.gPlace) {
       this.onPlacePress(null);
+      this._search.getWrappedInstance().onClearPress();
     }
   }
 
@@ -88,6 +89,7 @@ class Home extends Component {
     placeDetails(poi.placeId, poi.name)
       .then((place) => {
         this.onPlacePress(place);
+        this._search.getWrappedInstance().onChangeText(place.name);
       });
   }
 
@@ -102,8 +104,12 @@ class Home extends Component {
   }
 
   onAddPlace = () => {
-    if (this.props.geolocation.location) {
-      this.onMapLongPress({ coordinate: this.props.geolocation.location });
+    if (this.props.geolocation.coords) {
+      this._map.animateToCoordinate(this.props.geolocation.coords, 1000);
+      setTimeout(
+        () => this.onMapLongPress({ coordinate: this.props.geolocation.coords }),
+        1000,
+      );
     }
   }
 
@@ -194,10 +200,10 @@ class Home extends Component {
               onMarkerPress={this.onMarkerPress}
             />
           ))}
-          {geolocation && geolocation.location && (
+          {geolocation && geolocation.coords && (
             <MarkerPosition
-              location={geolocation.location}
-              onMarkerPress={location => this.onMapLongPress({ coordinate: location })}
+              location={geolocation.coords}
+              onMarkerPress={coords => this.onMapLongPress({ coordinate: coords })}
             />
           )}
         </Map>
@@ -242,7 +248,7 @@ class Home extends Component {
               onPress={this.onFiltersPress}
             >
               <Text>
-Filters
+                Filters
               </Text>
               {filters.categories.length ? (
                 <Badge text={filters.categories.length} />

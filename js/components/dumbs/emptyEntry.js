@@ -1,11 +1,12 @@
+/* eslint-disable max-len */
+
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 
-import Button from './button';
 import Text from './text';
 
-import { colors, carousel } from '../../parameters';
+import { colors, carousel, font } from '../../parameters';
 
 export default class EmptyEntry extends PureComponent {
   static propTypes = {
@@ -18,25 +19,30 @@ export default class EmptyEntry extends PureComponent {
 
     return (
       <View style={styles.card}>
-        <Button
-          style={[
-            styles.button,
-            { marginBottom: 14 },
-          ]}
-          onPress={onAddLocationPress}
-        >
+        <View style={styles.textWrapper}>
           <Text style={styles.text}>
-            Add your location
+            Nobody added an experience in this area. Be the first one to review your favorite place or ask a friend about his experiences in this area.
           </Text>
-        </Button>
-        <Button
-          style={styles.button}
-          onPress={onSharePress}
-        >
           <Text style={styles.text}>
-            Ask a friend about this area
+            Otherwise amplify your search area.
           </Text>
-        </Button>
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Text
+            style={styles.button}
+            onPress={onAddLocationPress}
+            uppercase
+          >
+            Add my location
+          </Text>
+          <Text
+            style={styles.button}
+            onPress={onSharePress}
+            uppercase
+          >
+            Ask a friend
+          </Text>
+        </View>
       </View>
     );
   }
@@ -51,15 +57,26 @@ const styles = StyleSheet.create({
     borderTopWidth: carousel.border,
     borderRadius: 2,
     elevation: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 16,
+    alignItems: 'flex-start',
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 16,
   },
-  button: {
-    width: '100%',
-    backgroundColor: colors.whiteTransparentLight,
+  textWrapper: {
+    flex: 1,
   },
   text: {
-    color: colors.black,
+    fontSize: 14,
+    lineHeight: 16,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+  },
+  button: {
+    paddingVertical: 4,
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: font.fontWeight.medium,
+    marginRight: 24,
   },
 });

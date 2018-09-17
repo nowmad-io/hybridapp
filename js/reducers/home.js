@@ -121,7 +121,7 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         geolocation: {
           ...state.geolocation,
-          location: action.position,
+          coords: action.coords,
           loading: false,
         },
       };

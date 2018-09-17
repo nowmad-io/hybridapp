@@ -41,6 +41,11 @@ export default class Map extends Component {
     scrollEnabled: true,
   }
 
+  constructor(props) {
+    super(props)
+    console.log('map');
+  }
+
   componentWillUnmount() {
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -74,6 +79,7 @@ export default class Map extends Component {
   }
 
   animateToRegion(region, duration = 500) {
+    console.log('this._ref', this._ref);
     this._ref.animateToRegion(region, duration);
   }
 

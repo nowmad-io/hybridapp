@@ -30,11 +30,9 @@ import { pollSaga } from './utils';
 function getCurrentPosition() {
   return eventChannel((emit) => {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        emit(setGeolocation(position.coords));
-      },
+      position => emit(setGeolocation(position.coords)),
       () => {},
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: (60 * 24 * 1000) },
+      { enableHighAccuracy: true, timeout: 10000 },
     );
     return () => {};
   });

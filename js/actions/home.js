@@ -12,10 +12,10 @@ export function getGeolocation() {
     type: GET_GEOLOCATION,
   };
 }
-export function setGeolocation(position) {
+export function setGeolocation(coords) {
   return {
     type: SET_GEOLOCATION,
-    position,
+    coords,
   };
 }
 
