@@ -11,7 +11,7 @@ const packageJson = path.join(root, './package.json');
 const packageLockJson = path.join(root, './package-lock.json');
 const androidManifest = path.join(root, './android/app/src/main/AndroidManifest.xml');
 const buildGradle = path.join(root, './android/app/build.gradle');
-const loginComponent = path.join(root, './js/components/pages/auth/login.js');
+const loginComponent = path.join(root, './js/components/pages/auth/index.js');
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 const simpleGit = require('simple-git')(root);
 
