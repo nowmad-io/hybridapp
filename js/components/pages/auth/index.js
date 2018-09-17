@@ -29,6 +29,7 @@ class Auth extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     token: PropTypes.string,
+    isConnected: PropTypes.bool,
   };
 
   constructor(props) {
@@ -37,10 +38,10 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || 'a@d.com',
-      password: 'a',
-      firstName: 'a',
-      lastName: 'a',
+      email: params && params.email || '',
+      password: '',
+      firstName: '',
+      lastName: '',
       loading: false,
       error: null,
     };
@@ -70,6 +71,7 @@ class Auth extends Component {
         password,
         firstName,
         lastName,
+        setEmail: this.setEmail,
       });
     }
   }

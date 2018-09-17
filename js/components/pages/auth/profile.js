@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, BackHandler } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { uploadPicture } from '../../../libs/pictureUpload';
@@ -15,6 +15,7 @@ import Modal from '../../dumbs/modal';
 
 import { apiRegister, authenticate } from '../../../actions/auth';
 
+import { registerFailed, registerNoNetwork } from '../../../modals';
 import { colors, font } from '../../../parameters';
 
 class Profile extends Component {
@@ -25,6 +26,7 @@ class Profile extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
+    isConnected: PropTypes.bool,
   };
 
   constructor(props) {
@@ -33,27 +35,19 @@ class Profile extends Component {
     this.state = {
       picture: {},
       loading: false,
+      error: null,
     };
-  }
-
-  componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-  }
-
-  onBackPress = () => {
-    const { navigation } = this.props;
-
-    navigation.goBack();
-
-    return true;
   }
 
   onRegisterPress = () => {
     const { picture } = this.state;
+
+    if (!this.props.isConnected) {
+      this.setState({
+        error: registerNoNetwork,
+      });
+      return;
+    }
 
     this.setState({ loading: true });
 
@@ -64,7 +58,17 @@ class Profile extends Component {
     const {
       email, password, firstName, lastName,
     } = this.props.navigation.state.params;
-    console.log('uri', uri);
+
+
+    if (!this.props.isConnected) {
+      this.setState({
+        error: registerNoNetwork,
+      });
+      return;
+    }
+
+    this.setState({ loading: true });
+
     apiRegister({
       email,
       password,
@@ -74,6 +78,11 @@ class Profile extends Component {
     }).then(({ auth_token: authToken }) => {
       this.props.dispatch(authenticate(authToken));
       this.props.navigation.dispatch(NavigationService.resetAction());
+    }).catch(() => {
+      this.setState({
+        loading: false,
+        error: registerFailed,
+      });
     });
   }
 
@@ -83,7 +92,11 @@ class Profile extends Component {
 
   onSecondaryAction = () => this.setState(
     { error: null },
-    () => this.props.navigation.goBack(),
+    () => this.props.navigation.navigate('Login', {
+      login: true,
+      email: this.props.navigation.state.params.email,
+      setEmail: this.props.navigation.state.params.setEmail,
+    }),
   );
 
   render() {
@@ -136,8 +149,7 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.auth.error,
-  authLoading: state.auth.authLoading,
+  isConnected: state.network.isConnected,
 });
 
 export default connect(mapStateToProps)(Profile);
