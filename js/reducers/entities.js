@@ -145,8 +145,7 @@ const entitiesReducer = (state = initialState, action) => {
 
       const updatedReview = {};
       updatedReview[result] = {
-        ...state.reviews[result],
-        ...review,
+        ..._.merge(state.reviews[result], review),
         toSync: false,
         partial: false,
       };
