@@ -9,6 +9,8 @@ import shortid from 'shortid';
 import Config from 'react-native-config';
 import ImagePicker from 'react-native-image-picker';
 
+import { publishReviewEvent } from '../../../libs/mixpanel';
+
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -20,7 +22,6 @@ import Label from '../../dumbs/label';
 import FormInput from '../../dumbs/formInput';
 import ImageHolder from '../../dumbs/imageHolder';
 import Icon from '../../dumbs/icon';
-
 import Map from '../../dumbs/map';
 import Marker from '../../dumbs/marker';
 
@@ -65,6 +66,7 @@ class AddReview extends Component {
     };
 
     this.state = {
+      time: Date.now(),
       addingImage: false,
       review: {
         ...defaultReview,
@@ -98,7 +100,7 @@ class AddReview extends Component {
   }
 
   onPublish = () => {
-    const { place: { google, reviews, ...newPlace }, review } = this.state;
+    const { place: { google, reviews, ...newPlace }, review, time } = this.state;
 
     const action = review.id ? updateReview : addReview;
     const newReview = {
@@ -114,6 +116,17 @@ class AddReview extends Component {
     };
 
     Keyboard.dismiss();
+    const addressComponents = newPlace.address_components
+      && newPlace.address_components[
+        newPlace.address_components.length - 1
+      ].long_name
+      || '';
+
+    publishReviewEvent({
+      country: addressComponents,
+      timeSpent: Math.floor((Date.now() - time) / 1000),
+      categories: review.categories,
+    });
     this.props.dispatch(action(newReview));
   }
 

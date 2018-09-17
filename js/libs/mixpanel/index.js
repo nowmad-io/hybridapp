@@ -18,7 +18,6 @@ export function setProfile({
 
 export function registerSuperProperties({ email, first_name: firstName, last_name: lastName }) {
   Mixpanel.registerSuperProperties({
-    $distinct_id: email,
     $email: email,
     $first_name: firstName,
     $last_name: lastName,
