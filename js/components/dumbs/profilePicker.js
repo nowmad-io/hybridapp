@@ -37,7 +37,7 @@ export default class ProfilePicker extends PureComponent {
 
   onPress = () => {
     const options = {
-      quality: 1.0,
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
         path: Config.IMAGES_FOLDER,
