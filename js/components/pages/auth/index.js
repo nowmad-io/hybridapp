@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
-import { apiLogin, authenticate } from '../../../actions/auth';
+import { loginEvent } from '../../../libs/mixpanel';
 
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
@@ -14,6 +14,8 @@ import Button from '../../dumbs/button';
 import FormInput from '../../dumbs/formInput';
 import Spinner from '../../dumbs/spinner';
 import Modal from '../../dumbs/modal';
+
+import { apiLogin, authenticate } from '../../../actions/auth';
 
 import { loginFailed, loginNoNetwork } from '../../../modals';
 import { colors, font } from '../../../parameters';
@@ -103,6 +105,7 @@ class Auth extends Component {
         password,
       }).then(({ auth_token: authToken }) => {
         dispatch(authenticate(authToken));
+        loginEvent();
         navigation.dispatch(NavigationService.resetAction());
       }).catch(() => {
         this.setState({

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { uploadPicture } from '../../../libs/pictureUpload';
 import NavigationService from '../../../libs/navigationService';
+import { registerEvent } from '../../../libs/mixpanel';
 
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
@@ -69,14 +70,17 @@ class Profile extends Component {
 
     this.setState({ loading: true });
 
-    apiRegister({
+    const credentials = {
       email,
       password,
       first_name: firstName,
       last_name: lastName,
       picture: !err ? uri : null,
-    }).then(({ auth_token: authToken }) => {
+    };
+
+    apiRegister(credentials).then(({ auth_token: authToken }) => {
       this.props.dispatch(authenticate(authToken));
+      registerEvent(credentials);
       this.props.navigation.dispatch(NavigationService.resetAction());
     }).catch(() => {
       this.setState({
