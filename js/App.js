@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -7,9 +7,8 @@ import NavigationService from './libs/navigationService';
 import SplashScreen from './components/pages/splashScreen';
 
 import configureStore from './configureStore';
-import sagas from './sagas';
 
-const { persistor, store, sagaMiddleware } = configureStore();
+const { persistor, store } = configureStore();
 
 /* eslint-disable-next-line no-console */
 console.ignoredYellowBox = [
@@ -17,27 +16,19 @@ console.ignoredYellowBox = [
   'Warning: isMounted(...) is deprecated',
 ];
 
-class App extends Component {
-  static onBeforeLift() {
-    sagas.map(saga => sagaMiddleware.run(saga));
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <PersistGate
-          loading={<SplashScreen />}
-          persistor={persistor}
-          onBeforeLift={App.onBeforeLift}
-        >
-          <MainRouter
-            ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)}
-          />
-        </PersistGate>
-      </Provider>
-    );
-  }
-}
+const App = () => (
+  <Provider store={store}>
+    <PersistGate
+      loading={<SplashScreen />}
+      persistor={persistor}
+      onBeforeLift={App.onBeforeLift}
+    >
+      <MainRouter
+        ref={navigatorRef => NavigationService.setTopLevelNavigator(navigatorRef)}
+      />
+    </PersistGate>
+  </Provider>
+);
 
 export {
   persistor,

@@ -5,17 +5,15 @@ import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 
 import { network } from './libs/requests';
+
 import reducers from './reducers';
+import sagas from './sagas';
 
 export default () => {
   const sagaMiddleware = createSagaMiddleware();
 
   const middlewares = [
     sagaMiddleware,
-  ];
-
-  const enhancers = [
-    applyMiddleware(...middlewares),
   ];
 
   const rootPersistConfig = {
@@ -31,12 +29,14 @@ export default () => {
 
   const store = createStore(
     persistReducer(rootPersistConfig, rootReducer),
-    composeWithDevTools(...enhancers),
+    composeWithDevTools(applyMiddleware(...middlewares)),
   );
+
+  sagas.map(saga => sagaMiddleware.run(saga));
 
   const persistor = persistStore(store);
 
   return {
-    store, persistor, sagaMiddleware,
+    store, persistor,
   };
 };
