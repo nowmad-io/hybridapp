@@ -23,7 +23,6 @@ class Search extends Component {
       PropTypes.object,
     ]),
     dispatch: PropTypes.func,
-    onReviewPress: PropTypes.func,
     onFriendPress: PropTypes.func,
     onAddFriendPress: PropTypes.func,
     onPlacePress: PropTypes.func,
@@ -87,14 +86,6 @@ class Search extends Component {
     this.setState({ text: '', previousValue: '' });
     this.searchDebounced('');
     this.props.onClear();
-  }
-
-  onReviewPress = ({ short_description: shortDescription, place }) => {
-    this.blur();
-    this.props.onPlacePress(null);
-    this.props.onFriendPress({});
-    this.props.onReviewPress(place);
-    this.onChangeText(shortDescription, true);
   }
 
   onFriendPress = (friend) => {
@@ -167,7 +158,7 @@ class Search extends Component {
             ref={(c) => { this.textInput = c; }}
             underlineColorAndroid={focused ? colors.white : colors.transparent}
             autoCorrect={false}
-            placeholder="Search friends, reviews & places"
+            placeholder="Search for people and places"
             selectionColor={colors.whiteTransparent}
             placeholderTextColor={colors.white}
             style={styles.searchInput}
@@ -206,7 +197,6 @@ class Search extends Component {
           <SearchRouter
             ref={(r) => { this._searchRouter = r; }}
             screenProps={{
-              onReviewPress: this.onReviewPress,
               onFriendPress: this.onFriendPress,
               onAddFriendPress: this.onAddFriendPress,
               onPlacePress: this.onPlacePress,

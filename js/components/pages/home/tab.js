@@ -11,24 +11,21 @@ import Text from '../../dumbs/text';
 
 import { placeDetails, COORD_REGEX } from '../../../actions/search';
 import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../actions/friends';
-import { selectFilteredReviews, selectPeople } from '../../../reducers/search';
+import { selectPeople } from '../../../reducers/search';
 
 import { sizes, colors, font } from '../../../parameters';
 
 const MAX_LIST = 3;
 
 const googleImage = require('../../../../assets/images/icons/google.png');
-const placeImage = require('../../../../assets/images/icons/place.png');
 
 class Tab extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     screenProps: PropTypes.object,
-    reviews: PropTypes.array,
     people: PropTypes.array,
     peopleLoading: PropTypes.bool,
-    placesEntities: PropTypes.object,
     places: PropTypes.array,
     placesLoading: PropTypes.bool,
   };
@@ -53,13 +50,6 @@ class Tab extends PureComponent {
     this.props.dispatch(cancelFriendship(id));
   }
 
-  onReviewPress = review => () => {
-    this.props.screenProps.onReviewPress({
-      ...review,
-      place: this.props.placesEntities[review.place],
-    });
-  }
-
   onPlacePress = ({ place_id: placeId }) => () => {
     placeDetails(placeId)
       .then(place => this.props.screenProps.onPlacePress(place));
@@ -73,7 +63,6 @@ class Tab extends PureComponent {
     const {
       navigation,
       screenProps: { text },
-      reviews,
       people, peopleLoading,
       places, placesLoading,
     } = this.props;
@@ -152,24 +141,6 @@ class Tab extends PureComponent {
             ))}
           </List>
         )}
-        { reviews && (
-          <List
-            label={allPage ? 'RESULTS BY REVIEWS' : null}
-            style={styles.list}
-            action="see all"
-            actionDisable={reviews.length <= MAX_LIST}
-            onActionPress={() => navigation.navigate('Reviews')}
-          >
-            {(allPage ? reviews.slice(0, MAX_LIST) : reviews).map(result => (
-              <ListItem
-                key={result.id}
-                text={result.short_description}
-                thumbnail={placeImage}
-                onPress={this.onReviewPress(result)}
-              />
-            ))}
-          </List>
-        )}
         { places && (
           <List
             label={allPage ? 'RESULTS BY PLACES' : null}
@@ -209,16 +180,11 @@ class Tab extends PureComponent {
 }
 
 const makeMapStateToProps = () => {
-  const filteredReviewsSelector = selectFilteredReviews();
   const peopleSelector = selectPeople();
 
   return (state, props) => {
     const { routeName } = props.navigation.state;
 
-    const reviews = {
-      placesEntities: state.entities.places,
-      reviews: filteredReviewsSelector(state),
-    };
     const people = {
       people: peopleSelector(state),
       peopleLoading: state.search.peopleLoading,
@@ -229,7 +195,6 @@ const makeMapStateToProps = () => {
     };
 
     return {
-      ...((routeName === 'All' || routeName === 'Reviews') ? reviews : {}),
       ...((routeName === 'All' || routeName === 'People') ? people : {}),
       ...((routeName === 'All' || routeName === 'Places') ? places : {}),
     };

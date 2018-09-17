@@ -111,15 +111,6 @@ class Home extends Component {
     this.props.dispatch(getGeolocation());
   }
 
-  onReviewPress = (place) => {
-    this.onFiltersChange({ categories: [] });
-    this.props.dispatch(placeSelect(place));
-    this._map.animateToCoordinate({
-      longitude: place.longitude,
-      latitude: place.latitude,
-    }, 1000);
-  }
-
   onFriendPress = (friend) => {
     this.onFiltersChange({ friend: friend.id || null });
   }
@@ -168,7 +159,6 @@ class Home extends Component {
       <Search
         ref={(s) => { this._search = s; }}
         onMenuPress={() => navigation.openDrawer()}
-        onReviewPress={this.onReviewPress}
         onFriendPress={this.onFriendPress}
         onAddFriendPress={this.onAddFriendPress}
         onPlacePress={this.onPlacePress}
