@@ -53,7 +53,7 @@ class Entry extends Component {
       <View
         style={[
           styles.card,
-          gPlace && styles.gPlace,
+          gPlace && styles.googleCard,
         ]}
       >
         <Review
