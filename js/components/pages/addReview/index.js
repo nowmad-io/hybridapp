@@ -241,6 +241,7 @@ class AddReview extends Component {
     } = this.state;
 
     const full = pictures && pictures.length >= MAX_LENGTH_PICTURES;
+    const valid = !!shortDescription;
 
     return (
       <LayoutView type="container">
@@ -249,7 +250,7 @@ class AddReview extends Component {
             <Button transparent onPress={() => navigation.goBack()} icon="arrow-back" header />
           </LayoutView>
           <LayoutView type="right">
-            <Button transparent onPress={this.onPublish}>
+            <Button transparent onPress={this.onPublish} disabled={!valid}>
               <Text>
                 PUBLISH
               </Text>
