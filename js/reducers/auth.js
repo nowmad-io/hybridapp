@@ -37,6 +37,7 @@ const authReducer = (state = initialState, action) => {
     case `${ME}_SUCCESS`:
       return { ...state, me: action.payload };
     case `${LOGOUT}_REQUEST`:
+      Api.setAuthorisation();
       return initialState;
     default:
       return state;

@@ -67,11 +67,12 @@ class Api {
   }
 
   setAuthorisation(token) {
+    const { Authorization, ...headers } = this.baseConfig.headers;
     this.baseConfig = {
       ...this.baseConfig,
       headers: {
-        ...this.baseConfig.headers,
-        Authorization: `Token ${token}`,
+        ...headers,
+        ...(token ? { Authorization: `Token ${token}` } : {}),
       },
     };
   }
