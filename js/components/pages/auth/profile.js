@@ -72,8 +72,8 @@ class Profile extends Component {
     apiRegister({
       email,
       password,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       picture: !err ? uri : null,
     }).then(({ auth_token: authToken }) => {
       this.props.dispatch(authenticate(authToken));
