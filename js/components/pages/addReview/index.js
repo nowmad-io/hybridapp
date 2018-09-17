@@ -342,9 +342,6 @@ class AddReview extends Component {
                   />
                 ))}
               </View>
-              <Text style={styles.imagesCaption}>
-                E.g: A water mirror in Bordeaux !
-              </Text>
             </View>
             <View style={styles.group}>
               <Label text="Add some links related" />
