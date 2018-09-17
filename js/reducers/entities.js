@@ -7,7 +7,7 @@ import { placeSchema, reviewSchema } from '../actions/reviews';
 import {
   PLACES, ADD_REVIEW, UPDATE_REVIEW, CATEGORIES, UPDATE_PICTURE,
 } from '../constants/reviews';
-import { LOGOUT } from '../constants/auth';
+import { ME, LOGOUT } from '../constants/auth';
 import { userTypes } from '../parameters';
 
 const getEntities = state => state.entities;
@@ -211,6 +211,18 @@ const entitiesReducer = (state = initialState, action) => {
         reviews: {
           ...state.reviews,
           ...reviews,
+        },
+      };
+    }
+    case `${ME}_SUCCESS`: {
+      const { users } = state;
+      const user = action.payload;
+      users[user.id] = user;
+      return {
+        ...state,
+        user: {
+          ...state.users,
+          ...users,
         },
       };
     }
