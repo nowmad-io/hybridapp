@@ -184,6 +184,7 @@ class Auth extends Component {
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
               defaultValue={email}
+              autoCapitalize="none"
               placeholder="Email"
               onChangeText={text => this.setState({ email: text })}
             />
@@ -195,6 +196,7 @@ class Auth extends Component {
               underlineColor={colors.white}
               selectionColor={colors.white}
               placeholderColor={colors.greenLight}
+              autoCapitalize="none"
               placeholder="Password"
               onChangeText={text => this.setState({ password: text })}
             />
