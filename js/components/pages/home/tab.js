@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleSheet, ScrollView, View } from 'react-native';
 
+import LayoutView from '../../dumbs/layoutView';
 import List from '../../dumbs/list';
 import ListItem from '../../dumbs/listItem';
 import Spinner from '../../dumbs/spinner';
@@ -13,7 +14,7 @@ import { placeDetails, COORD_REGEX } from '../../../actions/search';
 import { acceptFriendship, rejectFriendship, cancelFriendship } from '../../../actions/friends';
 import { selectPeople } from '../../../reducers/search';
 
-import { sizes, colors, font } from '../../../parameters';
+import { colors, font } from '../../../parameters';
 
 const MAX_LIST = 3;
 
@@ -76,105 +77,107 @@ class Tab extends PureComponent {
     const allPage = navigation.state.routeName === 'All';
 
     return (
-      <ScrollView
-        style={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
-        { people && (
-          <List
-            label={allPage ? 'RESULTS BY PEOPLE' : null}
-            style={styles.list}
-            action="see all"
-            actionDisable={people.length <= MAX_LIST}
-            onActionPress={() => navigation.navigate('People')}
-          >
-            <Spinner visible={peopleLoading} />
-            {!peopleLoading && (allPage ? people.slice(0, MAX_LIST) : people).map(result => (
-              <ListItem
-                key={result.id}
-                text={`${result.first_name} ${result.last_name}`}
-                secondaryText={!result.type ? null : (result.type === 'friends_friends' ? '2nd' : '3rd')}
-                thumbnail={{ uri: result.picture }}
-                disabled={result.type === 'other'}
-                onPress={() => (result.type !== 'other') && this.onFriendPress(result)}
-              >
-                {(result.type === 'friends_friends' || result.type === 'other')
-                  && (!result.outgoing && !result.incoming) && (
-                  <Button
-                    transparent
-                    style={{ height: 24, padding: 0 }}
-                    iconStyle={styles.icon}
-                    onPress={this.onAddFriendPress(result)}
-                    icon="person-add"
-                  />
-                )}
-                {(result.type === 'friends_friends' || result.type === 'other')
-                  && result.outgoing && (
+      <LayoutView type="container">
+        <ScrollView
+          style={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
+          { people && (
+            <List
+              label={allPage ? 'RESULTS BY PEOPLE' : null}
+              style={styles.list}
+              action="see all"
+              actionDisable={people.length <= MAX_LIST}
+              onActionPress={() => navigation.navigate('People')}
+            >
+              <Spinner visible={peopleLoading} />
+              {!peopleLoading && (allPage ? people.slice(0, MAX_LIST) : people).map(result => (
+                <ListItem
+                  key={result.id}
+                  text={`${result.first_name} ${result.last_name}`}
+                  secondaryText={!result.type ? null : (result.type === 'friends_friends' ? '2nd' : '3rd')}
+                  thumbnail={{ uri: result.picture }}
+                  disabled={result.type === 'other'}
+                  onPress={() => (result.type !== 'other') && this.onFriendPress(result)}
+                >
+                  {(result.type === 'friends_friends' || result.type === 'other')
+                    && (!result.outgoing && !result.incoming) && (
                     <Button
                       transparent
                       style={{ height: 24, padding: 0 }}
-                      onPress={this.onCancelPress(result.outgoing.id)}
-                    >
-                      <Text style={styles.text}>Cancel</Text>
-                    </Button>
-                )}
-                {(result.type === 'friends_friends' || result.type === 'other')
-                  && result.incoming && (
-                    <View style={{ flexDirection: 'row' }}>
+                      iconStyle={styles.icon}
+                      onPress={this.onAddFriendPress(result)}
+                      icon="person-add"
+                    />
+                  )}
+                  {(result.type === 'friends_friends' || result.type === 'other')
+                    && result.outgoing && (
                       <Button
                         transparent
-                        icon="close"
-                        style={styles.requestButton}
-                        iconStyle={styles.requestIcon}
-                        onPress={this.onRejectPress(result.incoming.id)}
-                      />
-                      <Button
-                        transparent
-                        icon="check"
-                        style={styles.requestButton}
-                        iconStyle={styles.requestIcon}
-                        onPress={this.onAcceptPress(result.incoming.id)}
-                      />
-                    </View>
-                )}
-              </ListItem>
-            ))}
-          </List>
+                        style={{ height: 24, padding: 0 }}
+                        onPress={this.onCancelPress(result.outgoing.id)}
+                      >
+                        <Text style={styles.text}>Cancel</Text>
+                      </Button>
+                  )}
+                  {(result.type === 'friends_friends' || result.type === 'other')
+                    && result.incoming && (
+                      <View style={{ flexDirection: 'row' }}>
+                        <Button
+                          transparent
+                          icon="close"
+                          style={styles.requestButton}
+                          iconStyle={styles.requestIcon}
+                          onPress={this.onRejectPress(result.incoming.id)}
+                        />
+                        <Button
+                          transparent
+                          icon="check"
+                          style={styles.requestButton}
+                          iconStyle={styles.requestIcon}
+                          onPress={this.onAcceptPress(result.incoming.id)}
+                        />
+                      </View>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+          )}
+          { places && (
+            <List
+              label={allPage ? 'RESULTS BY PLACES' : null}
+              style={styles.list}
+              action="see all"
+              actionDisable={places.length <= MAX_LIST}
+              onActionPress={() => navigation.navigate('Places')}
+            >
+              <Text style={styles.poweredGoogle}>Powered by Google</Text>
+              <Spinner visible={placesLoading} />
+              {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
+                <ListItem
+                  key={result.id}
+                  text={result.name}
+                  thumbnail={googleImage}
+                  onPress={this.onPlacePress(result)}
+                />
+              ))}
+            </List>
+          )}
+        </ScrollView>
+        {places && !allPage && coord && (
+          <Button
+            style={styles.button}
+            onPress={this.onAddThisPlacePress(coord)}
+            >
+            <Text uppercase={false} style={styles.buttonText}>
+              None of the above,
+            </Text>
+            <Text>
+              Add a new place
+            </Text>
+          </Button>
         )}
-        { places && (
-          <List
-            label={allPage ? 'RESULTS BY PLACES' : null}
-            style={styles.list}
-            action="see all"
-            actionDisable={places.length <= MAX_LIST}
-            onActionPress={() => navigation.navigate('Places')}
-          >
-            <Text style={styles.poweredGoogle}>Powered by Google</Text>
-            <Spinner visible={placesLoading} />
-            {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
-              <ListItem
-                key={result.id}
-                text={result.name}
-                thumbnail={googleImage}
-                onPress={this.onPlacePress(result)}
-              />
-            ))}
-            {!allPage && coord && (
-              <Button
-                style={[
-                  styles.button,
-                  (!places.length && !placesLoading) && { marginTop: 0 },
-                ]}
-                onPress={this.onAddThisPlacePress(coord)}
-              >
-                <Text uppercase={false}>
-                  Add this place
-                </Text>
-              </Button>
-            )}
-          </List>
-        )}
-      </ScrollView>
+      </LayoutView>
     );
   }
 }
@@ -208,7 +211,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 22,
     flex: 1,
-    height: sizes.height,
   },
   list: {
     minHeight: 62,
@@ -245,6 +247,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   button: {
+    marginHorizontal: 24,
     marginVertical: 16,
+  },
+  buttonText: {
+    marginRight: 4,
   },
 });
