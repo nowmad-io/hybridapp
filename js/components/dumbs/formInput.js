@@ -16,6 +16,7 @@ export default class FormInput extends Component {
     placeholder: PropTypes.string,
     maxLength: PropTypes.number,
     multiline: PropTypes.bool,
+    autoCapitalize: PropTypes.oneOf(['none', 'sentences', 'words', 'characters']),
     defaultValue: PropTypes.string,
     prefixIcon: PropTypes.string,
     prefixIconStyle: PropTypes.any,
@@ -71,6 +72,7 @@ export default class FormInput extends Component {
       maxLength,
       placeholder,
       defaultValue,
+      autoCapitalize,
     } = this.props;
 
     const { length, showPassword } = this.state;
@@ -98,6 +100,7 @@ export default class FormInput extends Component {
               styles.input,
               inputStyle,
             ]}
+            autoCapitalize={autoCapitalize}
             multiline={multiline}
             maxLength={maxLength}
             placeholder={placeholder}
