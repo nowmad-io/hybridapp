@@ -178,6 +178,7 @@ class Tab extends PureComponent {
             actionDisable={places.length <= MAX_LIST}
             onActionPress={() => navigation.navigate('Places')}
           >
+            <Text style={styles.poweredGoogle}>Powered by Google</Text>
             <Spinner visible={placesLoading} />
             {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
               <ListItem
@@ -247,6 +248,11 @@ const styles = StyleSheet.create({
   list: {
     minHeight: 62,
     marginBottom: 16,
+  },
+  poweredGoogle: {
+    fontSize: 14,
+    color: colors.grey,
+    marginBottom: 12,
   },
   icon: {
     fontSize: 24,
