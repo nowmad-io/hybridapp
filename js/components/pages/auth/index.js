@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
-import { loginEvent } from '../../../libs/mixpanel';
+import { loginEvent, registerSuperProperties } from '../../../libs/mixpanel';
 
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
@@ -31,6 +31,7 @@ class Auth extends Component {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
     token: PropTypes.string,
+    me: PropTypes.object,
     isConnected: PropTypes.bool,
   };
 
@@ -50,10 +51,11 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-    const { token } = this.props;
+    const { token, me } = this.props;
 
     if (token) {
       Api.setAuthorisation(token);
+      registerSuperProperties(me);
       this.props.navigation.dispatch(NavigationService.resetAction());
     }
   }
@@ -239,6 +241,7 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
   token: state.auth.token,
+  me: state.auth.me,
   isConnected: state.network.isConnected,
 });
 
