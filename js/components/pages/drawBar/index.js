@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import { inviteFriendsEvent } from '../../../libs/mixpanel';
+
 import Icon from '../../dumbs/icon';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
@@ -52,6 +54,7 @@ Join me in Nowmad and lets start sharing the best places for travelling around t
 See you soon on Nowmad !
 https://play.google.com/store/apps/details?id=com.nowmad`,
     });
+    inviteFriendsEvent({ sharedFrom: 'Side bar' });
   }
 
   onLogoutPress = () => {

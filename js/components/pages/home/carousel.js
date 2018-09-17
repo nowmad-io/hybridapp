@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
+import { inviteFriendsEvent } from '../../../libs/mixpanel';
+
 import Entry from '../../dumbs/entry';
 import EmptyEntry from '../../dumbs/emptyEntry';
 import PanController from '../../dumbs/panController';
@@ -102,6 +104,7 @@ Join me in Nowmad and lets start sharing the best places for travelling around t
 See you soon on Nowmad !
 https://play.google.com/store/apps/details?id=com.nowmad`,
     });
+    inviteFriendsEvent({ sharedFrom: 'Empty State' });
   }
 
   toggleVisibility = (visible = true) => {
