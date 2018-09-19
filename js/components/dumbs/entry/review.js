@@ -116,7 +116,7 @@ export default class Review extends PureComponent {
               !detail && styles.bodyNoDetail,
             ]}
           >
-            { (pictures && pictures.length > 0) && (
+            { (pictures && pictures.length > 0 && pictures[0].uri) && (
               <FastImage
                 source={{ uri: pictures[0].uri }}
                 style={detail ? styles.picture_detail : styles.picture}
