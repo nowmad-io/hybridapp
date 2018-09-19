@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  TouchableOpacity, Image, View, StyleSheet,
-} from 'react-native';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Icon from './icon';
 import Spinner from './spinner';
@@ -35,9 +34,8 @@ export default class ImageHolder extends PureComponent {
         >
           {uri ? (
             <View style={styles.image}>
-              <Image
+              <FastImage
                 style={styles.image}
-                resizeMethod="resize"
                 source={{ uri }}
               />
               <Spinner overlay visible={loading} />

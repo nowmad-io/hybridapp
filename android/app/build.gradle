@@ -150,6 +150,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fast-image')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-mixpanel')
     compile project(':react-native-background-upload')
@@ -161,7 +162,8 @@ dependencies {
     implementation project(':react-native-image-picker')
     implementation project(':react-native-config')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:26.0.1"
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:support-v4:27.1.1"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 

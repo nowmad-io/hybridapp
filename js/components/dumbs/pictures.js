@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { CachedImage } from 'react-native-cached-image';
+import FastImage from 'react-native-fast-image';
 
 import LayoutView from './layoutView';
 
@@ -17,7 +17,7 @@ export default class Pictures extends PureComponent {
 
     return (
       <LayoutView type="wrapper">
-        <CachedImage
+        <FastImage
           source={pictures.length ? { uri: pictures[0].uri } : pictureHolder}
           style={[
             styles.mainPicture,
@@ -26,7 +26,7 @@ export default class Pictures extends PureComponent {
         />
         {pictures.length > 1 && (
           <View style={styles.wrapperRight}>
-            <CachedImage
+            <FastImage
               source={{ uri: pictures[1].uri }}
               style={[
                 styles.pictures,
@@ -38,7 +38,7 @@ export default class Pictures extends PureComponent {
               ]}
             />
             {pictures.length > 2 && (
-              <CachedImage
+              <FastImage
                 source={{ uri: pictures[2].uri }}
                 style={[
                   styles.pictures,

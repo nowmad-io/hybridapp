@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Text from './text';
 import Icon from './icon';
@@ -54,11 +55,9 @@ export default class Avatar extends PureComponent {
             ]}
           />
         ) : uri ? (
-          <Image
+          <FastImage
             source={{ uri }}
             style={styles.image}
-            resizeMode="cover"
-            resizeMethode="resize"
           />
         ) : (
           <Text

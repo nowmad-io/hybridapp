@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
-  TouchableOpacity, Image, View, StyleSheet, Platform,
+  TouchableOpacity, View, StyleSheet, Platform,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import Config from 'react-native-config';
+import FastImage from 'react-native-fast-image';
 
 import Icon from './icon';
 import Spinner from './spinner';
@@ -81,10 +82,8 @@ export default class ProfilePicker extends PureComponent {
             onPress={this.onPress}
           >
             {uri ? (
-              <Image
+              <FastImage
                 style={styles.image}
-                resizeMode="cover"
-                resizeMethod="resize"
                 source={{ uri }}
               />
             ) : (

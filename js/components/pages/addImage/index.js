@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image, BackHandler, View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 import shortid from 'shortid';
+import FastImage from 'react-native-fast-image';
 
 import Content from '../../dumbs/content';
 import Text from '../../dumbs/text';
@@ -88,9 +89,8 @@ SAVE
           <View
             style={styles.imageWrapper}
           >
-            <Image
+            <FastImage
               style={styles.image}
-              resizeMethod="resize"
               source={{ uri: this.state.image.uri }}
             />
           </View>

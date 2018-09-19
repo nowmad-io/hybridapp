@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
@@ -145,8 +146,8 @@ class Auth extends Component {
       <Content>
         <LayoutView type="container" style={styles.container}>
           <View style={styles.logoWrapper}>
-            <Image
-              resizeMode="contain"
+            <FastImage
+              resizeMode={FastImage.resizeMode.contain}
               source={logo}
               style={styles.logo}
             />

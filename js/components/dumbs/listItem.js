@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet, View, TouchableOpacity, Image,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Text from './text';
 import LayoutView from './layoutView';
@@ -43,7 +42,7 @@ export default class List extends PureComponent {
         style={styles.wrapper}
       >
         { thumbnail && (
-          <Image
+          <FastImage
             source={thumbnail}
             style={[
               styles.image,

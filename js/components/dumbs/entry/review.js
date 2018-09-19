@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Image, View, TouchableOpacity, StyleSheet,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import memoize from 'fast-memoize';
+import FastImage from 'react-native-fast-image';
 
 import Text from '../text';
 import Avatar from '../avatar';
@@ -118,17 +117,13 @@ export default class Review extends PureComponent {
             ]}
           >
             { (pictures && pictures.length > 0) && (
-              <Image
-                resizeMode="cover"
-                resizeMethode="resize"
+              <FastImage
                 source={{ uri: pictures[0].uri }}
                 style={detail ? styles.picture_detail : styles.picture}
               />
             )}
             { (gPlace && pictures.length > 1) && (
-              <Image
-                resizeMode="cover"
-                resizeMethode="resize"
+              <FastImage
                 source={{ uri: pictures[1].source }}
                 style={[
                   styles.picture,

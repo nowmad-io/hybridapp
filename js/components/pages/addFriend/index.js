@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Image, BackHandler, View } from 'react-native';
+import { BackHandler, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Button from '../../dumbs/button';
 import Content from '../../dumbs/content';
@@ -101,8 +102,7 @@ class AddFriend extends Component {
         <Content style={styles.content}>
           <View style={styles.profileWrapper}>
             <View>
-              <Image
-                resizeMethod="resize"
+              <FastImage
                 style={styles.thumbnail}
                 source={{ uri: this.state.user.picture }}
               />
