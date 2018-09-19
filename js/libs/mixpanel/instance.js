@@ -12,7 +12,9 @@ class MixpanelService {
       .catch(error => console.log('Failed to initialize Mixpanel: ', error));
 
     Object.getOwnPropertyNames(Mixpanel)
-      .forEach((property) => { this[property] = Mixpanel[property]; });
+      .forEach((property) => {
+        this[property] = async (...args) => this.mixpanel(() => Mixpanel[property](...args));
+      });
   }
 }
 
