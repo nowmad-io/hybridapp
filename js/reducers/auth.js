@@ -1,5 +1,5 @@
 import { Api } from '../libs/requests';
-import { identifyEvent, setProfile } from '../libs/mixpanel';
+import { identifyEvent, setProfile, registerSuperProperties } from '../libs/mixpanel';
 
 import {
   AUTHENTICATE,
@@ -37,6 +37,7 @@ const authReducer = (state = initialState, action) => {
       return { ...state, authLoading: false };
     case `${ME}_SUCCESS`:
       identifyEvent(action.payload.email);
+      registerSuperProperties(action.payload);
       setProfile(action.payload);
       return { ...state, me: action.payload };
     case `${LOGOUT}_REQUEST`:

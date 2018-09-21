@@ -1,20 +1,36 @@
-import Config from 'react-native-config';
 import Mixpanel, { MixpanelInstance } from 'react-native-mixpanel';
 
 class MixpanelService {
-  constructor() {
-    this.mixpanel = callback => (
-      MixpanelInstance.initialized
-        ? Mixpanel.sharedInstanceWithToken(Config.MIXPANEL_KEY)
-        : Promise.resolve(true))
-      .then(() => callback())
-      // eslint-disable-next-line no-console
-      .catch(error => console.log('Failed to initialize Mixpanel: ', error));
+  initialized = false;
 
+  instance = null;
+
+  initializing = null;
+
+  constructor() {
     Object.getOwnPropertyNames(Mixpanel)
       .forEach((property) => {
-        this[property] = async (...args) => this.mixpanel(() => Mixpanel[property](...args));
+        this[property] = async (...args) => {
+          this.mixpanel(() => this.instance[property](...args));
+        };
       });
+  }
+
+  initialize(mixpanelApiKey) {
+    this.instance = new MixpanelInstance(mixpanelApiKey);
+    this.initializing = this.instance.initialize()
+      .then(() => {
+        this.initialized = true;
+      });
+
+    this.mixpanel = callback => (
+      (!this.initialized
+        ? this.initializing
+        : Promise.resolve(true)
+      )
+        .then(callback)
+        // eslint-disable-next-line no-console
+        .catch(error => console.log('Failed to initialize Mixpanel: ', error)));
   }
 }
 
