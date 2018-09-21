@@ -106,7 +106,7 @@ function* updatePlaces(action) {
   const { type, payload } = action;
   const { friends: { all: allFriends } } = yield select();
 
-  if (type === `${ACCEPT_FRIENDSHIP}_SUCCESS` || payload.length !== allFriends.length) {
+  if ((type === `${ACCEPT_FRIENDSHIP}_SUCCESS`) || (payload.length !== allFriends.length)) {
     yield put(fetchPlaces());
   }
 }
