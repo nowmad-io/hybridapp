@@ -91,7 +91,7 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
               {me.first_name}
             </Text>
             <Text style={styles.subtitle}>
-              {`${all.length} friend${all.length > 0 ? 's' : ''}`}
+              {`${all.length} friend${all.length > 1 ? 's' : ''}`}
             </Text>
           </View>
           <View style={styles.avatarWrapper}>
