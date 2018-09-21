@@ -43,16 +43,11 @@ class Profile extends Component {
 
   onSkipButton = () => this.props.navigation.dispatch(NavigationService.resetAction());
 
-  onBackButton = () => this.props.navigation.goBack();
-
   render() {
     const { picture: { uri } } = this.state;
 
     return (
       <LayoutView type="container" style={styles.container}>
-        <View style={styles.backWrapper}>
-          <Button transparent onPress={this.onBackButton} icon="arrow-back" header />
-        </View>
         <View style={styles.pictureWrapper}>
           <Text style={styles.title}>
             Choose your
@@ -97,7 +92,7 @@ export default connect(mapStateToProps)(Profile);
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 12,
+    paddingTop: 48,
     paddingBottom: 100,
     backgroundColor: colors.green,
   },
@@ -106,10 +101,6 @@ const styles = StyleSheet.create({
   },
   skipText: {
     color: colors.whiteTransparentLight,
-  },
-  backWrapper: {
-    marginHorizontal: 8,
-    alignItems: 'flex-start',
   },
   actionWrapper: {
     marginHorizontal: 24,

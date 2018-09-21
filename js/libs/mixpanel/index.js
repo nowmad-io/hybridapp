@@ -25,15 +25,10 @@ export function registerSuperProperties({ email, first_name: firstName, last_nam
   });
 }
 
-export function registerEvent({
-  nbReviews, picture, ...superProperties
-}) {
-  registerSuperProperties(superProperties);
+export function registerEvent(properties) {
+  registerSuperProperties(properties);
 
-  Mixpanel.trackWithProperties('Create an account', {
-    '# of reviews': nbReviews,
-    'Picture ?': !!picture,
-  });
+  Mixpanel.track('Create an account', properties);
 }
 
 export function loginEvent() {

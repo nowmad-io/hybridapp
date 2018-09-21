@@ -5,9 +5,9 @@ import Profile from '../components/pages/auth/profile';
 import AppRouter from './AppRouter';
 
 export default createStackNavigator({
-  Profile,
   Register: Auth,
   Login: Auth,
+  Profile,
   App: AppRouter,
 }, {
   navigationOptions: {

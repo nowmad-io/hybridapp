@@ -99,15 +99,18 @@ class Auth extends Component {
     } else {
       const credentials = {
         email,
-        password,
         first_name: firstName,
         last_name: lastName,
       };
 
-      apiRegister(credentials).then(({ auth_token: authToken }) => {
+      apiRegister({
+        ...credentials,
+        password,
+      }).then(({ auth_token: authToken }) => {
         this.props.dispatch(authenticate(authToken));
         registerEvent(credentials);
         this.props.navigation.navigate('Profile');
+        this.setState({ loading: false });
       }).catch(() => {
         this.setState({
           loading: false,
