@@ -152,35 +152,30 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
             )}
           </ScrollView>
         </View>
+        <View style={styles.shareWrapper}>
+          <Button
+            transparent
+            onPress={this.onSharePress}
+          >
+            <Text style={styles.shareText} transparent uppercase={false}>
+              Invite friends to Nowmad
+            </Text>
+          </Button>
+        </View>
         <View style={styles.footer}>
-          <View style={styles.subFooter}>
-            <Button
-              transparent
-              style={styles.footerButton}
-              onPress={this.onSharePress}
+          <Button
+            transparent
+            style={styles.footerButton}
+            onPress={this.onLogoutPress}
+          >
+            <Icon name="exit-to-app" style={styles.footerIcon} />
+            <Text
+              style={styles.footerLabel}
+              uppercase={false}
             >
-              <Icon name="share" style={styles.footerIcon} />
-              <Text
-                style={styles.footerLabel}
-                uppercase={false}
-              >
-                Share
-              </Text>
-            </Button>
-            <Button
-              transparent
-              style={styles.footerButton}
-              onPress={this.onLogoutPress}
-            >
-              <Icon name="exit-to-app" style={styles.footerIcon} />
-              <Text
-                style={styles.footerLabel}
-                uppercase={false}
-              >
-                Logout
-              </Text>
-            </Button>
-          </View>
+              Logout
+            </Text>
+          </Button>
         </View>
       </View>
     );
@@ -298,11 +293,6 @@ const styles = StyleSheet.create({
     color: colors.green,
     fontSize: 14,
   },
-  footer: {
-    width: '100%',
-    borderTopWidth: 0.5,
-    borderColor: colors.grey,
-  },
   addFriendsButton: {
     borderWidth: 0,
   },
@@ -311,7 +301,18 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     fontWeight: font.fontWeight.regular,
   },
-  subFooter: {
+  shareWrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    borderTopWidth: 0.5,
+    borderColor: colors.grey,
+  },
+  shareText: {
+    color: colors.green,
+    fontWeight: font.fontWeight.regular,
+  },
+  footer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
