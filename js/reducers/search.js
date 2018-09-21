@@ -6,6 +6,7 @@ import {
   REVIEWS_SEARCH,
   PLACES_SEARCH,
 } from '../constants/search';
+import { ACCEPT_FRIENDSHIP } from '../constants/friends';
 import { LOGOUT } from '../constants/auth';
 
 import { getOutgoings, getIncomings } from './friends';
@@ -48,6 +49,15 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         peopleLoading: false,
         people: action.payload,
+      };
+    case `${ACCEPT_FRIENDSHIP}_SUCCESS`:
+      return {
+        ...state,
+        people: state.people.map(ppl => (
+          (ppl.id === action.payload.id)
+            ? action.payload
+            : ppl
+        )),
       };
     case `${PLACES_SEARCH}_API_CALL`:
       return {

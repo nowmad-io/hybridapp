@@ -17,17 +17,13 @@ export const getIncomings = state => state.friends.incomings;
 
 function addNewFriend(state, action) {
   const all = state.all.concat([action.payload]);
-  const outgoings = _.filter(
-    state.outgoings,
-    outgoing => (outgoing.to_user.id !== action.payload.id),
-  );
   const incomings = _.filter(
     state.incomings,
     incoming => (incoming.from_user.id !== action.payload.id),
   );
 
   return {
-    ...state, all, incomings, outgoings,
+    ...state, all, incomings,
   };
 }
 
@@ -49,28 +45,50 @@ const friendsReducer = (state = initialState, action) => {
       return { ...state, incomings: action.payload };
     case `${FETCH_FRIENDSOUTGOING}_SUCCESS`:
       return { ...state, outgoings: action.payload };
-    case `${ACCEPT_FRIENDSHIP}_ERROR`:
-    case `${CANCEL_FRIENDSHIP}_ERROR`:
-    case `${REJECT_FRIENDSHIP}_ERROR`:
-      return {
-        ...state,
-        incomings: state.incomings.map(request => ({
-          ...request,
-          loading: false,
-        })),
-      };
     case `${ACCEPT_FRIENDSHIP}_API_CALL`:
-    case `${CANCEL_FRIENDSHIP}_API_CALL`:
     case `${REJECT_FRIENDSHIP}_API_CALL`:
       return {
         ...state,
-        incomings: state.incomings.map(request => ({
-          ...request,
-          loading: request.id !== action.payload.extra.id,
+        incomings: state.incomings.map(incoming => ({
+          ...incoming,
+          loading: incoming.id === action.payload.extra.id,
         })),
       };
     case `${ACCEPT_FRIENDSHIP}_SUCCESS`:
       return addNewFriend(state, action);
+    case `${REJECT_FRIENDSHIP}_SUCCESS`:
+      return {
+        ...state,
+        incomings: _.filter(
+          state.incomings,
+          incoming => (incoming.id !== action.payload.id),
+        ),
+      };
+    case `${ACCEPT_FRIENDSHIP}_ERROR`:
+    case `${REJECT_FRIENDSHIP}_ERROR`:
+      return {
+        ...state,
+        incomings: state.incomings.map(incoming => ({
+          ...incoming,
+          loading: false,
+        })),
+      };
+    case `${CANCEL_FRIENDSHIP}_API_CALL`:
+      return {
+        ...state,
+        outgoings: state.outgoings.map(outgoing => ({
+          ...outgoing,
+          loading: (outgoing.id === action.payload.extra.id),
+        })),
+      };
+    case `${CANCEL_FRIENDSHIP}_SUCCESS`:
+      return {
+        ...state,
+        outgoings: _.filter(
+          state.outgoings,
+          outgoing => (outgoing.id !== action.payload.id),
+        ),
+      };
     case `${SEND_FRIENDSHIP}_API_CALL`:
       return {
         ...state,
@@ -79,6 +97,7 @@ const friendsReducer = (state = initialState, action) => {
           {
             from_user: { id: action.payload.params.from_user_id },
             to_user: { id: action.payload.params.to_user_id },
+            loading: true,
           },
         ],
       };
@@ -98,22 +117,6 @@ const friendsReducer = (state = initialState, action) => {
         outgoings: _.filter(
           state.outgoings,
           request => (request.to_user.id !== action.payload.to_user.id),
-        ),
-      };
-    case `${CANCEL_FRIENDSHIP}_SUCCESS`:
-      return {
-        ...state,
-        outgoings: _.filter(
-          state.outgoings,
-          outgoing => (outgoing.id !== action.payload.id),
-        ),
-      };
-    case `${REJECT_FRIENDSHIP}_SUCCESS`:
-      return {
-        ...state,
-        incomings: _.filter(
-          state.incomings,
-          incoming => (incoming.id !== action.payload.id),
         ),
       };
     case `${LOGOUT}_REQUEST`:

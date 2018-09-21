@@ -7,36 +7,42 @@ import { colors } from '../../parameters';
 export default class Spinner extends PureComponent {
   static propTypes = {
     ...ActivityIndicator.propTypes,
+    children: PropTypes.any,
+    size: PropTypes.string,
     color: PropTypes.string,
     visible: PropTypes.bool,
-    style: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.number,
-      PropTypes.array,
-    ]),
+    style: PropTypes.any,
+    wrapperStyle: PropTypes.any,
     overlay: PropTypes.bool,
   };
 
   static defaultProps = {
+    children: null,
     color: colors.green,
     visible: false,
     overlay: false,
+    size: 'large',
   }
 
   render() {
     const {
-      visible, style, overlay, color, size,
+      children, visible, wrapperStyle, style, overlay, color, size,
     } = this.props;
 
     return (
-      <View style={[visible && style, overlay && visible ? styles.overlay : {}]}>
-        { visible && (
-        <ActivityIndicator
-          {...this.props}
-          color={color}
-          size={size || 'large'}
-        />
-        )}
+      <View
+        style={[
+          visible && style,
+          children && wrapperStyle,
+          overlay && visible ? styles.overlay : {},
+        ]}
+      >
+        { visible ? (
+          <ActivityIndicator
+            color={color}
+            size={size}
+          />
+        ) : children }
       </View>
     );
   }

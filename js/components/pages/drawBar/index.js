@@ -128,21 +128,22 @@ https://play.google.com/store/apps/details?id=com.nowmad`,
                     {`${fromUser.first_name} ${fromUser.last_name}`}
                   </Text>
                 </View>
-                <Button
-                  transparent
-                  icon="close"
-                  style={styles.requestButton}
-                  iconStyle={styles.requestIcon}
-                  onPress={this.onRejectPress(id)}
-                />
-                <Button
-                  transparent
-                  icon="check"
-                  style={styles.requestButton}
-                  iconStyle={styles.requestIcon}
-                  onPress={this.onAcceptPress(id)}
-                />
-                <Spinner overlay visible={loading} />
+                <Spinner wrapperStyle={styles.spinnerWrapper} visible={loading}>
+                  <Button
+                    transparent
+                    icon="close"
+                    style={styles.requestButton}
+                    iconStyle={styles.requestIcon}
+                    onPress={this.onRejectPress(id)}
+                  />
+                  <Button
+                    transparent
+                    icon="check"
+                    style={styles.requestButton}
+                    iconStyle={styles.requestIcon}
+                    onPress={this.onAcceptPress(id)}
+                  />
+                </Spinner>
               </View>
             )) : (
               <Text style={styles.noRequest}>
@@ -258,6 +259,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: font.fontWeight.medium,
     marginBottom: 20,
+  },
+  spinnerWrapper: {
+    flexDirection: 'row',
   },
   noRequest: {
     color: colors.grey,

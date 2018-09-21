@@ -15,7 +15,12 @@ import {
 } from '../constants/reviews';
 import { GET_GEOLOCATION } from '../constants/home';
 import { RUN_SAGAS, STOP_SAGAS } from '../constants/utils';
-import { FETCH_FRIENDSINCOMING, ACCEPT_FRIENDSHIP, FETCH_FRIENDS } from '../constants/friends';
+import {
+  FETCH_FRIENDSINCOMING,
+  FETCH_FRIENDSOUTGOING,
+  ACCEPT_FRIENDSHIP,
+  FETCH_FRIENDS,
+} from '../constants/friends';
 
 import { apiMe } from '../actions/auth';
 import {
@@ -64,10 +69,10 @@ function* homeFlow() {
   yield put(fetchPlaces());
   yield put(fetchCategories());
   yield put(apiMe());
-  yield put(fetchOutgoingRequests());
 
   yield fork(syncReviews);
   yield fork(pollSaga(fetchIncomingRequests, `${FETCH_FRIENDSINCOMING}_SUCCESS`, STOP_SAGAS));
+  yield fork(pollSaga(fetchOutgoingRequests, `${FETCH_FRIENDSOUTGOING}_SUCCESS`, STOP_SAGAS));
   yield fork(pollSaga(fetchFriends, `${FETCH_FRIENDS}_SUCCESS`, STOP_SAGAS));
 }
 

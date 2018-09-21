@@ -113,45 +113,52 @@ class Tab extends PureComponent {
                   disabled={result.type === 'other'}
                   onPress={() => (result.type !== 'other') && this.onFriendPress(result)}
                 >
-                  {(result.type === 'friends_friends' || result.type === 'other')
-                    && (!result.outgoing && !result.incoming) && (
-                    <Button
-                      transparent
-                      style={{ height: 24, padding: 0 }}
-                      iconStyle={styles.icon}
-                      onPress={this.onAddFriendPress(result)}
-                      icon="person-add"
-                    />
-                  )}
-                  {(result.type === 'friends_friends' || result.type === 'other')
-                    && result.outgoing && (
+                  <Spinner
+                    visible={
+                      (result.incoming && result.incoming.loading)
+                      || (result.outgoing && result.outgoing.loading)
+                    }
+                  >
+                    {(result.type === 'friends_friends' || result.type === 'other')
+                      && (!result.outgoing && !result.incoming) && (
                       <Button
                         transparent
                         style={{ height: 24, padding: 0 }}
-                        onPress={this.onCancelPress(result.outgoing.id)}
-                      >
-                        <Text style={styles.text}>Cancel</Text>
-                      </Button>
-                  )}
-                  {(result.type === 'friends_friends' || result.type === 'other')
-                    && result.incoming && (
-                      <View style={{ flexDirection: 'row' }}>
+                        iconStyle={styles.icon}
+                        onPress={this.onAddFriendPress(result)}
+                        icon="person-add"
+                      />
+                    )}
+                    {(result.type === 'friends_friends' || result.type === 'other')
+                      && result.outgoing && (
                         <Button
                           transparent
-                          icon="close"
-                          style={styles.requestButton}
-                          iconStyle={styles.requestIcon}
-                          onPress={this.onRejectPress(result.incoming.id)}
-                        />
-                        <Button
-                          transparent
-                          icon="check"
-                          style={styles.requestButton}
-                          iconStyle={styles.requestIcon}
-                          onPress={this.onAcceptPress(result.incoming.id)}
-                        />
-                      </View>
-                  )}
+                          style={{ height: 24, padding: 0 }}
+                          onPress={this.onCancelPress(result.outgoing.id)}
+                        >
+                          <Text style={styles.text}>Cancel</Text>
+                        </Button>
+                    )}
+                    {(result.type === 'friends_friends' || result.type === 'other')
+                      && result.incoming && (
+                        <View style={{ flexDirection: 'row' }}>
+                          <Button
+                            transparent
+                            icon="close"
+                            style={styles.requestButton}
+                            iconStyle={styles.requestIcon}
+                            onPress={this.onRejectPress(result.incoming.id)}
+                          />
+                          <Button
+                            transparent
+                            icon="check"
+                            style={styles.requestButton}
+                            iconStyle={styles.requestIcon}
+                            onPress={this.onAcceptPress(result.incoming.id)}
+                          />
+                        </View>
+                    )}
+                  </Spinner>
                 </ListItem>
               ))}
             </List>
