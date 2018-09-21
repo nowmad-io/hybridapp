@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 
 import { Api } from '../../../libs/requests';
 import NavigationService from '../../../libs/navigationService';
-import { loginEvent, registerSuperProperties } from '../../../libs/mixpanel';
+import { loginEvent, registerEvent, registerSuperProperties } from '../../../libs/mixpanel';
 
 import LayoutView from '../../dumbs/layoutView';
 import Content from '../../dumbs/content';
@@ -16,9 +16,11 @@ import FormInput from '../../dumbs/formInput';
 import Spinner from '../../dumbs/spinner';
 import Modal from '../../dumbs/modal';
 
-import { apiLogin, authenticate } from '../../../actions/auth';
+import { apiLogin, apiRegister, authenticate } from '../../../actions/auth';
 
-import { loginFailed, loginNoNetwork } from '../../../modals';
+import {
+  loginFailed, loginNoNetwork, registerFailed, registerNoNetwork,
+} from '../../../modals';
 import { colors, font } from '../../../parameters';
 
 const logo = require('../../../../assets/images/logos/logo_white.png');
@@ -42,13 +44,15 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || 's@s.com',
-      password: 's',
+      email: params && params.email || '',
+      password: '',
       firstName: '',
       lastName: '',
       loading: false,
       error: null,
     };
+
+    this._passwordField = React.createRef();
   }
 
   componentDidMount() {
@@ -61,48 +65,24 @@ class Auth extends Component {
     }
   }
 
-  onRegisterPress = () => {
+  mainButtonPress = () => {
     const {
       email, password, firstName, lastName,
     } = this.state;
-    const { params } = this.props.navigation.state;
-    const login = params && params.login;
-
-    if (login) {
-      this.props.navigation.goBack();
-    } else {
-      this.props.navigation.navigate('Profile', {
-        email,
-        password,
-        firstName,
-        lastName,
-        setEmail: this.setEmail,
-      });
-    }
-  }
-
-  onLoginPress = () => {
-    const { email, password } = this.state;
     const { navigation, dispatch, isConnected } = this.props;
     const { params } = this.props.navigation.state;
     const login = params && params.login;
 
-    if (!login) {
-      navigation.navigate('Login', {
-        login: true,
-        email,
-        setEmail: this.setEmail,
+    if (!isConnected) {
+      this.setState({
+        error: login ? loginNoNetwork : registerNoNetwork,
       });
-    } else {
-      if (!isConnected) {
-        this.setState({
-          error: loginNoNetwork,
-        });
-        return;
-      }
+      return;
+    }
 
-      this.setState({ loading: true });
+    this.setState({ loading: true });
 
+    if (login) {
       apiLogin({
         email,
         password,
@@ -116,6 +96,64 @@ class Auth extends Component {
           error: loginFailed,
         });
       });
+    } else {
+      const credentials = {
+        email,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+      };
+
+      apiRegister(credentials).then(({ auth_token: authToken }) => {
+        this.props.dispatch(authenticate(authToken));
+        registerEvent(credentials);
+        this.props.navigation.navigate('Profile');
+      }).catch(() => {
+        this.setState({
+          loading: false,
+          error: registerFailed,
+        });
+      });
+    }
+  }
+
+  secondButtonPress = () => {
+    const { email, password } = this.state;
+    const { params } = this.props.navigation.state;
+    const login = params && params.login;
+
+    if (!login) {
+      this.setState(
+        { error: null },
+        () => {
+          this.props.navigation.navigate('Login', {
+            login: true,
+            email,
+            password,
+            setEmail: this.setEmail,
+          });
+        },
+      );
+    } else {
+      this.setState(
+        { error: null },
+        () => {
+          this.props.navigation.state.params.setEmail(this.state.email);
+          this.props.navigation.goBack();
+        },
+      );
+    }
+  }
+
+  secondaryActionPress = () => {
+    const { params } = this.props.navigation.state;
+    const login = params && params.login;
+
+    if (login) {
+      this.setState({ error: null });
+      this._passwordField.current.onShowPasswordPress();
+    } else {
+      this.secondButtonPress();
     }
   }
 
@@ -125,13 +163,6 @@ class Auth extends Component {
 
   closeModal = () => this.setState({ error: null });
 
-  onSecondaryAction = () => this.setState(
-    { error: null },
-    () => {
-      this.props.navigation.state.params.setEmail(this.state.email);
-      this.props.navigation.goBack();
-    },
-  );
 
   render() {
     const {
@@ -195,6 +226,7 @@ class Auth extends Component {
               onChangeText={text => this.setState({ email: text })}
             />
             <FormInput
+              ref={this._passwordField}
               password
               style={styles.formField}
               inputStyle={styles.formFieldInput}
@@ -213,7 +245,7 @@ class Auth extends Component {
             <Button
               disabled={!login && !valid}
               light={!login}
-              onPress={this.onRegisterPress}
+              onPress={!login ? this.mainButtonPress : this.secondButtonPress}
             >
               <Text style={!login && styles.mainText}>Create an account</Text>
             </Button>
@@ -221,7 +253,7 @@ class Auth extends Component {
               disabled={login && !valid}
               light={login}
               style={styles.loginButton}
-              onPress={this.onLoginPress}
+              onPress={login ? this.mainButtonPress : this.secondButtonPress}
             >
               <Text style={login && styles.mainText}>Log in</Text>
             </Button>
@@ -233,7 +265,7 @@ class Auth extends Component {
           visible={!!error}
           onRequestClose={this.closeModal}
           onPrimaryAction={this.closeModal}
-          onSecondaryAction={this.onSecondaryAction}
+          onSecondaryAction={this.secondaryActionPress}
         />
       </Content>
     );

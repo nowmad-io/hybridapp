@@ -21,7 +21,7 @@ export const loginFailed = {
   title: 'Log-in failed',
   information: 'Sorry, the email address and/or the password are incorrect. Please enter the right details or create a new account.',
   primaryAction: 'Ok',
-  secondaryAction: 'Create an account',
+  secondaryAction: 'Show password',
 };
 
 export const profileNoNetwork = {
