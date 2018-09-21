@@ -3,20 +3,15 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { uploadPicture } from '../../../libs/pictureUpload';
 import NavigationService from '../../../libs/navigationService';
-import { registerEvent } from '../../../libs/mixpanel';
 
 import LayoutView from '../../dumbs/layoutView';
 import Text from '../../dumbs/text';
 import Button from '../../dumbs/button';
 import ProfilePicker from '../../dumbs/profilePicker';
-import Spinner from '../../dumbs/spinner';
-import Modal from '../../dumbs/modal';
 
-import { apiRegister, authenticate } from '../../../actions/auth';
+import { updateProfile } from '../../../actions/auth';
 
-import { registerFailed, registerNoNetwork } from '../../../modals';
 import { colors, font } from '../../../parameters';
 
 class Profile extends Component {
@@ -27,7 +22,6 @@ class Profile extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     navigation: PropTypes.object,
-    isConnected: PropTypes.bool,
   };
 
   constructor(props) {
@@ -35,86 +29,29 @@ class Profile extends Component {
 
     this.state = {
       picture: {},
-      loading: false,
-      error: null,
     };
   }
 
-  onRegisterPress = () => {
+  onUpdateProfilePress = () => {
     const { picture } = this.state;
 
-    if (!this.props.isConnected) {
-      this.setState({
-        error: registerNoNetwork,
-      });
-      return;
-    }
-
-    this.setState({ loading: true });
-
-    uploadPicture(picture.path, this.register(), this.register(true));
-  }
-
-  register = (err = false) => (uri = null) => {
-    const {
-      email, password, firstName, lastName,
-    } = this.props.navigation.state.params;
-
-
-    if (!this.props.isConnected) {
-      this.setState({
-        error: registerNoNetwork,
-      });
-      return;
-    }
-
-    this.setState({ loading: true });
-
-    const credentials = {
-      email,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-      picture: !err ? uri : null,
-    };
-
-    apiRegister(credentials).then(({ auth_token: authToken }) => {
-      this.props.dispatch(authenticate(authToken));
-      registerEvent(credentials);
-      this.props.navigation.dispatch(NavigationService.resetAction());
-    }).catch(() => {
-      this.setState({
-        loading: false,
-        error: registerFailed,
-      });
-    });
+    this.props.dispatch(updateProfile({ picture: picture.path }));
+    this.onSkipButton();
   }
 
   onPictureSelected = picture => this.setState({ picture });
 
-  closeModal = () => this.setState({ error: null });
+  onSkipButton = () => this.props.navigation.dispatch(NavigationService.resetAction());
 
-  onSecondaryAction = () => this.setState(
-    { error: null },
-    () => this.props.navigation.navigate('Login', {
-      login: true,
-      email: this.props.navigation.state.params.email,
-      setEmail: this.props.navigation.state.params.setEmail,
-    }),
-  );
+  onBackButton = () => this.props.navigation.goBack();
 
   render() {
-    const { picture: { uri }, loading, error } = this.state;
+    const { picture: { uri } } = this.state;
 
     return (
       <LayoutView type="container" style={styles.container}>
-        <View style={styles.skipWrapper}>
-          <Text
-            style={styles.skip}
-            onPress={this.register(true)}
-          >
-            Skip
-          </Text>
+        <View style={styles.backWrapper}>
+          <Button transparent onPress={this.onBackButton} icon="arrow-back" header />
         </View>
         <View style={styles.pictureWrapper}>
           <Text style={styles.title}>
@@ -134,19 +71,19 @@ class Profile extends Component {
           <Button
             light
             disabled={!uri}
-            onPress={this.onRegisterPress}
+            onPress={this.onUpdateProfilePress}
           >
             <Text style={styles.mainText}>Enter to Nowmad</Text>
           </Button>
+
+          <Button
+            trasnparent
+            onPress={this.onSkipButton}
+            style={styles.skipButton}
+          >
+            <Text style={styles.skipText} uppercase={false}>Skip</Text>
+          </Button>
         </View>
-        <Spinner overlay visible={loading} />
-        <Modal
-          {...(error || {})}
-          visible={!!error}
-          onRequestClose={this.closeModal}
-          onPrimaryAction={this.closeModal}
-          onSecondaryAction={this.onSecondaryAction}
-        />
       </LayoutView>
     );
   }
@@ -164,14 +101,15 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
     backgroundColor: colors.green,
   },
-  skip: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: font.fontWeight.regular,
+  skipButton: {
+    marginTop: 16,
   },
-  skipWrapper: {
-    marginHorizontal: 24,
-    alignItems: 'flex-end',
+  skipText: {
+    color: colors.whiteTransparentLight,
+  },
+  backWrapper: {
+    marginHorizontal: 8,
+    alignItems: 'flex-start',
   },
   actionWrapper: {
     marginHorizontal: 24,
