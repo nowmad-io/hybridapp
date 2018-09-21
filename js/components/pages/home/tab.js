@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import {
+  StyleSheet, ScrollView, View, Image,
+} from 'react-native';
 
 import { addFriendsEvent } from '../../../libs/mixpanel';
 
@@ -21,6 +23,7 @@ import { colors, font } from '../../../parameters';
 const MAX_LIST = 3;
 
 const googleImage = require('../../../../assets/images/icons/google.png');
+const poweredByGoogle = require('../../../../assets/images/powered_by_google.png');
 
 class Tab extends PureComponent {
   static propTypes = {
@@ -171,7 +174,7 @@ class Tab extends PureComponent {
               actionDisable={places.length <= MAX_LIST}
               onActionPress={() => navigation.navigate('Places')}
             >
-              <Text style={styles.poweredGoogle}>Powered by Google</Text>
+              <Image source={poweredByGoogle} />
               <Spinner visible={placesLoading} />
               {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
                 <ListItem
@@ -238,11 +241,6 @@ const styles = StyleSheet.create({
   list: {
     minHeight: 62,
     marginBottom: 16,
-  },
-  poweredGoogle: {
-    fontSize: 14,
-    color: colors.grey,
-    marginBottom: 12,
   },
   icon: {
     fontSize: 24,
