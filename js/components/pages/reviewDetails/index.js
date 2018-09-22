@@ -81,7 +81,12 @@ class ReviewDetails extends Component {
           </LayoutView>
           <LayoutView type="right" />
         </LayoutView>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.content,
+            isOwn(review.user_type) && styles.myContent,
+          ]}
+        >
           <View style={styles.infoWrapper}>
             <Review
               review={review}
@@ -139,9 +144,11 @@ class ReviewDetails extends Component {
             </View>
           </View>
         </ScrollView>
-        <Button light style={styles.actionButton} onPress={this.addOrEditReview}>
-          <Text>{isOwn(review.user_type) ? 'Edit My Review' : 'Add Review'}</Text>
-        </Button>
+        {isOwn(review.user_type) && (
+          <Button light style={styles.actionButton} onPress={this.addOrEditReview}>
+            <Text>Edit My Review</Text>
+          </Button>
+        )}
       </LayoutView>
     );
   }
@@ -171,8 +178,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   content: {
-    minHeight: sizes.height - sizes.toolbarHeight - 48,
+    minHeight: sizes.height - sizes.toolbarHeight,
     backgroundColor: colors.white,
+  },
+  myContent: {
+    minHeight: sizes.height - sizes.toolbarHeight - 48,
   },
   infoWrapper: {
     flex: 1,
