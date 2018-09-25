@@ -174,7 +174,7 @@ class AddReview extends Component {
 
   selectPictures = () => {
     const options = {
-      quality: 1.0,
+      quality: 0.5,
       storageOptions: {
         skipBackup: true,
         path: Config.IMAGES_FOLDER,
