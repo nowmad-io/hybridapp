@@ -174,7 +174,7 @@ class Tab extends PureComponent {
               actionDisable={places.length <= MAX_LIST}
               onActionPress={() => navigation.navigate('Places')}
             >
-              <Image source={poweredByGoogle} />
+              <Image source={poweredByGoogle} style={styles.poweredByGoogle} />
               <Spinner visible={placesLoading} />
               {!placesLoading && (allPage ? places.slice(0, MAX_LIST) : places).map(result => (
                 <ListItem
@@ -273,5 +273,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     marginRight: 4,
+  },
+  poweredByGoogle: {
+    marginBottom: 12,
   },
 });
