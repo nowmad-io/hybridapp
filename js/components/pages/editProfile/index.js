@@ -68,11 +68,15 @@ class EditProfile extends Component {
 
   onPictureSelected = picture => this.setState({ picture });
 
-  onSavePress = () => this.props.dispatch(updateProfile({
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    picture: this.state.picture.path || this.state.picture.uri,
-  }));
+  onSavePress = () => {
+    this.props.dispatch(updateProfile({
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      picture: this.state.picture.path || this.state.picture.uri,
+    }));
+
+    this.onBackPress();
+  };
 
   render() {
     const { navigation, me } = this.props;
