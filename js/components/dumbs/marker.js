@@ -36,7 +36,8 @@ class Marker extends PureComponent {
       selected,
       review,
     } = this.props;
-    let text = '';
+
+    let text = null;
 
     if (reviews && reviews.length > 1) {
       text = reviews.length;
@@ -63,7 +64,7 @@ class Marker extends PureComponent {
           ]}
         >
           <Avatar
-            uri={review && review.created_by.picture}
+            uri={(!reviews || reviews.length <= 1) && review ? review.created_by.picture : null}
             size={avatarSize}
             text={text}
             set="FontAwesome"
@@ -74,6 +75,7 @@ class Marker extends PureComponent {
               selected && styles.avatar_selected,
             ]}
             textStyle={markerAvatar(selected, text === 'me')}
+            type="marker"
           />
           <View
             style={[

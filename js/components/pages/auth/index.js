@@ -44,8 +44,8 @@ class Auth extends Component {
     const { params } = this.props.navigation.state;
 
     this.state = {
-      email: params && params.email || '',
-      password: '',
+      email: params && params.email || 'j@j.com',
+      password: 'j',
       firstName: '',
       lastName: '',
       loading: false,
