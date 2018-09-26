@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Svg, { Image } from 'react-native-svg';
 
 import Text from './text';
 import Icon from './icon';
@@ -34,7 +35,6 @@ export default class Avatar extends PureComponent {
     const {
       style, textStyle, size, text, uppercase, icon, set, uri, type,
     } = this.props;
-    const ImageComponent = type === 'marker' ? Image : FastImage;
 
     return (
       <View
@@ -57,14 +57,23 @@ export default class Avatar extends PureComponent {
               textStyle,
             ]}
           />
-        ) : uri ? (
-          <ImageComponent
+        ) : uri ? ((type === 'marker') ? (
+          <Svg width={size} height={size}>
+            <Image
+              href={{ uri }}
+              width="100%"
+              height="100%"
+              preserveAspectRatio="xMidYMid slice"
+            />
+          </Svg>
+        ) : (
+          <FastImage
             source={{ uri }}
             style={styles.image}
             resizeMode="cover"
             resizeMethode="resize"
           />
-        ) : (
+        )) : (
           <Text
             style={[
               styles.text,

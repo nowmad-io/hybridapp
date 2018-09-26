@@ -54,6 +54,7 @@ class Marker extends PureComponent {
         coordinate={{ latitude, longitude }}
         onPress={this.onMarkerPress}
         anchor={{ x: 0.5, y: 1 }}
+        tracksViewChanges={false}
       >
         <View
           style={[
