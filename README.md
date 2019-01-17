@@ -77,6 +77,12 @@ Probably du to last react-native version. Check for more info https://github.com
 
 Distributed under the MIT license.
 
+## Special Thanks
+
+<a href="https://www.browserstack.com/" target="_blank"><img src="https://gdurl.com/Apyz" alt="BrowserStack" width="200"></a>
+
+Thanks to BrowserStack for their live testing on multiple devices and their Open Source Support 👍
+
 ## Authors
 
 UX/UI Design
